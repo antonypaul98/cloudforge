@@ -12,6 +12,15 @@ retains exact source paths, rejects conflicting aliases and reports malformed
 manifests. Unsupported runtimes remain explicitly unknown; inspection is limited
 to root Python/Node manifests and recognized PostgreSQL/Redis dependency names.
 
-Full local validation: 20 tests passed. Exact-head CI and safe PR merge are
-required for integration. Subsequent deployment, observation, bounded simulation
+Full local validation: 20 tests passed. Exact-head CI and merged-main verification succeeded (receipt below). Subsequent deployment, observation, bounded simulation
 and recovery gates are not claimed by this checkpoint. No infrastructure deployed.
+
+## Verified integration — 2026-09-30
+
+Checkpoint **application inspection accepted on main** through PR #2.
+
+- Exact PR head: `477cfb119086cfb516eb658b1100705011d3e1bf`; CI run `36669376449` succeeded.
+- Merge: `a3ea6a5a8eec968092ee69f7641479d2cf68f7c8`, fetched and verified locally.
+- Merged-main CI run `36669485006` succeeded.
+- Local reviewed/tested source tree equals the merged implementation tree.
+- This follow-up records the completed integration; it changes documentation only.
