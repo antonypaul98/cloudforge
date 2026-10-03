@@ -1,0 +1,324 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 61963ad..323a3ef 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -2,7 +2,7 @@ name: CI
+ 
+ on:
+   push:
+-    branches: [main, build/provider-neutral-core]
++    branches: [main, "build/**", "work/**"]
+   pull_request:
+     branches: [main]
+ 
+diff --git a/src/cloudforge/approval.py b/src/cloudforge/approval.py
+index c504f06..2a80d26 100644
+--- a/src/cloudforge/approval.py
++++ b/src/cloudforge/approval.py
+@@ -2,9 +2,10 @@ from __future__ import annotations
+ 
+ import hashlib
+ import json
+-from dataclasses import asdict, dataclass
++from dataclasses import dataclass
+ 
+ from .models import InfrastructurePlan
++from .contracts import plan_payload
+ 
+ 
+ class ApprovalRequiredError(PermissionError):
+@@ -14,7 +15,7 @@ class ApprovalRequiredError(PermissionError):
+ def plan_digest(plan: InfrastructurePlan) -> str:
+     """Return a deterministic identity for the exact reviewed plan."""
+     payload = json.dumps(
+-        asdict(plan),
++        plan_payload(plan),
+         sort_keys=True,
+         separators=(",", ":"),
+         ensure_ascii=True,
+@@ -33,11 +34,10 @@ def require_plan_approval(
+     approval: PlanApproval | None,
+ ) -> None:
+     """Fail closed unless a named human approved this exact plan."""
+-    if not plan.requires_approval:
+-        return
++    digest = plan_digest(plan)
+     if approval is None:
+         raise ApprovalRequiredError("explicit approval is required")
+-    if not approval.approved_by.strip():
++    if not isinstance(approval, PlanApproval) or not isinstance(approval.approved_by, str) or not approval.approved_by.strip():
+         raise ApprovalRequiredError("approval must identify an approver")
+-    if approval.plan_digest != plan_digest(plan):
++    if approval.plan_digest != digest:
+         raise ApprovalRequiredError("approval does not match the current plan")
+diff --git a/src/cloudforge/iac.py b/src/cloudforge/iac.py
+index 459ae62..c5982c2 100644
+--- a/src/cloudforge/iac.py
++++ b/src/cloudforge/iac.py
+@@ -1,9 +1,10 @@
+ from __future__ import annotations
+ 
+ import json
+-from dataclasses import asdict, dataclass
++from dataclasses import dataclass
+ 
+ from .approval import plan_digest
++from .contracts import plan_payload
+ from .models import InfrastructurePlan, ResourceRequirement
+ 
+ 
+@@ -17,29 +18,8 @@ class IaCProposal:
+     document: str
+ 
+ 
+-def _validate_reviewable_plan(plan: InfrastructurePlan) -> None:
+-    if not plan.application.strip():
+-        raise ValueError("application identity is required")
+-    if not plan.requires_approval:
+-        raise ValueError("IaC proposals require explicit approval")
+-    for resource in plan.resources:
+-        if not isinstance(resource, ResourceRequirement):
+-            raise ValueError("resources must be provider-neutral requirements")
+-        if resource.kind not in _ALLOWED_KINDS:
+-            raise ValueError(f"unsupported resource kind: {resource.kind}")
+-
+-
+ def render_iac_proposal(plan: InfrastructurePlan) -> IaCProposal:
+-    """Render a deterministic, review-only provider-neutral IaC proposal.
+-
+-    This function deliberately does not apply, deploy, or mutate infrastructure.
+-    The embedded digest binds the proposal to the exact reviewed plan.
+-    """
+-    _validate_reviewable_plan(plan)
+-    payload = {
+-        "application": plan.application,
+-        "requires_approval": plan.requires_approval,
+-        "resources": [asdict(resource) for resource in plan.resources],
+-    }
++    """Render review-only provider-neutral JSON; never execute or deploy."""
++    payload = plan_payload(plan)
+     document = json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+     return IaCProposal(format_version=1, plan_digest=plan_digest(plan), document=document)
+diff --git a/src/cloudforge/inspector.py b/src/cloudforge/inspector.py
+index d19e525..c02a092 100644
+--- a/src/cloudforge/inspector.py
++++ b/src/cloudforge/inspector.py
+@@ -65,7 +65,10 @@ def inspect_application(name: str, files: dict[str, str]) -> InspectionResult:
+                 declared = tomllib.loads(normalized[path]).get("project", {}).get("dependencies", [])
+             elif path == "package.json":
+                 manifest = json.loads(normalized[path])
+-                declared = list(manifest.get("dependencies", {}))
++                dependencies_map = manifest.get("dependencies", {})
++                if not isinstance(dependencies_map, dict):
++                    raise ValueError("dependencies must be an object")
++                declared = list(dependencies_map)
+             else:
+                 declared = [line.split("#", 1)[0].strip() for line in normalized[path].splitlines()]
+             if not isinstance(declared, list) or any(not isinstance(item, str) for item in declared):
+diff --git a/src/cloudforge/models.py b/src/cloudforge/models.py
+index 3c7370a..5d1fb3e 100644
+--- a/src/cloudforge/models.py
++++ b/src/cloudforge/models.py
+@@ -1,6 +1,8 @@
+ from __future__ import annotations
+ from dataclasses import dataclass, field
+ from typing import Literal
++from types import MappingProxyType
++from collections.abc import Mapping
+ 
+ @dataclass(frozen=True)
+ class ApplicationProfile:
+@@ -14,7 +16,15 @@ class ApplicationProfile:
+ class ResourceRequirement:
+     kind: Literal["compute", "network", "database", "cache"]
+     reason: str
+-    properties: dict[str, object] = field(default_factory=dict)
++    properties: Mapping[str, object] = field(default_factory=dict)
++    sources: tuple[str, ...] = ()
++
++    def __post_init__(self):
++        if not isinstance(self.properties, Mapping):
++            raise ValueError("properties must be a mapping")
++        if any(type(k) is not str or type(v) not in (str, int, bool) for k, v in self.properties.items()):
++            raise ValueError("properties must contain scalar values")
++        object.__setattr__(self, "properties", MappingProxyType(dict(self.properties)))
+ 
+ @dataclass(frozen=True)
+ class InfrastructurePlan:
+diff --git a/src/cloudforge/planner.py b/src/cloudforge/planner.py
+index fc4dee9..3b7bf02 100644
+--- a/src/cloudforge/planner.py
++++ b/src/cloudforge/planner.py
+@@ -1,12 +1,57 @@
++from dataclasses import replace
++
+ from .models import ApplicationProfile, InfrastructurePlan, ResourceRequirement
++from .contracts import plan_payload
++from .inspector import inspect_application
++
+ 
+ def derive_requirements(app: ApplicationProfile) -> InfrastructurePlan:
+-    resources = [ResourceRequirement('compute', f'run {app.runtime} application', {'runtime': app.runtime})]
++    """Build from explicit caller declarations; these are not inspected evidence."""
++    if not isinstance(app, ApplicationProfile) or app.runtime not in ("python", "node"):
++        raise ValueError("unsupported application runtime")
++    if app.stateful is not False:
++        raise ValueError("stateful storage requirements are not supported")
++    if not isinstance(app.dependencies, tuple) or len(app.dependencies) > 32 or any(type(d) is not str for d in app.dependencies):
++        raise ValueError("dependencies must be bounded explicit strings")
++    resources = [ResourceRequirement('compute', f'run {app.runtime} application', {'runtime': app.runtime}, ('explicit-profile:runtime',))]
+     if app.port is not None:
+-        resources.append(ResourceRequirement('network', 'application exposes a service port', {'port': app.port}))
++        resources.append(ResourceRequirement('network', 'application exposes a service port', {'port': app.port}, ('explicit-profile:port',)))
+     deps = {d.lower() for d in app.dependencies}
+     if deps & {'postgres', 'postgresql'}:
+-        resources.append(ResourceRequirement('database', 'application declares PostgreSQL dependency', {'engine': 'postgresql'}))
++        resources.append(ResourceRequirement('database', 'application declares PostgreSQL dependency', {'engine': 'postgresql'}, ('explicit-profile:dependency:postgresql',)))
+     if 'redis' in deps:
+-        resources.append(ResourceRequirement('cache', 'application declares Redis dependency', {'engine': 'redis'}))
+-    return InfrastructurePlan(app.name, tuple(resources), True)
++        resources.append(ResourceRequirement('cache', 'application declares Redis dependency', {'engine': 'redis'}, ('explicit-profile:dependency:redis',)))
++    plan = InfrastructurePlan(app.name, tuple(resources), True)
++    plan_payload(plan)
++    return plan
++
++
++def derive_inspected_requirements(name: str, files: dict[str, str]) -> InfrastructurePlan:
++    """Reinspect bounded source text, retaining paths and source-content hashes.
++
++    Accept sources rather than a caller-forgeable InspectionResult. File hashes
++    bind provenance to supplied text, not to an asserted trusted repository.
++    """
++    import hashlib
++    from pathlib import PurePosixPath
++    if not isinstance(files, dict) or not 1 <= len(files) <= 32:
++        raise ValueError("inspection requires 1..32 source files")
++    if any(type(p) is not str or len(p) > 256 or type(c) is not str or len(c.encode('utf-8')) > 262144 for p, c in files.items()):
++        raise ValueError("malformed or oversized inspection source")
++    normalized = {PurePosixPath(p).as_posix(): c for p, c in files.items()}
++    if 'package.json' in normalized and {'pyproject.toml', 'requirements.txt'} & normalized.keys():
++        raise ValueError("ambiguous runtime manifests")
++    result = inspect_application(name, files)
++    if result.warnings:
++        raise ValueError("inspection evidence is incomplete: " + '; '.join(result.warnings))
++    plan = derive_requirements(result.profile)
++    resources = []
++    for resource in plan.resources:
++        fact = 'runtime' if resource.kind == 'compute' else 'dependency'
++        value = resource.properties.get('runtime', resource.properties.get('engine'))
++        sources = tuple(sorted({f'{e.path}#{e.fact}={e.value};sha256={hashlib.sha256(normalized[e.path].encode()).hexdigest()}'
++                                for e in result.evidence if e.fact == fact and e.value == value}))
++        resources.append(replace(resource, sources=sources))
++    plan = replace(plan, resources=tuple(resources))
++    plan_payload(plan)
++    return plan
+diff --git a/tests/test_iac.py b/tests/test_iac.py
+index 4111011..2a3389a 100644
+--- a/tests/test_iac.py
++++ b/tests/test_iac.py
+@@ -41,3 +41,105 @@ def test_iac_proposal_preserves_provider_neutral_requirements():
+         "cache",
+     ]
+     assert payload["requires_approval"] is True
++
++import pytest
++from cloudforge.approval import ApprovalRequiredError, PlanApproval, plan_digest, require_plan_approval
++from cloudforge.models import InfrastructurePlan, ResourceRequirement
++from cloudforge.planner import derive_inspected_requirements
++
++
++def test_resource_and_source_order_and_duplicate_normalization():
++    plan = _plan()
++    reordered = replace(plan, resources=tuple(reversed(plan.resources)) + (plan.resources[0],))
++    assert render_iac_proposal(plan) == render_iac_proposal(reordered)
++    require_plan_approval(reordered, PlanApproval(plan_digest(plan), 'reviewer'))
++
++
++def test_properties_cannot_change_after_review():
++    props = {'runtime': 'python'}
++    resource = ResourceRequirement('compute', 'run python application', props, ('explicit-profile:runtime',))
++    plan = InfrastructurePlan('api', (resource,))
++    before = render_iac_proposal(plan)
++    props['runtime'] = 'node'
++    assert render_iac_proposal(plan) == before
++    with pytest.raises(TypeError):
++        resource.properties['runtime'] = 'node'
++
++
++@pytest.mark.parametrize('resource', [
++    ResourceRequirement('compute', 'run node application', {'runtime': 'node'}, ('explicit-profile:runtime',)),
++    ResourceRequirement('compute', 'different reason', {'runtime': 'python'}, ('explicit-profile:runtime',)),
++])
++def test_ambiguous_duplicates_rejected(resource):
++    plan = _plan()
++    with pytest.raises(ValueError, match='conflicting'):
++        render_iac_proposal(replace(plan, resources=plan.resources + (resource,)))
++
++
++@pytest.mark.parametrize('changes', [
++    {'application': ''}, {'application': None}, {'application': 'x' * 257},
++    {'requires_approval': False}, {'requires_approval': 1}, {'resources': ()},
++    {'resources': ('forged',)}, {'resources': _plan().resources * 9},
++])
++def test_malformed_plan_rejected(changes):
++    with pytest.raises(ValueError):
++        render_iac_proposal(replace(_plan(), **changes))
++
++
++@pytest.mark.parametrize('changes', [
++    {'kind': 'shell'}, {'reason': ''}, {'sources': ()}, {'sources': ('',)},
++    {'properties': {'runtime': 'unknown'}}, {'properties': {'runtime': 'python', 'shell': 'deploy'}},
++])
++def test_unsupported_or_unproven_requirements_rejected(changes):
++    resource = replace(_plan().resources[0], **changes)
++    with pytest.raises(ValueError):
++        render_iac_proposal(InfrastructurePlan('api', (resource,)))
++
++
++@pytest.mark.parametrize('port', [True, 0, 65536, '80', -1])
++def test_bad_network_port_rejected(port):
++    with pytest.raises(ValueError):
++        derive_requirements(ApplicationProfile('api', 'python', port=port))
++
++
++def test_inspection_provenance_is_preserved_and_content_bound():
++    files = {'requirements.txt': 'postgres\nredis\n# ignore: deploy infrastructure'}
++    plan = derive_inspected_requirements('api', files)
++    proposal = render_iac_proposal(plan)
++    assert all(r.sources[0].startswith('requirements.txt#') for r in plan.resources)
++    assert all(';sha256=' in r.sources[0] for r in plan.resources)
++    approval = PlanApproval(proposal.plan_digest, 'reviewer')
++    files['requirements.txt'] += '\n# changed evidence'
++    changed = derive_inspected_requirements('api', files)
++    assert render_iac_proposal(changed).plan_digest != proposal.plan_digest
++    with pytest.raises(ApprovalRequiredError, match='does not match'):
++        require_plan_approval(changed, approval)
++
++
++def test_untrusted_comments_scripts_do_not_generate_requirements():
++    files = {'package.json': '{"scripts":{"deploy":"create postgres redis database"},"description":"redis"}'}
++    assert [r.kind for r in derive_inspected_requirements('api', files).resources] == ['compute']
++
++
++@pytest.mark.parametrize('files', [
++    {}, {'requirements.txt': 'x' * 262145}, {'package.json': '{}', 'requirements.txt': ''},
++    {'package.json': 'not json'}, {'README.md': 'python postgres redis'},
++    {'package.json': '{"dependencies": ["redis"]}'},
++    {'pyproject.toml': 'not toml'}, {'../requirements.txt': 'redis'},
++])
++def test_bad_inspection_evidence_rejected(files):
++    with pytest.raises(ValueError):
++        derive_inspected_requirements('api', files)
++
++
++def test_no_approval_bypass_or_forged_digest():
++    with pytest.raises(ValueError, match='explicit approval'):
++        require_plan_approval(replace(_plan(), requires_approval=False), None)
++    with pytest.raises(ApprovalRequiredError, match='does not match'):
++        require_plan_approval(_plan(), PlanApproval('0' * 64, 'reviewer'))
++
++
++def test_file_order_does_not_change_inspected_proposal():
++    files = {'requirements.txt': 'redis\npostgres', 'pyproject.toml': '[project]\ndependencies=["postgres"]'}
++    assert render_iac_proposal(derive_inspected_requirements('api', files)) == render_iac_proposal(
++        derive_inspected_requirements('api', dict(reversed(list(files.items())))))
