@@ -2,18 +2,57 @@
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "deterministic IaC",
   "active_branch": "build/deterministic-iac",
-  "main_sha_at_start": "0956f19cb484d4ec8c734832a2a48914626447a7",
-  "current_branch_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
-  "sha_semantics": "Observed pre-stabilization feature head; refresh with git rev-parse HEAD at session start. Never store a self-referential commit SHA.",
-  "branch_remote_status": "Observed present and ahead of main; infrastructure commit receipt is Git history. Refresh before coding.",
-  "local_test_status": "Not run in stabilization; no feature acceptance inferred.",
+  "main_sha_at_start": "c0f82c51966dad3ad1529ad5936ee6f370ddd5b6",
+  "current_branch_sha": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
+  "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
+  "branch_remote_status": "Present and synchronized at observation; 0 behind origin/main. Refresh live refs on every resume.",
+  "local_test_status": "Product tests not run in this infrastructure-only run.",
   "pr_number": null,
-  "ci_status": "No active-head run expected before repair: push filter excluded build/deterministic-iac; no active PR.",
-  "merge_status": "Feature branch not merged by stabilization",
+  "ci_status": "No current-head run: observed infrastructure commit intentionally contains [skip ci], no feature PR. Push pattern build/** is correct; this is not a CI trigger failure.",
+  "merge_status": "Current checkpoint remains unmerged. This run must not merge/complete it.",
   "external_acceptance_required": [],
-  "known_blocker": "Review unapplied recovery patches before future feature development; no current feature acceptance claimed.",
-  "next_action": "Run scripts/session_preflight.py; inspect recovery archive and current GitHub evidence; resume features only in a separately authorized feature run.",
+  "known_blocker": "Shell git push dry-run fails: could not read Username; gh absent. Connector API preservation remains available.",
+  "next_action": "python scripts/session_preflight.py (use the pinned interpreter; follow its exact branch/auth recovery action). No feature completion or merge authorized by this run.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
-  "diagnostic_postgres_variables": []
+  "diagnostic_postgres_variables": [],
+  "schema_version": 2,
+  "observed_at_utc": "2026-10-03T15:53:16.657270+00:00",
+  "observed_branch_sha": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
+  "observed_feature_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
+  "current_repository_sha": null,
+  "current_repository_sha_command": "git rev-parse HEAD",
+  "prior_local_test_receipt": {
+    "reported_result": "Not run in stabilization; no feature acceptance inferred.",
+    "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
+    "reexecuted_this_run": false
+  },
+  "pr_state": {
+    "state": "absent",
+    "meaning": "No PR observed; missing PR-event CI is expected, not failed."
+  },
+  "ci_state": {
+    "observed_runs": [],
+    "infrastructure_revision": "not_run_intentional_skip",
+    "required_next_verification": "Next normal commit/PR event must run exact-head CI; historical success is not current-head validation."
+  },
+  "stabilization_scope": "Infrastructure only; flag describes this run, not prior feature work.",
+  "last_session_exit": {
+    "BLOCKED_LAYER": "auth",
+    "BLOCKER": "Shell Git write check failed: could not read Username for HTTPS; gh not installed. API permission and shell transport are separate.",
+    "SAFE_WORK_COMPLETED": "Infrastructure safeguards preserved through the connected GitHub route; no feature source/test changes.",
+    "REMOTE_SHA": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
+    "REMOTE_SHA_semantics": "Observed pre-edit remote SHA; resolve the published revision from the containing Git commit.",
+    "NEXT_ACTION": "python scripts/session_preflight.py; if shell auth is unavailable use AGENTS.md connector preservation path and record its actual remote receipt."
+  },
+  "infrastructure_validation": {
+    "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
+    "passed": 15,
+    "skipped": 1,
+    "skip_reason": "Memory-only source-layout regression is not applicable",
+    "yaml": "All existing workflow YAML parsed",
+    "product_tests": "not_run",
+    "physical_camera": "not_run",
+    "new_head_CI": "intentionally_not_run"
+  }
 }
