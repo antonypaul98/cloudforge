@@ -24,3 +24,20 @@ Checkpoint **application inspection accepted on main** through PR #2.
 - Merged-main CI run `36669485006` succeeded.
 - Local reviewed/tested source tree equals the merged implementation tree.
 - This follow-up records the completed integration; it changes documentation only.
+
+## Deterministic IaC — current checkpoint (2026-10-03)
+
+Canonical branch `build/deterministic-iac`, PR #4. Implementation and 48 local
+Python 3.11 tests pass; exact final-head CI and merged-main verification pending.
+The original 27 tests passed, but new regressions reproduced 19 validation/order
+failures. The renderer now rejects nonliteral approval, invalid ports, missing
+provenance, unsupported properties/engines and duplicate or conflicting kinds.
+The foundation supports at most one compute, network, PostgreSQL and Redis
+requirement, with an optional textual source. Unsupported shapes fail closed.
+
+The document normalizes resource ordering (compute, network, database, cache)
+and JSON keys; the existing plan digest intentionally binds the exact input
+plan including resource order. Reordering a plan therefore requires renewed
+approval even when its normalized document is unchanged. Provenance is retained.
+No provider calls or infrastructure deployment occur. Later deployment,
+observation and recovery checkpoints are not started.
