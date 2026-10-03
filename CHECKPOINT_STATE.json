@@ -2,23 +2,23 @@
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "deterministic IaC",
   "active_branch": "build/deterministic-iac",
-  "main_sha_at_start": "c0f82c51966dad3ad1529ad5936ee6f370ddd5b6",
-  "current_branch_sha": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
+  "main_sha_at_start": "d41d76d31bf5475589f926958963e8d2132d8d7e",
+  "current_branch_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
   "branch_remote_status": "Present and synchronized at observation; 0 behind origin/main. Refresh live refs on every resume.",
-  "local_test_status": "Product tests not run in this infrastructure-only run.",
-  "pr_number": null,
-  "ci_status": "No current-head run: observed infrastructure commit intentionally contains [skip ci], no feature PR. Push pattern build/** is correct; this is not a CI trigger failure.",
-  "merge_status": "Current checkpoint remains unmerged. This run must not merge/complete it.",
+  "local_test_status": "Python 3.11.16: baseline 27 passed; 19 new failure cases reproduced; repaired full suite 48 passed, 0 skipped. Working-tree changes based on 8f08925f7b8f0c871f1839951b20b6315fb4aaec",
+  "pr_number": 4,
+  "ci_status": "Starting skipped revision has no exact-head PR run. This normal feature/acceptance revision requires exact-head CI.",
+  "merge_status": "Unmerged; repaired IaC validation awaiting exact-head CI",
   "external_acceptance_required": [],
-  "known_blocker": "Shell git push dry-run fails: could not read Username; gh absent. Connector API preservation remains available.",
-  "next_action": "python scripts/session_preflight.py (use the pinned interpreter; follow its exact branch/auth recovery action). No feature completion or merge authorized by this run.",
+  "known_blocker": null,
+  "next_action": "Check exact-head CI for PR #4; merge only if green, then verify merged-main CI. No deployment or next checkpoint.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-03T15:53:16.657270+00:00",
-  "observed_branch_sha": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
+  "observed_at_utc": "2026-10-03T21:30:45.265698+00:00",
+  "observed_branch_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
   "observed_feature_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
@@ -28,22 +28,22 @@
     "reexecuted_this_run": false
   },
   "pr_state": {
-    "state": "absent",
-    "meaning": "No PR observed; missing PR-event CI is expected, not failed."
+    "number": 4,
+    "state": "open",
+    "head_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
+    "url": "https://github.com/antonypaul98/cloudforge/pull/4"
   },
   "ci_state": {
     "observed_runs": [],
-    "infrastructure_revision": "not_run_intentional_skip",
-    "required_next_verification": "Next normal commit/PR event must run exact-head CI; historical success is not current-head validation."
+    "required_next_verification": "Require exact final-head PR #4 CI, then merge and verify main."
   },
-  "stabilization_scope": "Infrastructure only; flag describes this run, not prior feature work.",
+  "stabilization_scope": "Deterministic IaC checkpoint only",
   "last_session_exit": {
-    "BLOCKED_LAYER": "auth",
-    "BLOCKER": "Shell Git write check failed: could not read Username for HTTPS; gh not installed. API permission and shell transport are separate.",
-    "SAFE_WORK_COMPLETED": "Infrastructure safeguards preserved through the connected GitHub route; no feature source/test changes.",
-    "REMOTE_SHA": "5c99f69f34c992d8d74b985d2e965ec163b8bb04",
-    "REMOTE_SHA_semantics": "Observed pre-edit remote SHA; resolve the published revision from the containing Git commit.",
-    "NEXT_ACTION": "python scripts/session_preflight.py; if shell auth is unavailable use AGENTS.md connector preservation path and record its actual remote receipt."
+    "BLOCKED_LAYER": null,
+    "BLOCKER": null,
+    "SAFE_WORK_COMPLETED": "48 full-suite tests passed; rejects malformed properties/ports, nonliteral approval, missing provenance and duplicate/conflicting requirements; normalizes resource order while exact-plan approval digest retains input identity.",
+    "REMOTE_SHA": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
+    "NEXT_ACTION": "Check exact-head CI for PR #4; merge only if green, then verify merged-main CI. No deployment or next checkpoint."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -54,5 +54,7 @@
     "product_tests": "not_run",
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
-  }
+  },
+  "checkpoint_status": "AWAITING_FINAL_CI",
+  "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use."
 }
