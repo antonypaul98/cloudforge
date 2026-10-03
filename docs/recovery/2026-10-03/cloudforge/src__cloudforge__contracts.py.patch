@@ -1,0 +1,48 @@
+diff --git a/src/cloudforge/contracts.py b/src/cloudforge/contracts.py
+new file mode 100644
+index 0000000..96cea4d
+--- /dev/null
++++ b/src/cloudforge/contracts.py
+@@ -0,0 +1,42 @@
++"""Bounded canonical representation shared by review and approval boundaries."""
++from .models import InfrastructurePlan, ResourceRequirement
++
++ORDER = ("compute", "network", "database", "cache")
++
++
++def plan_payload(plan: InfrastructurePlan) -> dict:
++    if not isinstance(plan, InfrastructurePlan):
++        raise ValueError("expected infrastructure plan")
++    if not isinstance(plan.application, str) or not plan.application.strip() or len(plan.application) > 256:
++        raise ValueError("application identity is required and bounded")
++    if plan.requires_approval is not True:
++        raise ValueError("plans require explicit approval")
++    if not isinstance(plan.resources, tuple) or not 1 <= len(plan.resources) <= 32:
++        raise ValueError("resources must be a bounded immutable tuple")
++    resources = {}
++    for r in plan.resources:
++        if not isinstance(r, ResourceRequirement) or r.kind not in ORDER:
++            raise ValueError("unsupported resource kind")
++        if not isinstance(r.reason, str) or not r.reason.strip() or len(r.reason) > 1024:
++            raise ValueError("resource reason is required and bounded")
++        props = dict(r.properties)
++        key = {"compute": "runtime", "network": "port", "database": "engine", "cache": "engine"}[r.kind]
++        if set(props) != {key}:
++            raise ValueError("unsupported resource properties")
++        value = props[key]
++        valid = (type(value) is int and 1 <= value <= 65535) if r.kind == "network" else (
++            type(value) is str and value in {"compute": ("python", "node"), "database": ("postgresql",), "cache": ("redis",)}[r.kind])
++        if not valid:
++            raise ValueError("malformed or unsupported resource value")
++        if not isinstance(r.sources, tuple) or not 1 <= len(r.sources) <= 32:
++            raise ValueError("explicit source provenance is required")
++        if any(type(s) is not str or not s.strip() or len(s) > 512 for s in r.sources):
++            raise ValueError("malformed source provenance")
++        entry = {"kind": r.kind, "reason": r.reason, "properties": props, "sources": sorted(set(r.sources))}
++        if r.kind in resources and resources[r.kind] != entry:
++            raise ValueError("conflicting or ambiguous duplicate requirements")
++        resources[r.kind] = entry
++    if "compute" not in resources:
++        raise ValueError("compute requirement is required")
++    return {"application": plan.application, "requires_approval": True,
++            "resources": [resources[k] for k in ORDER if k in resources]}

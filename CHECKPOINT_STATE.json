@@ -1,0 +1,19 @@
+{
+  "repository": "antonypaul98/cloudforge",
+  "current_checkpoint": "deterministic IaC",
+  "active_branch": "build/deterministic-iac",
+  "main_sha_at_start": "0956f19cb484d4ec8c734832a2a48914626447a7",
+  "current_branch_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
+  "sha_semantics": "Observed pre-stabilization feature head; refresh with git rev-parse HEAD at session start. Never store a self-referential commit SHA.",
+  "branch_remote_status": "Observed present and ahead of main; infrastructure commit receipt is Git history. Refresh before coding.",
+  "local_test_status": "Not run in stabilization; no feature acceptance inferred.",
+  "pr_number": null,
+  "ci_status": "No active-head run expected before repair: push filter excluded build/deterministic-iac; no active PR.",
+  "merge_status": "Feature branch not merged by stabilization",
+  "external_acceptance_required": [],
+  "known_blocker": "Review unapplied recovery patches before future feature development; no current feature acceptance claimed.",
+  "next_action": "Run scripts/session_preflight.py; inspect recovery archive and current GitHub evidence; resume features only in a separately authorized feature run.",
+  "feature_checkpoint_advanced": false,
+  "diagnostic_import": "cloudforge",
+  "diagnostic_postgres_variables": []
+}
