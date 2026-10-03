@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "deterministic IaC",
-  "active_branch": "build/deterministic-iac",
+  "active_branch": "main",
   "main_sha_at_start": "d41d76d31bf5475589f926958963e8d2132d8d7e",
-  "current_branch_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
+  "current_branch_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Present and synchronized at observation; 0 behind origin/main. Refresh live refs on every resume.",
-  "local_test_status": "Python 3.11.16: baseline 27 passed; 19 new failure cases reproduced; repaired full suite 48 passed, 0 skipped. Working-tree changes based on 8f08925f7b8f0c871f1839951b20b6315fb4aaec",
+  "branch_remote_status": "Merged main verified; no checkpoint branch work remains.",
+  "local_test_status": "Python 3.11.16: 48 passed, zero skipped, rerun on merged main 96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
   "pr_number": 4,
-  "ci_status": "Starting skipped revision has no exact-head PR run. This normal feature/acceptance revision requires exact-head CI.",
-  "merge_status": "Unmerged; repaired IaC validation awaiting exact-head CI",
+  "ci_status": "Exact PR-head 37155407573 and merged-main 37155522025 succeeded; completion receipt requires its own normal main CI.",
+  "merge_status": "MERGED AND VERIFIED",
   "external_acceptance_required": [],
   "known_blocker": null,
-  "next_action": "Check exact-head CI for PR #4; merge only if green, then verify merged-main CI. No deployment or next checkpoint.",
-  "feature_checkpoint_advanced": false,
+  "next_action": "STOP. Current checkpoint complete; do not start the next checkpoint in this run.",
+  "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-03T21:30:45.265698+00:00",
-  "observed_branch_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
-  "observed_feature_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
+  "observed_at_utc": "2026-10-03T21:43:48.008463+00:00",
+  "observed_branch_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+  "observed_feature_sha": "2851d44f2877dd27010a596bb2f8fc763f8c35fc",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -29,21 +29,34 @@
   },
   "pr_state": {
     "number": 4,
-    "state": "open",
-    "head_sha": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
-    "url": "https://github.com/antonypaul98/cloudforge/pull/4"
+    "state": "merged",
+    "head_sha": "2851d44f2877dd27010a596bb2f8fc763f8c35fc",
+    "url": "https://github.com/antonypaul98/cloudforge/pull/4",
+    "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3"
   },
   "ci_state": {
-    "observed_runs": [],
-    "required_next_verification": "Require exact final-head PR #4 CI, then merge and verify main."
+    "pr_run": {
+      "id": 37155407573,
+      "sha": "2851d44f2877dd27010a596bb2f8fc763f8c35fc",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "merged_main_run": {
+      "id": 37155522025,
+      "sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success"
+    }
   },
   "stabilization_scope": "Deterministic IaC checkpoint only",
   "last_session_exit": {
     "BLOCKED_LAYER": null,
     "BLOCKER": null,
-    "SAFE_WORK_COMPLETED": "48 full-suite tests passed; rejects malformed properties/ports, nonliteral approval, missing provenance and duplicate/conflicting requirements; normalizes resource order while exact-plan approval digest retains input identity.",
-    "REMOTE_SHA": "8f08925f7b8f0c871f1839951b20b6315fb4aaec",
-    "NEXT_ACTION": "Check exact-head CI for PR #4; merge only if green, then verify merged-main CI. No deployment or next checkpoint."
+    "SAFE_WORK_COMPLETED": "PR #4 merged after exact-head green CI; merged-main CI and 48 local tests passed. Completion receipt follows.",
+    "REMOTE_SHA": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+    "NEXT_ACTION": "STOP. Current checkpoint complete; do not start the next checkpoint in this run."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -55,6 +68,10 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "AWAITING_FINAL_CI",
-  "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use."
+  "checkpoint_status": "COMPLETE",
+  "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
+  "checkpoint_branch": "build/deterministic-iac",
+  "verified_main_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+  "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+  "final_pr_head": "2851d44f2877dd27010a596bb2f8fc763f8c35fc"
 }
