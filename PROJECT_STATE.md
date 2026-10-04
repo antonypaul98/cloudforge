@@ -45,3 +45,11 @@ observation and recovery checkpoints are not started.
 Deterministic IaC COMPLETE: PR #4 exact head `2851d44f2877dd27010a596bb2f8fc763f8c35fc` passed
 CI `37155407573`, merged as `96eb078366b0dfd8f377cac2a9e5c6d69152c0e3`, and merged-main CI
 `37155522025` succeeded. All 48 local tests passed on merged main. No deployment.
+
+## Deployment handoff foundation — 2026-10-04
+
+Deterministic IaC remains complete. Current branch `build/deployment-handoff`
+implements the next deployment prerequisite: reviewable target/artifact-bound
+request and explicit approval receipt. See `docs/DEPLOYMENT_HANDOFF.md`.
+No infrastructure execution or deployment acceptance is claimed. Local tests and
+exact-head/merged-main CI receipts are recorded in CHECKPOINT_STATE.json.
