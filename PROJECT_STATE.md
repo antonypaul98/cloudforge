@@ -53,3 +53,9 @@ implements the next deployment prerequisite: reviewable target/artifact-bound
 request and explicit approval receipt. See `docs/DEPLOYMENT_HANDOFF.md`.
 No infrastructure execution or deployment acceptance is claimed. Local tests and
 exact-head/merged-main CI receipts are recorded in CHECKPOINT_STATE.json.
+
+Deployment handoff foundation COMPLETE through PR #5. Exact head
+`a5663fbe9cdb39cd2f3f2af01e62314ca812057f` passed PR CI `37216846708`.
+Merged main `79abcd9782ecfc3c235072886666940d1319824c` passed CI `37216883981`
+and 80 local tests (zero skipped). This is review-only software acceptance;
+actual deployment, observation, simulation and recovery remain unimplemented.
