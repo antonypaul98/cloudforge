@@ -1,18 +1,18 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "deterministic IaC",
-  "active_branch": "main",
-  "main_sha_at_start": "d41d76d31bf5475589f926958963e8d2132d8d7e",
+  "current_checkpoint": "deployment handoff foundation",
+  "active_branch": "build/deployment-handoff",
+  "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
   "current_branch_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Merged main verified; no checkpoint branch work remains.",
-  "local_test_status": "Python 3.11.16: 48 passed, zero skipped, rerun on merged main 96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-  "pr_number": 4,
-  "ci_status": "Exact PR-head 37155407573 and merged-main 37155522025 succeeded; completion receipt requires its own normal main CI.",
-  "merge_status": "MERGED AND VERIFIED",
+  "branch_remote_status": "New canonical branch created from verified main; implementation pending publication",
+  "local_test_status": "Python 3.12.14: 80 passed, 0 skipped (48 existing + 32 new); pinned Python 3.11 CI pending",
+  "pr_number": null,
+  "ci_status": "Not yet run for this checkpoint",
+  "merge_status": "NOT_MERGED",
   "external_acceptance_required": [],
   "known_blocker": null,
-  "next_action": "STOP. Current checkpoint complete; do not start the next checkpoint in this run.",
+  "next_action": "Validate deployment handoff tests, publish canonical branch and PR, verify exact-head CI before merge.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -27,36 +27,15 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": {
-    "number": 4,
-    "state": "merged",
-    "head_sha": "2851d44f2877dd27010a596bb2f8fc763f8c35fc",
-    "url": "https://github.com/antonypaul98/cloudforge/pull/4",
-    "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3"
-  },
-  "ci_state": {
-    "pr_run": {
-      "id": 37155407573,
-      "sha": "2851d44f2877dd27010a596bb2f8fc763f8c35fc",
-      "event": "pull_request",
-      "status": "completed",
-      "conclusion": "success"
-    },
-    "merged_main_run": {
-      "id": 37155522025,
-      "sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success"
-    }
-  },
-  "stabilization_scope": "Deterministic IaC checkpoint only",
+  "pr_state": null,
+  "ci_state": {},
+  "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": null,
     "BLOCKER": null,
-    "SAFE_WORK_COMPLETED": "PR #4 merged after exact-head green CI; merged-main CI and 48 local tests passed. Completion receipt follows.",
-    "REMOTE_SHA": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-    "NEXT_ACTION": "STOP. Current checkpoint complete; do not start the next checkpoint in this run."
+    "SAFE_WORK_COMPLETED": "Deployment handoff implemented; validation/publication pending.",
+    "REMOTE_SHA": "5fef9517f56760f67467ea8686de7f721aa20c66",
+    "NEXT_ACTION": "Validate deployment handoff tests, publish canonical branch and PR, verify exact-head CI before merge."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -68,10 +47,14 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "COMPLETE",
+  "checkpoint_status": "IN_PROGRESS",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/deterministic-iac",
-  "verified_main_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-  "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-  "final_pr_head": "2851d44f2877dd27010a596bb2f8fc763f8c35fc"
+  "checkpoint_branch": "build/deployment-handoff",
+  "previous_completed_checkpoint": {
+    "name": "deterministic IaC",
+    "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
+    "pr": 4,
+    "completion_main_sha": "5fef9517f56760f67467ea8686de7f721aa20c66",
+    "completion_main_ci": 37156157915
+  }
 }
