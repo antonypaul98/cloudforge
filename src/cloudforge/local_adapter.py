@@ -6,7 +6,7 @@ import json
 from dataclasses import asdict, dataclass
 
 from .approval import ApprovalRequiredError
-from .deployment import DeploymentHandoff
+from .deployment import DeploymentHandoff, DeploymentRequest
 
 
 def _digest(value: object) -> str:
@@ -58,6 +58,13 @@ def prepare_local_execution_request(
     """Bind an accepted handoff to exact artifact bytes without executing anything."""
     if type(handoff) is not DeploymentHandoff:
         raise ValueError("expected an accepted deployment handoff")
+    if type(handoff.request) is not DeploymentRequest:
+        raise ValueError("expected a canonical deployment request")
+    if (type(handoff.request.format_version) is not int
+            or handoff.request.format_version != 1
+            or handoff.request.operation != "deployment-handoff"):
+        raise ValueError("unsupported deployment handoff format or operation")
+    _text(handoff.approved_by, "handoff approved_by")
     if handoff.infrastructure_mutated is not False or handoff.status != "ready-for-adapter-review":
         raise ValueError("handoff is not eligible for local adapter review")
     if handoff.request_digest != handoff.request.digest:
