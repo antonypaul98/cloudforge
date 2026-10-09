@@ -18,7 +18,7 @@ def _digest(value: object) -> str:
 def _text(value: object, name: str) -> None:
     if not isinstance(value, str) or not value.strip() or value != value.strip():
         raise ValueError(f"{name} must be nonblank text without surrounding whitespace")
-    if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp") for char in value):
+    if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp", "Zs") for char in value):
         raise ValueError(f"{name} must not contain control characters")
 
 

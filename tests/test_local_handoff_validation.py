@@ -39,3 +39,24 @@ def test_noncanonical_handoff_request_type_fails_closed():
     forged_handoff = replace(handoff, request={"target_id": "staging"}, request_digest="0" * 64)
     with pytest.raises(ValueError):
         prepare_local_execution_request(forged_handoff, b"exact artifact")
+
+
+@pytest.mark.parametrize("separator", [chr(0x00A0), chr(0x2007), chr(0x202F)])
+def test_ambiguous_unicode_space_separators_fail_closed(separator):
+    """Visually ambiguous Unicode space separators must not enter exact identity bindings."""
+    from cloudforge.approval import ApprovalRequiredError
+    from cloudforge.local_adapter import LocalExecutionApproval, authorize_local_execution
+    handoff = _handoff()
+    artifact = b"reviewed artifact"
+    changed_request = replace(handoff.request, target_id="prod" + separator + "west")
+    changed_handoff = replace(handoff, request=changed_request, request_digest=changed_request.digest)
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(changed_handoff, artifact)
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(replace(handoff, approved_by="review" + separator + "er"), artifact)
+    execution = prepare_local_execution_request(handoff, artifact)
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(
+            handoff, artifact, execution,
+            LocalExecutionApproval(execution.digest, "review" + separator + "er"),
+        )
