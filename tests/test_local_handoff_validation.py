@@ -60,3 +60,73 @@ def test_ambiguous_unicode_space_separators_fail_closed(separator):
             handoff, artifact, execution,
             LocalExecutionApproval(execution.digest, "review" + separator + "er"),
         )
+
+
+class _AlwaysEqual:
+    def __eq__(self, other):
+        return True
+
+    def __ne__(self, other):
+        return False
+
+
+class _NoncanonicalString(str):
+    pass
+
+
+def test_handoff_digest_comparator_cannot_bypass_binding():
+    handoff = _handoff()
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(replace(handoff, request_digest=_AlwaysEqual()), b"artifact")
+
+
+def test_handoff_status_comparator_cannot_bypass_review_gate():
+    handoff = _handoff()
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(replace(handoff, status=_AlwaysEqual()), b"artifact")
+
+
+@pytest.mark.parametrize("field", ["operation", "target_id"])
+def test_handoff_request_rejects_string_subclasses(field):
+    handoff = _handoff()
+    request = replace(handoff.request, **{field: _NoncanonicalString(getattr(handoff.request, field))})
+    forged = replace(handoff, request=request, request_digest=request.digest)
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(forged, b"artifact")
+
+
+def test_handoff_approver_rejects_string_subclass():
+    handoff = _handoff()
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(replace(handoff, approved_by=_NoncanonicalString("reviewer")), b"artifact")
+
+
+def test_execution_approval_digest_rejects_custom_comparator():
+    from cloudforge.approval import ApprovalRequiredError
+    from cloudforge.local_adapter import LocalExecutionApproval, authorize_local_execution
+    handoff = _handoff()
+    artifact = b"artifact"
+    request = prepare_local_execution_request(handoff, artifact)
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(handoff, artifact, request, LocalExecutionApproval(_AlwaysEqual(), "reviewer"))
+
+
+@pytest.mark.parametrize("field", ["handoff_digest", "target_id", "artifact_sha256", "operation"])
+def test_execution_request_rejects_custom_comparators(field):
+    from cloudforge.local_adapter import LocalExecutionApproval, authorize_local_execution
+    handoff = _handoff()
+    artifact = b"artifact"
+    request = prepare_local_execution_request(handoff, artifact)
+    forged = replace(request, **{field: _AlwaysEqual()})
+    with pytest.raises(ValueError):
+        authorize_local_execution(handoff, artifact, forged, LocalExecutionApproval(request.digest, "reviewer"))
+
+
+def test_execution_approver_rejects_string_subclass():
+    from cloudforge.approval import ApprovalRequiredError
+    from cloudforge.local_adapter import LocalExecutionApproval, authorize_local_execution
+    handoff = _handoff()
+    artifact = b"artifact"
+    request = prepare_local_execution_request(handoff, artifact)
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(handoff, artifact, request, LocalExecutionApproval(request.digest, _NoncanonicalString("reviewer")))

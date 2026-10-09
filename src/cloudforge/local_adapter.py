@@ -16,7 +16,7 @@ def _digest(value: object) -> str:
 
 
 def _text(value: object, name: str) -> None:
-    if not isinstance(value, str) or not value.strip() or value != value.strip():
+    if type(value) is not str or not value.strip() or value != value.strip():
         raise ValueError(f"{name} must be nonblank text without surrounding whitespace")
     if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp", "Zs") for char in value):
         raise ValueError(f"{name} must not contain control characters")
@@ -63,12 +63,14 @@ def prepare_local_execution_request(
         raise ValueError("expected a canonical deployment request")
     if (type(handoff.request.format_version) is not int
             or handoff.request.format_version != 1
+            or type(handoff.request.operation) is not str
             or handoff.request.operation != "deployment-handoff"):
         raise ValueError("unsupported deployment handoff format or operation")
     _text(handoff.approved_by, "handoff approved_by")
-    if handoff.infrastructure_mutated is not False or handoff.status != "ready-for-adapter-review":
+    if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
+            or handoff.status != "ready-for-adapter-review"):
         raise ValueError("handoff is not eligible for local adapter review")
-    if handoff.request_digest != handoff.request.digest:
+    if type(handoff.request_digest) is not str or handoff.request_digest != handoff.request.digest:
         raise ValueError("handoff digest does not match its exact request")
     _text(handoff.request.target_id, "target_id")
     if type(artifact) is not bytes:
@@ -91,7 +93,11 @@ def authorize_local_execution(
     if type(request) is not LocalExecutionRequest:
         raise ValueError("expected a local execution request")
     expected = prepare_local_execution_request(handoff, artifact)
-    if type(request.format_version) is not int or request != expected:
+    if (type(request.format_version) is not int
+            or any(type(value) is not str for value in (
+                request.handoff_digest, request.target_id,
+                request.artifact_sha256, request.operation))
+            or request != expected):
         raise ValueError("request differs from exact local execution inputs")
     if type(approval) is not LocalExecutionApproval:
         raise ApprovalRequiredError("fresh local execution approval is required")
@@ -99,6 +105,6 @@ def authorize_local_execution(
         _text(approval.approved_by, "approved_by")
     except ValueError as exc:
         raise ApprovalRequiredError(str(exc)) from exc
-    if approval.request_digest != expected.digest:
+    if type(approval.request_digest) is not str or approval.request_digest != expected.digest:
         raise ApprovalRequiredError("approval does not match the exact local execution request")
     return LocalExecutionReceipt(expected, approval.approved_by, expected.digest)
