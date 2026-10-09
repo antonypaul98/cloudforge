@@ -42,3 +42,65 @@ def test_approval_bypass_rejected(invalid):
     handoff, artifact, execution = sample()
     with pytest.raises(ApprovalRequiredError):
         authorize_local_execution(handoff, artifact, execution, invalid)
+
+
+from dataclasses import FrozenInstanceError
+
+@pytest.mark.parametrize("name", ["", " ", " bad", "bad ", "bad\\nname", None, 42])
+def test_invalid_execution_approver_rejected(name):
+    handoff, artifact, request = sample()
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(handoff, artifact, request, LocalExecutionApproval(request.digest, name))
+
+def test_stale_approval_rejected():
+    handoff, artifact, request = sample()
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(handoff, artifact, request, LocalExecutionApproval("0" * 64, "reviewer"))
+
+def test_changed_target_requires_fresh_execution_approval():
+    handoff, artifact, request = sample()
+    new_request = replace(handoff.request, target_id="production")
+    new_handoff = replace(handoff, request=new_request, request_digest=new_request.digest)
+    new_execution = prepare_local_execution_request(new_handoff, artifact)
+    assert new_execution.digest != request.digest
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(new_handoff, artifact, new_execution, LocalExecutionApproval(request.digest, "reviewer"))
+
+@pytest.mark.parametrize("target", ["", " ", " bad", "bad\\n", "a\\x00b", None, 42])
+def test_malformed_target_rejected(target):
+    handoff, artifact, _ = sample()
+    request = replace(handoff.request, target_id=target)
+    changed = replace(handoff, request=request, request_digest=request.digest)
+    with pytest.raises(ValueError):
+        prepare_local_execution_request(changed, artifact)
+
+def test_request_approval_and_receipt_are_immutable():
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+    receipt = authorize_local_execution(handoff, artifact, request, approval)
+    with pytest.raises(FrozenInstanceError):
+        request.target_id = "other"
+    with pytest.raises(FrozenInstanceError):
+        approval.approved_by = "other"
+    with pytest.raises(FrozenInstanceError):
+        receipt.infrastructure_mutated = True
+
+def test_authorization_has_no_external_runtime_side_effects(monkeypatch):
+    import builtins
+    import os
+    import pathlib
+    import socket
+    import subprocess
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+    def forbidden(*args, **kwargs):
+        raise AssertionError("unexpected external runtime side effect")
+    with monkeypatch.context() as guard:
+        guard.setattr(builtins, "open", forbidden)
+        guard.setattr(os, "system", forbidden)
+        guard.setattr(socket, "socket", forbidden)
+        guard.setattr(subprocess, "Popen", forbidden)
+        guard.setattr(pathlib.Path, "open", forbidden)
+        guard.setattr(pathlib.Path, "write_bytes", forbidden)
+        receipt = authorize_local_execution(handoff, artifact, request, approval)
+    assert receipt.infrastructure_mutated is False
