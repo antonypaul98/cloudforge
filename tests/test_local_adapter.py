@@ -46,7 +46,7 @@ def test_approval_bypass_rejected(invalid):
 
 from dataclasses import FrozenInstanceError
 
-@pytest.mark.parametrize("name", ["", " ", " bad", "bad ", "bad\\nname", None, 42])
+@pytest.mark.parametrize("name", ["", " ", " bad", "bad ", "bad\nname", None, 42])
 def test_invalid_execution_approver_rejected(name):
     handoff, artifact, request = sample()
     with pytest.raises(ApprovalRequiredError):
@@ -66,7 +66,7 @@ def test_changed_target_requires_fresh_execution_approval():
     with pytest.raises(ApprovalRequiredError):
         authorize_local_execution(new_handoff, artifact, new_execution, LocalExecutionApproval(request.digest, "reviewer"))
 
-@pytest.mark.parametrize("target", ["", " ", " bad", "bad\\n", "a\\x00b", None, 42])
+@pytest.mark.parametrize("target", ["", " ", " bad", "bad\n", "a\x00b", None, 42])
 def test_malformed_target_rejected(target):
     handoff, artifact, _ = sample()
     request = replace(handoff.request, target_id=target)
