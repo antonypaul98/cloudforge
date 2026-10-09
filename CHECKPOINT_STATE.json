@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "0578b71d2f60ab544dd6baeb1fad818c4e2b45db",
+  "current_branch_sha": "346292b718d33504bc19533a1b491cc44a4df43c",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Seven commits ahead of main, zero behind at observed head 0578b71d; implementation hardening and two regression modules published.",
-  "local_test_status": "Python 3.11.17 push CI at 0578b71d: 121 pytest passed, 0 failed; infrastructure guard regressions succeeded. No separate local full checkout test in this run.",
+  "branch_remote_status": "Observed head 346292b7 is 11 commits ahead of main, zero behind; exact-type hardening and regression tests committed. A further regression/state commit is pending.",
+  "local_test_status": "Earlier exact-head push CI at 5573a6e: 124 passed (Python 3.11). New type-guard head 346292b7 and the subsequent Unicode regression/state commit require new CI; no new full local checkout test.",
   "pr_number": null,
-  "ci_status": "Push CI #37877378349 succeeded on exact observed head 0578b71d; PR-head CI not run (no PR).",
+  "ci_status": "Prior 5573a6e push CI succeeded (124 tests). New head CI pending; PR-head CI not run because canonical PR is absent.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Canonical PR and exact-head CI",
     "Merged-main CI"
   ],
-  "known_blocker": "Canonical draft PR creation rejected by connected platform safety checks on 2026-10-09; no PR-head CI. No authentication action has been established as necessary.",
-  "next_action": "Create canonical draft PR by an authorized permitted route, verify exact-head PR CI and review, merge only if genuinely green, verify merged-main CI. Keep infrastructure non-mutating.",
+  "known_blocker": "Draft PR creation rejected by connected platform safety checks; no PR-head CI. Shell Git transport DNS unavailable, but authorized Git object writes succeeded.",
+  "next_action": "Verify exact new head push CI; create canonical draft PR by permitted authorized route, require exact PR-head CI, merge only after review/green CI, then verify merged-main CI.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-09T04:01:22Z",
-  "observed_branch_sha": "0578b71d2f60ab544dd6baeb1fad818c4e2b45db",
-  "observed_feature_sha": "0578b71d2f60ab544dd6baeb1fad818c4e2b45db",
+  "observed_at_utc": "2026-10-09T18:08:44Z",
+  "observed_branch_sha": "346292b718d33504bc19533a1b491cc44a4df43c",
+  "observed_feature_sha": "346292b718d33504bc19533a1b491cc44a4df43c",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -32,24 +32,25 @@
   },
   "pr_state": null,
   "ci_state": {
-    "push_run": {
-      "id": 37877378349,
-      "sha": "0578b71d2f60ab544dd6baeb1fad818c4e2b45db",
+    "push_run": null,
+    "pr_run": null,
+    "merged_main_run": null,
+    "previous_push_run": {
+      "id": 37963071980,
+      "sha": "5573a6e98c313077df2c3a7d6cd990d31fb23b19",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/37877378349"
-    },
-    "pr_run": null,
-    "merged_main_run": null
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/37963071980"
+    }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Connected GitHub create_pull_request safety layer",
-    "BLOCKER": "Canonical draft PR creation rejected before mutation; no PR-head CI exists.",
-    "SAFE_WORK_COMPLETED": "Verified latest implementation and metadata hardening present on observed head; push CI 37877378349 passed 121 Python 3.11 tests. Reconciled stale checkpoint state.",
-    "REMOTE_SHA": "0578b71d2f60ab544dd6baeb1fad818c4e2b45db",
-    "NEXT_ACTION": "Create canonical draft PR by an authorized permitted route, verify exact-head PR CI and review, merge only if genuinely green, verify merged-main CI. Keep infrastructure non-mutating."
+    "BLOCKER": "Draft PR creation rejected; no PR-head CI.",
+    "SAFE_WORK_COMPLETED": "Exact-type guard and regressions committed at 346292b7; additional Unicode regressions and checkpoint receipt staged as coherent commit. New head CI pending.",
+    "REMOTE_SHA": "346292b718d33504bc19533a1b491cc44a4df43c",
+    "NEXT_ACTION": "Verify exact new head push CI; create canonical draft PR by permitted authorized route, require exact PR-head CI, merge only after review/green CI, then verify merged-main CI."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
