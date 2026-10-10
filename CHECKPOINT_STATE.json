@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "565bf47cc0053b2431337dc8b8347857fe13ec69",
+  "current_branch_sha": "6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Verified remote head 565bf47cc0053b2431337dc8b8347857fe13ec69 is 14 commits ahead of main, zero behind; local adapter source and 165 tests committed.",
-  "local_test_status": "Existing exact-head push CI on Python 3.11.17: 165 passed, 0 failed (run 37990480216). No local tests run in this session. PR-head CI not run; no canonical PR.",
+  "branch_remote_status": "Verified remote head 6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3 is 16 commits ahead of main, zero behind. Opaque target regression file committed and Python 3.11.17 push CI 169 passed.",
+  "local_test_status": "Exact-head Python 3.11.17 push CI 169 passed, 0 failed (run 38078066534); additional 15 artifact-byte regressions remain offline/unpublished (Python 3.13.5, 15 passed). No PR-head CI.",
   "pr_number": null,
-  "ci_status": "Push CI succeeded at 565bf47cc0053b2431337dc8b8347857fe13ec69 (165 tests); PR-head CI absent because no PR exists.",
+  "ci_status": "Push CI succeeded at 6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3 (169 tests); PR-head CI absent because canonical PR creation is blocked.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Canonical PR and exact-head CI",
     "Merged-main CI"
   ],
-  "known_blocker": "Canonical draft PR creation rejected by connected platform safety checks. Shell Git DNS resolution unavailable. Branch source/tests and exact-head push CI verified.",
-  "next_action": "Create canonical draft PR by an authorized route, verify exact PR-head CI, review and merge only when required checks are green, then verify merged-main CI.",
+  "known_blocker": "Canonical draft PR creation rejected by connected platform safety checks; shell Git DNS unavailable. Blob/tree/commit/ref GitHub connector fallback DID publish opaque target tests; 169 tests passed exact-head push CI.",
+  "next_action": "Publish remaining offline binary-artifact regression tests via permitted mechanisms, create canonical draft PR via authorized route, require exact-head PR CI, review/merge only when required checks pass, verify merged-main CI.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-10T00:59:32Z",
-  "observed_branch_sha": "565bf47cc0053b2431337dc8b8347857fe13ec69",
-  "observed_feature_sha": "565bf47cc0053b2431337dc8b8347857fe13ec69",
+  "observed_at_utc": "2026-10-10T19:01:00Z",
+  "observed_branch_sha": "6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3",
+  "observed_feature_sha": "6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,12 +33,12 @@
   "pr_state": null,
   "ci_state": {
     "push_run": {
-      "id": 37990480216,
-      "sha": "565bf47cc0053b2431337dc8b8347857fe13ec69",
+      "id": 38078066534,
+      "sha": "6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/37990480216"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38078066534"
     },
     "pr_run": null,
     "merged_main_run": null,
@@ -53,11 +53,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Connected GitHub create_pull_request safety layer",
-    "BLOCKER": "Draft PR creation rejected; no PR-head CI. Shell Git DNS unavailable.",
-    "SAFE_WORK_COMPLETED": "Verified remote head 565bf47cc0053b2431337dc8b8347857fe13ec69, 14 commits ahead of main, 165 passed Python 3.11.17 push CI, reviewed safety boundaries and current checkpoint.",
-    "REMOTE_SHA": "565bf47cc0053b2431337dc8b8347857fe13ec69",
-    "NEXT_ACTION": "Create canonical draft PR by authorized route, verify exact PR-head CI, review and merge only when required checks pass, then verify merged-main CI."
+    "BLOCKED_LAYER": "GitHub create_pull_request safety layer",
+    "BLOCKER": "Draft PR creation rejected; PR-head CI absent. Shell Git DNS unavailable.",
+    "SAFE_WORK_COMPLETED": "Committed 4 opaque-target regressions at 6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3 via blob/tree/commit/ref fallback; verified remote SHA, 16 ahead/0 behind and 169 passed Python 3.11.17 push CI run 38078066534. Fifteen additional offline artifact regressions remain unpublished.",
+    "REMOTE_SHA": "6ca673fd3e1b53b9efe3d99af3e9dc07791dc3f3",
+    "NEXT_ACTION": "Publish remaining offline binary-artifact regression tests via permitted mechanisms, create canonical draft PR via authorized route, require exact-head PR CI, review/merge only when required checks pass, verify merged-main CI."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
