@@ -67,6 +67,16 @@ def prepare_local_execution_request(
             or type(handoff.request.operation) is not str
             or handoff.request.operation != "deployment-handoff"):
         raise ValueError("unsupported deployment handoff format or operation")
+    # The handoff's digest alone cannot validate caller-constructed metadata.
+    # Reject malformed provenance/document fields before deriving execution approval.
+    plan_digest = handoff.request.plan_digest
+    document = handoff.request.document
+    if (type(plan_digest) is not str
+            or len(plan_digest) != 64
+            or any(char not in "0123456789abcdef" for char in plan_digest)
+            or type(document) is not str
+            or not document.strip()):
+        raise ValueError("malformed handoff provenance or document")
     _text(handoff.approved_by, "handoff approved_by")
     if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
             or handoff.status != "ready-for-adapter-review"):
