@@ -28,6 +28,7 @@ class LocalExecutionRequest:
     handoff_digest: str
     target_id: str
     artifact_sha256: str
+    handoff_receipt_sha256: str
     operation: str = "authorize-local-artifact"
 
     @property
@@ -80,6 +81,7 @@ def prepare_local_execution_request(
         handoff.request_digest,
         handoff.request.target_id,
         hashlib.sha256(artifact).hexdigest(),
+        _digest(asdict(handoff)),
     )
 
 
@@ -96,7 +98,8 @@ def authorize_local_execution(
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
                 request.handoff_digest, request.target_id,
-                request.artifact_sha256, request.operation))
+                request.artifact_sha256, request.handoff_receipt_sha256,
+                request.operation))
             or request != expected):
         raise ValueError("request differs from exact local execution inputs")
     if type(approval) is not LocalExecutionApproval:
