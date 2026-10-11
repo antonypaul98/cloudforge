@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
+  "current_branch_sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Verified remote head 92ebef3f0e5e1343765e6d21caea99b8a9cbc17d is 18 commits ahead of main, zero behind; nine binary artifact regressions committed. Python 3.11.17 exact-head push CI 178 passed.",
-  "local_test_status": "Exact-head Python 3.11.17 push CI 178 passed, 0 failed (run 38093736240); nine binary artifact regressions committed; fifteen preserved offline regressions remain unpublished (some overlap). No PR-head CI.",
+  "branch_remote_status": "Observed 0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a: 20 commits ahead, 0 behind; six additional regressions published.",
+  "local_test_status": "Exact-head Python 3.11.17 push CI at 0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a: 184 passed, 0 failed (run 38100607440). Offline supplementary Python 3.13.5 suite: 25 passed.",
   "pr_number": null,
-  "ci_status": "Push CI succeeded at 92ebef3f0e5e1343765e6d21caea99b8a9cbc17d (178 tests); PR-head CI absent because canonical PR creation is blocked.",
+  "ci_status": "Push CI success at 0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a; PR CI absent (no PR).",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Canonical PR and exact-head CI",
     "Merged-main CI"
   ],
-  "known_blocker": "Canonical draft PR creation rejected by connected platform safety checks; shell Git DNS unavailable. Authorized Git-object fallback published nine tests and exact-head push CI passed.",
-  "next_action": "Create canonical draft PR through an authorized route; integrate remaining nonduplicative regressions; require exact-head PR CI, review and merge only after required checks green, verify merged-main CI.",
+  "known_blocker": "Canonical draft PR creation blocked by platform safety checks. No infrastructure execution.",
+  "next_action": "Create canonical draft PR; validate exact-head PR CI and review, then merge only after required checks green; verify merged-main CI.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-10T23:04:40Z",
-  "observed_branch_sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
-  "observed_feature_sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
+  "observed_at_utc": "2026-10-11T01:56:14.631Z",
+  "observed_branch_sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
+  "observed_feature_sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,31 +33,31 @@
   "pr_state": null,
   "ci_state": {
     "push_run": {
+      "id": 38100607440,
+      "sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38100607440"
+    },
+    "pr_run": null,
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 38093736240,
       "sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38093736240"
-    },
-    "pr_run": null,
-    "merged_main_run": null,
-    "previous_push_run": {
-      "id": 37971502236,
-      "sha": "ef1b956db61be23be662ce56498cf1b3b6ab954c",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/37971502236"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "GitHub create_pull_request safety layer",
-    "BLOCKER": "Draft PR creation rejected; PR-head CI absent. Shell Git DNS unavailable.",
-    "SAFE_WORK_COMPLETED": "Nine binary artifact regressions committed at 92ebef3f0e5e1343765e6d21caea99b8a9cbc17d; 18 ahead/0 behind; Python 3.11.17 exact-head push CI 178 passed (run 38093736240).",
-    "REMOTE_SHA": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
-    "NEXT_ACTION": "Create canonical draft PR through an authorized route; integrate remaining nonduplicative regressions; require exact-head PR CI, review and merge only after required checks green, verify merged-main CI."
+    "BLOCKED_LAYER": "GitHub PR creation",
+    "BLOCKER": "Platform safety check blocked draft PR; PR CI absent.",
+    "SAFE_WORK_COMPLETED": "Six regression tests committed at 0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a; exact-head push CI 184 passed.",
+    "REMOTE_SHA": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
+    "NEXT_ACTION": "Create canonical draft PR; validate exact-head PR CI and review, then merge only after required checks green; verify merged-main CI."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -102,5 +102,12 @@
     "commit_sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
     "ci_run": 38093736240,
     "ci_test_count": 178
+  },
+  "published_extended_regression_evidence": {
+    "path": "tests/test_local_binary_extended.py",
+    "blob_sha": "6ffc34faed882d56dbca861bc85aab73a0f5a311",
+    "test_count": 6,
+    "commit_sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
+    "ci_run": 38100607440
   }
 }
