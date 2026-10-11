@@ -95,6 +95,8 @@ def authorize_local_execution(
     if type(request) is not LocalExecutionRequest:
         raise ValueError("expected a local execution request")
     expected = prepare_local_execution_request(handoff, artifact)
+    if type(approval) is not LocalExecutionApproval:
+        raise ApprovalRequiredError("fresh local execution approval is required")
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
                 request.handoff_digest, request.target_id,
@@ -102,8 +104,6 @@ def authorize_local_execution(
                 request.operation))
             or request != expected):
         raise ValueError("request differs from exact local execution inputs")
-    if type(approval) is not LocalExecutionApproval:
-        raise ApprovalRequiredError("fresh local execution approval is required")
     try:
         _text(approval.approved_by, "approved_by")
     except ValueError as exc:
