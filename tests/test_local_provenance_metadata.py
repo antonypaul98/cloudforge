@@ -1,6 +1,7 @@
 """Reject forged handoff provenance before local execution authorization."""
 
 from dataclasses import replace
+import json
 
 import pytest
 
@@ -59,6 +60,28 @@ def test_valid_canonical_handoff_still_prepares_exact_artifact_request():
 ])
 def test_recomputed_handoff_digest_cannot_launder_noncanonical_document(document):
     handoff = _handoff()
+    forged_request = replace(handoff.request, document=document)
+    forged_handoff = replace(
+        handoff, request=forged_request, request_digest=forged_request.digest,
+    )
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
+
+@pytest.mark.parametrize("resources", [
+    [{"kind": "compute", "reason": "synthetic", "properties": {"runtime": ""}}],
+    [{"kind": "compute", "reason": "synthetic",
+      "properties": {"runtime": "python", "provider": "unsupported"}}],
+    [{"kind": "network", "reason": "synthetic", "properties": {"port": 0}}],
+    [{"kind": "database", "reason": "synthetic", "properties": {"engine": "mysql"}}],
+    [{"kind": "compute", "reason": "synthetic", "properties": {"runtime": "python"}},
+     {"kind": "compute", "reason": "duplicate", "properties": {"runtime": "python"}}],
+])
+def test_canonical_json_cannot_launder_invalid_resource_semantics(resources):
+    handoff = _handoff()
+    payload = json.loads(handoff.request.document)
+    payload["resources"] = resources
+    document = json.dumps(payload, sort_keys=True, indent=2,
+                          ensure_ascii=True, allow_nan=False) + "\n"
     forged_request = replace(handoff.request, document=document)
     forged_handoff = replace(
         handoff, request=forged_request, request_digest=forged_request.digest,

@@ -8,6 +8,8 @@ from dataclasses import asdict, dataclass
 
 from .approval import ApprovalRequiredError
 from .deployment import DeploymentHandoff, DeploymentRequest
+from .iac import render_iac_proposal
+from .models import InfrastructurePlan, ResourceRequirement
 
 
 def _digest(value: object) -> str:
@@ -84,17 +86,31 @@ def prepare_local_execution_request(
         payload = json.loads(document)
         canonical = json.dumps(payload, sort_keys=True, indent=2,
                                ensure_ascii=True, allow_nan=False) + "\n"
-    except (TypeError, ValueError) as exc:
+        if (type(payload) is not dict
+                or set(payload) != {"application", "requires_approval", "resources"}
+                or type(payload["application"]) is not str
+                or not payload["application"].strip()
+                or payload["requires_approval"] is not True
+                or type(payload["resources"]) is not list
+                or not 1 <= len(payload["resources"]) <= 4
+                or document != canonical
+                or any(type(resource) is not dict
+                       or set(resource) != {"kind", "reason", "properties"}
+                       or type(resource["properties"]) is not dict
+                       for resource in payload["resources"])):
+            raise ValueError("malformed handoff provenance or document")
+        # Canonical JSON alone does not make the contained requirements valid.
+        # Reuse the provider-neutral renderer to enforce kind, property,
+        # provenance, uniqueness and deterministic resource ordering.
+        parsed_plan = InfrastructurePlan(
+            payload["application"],
+            tuple(ResourceRequirement(**resource) for resource in payload["resources"]),
+            True,
+        )
+        if render_iac_proposal(parsed_plan).document != document:
+            raise ValueError("malformed handoff provenance or document")
+    except (TypeError, ValueError, KeyError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc
-    if (type(payload) is not dict
-            or set(payload) != {"application", "requires_approval", "resources"}
-            or type(payload["application"]) is not str
-            or not payload["application"].strip()
-            or payload["requires_approval"] is not True
-            or type(payload["resources"]) is not list
-            or not 1 <= len(payload["resources"]) <= 4
-            or document != canonical):
-        raise ValueError("malformed handoff provenance or document")
     _text(handoff.approved_by, "handoff approved_by")
     if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
             or handoff.status != "ready-for-adapter-review"):
