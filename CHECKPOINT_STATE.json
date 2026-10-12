@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
+  "current_branch_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed ed7b59fc2b104f50c809f0e52d506bc1ab980fe4: 25 commits ahead, 0 behind main; canonical PR absent.",
-  "local_test_status": "Published exact-head Python 3.11.17 push CI at ed7b59fc2b104f50c809f0e52d506bc1ab980fe4: 197 passed, 0 failed, infrastructure guard passed with 1 documented skip (run 38166433256). No new local product tests during checkpoint record reconciliation.",
+  "branch_remote_status": "Observed 19b196152e8d1b14e0c236bf03991c6022b2dbd0: 28 commits ahead, 0 behind main; canonical PR absent.",
+  "local_test_status": "Exact-head Python 3.11.17 push CI at 19b196152e8d1b14e0c236bf03991c6022b2dbd0: 207 passed, 0 failed; infrastructure guard passed with 1 documented skip (run 38287578570). Earlier isolated Python 3.13.5 red/green targeted regression: 5 failed / 16 passed before; 21 passed after; not a pinned full-suite local run.",
   "pr_number": null,
-  "ci_status": "Push CI success at ed7b59fc2b104f50c809f0e52d506bc1ab980fe4; PR CI absent (no PR); merged-main CI absent (not merged).",
+  "ci_status": "Push CI success at 19b196152e8d1b14e0c236bf03991c6022b2dbd0; PR CI absent (no PR); merged-main CI absent (not merged).",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Canonical PR and exact-head CI",
     "Merged-main CI"
   ],
-  "known_blocker": "Draft PR creation rejected by connector execution safety checks; branch patch already published and push CI green; PR CI absent. Shell Git DNS unavailable; no infrastructure execution.",
-  "next_action": "Retry canonical draft PR via permitted authorized route; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance.",
+  "known_blocker": "Draft PR creation rejected by connector execution safety checks despite authorized attempt; push CI green at exact new feature head. Shell Git DNS unavailable; no infrastructure execution.",
+  "next_action": "Recover permitted canonical draft PR publication; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-11T22:56:38Z",
-  "observed_branch_sha": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
-  "observed_feature_sha": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
+  "observed_at_utc": "2026-10-12T17:56:51Z",
+  "observed_branch_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+  "observed_feature_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,31 +33,31 @@
   "pr_state": null,
   "ci_state": {
     "push_run": {
+      "id": 38287578570,
+      "sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38287578570"
+    },
+    "pr_run": null,
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 38166433256,
       "sha": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38166433256"
-    },
-    "pr_run": null,
-    "merged_main_run": null,
-    "previous_push_run": {
-      "id": 38100607440,
-      "sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38100607440"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "GitHub PR creation and checkpoint-record publication",
-    "BLOCKER": "Platform safety checks reject canonical draft PR; shell Git cannot resolve github.com.",
-    "SAFE_WORK_COMPLETED": "Provenance fix published at ed7b59fc2b104f50c809f0e52d506bc1ab980fe4; exact-head push CI 197 passed, 0 failed; no infrastructure mutation.",
-    "REMOTE_SHA": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
-    "NEXT_ACTION": "Retry canonical draft PR via permitted authorized route; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance."
+    "BLOCKED_LAYER": "GitHub PR creation",
+    "BLOCKER": "Connector PR creation blocked by execution safety checks; shell Git cannot resolve github.com.",
+    "SAFE_WORK_COMPLETED": "Published deterministic semantic-validation safeguard and five synthetic regressions at 19b196152e8d1b14e0c236bf03991c6022b2dbd0; exact-head push CI 207 passed, 0 failed; no infrastructure mutation.",
+    "REMOTE_SHA": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+    "NEXT_ACTION": "Recover permitted canonical draft PR publication; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -112,8 +112,20 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Current PR and record publication restrictions are internal execution/session blockers, not a demonstrated user-only action. Cloud execution consent is not on current software checkpoint path.",
+    "reason": "Current PR publication restriction is internal execution/session blocker, not a demonstrated user-only action. Cloud execution consent is not on current software checkpoint path.",
     "prior_pr_incident": "open",
     "user_only_gate_on_immediate_path": false
+  },
+  "last_published_safeguard": {
+    "name": "canonical handoff resource semantics",
+    "feature_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+    "source_path": "src/cloudforge/local_adapter.py",
+    "regression_path": "tests/test_local_provenance_metadata.py",
+    "new_synthetic_regressions": 5,
+    "exact_head_push_ci": 38287578570,
+    "ci_test_count": 207,
+    "pr_ci": "not_run",
+    "merged_main_ci": "not_run",
+    "acceptance": "pending"
   }
 }
