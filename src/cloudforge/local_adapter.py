@@ -77,6 +77,24 @@ def prepare_local_execution_request(
             or type(document) is not str
             or not document.strip()):
         raise ValueError("malformed handoff provenance or document")
+    # A caller-constructed handoff can carry a self-consistent digest over
+    # malformed text. Require the canonical review-only IaC document shape
+    # before deriving any separate local execution authorization.
+    try:
+        payload = json.loads(document)
+        canonical = json.dumps(payload, sort_keys=True, indent=2,
+                               ensure_ascii=True, allow_nan=False) + "\n"
+    except (TypeError, ValueError) as exc:
+        raise ValueError("malformed handoff provenance or document") from exc
+    if (type(payload) is not dict
+            or set(payload) != {"application", "requires_approval", "resources"}
+            or type(payload["application"]) is not str
+            or not payload["application"].strip()
+            or payload["requires_approval"] is not True
+            or type(payload["resources"]) is not list
+            or not 1 <= len(payload["resources"]) <= 4
+            or document != canonical):
+        raise ValueError("malformed handoff provenance or document")
     _text(handoff.approved_by, "handoff approved_by")
     if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
             or handoff.status != "ready-for-adapter-review"):

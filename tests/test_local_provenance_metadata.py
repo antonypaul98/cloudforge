@@ -49,3 +49,19 @@ def test_valid_canonical_handoff_still_prepares_exact_artifact_request():
     request = prepare_local_execution_request(handoff, b"synthetic-artifact")
     assert request.target_id == "staging"
     assert request.handoff_digest == handoff.request_digest
+
+@pytest.mark.parametrize("document", [
+    "not-json",
+    '{"application": "api"}',
+    '{"application": "api", "requires_approval": false, "resources": []}',
+    '{"application": "api", "requires_approval": true, "resources": []}',
+    '{"application": "api", "requires_approval": true, "resources": [1]}',
+])
+def test_recomputed_handoff_digest_cannot_launder_noncanonical_document(document):
+    handoff = _handoff()
+    forged_request = replace(handoff.request, document=document)
+    forged_handoff = replace(
+        handoff, request=forged_request, request_digest=forged_request.digest,
+    )
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
