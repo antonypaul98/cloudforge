@@ -5,8 +5,9 @@ import hashlib
 import json
 import unicodedata
 from dataclasses import asdict, dataclass
+from itertools import permutations
 
-from .approval import ApprovalRequiredError
+from .approval import ApprovalRequiredError, plan_digest as digest_plan
 from .deployment import DeploymentHandoff, DeploymentRequest
 from .iac import render_iac_proposal
 from .models import InfrastructurePlan, ResourceRequirement
@@ -108,6 +109,14 @@ def prepare_local_execution_request(
             True,
         )
         if render_iac_proposal(parsed_plan).document != document:
+            raise ValueError("malformed handoff provenance or document")
+        # The document sorts resources, while the reviewed plan digest binds
+        # their original order. Check every bounded order (at most 4! = 24)
+        # rather than accepting an arbitrary well-formed digest.
+        if not any(
+            digest_plan(InfrastructurePlan(payload["application"], order, True)) == plan_digest
+            for order in permutations(parsed_plan.resources)
+        ):
             raise ValueError("malformed handoff provenance or document")
     except (TypeError, ValueError, KeyError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc

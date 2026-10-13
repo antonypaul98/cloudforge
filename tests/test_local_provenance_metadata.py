@@ -88,3 +88,26 @@ def test_canonical_json_cannot_launder_invalid_resource_semantics(resources):
     )
     with pytest.raises(ValueError, match="malformed handoff provenance or document"):
         prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
+
+
+@pytest.mark.parametrize("forged_digest", ["0" * 64, "f" * 64])
+def test_canonical_document_rejects_unrelated_well_formed_plan_digest(forged_digest):
+    handoff = _handoff()
+    forged_request = replace(handoff.request, plan_digest=forged_digest)
+    forged_handoff = replace(
+        handoff, request=forged_request, request_digest=forged_request.digest,
+    )
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
+
+
+def test_valid_original_resource_order_remains_accepted_after_document_sort():
+    plan = derive_requirements(ApplicationProfile("api", "python", port=8080))
+    reversed_plan = replace(plan, resources=tuple(reversed(plan.resources)))
+    proposal = render_iac_proposal(reversed_plan)
+    request = prepare_deployment_request(reversed_plan, proposal, "staging")
+    handoff = authorize_deployment_handoff(
+        reversed_plan, proposal, request,
+        DeploymentApproval(request.digest, "reviewer"),
+    )
+    assert prepare_local_execution_request(handoff, b"synthetic-artifact").handoff_digest == request.digest
