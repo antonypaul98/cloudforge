@@ -3,26 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+  "current_branch_sha": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed 19b196152e8d1b14e0c236bf03991c6022b2dbd0: 28 commits ahead, 0 behind main; canonical PR absent.",
-  "local_test_status": "Exact-head Python 3.11.17 push CI at 19b196152e8d1b14e0c236bf03991c6022b2dbd0: 207 passed, 0 failed; infrastructure guard passed with 1 documented skip (run 38287578570). Earlier isolated Python 3.13.5 red/green targeted regression: 5 failed / 16 passed before; 21 passed after; not a pinned full-suite local run.",
-  "pr_number": null,
-  "ci_status": "Push CI success at 19b196152e8d1b14e0c236bf03991c6022b2dbd0; PR CI absent (no PR); merged-main CI absent (not merged).",
+  "branch_remote_status": "Observed 4bab823f877b20b1b17d8024b9e95e530f8671dd: 30 commits ahead, 0 behind main; canonical PR #6 opened.",
+  "local_test_status": "Historical exact-head push CI at 4bab823f877b20b1b17d8024b9e95e530f8671dd: 210 passed, 0 failed (run 38402383640); PR-event CI at same source head: 210 passed, 0 failed (run 38545974947). No local exact-head checkout/pytest in this session.",
+  "pr_number": 6,
+  "ci_status": "PR-event CI succeeded at source head 4bab823f877b20b1b17d8024b9e95e530f8671dd, run 38545974947 (GitHub tested synthetic merge ref 4a2dc19); merged-main CI absent.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
-    "Canonical PR and exact-head CI",
-    "Merged-main CI"
+    "Exact final PR head and successful PR-event CI",
+    "Independent exact-head review",
+    "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Draft PR creation rejected by connector execution safety checks despite authorized attempt; push CI green at exact new feature head. Shell Git DNS unavailable; no infrastructure execution.",
-  "next_action": "Recover permitted canonical draft PR publication; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance.",
+  "known_blocker": "Independent exact-head review, guarded merge, and merged-main CI pending; no infrastructure execution. Prior connector PR publication incident resolved by authorized connector.",
+  "next_action": "Verify current PR #6 head and CI after this ledger commit; obtain independent exact-head review, guarded merge, merged-main CI, and checkpoint acceptance. No infrastructure mutation.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-12T17:56:51Z",
-  "observed_branch_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
-  "observed_feature_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+  "observed_at_utc": "2026-10-14T09:57:17.681Z",
+  "observed_branch_sha": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
+  "observed_feature_sha": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -30,7 +31,7 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": null,
+  "pr_state": "open draft; review pending",
   "ci_state": {
     "push_run": {
       "id": 38287578570,
@@ -40,7 +41,15 @@
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38287578570"
     },
-    "pr_run": null,
+    "pr_run": {
+      "id": 38545974947,
+      "source_head_sha": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
+      "tested_merge_sha": "4a2dc19",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38545974947"
+    },
     "merged_main_run": null,
     "previous_push_run": {
       "id": 38166433256,
@@ -53,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "GitHub PR creation",
-    "BLOCKER": "Connector PR creation blocked by execution safety checks; shell Git cannot resolve github.com.",
-    "SAFE_WORK_COMPLETED": "Published deterministic semantic-validation safeguard and five synthetic regressions at 19b196152e8d1b14e0c236bf03991c6022b2dbd0; exact-head push CI 207 passed, 0 failed; no infrastructure mutation.",
-    "REMOTE_SHA": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
-    "NEXT_ACTION": "Recover permitted canonical draft PR publication; require exact-head PR CI and review; merge only with required checks green; verify merged-main CI and record acceptance."
+    "BLOCKED_LAYER": "PR independent review / merge acceptance",
+    "BLOCKER": "PR #6 exists; exact-head PR CI passed on source SHA 4bab823f; independent review, merge and merged-main CI pending.",
+    "SAFE_WORK_COMPLETED": "Authorized draft PR #6 created and verified; PR-event CI #38545974947 passed 210 tests, no infrastructure execution.",
+    "REMOTE_SHA": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
+    "NEXT_ACTION": "Recheck latest PR head after ledger commit; require fresh exact-head PR CI and independent review, then guarded merge and merged-main CI."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -112,19 +121,18 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Current PR publication restriction is internal execution/session blocker, not a demonstrated user-only action. Cloud execution consent is not on current software checkpoint path.",
-    "prior_pr_incident": "open",
+    "reason": "No user-only action established; prior connector PR publication restriction resolved by permitted GitHub connector; no cloud execution approval needed for software checkpoint.",
+    "prior_pr_incident": "resolved",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
-    "name": "canonical handoff resource semantics",
-    "feature_sha": "19b196152e8d1b14e0c236bf03991c6022b2dbd0",
+    "name": "canonical handoff resource semantics and digest order binding",
+    "feature_sha": "4bab823f877b20b1b17d8024b9e95e530f8671dd",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_provenance_metadata.py",
-    "new_synthetic_regressions": 5,
-    "exact_head_push_ci": 38287578570,
-    "ci_test_count": 207,
-    "pr_ci": "not_run",
+    "exact_head_push_ci": 38402383640,
+    "ci_test_count": 210,
+    "pr_ci": 38545974947,
     "merged_main_ci": "not_run",
     "acceptance": "pending"
   }
