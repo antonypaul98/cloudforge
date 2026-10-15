@@ -118,7 +118,7 @@ def prepare_local_execution_request(
             for order in permutations(parsed_plan.resources)
         ):
             raise ValueError("malformed handoff provenance or document")
-    except (TypeError, ValueError, KeyError) as exc:
+    except (TypeError, ValueError, KeyError, RecursionError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc
     _text(handoff.approved_by, "handoff approved_by")
     if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
