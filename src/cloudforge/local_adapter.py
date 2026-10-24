@@ -26,9 +26,11 @@ def _is_noncharacter(char: str) -> bool:
 
 def _ambiguous_review_characters(value: str) -> bool:
     """Detect characters that can obscure a human-reviewed identity or field."""
-    return any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
-               or (unicodedata.category(char) == "Zs" and char != " ")
-               or _is_noncharacter(char) for char in value)
+    return value != value.strip() or any(
+        unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
+        or (unicodedata.category(char) == "Zs" and char != " ")
+        or _is_noncharacter(char) for char in value
+    )
 
 
 def _text(value: object, name: str) -> None:

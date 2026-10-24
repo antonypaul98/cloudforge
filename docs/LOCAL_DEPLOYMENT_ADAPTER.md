@@ -82,3 +82,12 @@ execution approval. It rejects altered status, target, digest, approver, format,
 operation and nonliteral mutation flags. This is an in-process integrity check,
 not proof of approver identity or an authenticated signature. It never runs a
 provider, observes infrastructure or reports a deployment.
+
+
+## Review metadata boundary whitespace
+
+Local authorization rejects leading or trailing ASCII whitespace in resource
+reasons, runtimes and source-provenance text. The earlier review-only handoff
+can contain such values, but a local execution authorization must not treat
+visually ambiguous field boundaries as accepted. Ordinary internal ASCII spaces
+remain valid. This does not authenticate reviewers or execute infrastructure.

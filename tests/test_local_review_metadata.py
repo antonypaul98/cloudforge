@@ -47,3 +47,21 @@ def test_legitimate_unicode_resource_metadata_preserved(field):
     request = prepare_local_execution_request(handoff, b"synthetic-artifact")
     assert request.target_id == "staging"
     assert len(request.artifact_sha256) == 64
+
+
+
+@pytest.mark.parametrize("field", ["reason", "runtime", "source"])
+@pytest.mark.parametrize("value", [" leading", "trailing ", " both "])
+def test_surrounding_ascii_spaces_in_review_metadata_rejected(field, value):
+    # The earlier handoff renderer permits this, but local authorization
+    # must reject visually ambiguous review boundaries.
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(_handoff(field, value), b"synthetic-artifact")
+
+
+@pytest.mark.parametrize("field", ["reason", "runtime", "source"])
+def test_internal_ascii_spaces_in_review_metadata_remain_valid(field):
+    request = prepare_local_execution_request(
+        _handoff(field, "ordinary internal spaces"), b"synthetic-artifact",
+    )
+    assert request.target_id == "staging"
