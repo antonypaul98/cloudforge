@@ -24,12 +24,19 @@ def _is_noncharacter(char: str) -> bool:
     return 0xFDD0 <= point <= 0xFDEF or (point & 0xFFFE) == 0xFFFE
 
 
+def _is_invisible_mark(char: str) -> bool:
+    """Reject default-ignorable combining grapheme joiner and variation selectors."""
+    point = ord(char)
+    return (point == 0x034F or 0x180B <= point <= 0x180F
+            or 0xFE00 <= point <= 0xFE0F or 0xE0100 <= point <= 0xE01EF)
+
+
 def _ambiguous_review_characters(value: str) -> bool:
     """Detect characters that can obscure a human-reviewed identity or field."""
     return value != value.strip() or any(
         unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
         or (unicodedata.category(char) == "Zs" and char != " ")
-        or _is_noncharacter(char) for char in value
+        or _is_noncharacter(char) or _is_invisible_mark(char) for char in value
     )
 
 
@@ -37,7 +44,7 @@ def _text(value: object, name: str) -> None:
     if type(value) is not str or not value.strip() or value != value.strip():
         raise ValueError(f"{name} must be nonblank text without surrounding whitespace")
     if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp", "Zs")
-           or _is_noncharacter(char) for char in value):
+           or _is_noncharacter(char) or _is_invisible_mark(char) for char in value):
         raise ValueError(f"{name} must not contain control characters")
 
 
