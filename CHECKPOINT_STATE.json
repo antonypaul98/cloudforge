@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "e5a8efde3a1f93d1d352052a8dc5e483bedad671",
+  "current_branch_sha": "776485972afe2616796d1dc490957ff2c0de99d5",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed e5a8efde3a1f93d1d352052a8dc5e483bedad671: 37 commits ahead, 0 behind main; PR #6 remains open draft.",
-  "local_test_status": "Isolated Python 3.13.5 review-metadata predicate checks: 36/36 passed (21 rejects, 15 accepts); 24 published pytest regressions; Python 3.11.17 exact-source-head push and PR CI: 275 passed, 0 failed. Physical Mac and infrastructure tests not run.",
+  "branch_remote_status": "Observed 776485972afe2616796d1dc490957ff2c0de99d5: 38 ahead, 0 behind main before bounded receipt-verification safeguard; PR #6 draft.",
+  "local_test_status": "Synthetic isolated Python receipt-verification predicate checks: 15 passed; published pytest integration and exact-head Python 3.11 CI pending. Prior head 77648597: 275 passed in push/PR CI. Physical/infrastructure tests not run.",
   "pr_number": 6,
-  "ci_status": "Exact source head e5a8efde3a1f93d1d352052a8dc5e483bedad671: push CI 40118526796 and PR-event CI 40118530514 succeeded, 275 passed; independent review, merge and merged-main CI pending.",
+  "ci_status": "Previous exact head 77648597: push 40118587501 and PR 40118591298 succeeded with 275 tests; NEW HEAD CI pending, never reuse previous result.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "PR #6 remains draft with zero independent reviews; guarded merge and merged-main CI pending. External worktrees and any uncommitted candidate unverified. No infrastructure execution authorized or performed.",
-  "next_action": "Verify ledger-only follow-up exact-head CI, obtain independent review of PR #6, then separately authorized guarded merge and merged-main CI; preserve no-deployment boundary.",
+  "known_blocker": "New receipt-verification source/tests pending exact-head CI; PR #6 draft, zero independent reviews, main unprotected and rulesets empty; no merge. External worktrees/writer ownership unverified.",
+  "next_action": "Verify exact published SHA, run push and PR CI at new head, obtain independent review and approved merge policy before any guarded merge.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-24T17:59:00Z",
-  "observed_branch_sha": "e5a8efde3a1f93d1d352052a8dc5e483bedad671",
-  "observed_feature_sha": "e5a8efde3a1f93d1d352052a8dc5e483bedad671",
+  "observed_branch_sha": "776485972afe2616796d1dc490957ff2c0de99d5",
+  "observed_feature_sha": "776485972afe2616796d1dc490957ff2c0de99d5",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -62,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "independent PR review / merge acceptance",
-    "BLOCKER": "PR #6 draft; exact product head e5a8efde3a1f93d1d352052a8dc5e483bedad671 passed 275 tests in both Python 3.11.17 CI events; no independent review, merge or merged-main CI.",
-    "SAFE_WORK_COMPLETED": "Published fail-closed review-visible resource metadata Unicode guard with 24 new pytest regressions; push CI 40118526796 and PR CI 40118530514 succeeded; no infrastructure mutation.",
-    "REMOTE_SHA": "e5a8efde3a1f93d1d352052a8dc5e483bedad671",
-    "NEXT_ACTION": "Verify ledger follow-up head and CI; obtain independent review before guarded merge."
+    "BLOCKED_LAYER": "independent PR review / branch protection",
+    "BLOCKER": "No independent reviews; main unprotected and no rulesets. Exact new-head CI pending.",
+    "SAFE_WORK_COMPLETED": "Prepared deterministic local-only receipt revalidation and 17 pytest regressions; synthetic predicate 15/15; no infrastructure mutation.",
+    "REMOTE_SHA": "776485972afe2616796d1dc490957ff2c0de99d5",
+    "NEXT_ACTION": "Verify new published SHA and CI; request independent review and approved branch protection before merge."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -120,19 +120,18 @@
     "ci_run": 38100607440
   },
   "help_status": {
-    "antony_help_needed": false,
-    "reason": "No immediate user-only action; independent review and consequential merge remain separately gated.",
-    "user_only_gate_on_immediate_path": false
+    "antony_help_needed": true,
+    "reason": "Repository policy configuration and independent review arrangement require owner/admin decision; no Mac/device action needed.",
+    "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "reject ambiguous Unicode in reviewed resource provenance and runtime metadata",
-    "feature_sha": "e5a8efde3a1f93d1d352052a8dc5e483bedad671",
+    "name": "exact local-only receipt revalidation",
+    "feature_sha": "pending_commit",
     "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_review_metadata.py",
-    "synthetic_test_count": 24,
-    "exact_head_push_ci": 40118526796,
-    "pr_ci": 40118530514,
-    "ci_test_count": 275,
+    "regression_path": "tests/test_local_receipt_verification.py",
+    "synthetic_test_count": 17,
+    "exact_head_push_ci": "pending",
+    "pr_ci": "pending",
     "merged_main_ci": "not_run",
     "acceptance": "pending"
   }

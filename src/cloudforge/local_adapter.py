@@ -189,3 +189,26 @@ def authorize_local_execution(
     if type(approval.request_digest) is not str or approval.request_digest != expected.digest:
         raise ApprovalRequiredError("approval does not match the exact local execution request")
     return LocalExecutionReceipt(expected, approval.approved_by, expected.digest)
+
+def verify_local_execution_receipt(
+    handoff: DeploymentHandoff,
+    artifact: bytes,
+    approval: LocalExecutionApproval | None,
+    receipt: LocalExecutionReceipt,
+) -> bool:
+    """Recheck exact local-only authorization; never authenticate a person or deploy."""
+    if type(receipt) is not LocalExecutionReceipt:
+        raise ValueError("expected a local execution receipt")
+    # Dataclass equality alone equates bool/int values (False == 0, True == 1).
+    # Validate types before comparing the complete immutable receipt.
+    if (type(receipt.request) is not LocalExecutionRequest
+            or type(receipt.request.format_version) is not int
+            or type(receipt.approved_by) is not str
+            or type(receipt.request_digest) is not str
+            or type(receipt.status) is not str
+            or type(receipt.infrastructure_mutated) is not bool):
+        raise ValueError("malformed local execution receipt")
+    expected = authorize_local_execution(handoff, artifact, receipt.request, approval)
+    if receipt != expected:
+        raise ValueError("receipt differs from exact local execution authorization")
+    return True

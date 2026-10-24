@@ -73,3 +73,12 @@ resource reasons and string-valued properties (such as runtime and source).
 Ordinary internal ASCII spaces and Unicode letters remain valid. This is an
 additional local integrity check; it does not change the accepted handoff
 renderer, authenticate an approver or authorize any infrastructure execution.
+
+## Local-only receipt revalidation
+
+`verify_local_execution_receipt(handoff, artifact, approval, receipt)` rechecks a
+previously produced receipt against the exact handoff, artifact bytes and local
+execution approval. It rejects altered status, target, digest, approver, format,
+operation and nonliteral mutation flags. This is an in-process integrity check,
+not proof of approver identity or an authenticated signature. It never runs a
+provider, observes infrastructure or reports a deployment.
