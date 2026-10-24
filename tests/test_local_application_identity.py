@@ -41,3 +41,11 @@ def test_legitimate_application_identity_remains_accepted(identity):
     )
     assert receipt.infrastructure_mutated is False
     assert receipt.status == "authorized-local-only"
+
+@pytest.mark.parametrize("identity", [" api", "api ", " api "])
+def test_surrounding_ascii_whitespace_application_identity_rejected(identity):
+    # The accepted handoff can carry this name; the local execution boundary
+    # must not authorize visually ambiguous leading/trailing ASCII spaces.
+    handoff = handoff_for(identity)
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(handoff, b"synthetic-artifact")

@@ -105,6 +105,7 @@ def prepare_local_execution_request(
                 or set(payload) != {"application", "requires_approval", "resources"}
                 or type(payload["application"]) is not str
                 or not payload["application"].strip()
+                or payload["application"] != payload["application"].strip()
                 or payload["requires_approval"] is not True
                 or type(payload["resources"]) is not list
                 or not 1 <= len(payload["resources"]) <= 4
