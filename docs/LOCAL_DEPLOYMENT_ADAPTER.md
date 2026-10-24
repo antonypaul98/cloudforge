@@ -56,3 +56,11 @@ The suite must run without credentials, Docker, a cloud account, external
 network, or provider tooling. Exact-head CI is required before merge; merged-main
 CI must also pass. Runtime mutation, observation, failure simulation, recovery,
 and real deployment acceptance remain later checkpoints.
+
+## Reserved Unicode noncharacters
+
+The local authorization boundary rejects Unicode noncharacters (U+FDD0–U+FDEF and
+all plane-ending U+FFFE/U+FFFF code points) in application, target and reviewer
+identities. These code points are reserved for internal use and can be invisible
+or inconsistently rendered. This does not reject ordinary Unicode letters or
+internal ASCII spaces in application display names. It performs no execution.

@@ -18,10 +18,17 @@ def _digest(value: object) -> str:
                                     ensure_ascii=True, allow_nan=False).encode()).hexdigest()
 
 
+def _is_noncharacter(char: str) -> bool:
+    """Reject Unicode-reserved noncharacters without banning all unassigned codepoints."""
+    point = ord(char)
+    return 0xFDD0 <= point <= 0xFDEF or (point & 0xFFFE) == 0xFFFE
+
+
 def _text(value: object, name: str) -> None:
     if type(value) is not str or not value.strip() or value != value.strip():
         raise ValueError(f"{name} must be nonblank text without surrounding whitespace")
-    if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp", "Zs") for char in value):
+    if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp", "Zs")
+           or _is_noncharacter(char) for char in value):
         raise ValueError(f"{name} must not contain control characters")
 
 
@@ -104,6 +111,7 @@ def prepare_local_execution_request(
         # while preserving ordinary internal ASCII spaces in display names.
         if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
                or (unicodedata.category(char) == "Zs" and char != " ")
+               or _is_noncharacter(char)
                for char in payload["application"]):
             raise ValueError("malformed handoff provenance or document")
         # Canonical JSON alone does not make the contained requirements valid.
