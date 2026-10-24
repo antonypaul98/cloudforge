@@ -91,3 +91,15 @@ reasons, runtimes and source-provenance text. The earlier review-only handoff
 can contain such values, but a local execution authorization must not treat
 visually ambiguous field boundaries as accepted. Ordinary internal ASCII spaces
 remain valid. This does not authenticate reviewers or execute infrastructure.
+
+## Invisible variation marks in reviewed fields
+
+The local-only execution authorization boundary also rejects the invisible
+combining grapheme joiner (U+034F), Mongolian free variation selectors
+(U+180B–U+180F), and Unicode variation selectors (U+FE00–U+FE0F and
+U+E0100–U+E01EF) in application names, resource metadata, target IDs and
+reviewer identities. These default-ignorable marks can make visually similar
+reviewed values carry different approval digests. Ordinary Unicode letters,
+internal ASCII spaces and combining accents remain permitted. This validation
+is not Unicode confusable detection or authentication, and it performs no
+runtime or infrastructure action.
