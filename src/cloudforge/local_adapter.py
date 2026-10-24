@@ -100,6 +100,12 @@ def prepare_local_execution_request(
                        or type(resource["properties"]) is not dict
                        for resource in payload["resources"])):
             raise ValueError("malformed handoff provenance or document")
+        # Reject invisible/control characters in the application identity,
+        # while preserving ordinary internal ASCII spaces in display names.
+        if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
+               or (unicodedata.category(char) == "Zs" and char != " ")
+               for char in payload["application"]):
+            raise ValueError("malformed handoff provenance or document")
         # Canonical JSON alone does not make the contained requirements valid.
         # Reuse the provider-neutral renderer to enforce kind, property,
         # provenance, uniqueness and deterministic resource ordering.
