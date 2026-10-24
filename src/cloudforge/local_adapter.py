@@ -24,6 +24,13 @@ def _is_noncharacter(char: str) -> bool:
     return 0xFDD0 <= point <= 0xFDEF or (point & 0xFFFE) == 0xFFFE
 
 
+def _ambiguous_review_characters(value: str) -> bool:
+    """Detect characters that can obscure a human-reviewed identity or field."""
+    return any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
+               or (unicodedata.category(char) == "Zs" and char != " ")
+               or _is_noncharacter(char) for char in value)
+
+
 def _text(value: object, name: str) -> None:
     if type(value) is not str or not value.strip() or value != value.strip():
         raise ValueError(f"{name} must be nonblank text without surrounding whitespace")
@@ -109,11 +116,15 @@ def prepare_local_execution_request(
             raise ValueError("malformed handoff provenance or document")
         # Reject invisible/control characters in the application identity,
         # while preserving ordinary internal ASCII spaces in display names.
-        if any(unicodedata.category(char) in ("Cc", "Cf", "Cs", "Zl", "Zp")
-               or (unicodedata.category(char) == "Zs" and char != " ")
-               or _is_noncharacter(char)
-               for char in payload["application"]):
+        if _ambiguous_review_characters(payload["application"]):
             raise ValueError("malformed handoff provenance or document")
+        # Human-reviewed resource provenance and runtime metadata must not
+        # conceal controls, directional formatting or reserved noncharacters.
+        # Ordinary internal ASCII spaces and Unicode letters remain valid.
+        for resource in payload["resources"]:
+            for value in (resource["reason"], *resource["properties"].values()):
+                if type(value) is str and _ambiguous_review_characters(value):
+                    raise ValueError("malformed handoff provenance or document")
         # Canonical JSON alone does not make the contained requirements valid.
         # Reuse the provider-neutral renderer to enforce kind, property,
         # provenance, uniqueness and deterministic resource ordering.

@@ -64,3 +64,12 @@ all plane-ending U+FFFE/U+FFFF code points) in application, target and reviewer
 identities. These code points are reserved for internal use and can be invisible
 or inconsistently rendered. This does not reject ordinary Unicode letters or
 internal ASCII spaces in application display names. It performs no execution.
+
+## Review-visible resource metadata
+
+Local execution authorization also rejects invisible controls, bidirectional
+formatting, non-ASCII space separators and Unicode noncharacters in reviewed
+resource reasons and string-valued properties (such as runtime and source).
+Ordinary internal ASCII spaces and Unicode letters remain valid. This is an
+additional local integrity check; it does not change the accepted handoff
+renderer, authenticate an approver or authorize any infrastructure execution.
