@@ -283,3 +283,13 @@ parsing the reviewed IaC document. Two parameterized synthetic regressions
 assert this early rejection. Structural request validation still runs first;
 full handoff provenance, artifact-byte equality and fresh execution approval
 remain mandatory. This is not reviewer authentication or infrastructure execution.
+
+## Early exact-artifact binding preflight
+
+Local execution authorization compares the caller-supplied artifact SHA-256
+with the actual immutable artifact bytes before parsing the reviewed IaC
+handoff document. A changed artifact or a stale request artifact digest fails
+closed, even when the caller supplies a matching self-constructed approval
+digest. The full handoff and approval revalidation remains mandatory for
+matching bytes. This preflight neither authenticates the reviewer nor executes
+infrastructure.

@@ -299,3 +299,23 @@ def test_stale_local_binding_fails_before_handoff_document_parse(monkeypatch, bi
         authorize_local_execution(
             handoff, artifact, forged, LocalExecutionApproval(forged.digest, "reviewer"),
         )
+
+@pytest.mark.parametrize("binding", ["changed-artifact-bytes", "stale-artifact-digest"])
+def test_stale_artifact_binding_fails_before_handoff_parse(monkeypatch, binding):
+    handoff, artifact, execution = sample()
+    if binding == "changed-artifact-bytes":
+        artifact = b"changed exact artifact"
+    else:
+        stale = "0" * 64 if execution.artifact_sha256 != "0" * 64 else "f" * 64
+        execution = replace(execution, artifact_sha256=stale)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale artifact binding must fail before handoff parsing")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ValueError, match="request differs from exact local execution inputs"):
+        authorize_local_execution(
+            handoff, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer"),
+        )

@@ -297,6 +297,10 @@ def authorize_local_execution(
             and (request.target_id != handoff.request.target_id
                  or request.handoff_digest != handoff.request_digest)):
         raise ValueError("request differs from exact local execution inputs")
+    # Fail fast on stale exact-artifact bindings before parsing reviewed IaC.
+    # Only immutable bytes are accepted above; this hash has no side effects.
+    if request.artifact_sha256 != hashlib.sha256(artifact).hexdigest():
+        raise ValueError("request differs from exact local execution inputs")
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
