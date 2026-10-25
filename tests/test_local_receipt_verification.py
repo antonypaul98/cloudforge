@@ -219,3 +219,28 @@ def test_serialized_local_receipt_requires_fresh_approval():
             handoff, artifact, LocalExecutionApproval("0" * 64, "reviewer"),
             receipt.to_json(),
         )
+
+
+@pytest.mark.parametrize("field,value", [
+    ("target_id", "t" * 16384),
+    ("approved_by", "r" * 16384),
+    ("approved_by", "\u00e9" * 3000),
+])
+def test_receipt_export_rejects_json_larger_than_verifier_accepts(field, value):
+    _, _, _, receipt = _sample()
+    if field == "target_id":
+        request = replace(receipt.request, target_id=value)
+        receipt = replace(receipt, request=request, request_digest=request.digest)
+    else:
+        receipt = replace(receipt, approved_by=value)
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        receipt.to_json()
+
+
+def test_large_but_bounded_receipt_still_roundtrips():
+    handoff, artifact, _, receipt = _sample()
+    approval = LocalExecutionApproval(receipt.request.digest, "r" * 10000)
+    issued = authorize_local_execution(handoff, artifact, receipt.request, approval)
+    assert verify_local_execution_receipt_json(
+        handoff, artifact, approval, issued.to_json()
+    ) is True

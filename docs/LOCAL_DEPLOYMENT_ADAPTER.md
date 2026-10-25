@@ -148,3 +148,12 @@ exact artifact bytes and separate execution approval. No parser output is truste
 solely because its JSON is internally consistent. This is deterministic,
 in-process verification, **not** a signature, reviewer authentication,
 deployment, observation, or recovery mechanism.
+
+## Export/verification size consistency
+
+The local-only receipt exporter and canonical JSON verifier share a 16,384-
+character maximum for the serialized ASCII JSON representation. Export rejects
+otherwise self-consistent receipts whose target or reviewer identity expands the
+JSON beyond this limit, including Unicode escape expansion. A receipt produced
+by the exporter must not be too large for its own verifier. This is a bounded
+serialization safeguard, not a runtime or infrastructure deployment capability.

@@ -13,6 +13,9 @@ from .iac import render_iac_proposal
 from .models import InfrastructurePlan, ResourceRequirement
 
 
+_MAX_LOCAL_RECEIPT_JSON_CHARS = 16384
+
+
 def _digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
                                     ensure_ascii=True, allow_nan=False).encode()).hexdigest()
@@ -106,7 +109,10 @@ class LocalExecutionReceipt:
             raise ValueError("malformed local-only receipt") from exc
         if self.request_digest != request.digest:
             raise ValueError("malformed local-only receipt")
-        return json.dumps(asdict(self), sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+        serialized = json.dumps(asdict(self), sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+        if len(serialized) > _MAX_LOCAL_RECEIPT_JSON_CHARS:
+            raise ValueError("local-only receipt exceeds canonical JSON size limit")
+        return serialized
 
 
 def prepare_local_execution_request(
@@ -260,7 +266,7 @@ def verify_local_execution_receipt_json(
     receipt_json: str,
 ) -> bool:
     """Validate canonical receipt JSON against exact original authorization inputs."""
-    if type(receipt_json) is not str or len(receipt_json) > 16384:
+    if type(receipt_json) is not str or len(receipt_json) > _MAX_LOCAL_RECEIPT_JSON_CHARS:
         raise ValueError("expected bounded canonical local receipt JSON")
     try:
         payload = json.loads(receipt_json)
