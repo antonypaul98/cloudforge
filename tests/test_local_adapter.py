@@ -120,12 +120,15 @@ def test_authorization_rejects_unexportable_reviewers(reviewer):
 
 
 def test_authorization_rejects_unexportable_target():
-    handoff, artifact, _ = sample()
+    handoff, artifact, execution = sample()
     altered_request = replace(handoff.request, target_id="t" * 16385)
     altered_handoff = replace(
         handoff, request=altered_request, request_digest=altered_request.digest,
     )
-    execution = prepare_local_execution_request(altered_handoff, artifact)
+    # Preparation now rejects the malformed handoff before JSON parsing.
+    with pytest.raises(ValueError, match="local handoff identity exceeds size limit"):
+        prepare_local_execution_request(altered_handoff, artifact)
+    # Authorization must independently reject the same oversized target.
     with pytest.raises(ValueError, match="canonical JSON size limit"):
         authorize_local_execution(
             altered_handoff, artifact, execution,

@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+  "current_branch_sha": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed 048fa5768f74851c2e34b48f2b95739ddb9448e7: 61 ahead / 0 behind main; PR #6 draft/unmerged. Preparing early malformed handoff identity preflight.",
-  "local_test_status": "6 new pytest parameter cases prepared; repository suite not run locally (shell GitHub DNS unavailable); exact-head CI pending publication.",
+  "branch_remote_status": "Observed bb301dfb87d176551b239a5f4ab6929d1c681b3e: 62 ahead / 0 behind main; PR #6 draft/unmerged. Repairing existing test expectation for earlier malformed target rejection.",
+  "local_test_status": "Initial exact-head push/PR CI: 486 passed, 1 failed due to pre-existing test expecting preparation to accept oversized target. Test expectation updated; new exact-head CI pending.",
   "pr_number": 6,
-  "ci_status": "Previous exact head 048fa5768f74851c2e34b48f2b95739ddb9448e7: push CI 40195427698 and PR CI 40195431107 successful (481 passed); new candidate exact-head CI pending.",
+  "ci_status": "Initial candidate bb301dfb87d176551b239a5f4ab6929d1c681b3e: push 40200210444 and PR 40200215329 FAILED (486 passed, 1 failed). Corrected test expectation pending new CI.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 draft; 0 independent reviews; main protected=false, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish early handoff identity preflight; inspect exact-head push/PR CI; preserve draft until independent review and approved merge protections.",
+  "next_action": "Publish test expectation correction; inspect exact-head push/PR CI; keep PR draft until independent review and approved protection.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T13:58:20Z",
-  "observed_branch_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
-  "observed_feature_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+  "observed_at_utc": "2026-10-25T14:01:30Z",
+  "observed_branch_sha": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
+  "observed_feature_sha": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40195427698,
-      "sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+      "id": 40200210444,
+      "sha": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
       "event": "push",
       "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40195427698"
+      "conclusion": "failure",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40200210444"
     },
     "pr_run": {
-      "id": 40195431107,
-      "source_head_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
-      "tested_merge_sha": "8fe52e1",
+      "id": 40200215329,
+      "source_head_sha": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
+      "tested_merge_sha": "9cdaf9fcf644813098540d670020743a328e9093",
       "event": "pull_request",
       "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40195431107"
+      "conclusion": "failure",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40200215329"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent review / repository protection / new exact-head CI pending",
-    "BLOCKER": "PR #6 draft, zero independent reviews, main unprotected; external worktree ownership unverified; shell GitHub DNS unavailable.",
-    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for early malformed handoff identity rejection; six new pytest parameter cases; full Python suite pending exact-head CI.",
-    "REMOTE_SHA": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
-    "NEXT_ACTION": "Publish early handoff identity preflight; inspect exact-head push/PR CI; preserve draft until independent review and approved merge protections."
+    "BLOCKED_LAYER": "Initial exact-head test failure repaired; final-head CI pending; independent review/protection gate",
+    "BLOCKER": "Initial test expected oversized target preparation to succeed; new fail-fast behavior rejects it earlier. Corrected fixture; no infrastructure mutation.",
+    "SAFE_WORK_COMPLETED": "Updated regression to assert early rejection at preparation and authorization; six new cases from preceding commit. Full CI pending.",
+    "REMOTE_SHA": "bb301dfb87d176551b239a5f4ab6929d1c681b3e",
+    "NEXT_ACTION": "Publish test expectation correction; inspect exact-head push/PR CI; keep PR draft until independent review and approved protection."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -130,9 +130,10 @@
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_adapter.py",
     "new_pytest_cases": 6,
-    "exact_head_push_ci": "pending",
-    "pr_ci": "pending",
+    "exact_head_push_ci": "pending_after_repair",
+    "pr_ci": "pending_after_repair",
     "merged_main_ci": "not_run",
-    "acceptance": "pending"
+    "acceptance": "pending",
+    "initial_candidate_ci": "push 40200210444 and PR 40200215329 failed: 486 passed, 1 failed (outdated test expectation); corrected in next commit"
   }
 }
