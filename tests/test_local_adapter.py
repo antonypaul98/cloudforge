@@ -185,7 +185,7 @@ def test_invalid_execution_approval_fails_before_handoff_parsing(monkeypatch, in
     ("handoff_receipt_sha256", None),
     ("target_id", ""),
     ("target_id", " bad"),
-    ("target_id", "bad\\n"),
+    ("target_id", "bad\n"),
     ("target_id", None),
     ("target_id", "t" * 16385),
 ])
