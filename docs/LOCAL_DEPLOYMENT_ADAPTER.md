@@ -103,3 +103,13 @@ reviewed values carry different approval digests. Ordinary Unicode letters,
 internal ASCII spaces and combining accents remain permitted. This validation
 is not Unicode confusable detection or authentication, and it performs no
 runtime or infrastructure action.
+
+## Blank Unicode filler safeguards
+
+The local review boundary also rejects U+115F (Hangul choseong filler),
+U+1160 (Hangul jungseong filler), U+2800 (Braille pattern blank), U+3164
+(Hangul filler), and U+FFA0 (halfwidth Hangul filler). These characters can
+appear blank while changing exact reviewed application, resource, target, or
+reviewer values. This narrow check preserves ordinary Korean text, combining
+accents and other legitimate Unicode identifiers; it does not claim complete
+visual-confusable detection or authenticated reviewer identity.

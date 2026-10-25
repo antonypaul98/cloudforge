@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "b07d87cbfd32d832a534340b07a2537409503d90",
+  "current_branch_sha": "175378171aae3877232c41dac776304e5d81929c",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed b07d87cbfd32d832a534340b07a2537409503d90: 45 commits ahead, 0 behind main; PR #6 draft, unmerged; ledger follow-up commit pending.",
-  "local_test_status": "Python 3.13.5 isolated predicate: 7 pre-fix invisible-mark gaps reproduced; 18 post-fix assertions passed. 35 new pytest cases published but full Python 3.11 suite and exact-head CI pending.",
+  "branch_remote_status": "Observed 175378171aae3877232c41dac776304e5d81929c: 46 ahead, 0 behind main; PR #6 draft/unmerged; new blank-filler safeguard candidate pending exact-head CI.",
+  "local_test_status": "Python 3.13.5 isolated predicate: 5 pre-fix blank-filler gaps reproduced; 11 post-fix synthetic checks passed. Existing parameterized regression suite expanded by 25 cases; full Python 3.11 CI pending for new head.",
   "pr_number": 6,
-  "ci_status": "Previous published e858940229757c6473a9a2941dd22443910b6aa7: push CI 40140805386 and PR CI 40140808580 succeeded, 307 passed. New invisible-mark source/test/docs head b07d87cbfd32d832a534340b07a2537409503d90 has not yet been validated by exact-head CI.",
+  "ci_status": "Prior exact head 175378171aae3877232c41dac776304e5d81929c: push CI 40144965194 and PR CI 40144968716 succeeded (342 passed per prior verified receipt). New blank-filler candidate head not yet published or validated.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "PR #6 draft, zero independent reviews; main unprotected and rulesets empty. New final-head CI pending; guarded merge/merged-main CI pending; external worktrees and exclusive writer ownership unverified. No real deployment.",
-  "next_action": "Verify CI at the final ledger-containing SHA; if green update PR evidence; obtain independent review and approved merge protections before any guarded merge.",
+  "known_blocker": "PR #6 draft, zero independent reviews; main unprotected and rulesets empty. New exact-head CI pending; guarded merge/merged-main CI pending; external worktrees and exclusive writer ownership unverified. No real deployment.",
+  "next_action": "Verify exact-head push and PR CI after publishing blank-filler safeguard; keep PR draft pending independent review and approved merge protections.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T00:00:09.167Z",
-  "observed_branch_sha": "b07d87cbfd32d832a534340b07a2537409503d90",
-  "observed_feature_sha": "b07d87cbfd32d832a534340b07a2537409503d90",
+  "observed_at_utc": "2026-10-25T01:04:55Z",
+  "observed_branch_sha": "175378171aae3877232c41dac776304e5d81929c",
+  "observed_feature_sha": "175378171aae3877232c41dac776304e5d81929c",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40132780247,
-      "sha": "582179036a57ed8e85696b077804a14d093b8e45",
+      "id": 40144965194,
+      "sha": "175378171aae3877232c41dac776304e5d81929c",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40132780247"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40144965194"
     },
     "pr_run": {
-      "id": 40132783263,
-      "source_head_sha": "582179036a57ed8e85696b077804a14d093b8e45",
-      "tested_merge_sha": "7715b06703f4c79106c006485018ae813fad886f",
+      "id": 40144968716,
+      "source_head_sha": "175378171aae3877232c41dac776304e5d81929c",
+      "tested_merge_sha": "06f977249422ec9f2d9ef5ad690da3c9443db086",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40132783263"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40144968716"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -64,9 +64,9 @@
   "last_session_exit": {
     "BLOCKED_LAYER": "independent review / repository protection / pending new exact-head CI",
     "BLOCKER": "PR #6 draft, no independent review or enforced merge checks; external worktrees unverified.",
-    "SAFE_WORK_COMPLETED": "Published local invisible-mark rejection, 35 pytest regressions, docs; isolated Python 3.13.5 synthetic 7 pre-fix gaps and 18 post-fix assertions. Full CI pending.",
-    "REMOTE_SHA": "b07d87cbfd32d832a534340b07a2537409503d90",
-    "NEXT_ACTION": "Verify final ledger head CI, keep PR draft until independent review and approved policy."
+    "SAFE_WORK_COMPLETED": "Prepared narrow blank-filler Unicode review guard and expanded 25 parameterized regression cases; isolated 5 pre-fix gaps and 11 post-fix synthetic checks. New head CI pending.",
+    "REMOTE_SHA": "175378171aae3877232c41dac776304e5d81929c",
+    "NEXT_ACTION": "Verify exact-head CI after publish; keep PR draft until independent review and approved merge policy."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -125,12 +125,12 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "invisible Unicode mark rejection in local-only review boundary",
-    "feature_sha": "482918b99fb0fb78430d08d50e262eed123fba35",
+    "name": "blank Unicode filler rejection in local-only review boundary",
+    "feature_sha": "pending_product_commit",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_invisible_marks.py",
-    "synthetic_test_count": 35,
-    "isolated_predicate_checks": 18,
+    "synthetic_test_count": 25,
+    "isolated_predicate_checks": 11,
     "exact_head_push_ci": "pending",
     "pr_ci": "pending",
     "merged_main_ci": "not_run",

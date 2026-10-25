@@ -25,10 +25,11 @@ def _is_noncharacter(char: str) -> bool:
 
 
 def _is_invisible_mark(char: str) -> bool:
-    """Reject default-ignorable combining grapheme joiner and variation selectors."""
+    """Reject invisible variation marks and blank filler codepoints in review text."""
     point = ord(char)
     return (point == 0x034F or 0x180B <= point <= 0x180F
-            or 0xFE00 <= point <= 0xFE0F or 0xE0100 <= point <= 0xE01EF)
+            or 0xFE00 <= point <= 0xFE0F or 0xE0100 <= point <= 0xE01EF
+            or point in (0x115F, 0x1160, 0x2800, 0x3164, 0xFFA0))
 
 
 def _ambiguous_review_characters(value: str) -> bool:

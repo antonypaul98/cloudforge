@@ -14,7 +14,8 @@ from cloudforge.models import ApplicationProfile
 from cloudforge.planner import derive_requirements
 
 
-INVISIBLE_MARKS = ("\u034f", "\u180b", "\u180f", "\ufe0e", "\ufe0f", "\U000e0100")
+INVISIBLE_MARKS = ("\u034f", "\u180b", "\u180f", "\ufe0e", "\ufe0f", "\U000e0100",
+                   "\u115f", "\u1160", "\u2800", "\u3164", "\uffa0")
 
 
 def _handoff(name="api", runtime="python", target="staging", reviewer="reviewer"):
