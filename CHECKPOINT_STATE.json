@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
+  "current_branch_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed 30a5f11fd32618b8df1fd98ff7e7ee239842fb2c: 53 ahead / 0 behind main; PR #6 draft/unmerged. Prepared bounded canonical redacted audit event verification.",
-  "local_test_status": "Isolated Python 3.13.5 synthetic verifier model: 20 checks passed (not repository suite); 21 new pytest cases prepared; pinned Python 3.11 CI pending.",
+  "branch_remote_status": "Observed cce49551fc66523dde6d44dc244fd6f6924b5de9: 54 ahead / 0 behind main; PR #6 draft/unmerged. Prepared bounded local handoff document parsing safeguard.",
+  "local_test_status": "One new pytest regression prepared for oversized handoff document rejection before JSON parsing; full repository tests not run locally; exact-head CI pending.",
   "pr_number": 6,
-  "ci_status": "Previous exact head 30a5f11fd32618b8df1fd98ff7e7ee239842fb2c: push CI 40171463967 and PR CI 40171467367 succeeded (430 passed each). New candidate exact-head CI pending.",
+  "ci_status": "Previous exact head cce49551fc66523dde6d44dc244fd6f6924b5de9: push CI 40175093984 and PR CI 40175097563 succeeded (451 passed each). New candidate exact-head CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 draft; 0 independent reviews; main unprotected, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish one coherent verifier/tests/docs/checkpoint commit, validate exact-head push and PR CI; obtain independent review and approved merge protections before guarded merge.",
+  "next_action": "Publish one coherent document-size-guard/tests/docs/checkpoint commit; verify exact-head push and PR CI. Independent review and approved merge protections required before guarded merge.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T08:02:25.400Z",
-  "observed_branch_sha": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
-  "observed_feature_sha": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
+  "observed_at_utc": "2026-10-25T09:02:13.795Z",
+  "observed_branch_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+  "observed_feature_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40171463967,
-      "sha": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
+      "id": 40175093984,
+      "sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40171463967"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40175093984"
     },
     "pr_run": {
-      "id": 40171467367,
-      "source_head_sha": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
-      "tested_merge_sha": "586b080",
+      "id": 40175097563,
+      "source_head_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+      "tested_merge_sha": "66de2a3af49506da48b7e985e31842805ba995fa",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40171467367"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40175097563"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -63,10 +63,10 @@
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "independent review / repository protection / new exact-head CI pending",
-    "BLOCKER": "PR #6 draft, no independent review or enforced merge checks; external worktrees unverified.",
-    "SAFE_WORK_COMPLETED": "Prepared bounded canonical audit verifier and 21 pytest cases; isolated Python synthetic verifier model passed 20 checks (not full suite).",
-    "REMOTE_SHA": "30a5f11fd32618b8df1fd98ff7e7ee239842fb2c",
-    "NEXT_ACTION": "Publish one coherent verifier/tests/docs/checkpoint commit, validate exact-head push and PR CI; obtain independent review and approved merge protections before guarded merge."
+    "BLOCKER": "PR #6 draft, zero independent reviews, no enforced main checks; external worktree ownership unverified.",
+    "SAFE_WORK_COMPLETED": "Prepared 65,536-character pre-parse handoff document guard, one pytest regression and adapter documentation; local product tests not run; exact-head CI pending.",
+    "REMOTE_SHA": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+    "NEXT_ACTION": "Publish one coherent document-size-guard/tests/docs/checkpoint commit; verify exact-head push and PR CI. Independent review and approved merge protections required before guarded merge."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -125,12 +125,12 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "bounded canonical redacted local audit event verification",
+    "name": "bounded pre-parse local handoff document length",
     "feature_sha": "pending_product_commit",
     "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_receipt_verification.py",
-    "new_pytest_cases": 21,
-    "isolated_predicate_checks": 20,
+    "regression_path": "tests/test_local_deep_json.py",
+    "new_pytest_cases": 1,
+    "isolated_predicate_checks": "not_run",
     "exact_head_push_ci": "pending",
     "pr_ci": "pending",
     "merged_main_ci": "not_run",

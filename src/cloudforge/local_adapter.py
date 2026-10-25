@@ -14,6 +14,7 @@ from .models import InfrastructurePlan, ResourceRequirement
 
 
 _MAX_LOCAL_RECEIPT_JSON_CHARS = 16384
+_MAX_LOCAL_HANDOFF_DOCUMENT_CHARS = 65536
 
 
 def _digest(value: object) -> str:
@@ -143,6 +144,7 @@ def prepare_local_execution_request(
             or len(plan_digest) != 64
             or any(char not in "0123456789abcdef" for char in plan_digest)
             or type(document) is not str
+            or len(document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS
             or not document.strip()):
         raise ValueError("malformed handoff provenance or document")
     # A caller-constructed handoff can carry a self-consistent digest over

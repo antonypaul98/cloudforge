@@ -194,3 +194,12 @@ evidence that matches these caller-supplied inputs. It does **not** authenticate
 an approver, sign evidence, attest to external storage, or prove any actual
 deployment, observation or recovery. No provider, filesystem, network or
 subprocess action is performed.
+
+## Bounded local handoff document parsing
+
+Before parsing a caller-supplied deployment handoff document, the local-only
+adapter rejects documents longer than 65,536 Python string characters. This
+prevents unnecessarily parsing oversized reviewed text, including documents
+whose JSON would ultimately fail canonical IaC validation. It is a separate
+local execution-authorization safeguard: it does not change the previously
+accepted review-only handoff, authenticate an approver, or execute infrastructure.

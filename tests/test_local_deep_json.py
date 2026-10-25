@@ -26,3 +26,20 @@ def test_excessively_nested_handoff_document_fails_closed():
     )
     with pytest.raises(ValueError, match="malformed handoff provenance or document"):
         prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
+
+
+def test_oversized_handoff_document_fails_before_json_parsing(monkeypatch):
+    """A huge caller-supplied review document must be rejected before parsing."""
+    handoff = _handoff()
+    oversized = '{"application":"api","padding":"' + ("x" * 65536) + '"}'
+    forged_request = replace(handoff.request, document=oversized)
+    forged_handoff = replace(
+        handoff, request=forged_request, request_digest=forged_request.digest
+    )
+
+    def unexpected_parse(*args, **kwargs):
+        raise AssertionError("oversized handoff must fail before JSON parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", unexpected_parse)
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
