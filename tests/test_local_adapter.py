@@ -148,3 +148,28 @@ def test_oversized_identity_fails_before_expensive_handoff_revalidation(monkeypa
     monkeypatch.setattr("cloudforge.local_adapter.prepare_local_execution_request", forbidden)
     with pytest.raises(ValueError, match="canonical JSON size limit"):
         authorize_local_execution(handoff, artifact, execution, approval)
+
+@pytest.mark.parametrize("invalid", [
+    None,
+    True,
+    "yes",
+    LocalExecutionApproval("0" * 64, None),
+    LocalExecutionApproval("0" * 64, ""),
+    LocalExecutionApproval("0" * 64, " bad"),
+    LocalExecutionApproval(None, "reviewer"),
+    LocalExecutionApproval(True, "reviewer"),
+    LocalExecutionApproval("short", "reviewer"),
+    LocalExecutionApproval("G" * 64, "reviewer"),
+    LocalExecutionApproval("0" * 65, "reviewer"),
+])
+def test_invalid_execution_approval_fails_before_handoff_parsing(monkeypatch, invalid):
+    handoff, artifact, execution = sample()
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("invalid approval must fail before handoff parsing")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ApprovalRequiredError):
+        authorize_local_execution(handoff, artifact, execution, invalid)

@@ -238,9 +238,20 @@ def authorize_local_execution(
             and type(approval.approved_by) is str
             and len(approval.approved_by) > _MAX_LOCAL_RECEIPT_JSON_CHARS):
         raise ValueError("local-only receipt exceeds canonical JSON size limit")
-    expected = prepare_local_execution_request(handoff, artifact)
+    # Reject structurally invalid approval before expensive handoff parsing.
+    # This is a resource safeguard, not approver authentication.
     if type(approval) is not LocalExecutionApproval:
         raise ApprovalRequiredError("fresh local execution approval is required")
+    try:
+        _text(approval.approved_by, "approved_by")
+    except ValueError as exc:
+        raise ApprovalRequiredError(str(exc)) from exc
+    if (type(approval.request_digest) is not str
+            or len(approval.request_digest) != 64
+            or any(char not in "0123456789abcdef"
+                   for char in approval.request_digest)):
+        raise ApprovalRequiredError("malformed local execution approval digest")
+    expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
                 request.handoff_digest, request.target_id,
@@ -248,11 +259,7 @@ def authorize_local_execution(
                 request.operation))
             or request != expected):
         raise ValueError("request differs from exact local execution inputs")
-    try:
-        _text(approval.approved_by, "approved_by")
-    except ValueError as exc:
-        raise ApprovalRequiredError(str(exc)) from exc
-    if type(approval.request_digest) is not str or approval.request_digest != expected.digest:
+    if approval.request_digest != expected.digest:
         raise ApprovalRequiredError("approval does not match the exact local execution request")
     receipt = LocalExecutionReceipt(expected, approval.approved_by, expected.digest)
     # Fail closed at authorization if the receipt cannot be represented by the

@@ -224,3 +224,12 @@ This avoids unnecessary parsing and hashing for values that cannot be exported.
 The canonical serialized-size check still handles JSON overhead and escaped
 Unicode; shorter malformed values follow the existing validation paths.
 This is not reviewer authentication, deployment, observation or recovery.
+
+## Early rejection of structurally invalid execution approvals
+
+Local authorization rejects a missing/wrong approval object, malformed reviewer
+identity, or non-lowercase-hex/non-64-character approval digest before parsing
+the handoff document. A correctly shaped digest still must match the exact
+execution request after full handoff and artifact revalidation. This avoids
+unnecessary processing for obviously invalid approvals; it neither authenticates
+a reviewer nor relaxes approval, infrastructure or runtime restrictions.
