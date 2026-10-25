@@ -226,6 +226,18 @@ def authorize_local_execution(
     """Authorize exact local bytes; deliberately performs no runtime mutation."""
     if type(request) is not LocalExecutionRequest:
         raise ValueError("expected a local execution request")
+    # A receipt cannot export identities longer than the canonical JSON ceiling.
+    # Reject those before parsing the handoff or hashing a huge target/reviewer.
+    # Other malformed inputs retain their existing validation paths.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and type(handoff.request.target_id) is str
+            and len(handoff.request.target_id) > _MAX_LOCAL_RECEIPT_JSON_CHARS):
+        raise ValueError("local-only receipt exceeds canonical JSON size limit")
+    if (type(approval) is LocalExecutionApproval
+            and type(approval.approved_by) is str
+            and len(approval.approved_by) > _MAX_LOCAL_RECEIPT_JSON_CHARS):
+        raise ValueError("local-only receipt exceeds canonical JSON size limit")
     expected = prepare_local_execution_request(handoff, artifact)
     if type(approval) is not LocalExecutionApproval:
         raise ApprovalRequiredError("fresh local execution approval is required")

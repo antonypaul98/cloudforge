@@ -131,3 +131,20 @@ def test_authorization_rejects_unexportable_target():
             altered_handoff, artifact, execution,
             LocalExecutionApproval(execution.digest, "reviewer"),
         )
+
+@pytest.mark.parametrize("oversized", ["target", "reviewer"])
+def test_oversized_identity_fails_before_expensive_handoff_revalidation(monkeypatch, oversized):
+    handoff, artifact, execution = sample()
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+    if oversized == "target":
+        request = replace(handoff.request, target_id="t" * 16385)
+        handoff = replace(handoff, request=request, request_digest=request.digest)
+    else:
+        approval = LocalExecutionApproval(execution.digest, "r" * 16385)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("oversized identity must be rejected before handoff parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.prepare_local_execution_request", forbidden)
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        authorize_local_execution(handoff, artifact, execution, approval)

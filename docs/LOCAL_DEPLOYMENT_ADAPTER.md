@@ -214,3 +214,13 @@ receipt verifier could never accept. Oversized requests fail closed without
 any provider, filesystem, network, subprocess or infrastructure operation.
 This is an in-process representation guarantee, not identity authentication,
 cryptographic signing, deployment, observation or recovery.
+
+## Preflight resource bound for oversized authorization identities
+
+Before parsing the handoff document or calculating a new local request digest,
+authorization rejects target IDs and execution reviewer strings whose Python
+character length exceeds the 16,384-character canonical receipt ceiling.
+This avoids unnecessary parsing and hashing for values that cannot be exported.
+The canonical serialized-size check still handles JSON overhead and escaped
+Unicode; shorter malformed values follow the existing validation paths.
+This is not reviewer authentication, deployment, observation or recovery.

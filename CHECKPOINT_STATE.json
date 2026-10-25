@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+  "current_branch_sha": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed a8aaa49a031a2b3cad1fdac0ed1aa38719550b76: 56 ahead / 0 behind main; PR #6 draft/unmerged. Preparing canonical receipt export consistency safeguard.",
-  "local_test_status": "Three new pytest parameter cases prepared for authorization-time export consistency; full repository tests not run locally (shell network unavailable); exact-head CI pending.",
+  "branch_remote_status": "Observed 7d2114488a1d0c4617c024e462cb74ec0e0f10f9: 57 ahead / 0 behind main; PR #6 draft/unmerged. Preparing oversized-identity authorization preflight.",
+  "local_test_status": "Two new pytest parameter cases prepared for early oversized target/reviewer rejection; full repository tests not run locally (shell network unavailable); exact-head CI pending.",
   "pr_number": 6,
-  "ci_status": "Previous head a8aaa49a031a2b3cad1fdac0ed1aa38719550b76: push CI 40179075967 and PR CI 40179079336 succeeded (452 tests each). New source/test/docs/checkpoint candidate CI pending.",
+  "ci_status": "Previous head 7d2114488a1d0c4617c024e462cb74ec0e0f10f9: push CI 40182939525 and PR CI 40182943598 completed successfully; new source/test/docs/checkpoint candidate CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 draft; 0 independent reviews; main unprotected, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish atomic authorization/export-consistency change; inspect exact-head push and PR CI. Preserve draft until independent review and approved merge protections.",
+  "next_action": "Publish bounded early oversized-identity rejection; inspect exact-head push and PR CI; preserve draft until independent review and approved merge protections.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T09:57:51Z",
-  "observed_branch_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
-  "observed_feature_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+  "observed_at_utc": "2026-10-25T10:59:55Z",
+  "observed_branch_sha": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
+  "observed_feature_sha": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40179075967,
-      "sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+      "id": 40182939525,
+      "sha": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179075967"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40182939525"
     },
     "pr_run": {
-      "id": 40179079336,
-      "source_head_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
-      "tested_merge_sha": "9a571ccb41a660fcacdf2113c804c77e58fb75ce",
+      "id": 40182943598,
+      "source_head_sha": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
+      "tested_merge_sha": null,
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179079336"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40182943598"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent review / repository protection / exact-head CI pending",
-    "BLOCKER": "PR #6 draft, no independent review, main unprotected, external worktree ownership unverified; local shell network unavailable.",
-    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for canonical receipt export consistency; local full suite not run; no infrastructure changes.",
-    "REMOTE_SHA": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
-    "NEXT_ACTION": "Publish atomic authorization/export-consistency change; inspect exact-head push and PR CI. Preserve draft until independent review and approved merge protections."
+    "BLOCKED_LAYER": "Independent review / repository protection / new exact-head CI pending",
+    "BLOCKER": "PR #6 draft, no independent review, main unprotected, external worktree ownership unverified; shell GitHub network unavailable.",
+    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for early oversized target/reviewer rejection; full local suite not run; no infrastructure changes.",
+    "REMOTE_SHA": "7d2114488a1d0c4617c024e462cb74ec0e0f10f9",
+    "NEXT_ACTION": "Publish bounded early oversized-identity rejection; inspect exact-head push and PR CI; preserve draft until independent review and approved merge protections."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -125,11 +125,11 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "authorization-time bounded canonical receipt export",
+    "name": "early oversized authorization identity preflight",
     "feature_sha": "pending_product_commit",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_adapter.py",
-    "new_pytest_cases": 3,
+    "new_pytest_cases": 2,
     "isolated_predicate_checks": "not_run",
     "exact_head_push_ci": "pending",
     "pr_ci": "pending",
