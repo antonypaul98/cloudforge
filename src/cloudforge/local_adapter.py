@@ -296,3 +296,26 @@ def verify_local_execution_receipt_json(
     except (ValueError, TypeError, KeyError, RecursionError) as exc:
         raise ValueError("malformed local execution receipt JSON") from exc
     return verify_local_execution_receipt(handoff, artifact, approval, receipt)
+
+
+def export_local_execution_audit_event(
+    handoff: DeploymentHandoff,
+    artifact: bytes,
+    approval: LocalExecutionApproval | None,
+    receipt: LocalExecutionReceipt,
+) -> str:
+    """Emit deterministic, redacted local-only evidence after exact revalidation.
+
+    This is an integrity-checked observation, not an authenticated signature,
+    reviewer identity proof, infrastructure observation or execution result.
+    """
+    verify_local_execution_receipt(handoff, artifact, approval, receipt)
+    canonical_receipt = receipt.to_json()
+    event = {
+        "format_version": 1,
+        "request_digest": receipt.request_digest,
+        "receipt_sha256": hashlib.sha256(canonical_receipt.encode("ascii")).hexdigest(),
+        "status": "authorized-local-only",
+        "infrastructure_mutated": False,
+    }
+    return json.dumps(event, sort_keys=True, indent=2, ensure_ascii=True) + "\n"

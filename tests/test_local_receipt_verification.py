@@ -260,3 +260,88 @@ def test_oversized_receipt_identity_fails_before_request_digest(monkeypatch, fie
     monkeypatch.setattr("cloudforge.local_adapter._digest", unexpected_digest)
     with pytest.raises(ValueError, match="canonical JSON size limit"):
         receipt.to_json()
+
+
+# Redacted audit evidence never exports reviewed target, reviewer or artifact bytes.
+import hashlib
+import json
+from cloudforge.local_adapter import export_local_execution_audit_event
+
+
+def test_local_audit_event_is_canonical_deterministic_and_redacted():
+    handoff, artifact, approval, receipt = _sample()
+    exported = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    assert exported == export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    payload = json.loads(exported)
+    assert set(payload) == {
+        "format_version", "request_digest", "receipt_sha256", "status",
+        "infrastructure_mutated",
+    }
+    assert payload["format_version"] == 1
+    assert payload["request_digest"] == receipt.request_digest
+    assert payload["receipt_sha256"] == hashlib.sha256(
+        receipt.to_json().encode("ascii")
+    ).hexdigest()
+    assert payload["status"] == "authorized-local-only"
+    assert payload["infrastructure_mutated"] is False
+    assert exported == json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+    for sensitive in ("staging", "execution-reviewer", "handoff-reviewer", "exact artifact"):
+        assert sensitive not in exported
+
+
+@pytest.mark.parametrize("field,value", [
+    ("status", "deployed"),
+    ("infrastructure_mutated", True),
+    ("approved_by", "different-reviewer"),
+    ("request_digest", "0" * 64),
+])
+def test_local_audit_event_rejects_tampered_receipts(field, value):
+    handoff, artifact, approval, receipt = _sample()
+    with pytest.raises(ValueError):
+        export_local_execution_audit_event(
+            handoff, artifact, approval, replace(receipt, **{field: value})
+        )
+
+
+def test_local_audit_event_rejects_changed_artifact():
+    handoff, _, approval, receipt = _sample()
+    with pytest.raises(ValueError):
+        export_local_execution_audit_event(handoff, b"changed", approval, receipt)
+
+
+def test_local_audit_event_requires_exact_fresh_approval():
+    handoff, artifact, _, receipt = _sample()
+    with pytest.raises(ApprovalRequiredError):
+        export_local_execution_audit_event(
+            handoff, artifact, LocalExecutionApproval("0" * 64, "reviewer"), receipt
+        )
+
+
+def test_local_audit_event_rejects_oversized_receipt_export():
+    handoff, artifact, _, receipt = _sample()
+    approval = LocalExecutionApproval(receipt.request.digest, "r" * 16385)
+    oversized = authorize_local_execution(handoff, artifact, receipt.request, approval)
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        export_local_execution_audit_event(handoff, artifact, approval, oversized)
+
+
+def test_local_audit_event_has_no_runtime_side_effects(monkeypatch):
+    import builtins
+    import os
+    import pathlib
+    import socket
+    import subprocess
+    handoff, artifact, approval, receipt = _sample()
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("audit event must not access runtime or infrastructure")
+
+    with monkeypatch.context() as guard:
+        guard.setattr(builtins, "open", forbidden)
+        guard.setattr(os, "system", forbidden)
+        guard.setattr(socket, "socket", forbidden)
+        guard.setattr(subprocess, "Popen", forbidden)
+        guard.setattr(pathlib.Path, "open", forbidden)
+        guard.setattr(pathlib.Path, "write_bytes", forbidden)
+        exported = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    assert json.loads(exported)["infrastructure_mutated"] is False

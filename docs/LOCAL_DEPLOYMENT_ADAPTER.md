@@ -166,3 +166,18 @@ digest. This avoids unnecessary hashing of oversized caller-supplied identities.
 The existing serialized-size check remains authoritative for escaped Unicode
 and JSON overhead. This is an in-process resource bound, not authentication or
 infrastructure execution.
+
+## Redacted local-only authorization audit event
+
+`export_local_execution_audit_event(handoff, artifact, approval, receipt)`
+revalidates the receipt against the exact original handoff, artifact bytes and
+separate execution approval before producing deterministic canonical ASCII JSON.
+The event contains only format version, request digest, SHA-256 of the canonical
+full receipt, the fixed `authorized-local-only` status, and literal
+`infrastructure_mutated: false`. It deliberately omits the raw target ID,
+reviewer names, artifact bytes and handoff document. The request digest remains
+linkable metadata, so audit events should still receive appropriate access
+controls. Receipt hashing detects changes only when compared against trusted
+reference evidence; it is **not** a signature, authenticated approval, actual
+infrastructure observation, deployment, or recovery. No filesystem, network,
+provider, subprocess or infrastructure operation is performed.
