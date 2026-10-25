@@ -242,7 +242,11 @@ def authorize_local_execution(
         raise ApprovalRequiredError(str(exc)) from exc
     if type(approval.request_digest) is not str or approval.request_digest != expected.digest:
         raise ApprovalRequiredError("approval does not match the exact local execution request")
-    return LocalExecutionReceipt(expected, approval.approved_by, expected.digest)
+    receipt = LocalExecutionReceipt(expected, approval.approved_by, expected.digest)
+    # Fail closed at authorization if the receipt cannot be represented by the
+    # bounded canonical JSON format required for subsequent verification.
+    receipt.to_json()
+    return receipt
 
 def verify_local_execution_receipt(
     handoff: DeploymentHandoff,

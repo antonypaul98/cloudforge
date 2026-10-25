@@ -203,3 +203,14 @@ prevents unnecessarily parsing oversized reviewed text, including documents
 whose JSON would ultimately fail canonical IaC validation. It is a separate
 local execution-authorization safeguard: it does not change the previously
 accepted review-only handoff, authenticate an approver, or execute infrastructure.
+
+## Authorization and canonical export consistency
+
+A successful `authorize_local_execution()` now checks that its newly issued
+receipt can be exported as bounded canonical JSON before returning it. This
+prevents the authorization API from reporting success for oversized target or
+reviewer identities (including Unicode escape expansion) that the canonical
+receipt verifier could never accept. Oversized requests fail closed without
+any provider, filesystem, network, subprocess or infrastructure operation.
+This is an in-process representation guarantee, not identity authentication,
+cryptographic signing, deployment, observation or recovery.

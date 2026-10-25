@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+  "current_branch_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed 4bf240d4c2296400724a2ee7ed86260f31821a39: 55 ahead / 0 behind main; PR #6 draft/unmerged. Fixing test fixture NameError after exact-head CI.",
-  "local_test_status": "One new oversized handoff regression; first exact-head CI: 451 passed, 1 failed due to undefined test helper _handoff. Fixture repair prepared; local full suite not run; repaired-head CI pending.",
+  "branch_remote_status": "Observed a8aaa49a031a2b3cad1fdac0ed1aa38719550b76: 56 ahead / 0 behind main; PR #6 draft/unmerged. Preparing canonical receipt export consistency safeguard.",
+  "local_test_status": "Three new pytest parameter cases prepared for authorization-time export consistency; full repository tests not run locally (shell network unavailable); exact-head CI pending.",
   "pr_number": 6,
-  "ci_status": "Commit 4bf240d4c2296400724a2ee7ed86260f31821a39: push CI 40179013186 and PR CI 40179014945 FAILED (451 passed, 1 NameError in new test). New repair candidate CI pending.",
+  "ci_status": "Previous head a8aaa49a031a2b3cad1fdac0ed1aa38719550b76: push CI 40179075967 and PR CI 40179079336 succeeded (452 tests each). New source/test/docs/checkpoint candidate CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 draft; 0 independent reviews; main unprotected, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish test-fixture repair, verify exact-head push and PR CI and inspect failing logs. Independent review and merge protection still required.",
+  "next_action": "Publish atomic authorization/export-consistency change; inspect exact-head push and PR CI. Preserve draft until independent review and approved merge protections.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T09:03:15.508Z",
-  "observed_branch_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
-  "observed_feature_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+  "observed_at_utc": "2026-10-25T09:57:51Z",
+  "observed_branch_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+  "observed_feature_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,20 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40179013186,
-      "sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+      "id": 40179075967,
+      "sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
       "event": "push",
       "status": "completed",
-      "conclusion": "failure",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179013186"
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179075967"
     },
     "pr_run": {
-      "id": 40179014945,
-      "source_head_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+      "id": 40179079336,
+      "source_head_sha": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+      "tested_merge_sha": "9a571ccb41a660fcacdf2113c804c77e58fb75ce",
       "event": "pull_request",
       "status": "completed",
-      "conclusion": "failure",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179014945"
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179079336"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -61,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "CI test fixture NameError / independent review and merge protection",
-    "BLOCKER": "Previous candidate failed exact-head CI due to undefined _handoff test helper; repair pending validation. PR draft and unreviewed.",
-    "SAFE_WORK_COMPLETED": "Diagnosed both exact-head CI failures to one new test fixture NameError; prepared deterministic test helper repair, no infrastructure changes.",
-    "REMOTE_SHA": "4bf240d4c2296400724a2ee7ed86260f31821a39",
-    "NEXT_ACTION": "Publish test-fixture repair, verify exact-head push and PR CI and inspect failing logs. Independent review and merge protection still required."
+    "BLOCKED_LAYER": "Independent review / repository protection / exact-head CI pending",
+    "BLOCKER": "PR #6 draft, no independent review, main unprotected, external worktree ownership unverified; local shell network unavailable.",
+    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for canonical receipt export consistency; local full suite not run; no infrastructure changes.",
+    "REMOTE_SHA": "a8aaa49a031a2b3cad1fdac0ed1aa38719550b76",
+    "NEXT_ACTION": "Publish atomic authorization/export-consistency change; inspect exact-head push and PR CI. Preserve draft until independent review and approved merge protections."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -124,15 +125,15 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "bounded pre-parse local handoff document length",
-    "feature_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+    "name": "authorization-time bounded canonical receipt export",
+    "feature_sha": "pending_product_commit",
     "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_deep_json.py",
-    "new_pytest_cases": 1,
+    "regression_path": "tests/test_local_adapter.py",
+    "new_pytest_cases": 3,
     "isolated_predicate_checks": "not_run",
-    "exact_head_push_ci": "failed:40179013186",
-    "pr_ci": "failed:40179014945",
+    "exact_head_push_ci": "pending",
+    "pr_ci": "pending",
     "merged_main_ci": "not_run",
-    "acceptance": "pending fixture repair"
+    "acceptance": "pending"
   }
 }

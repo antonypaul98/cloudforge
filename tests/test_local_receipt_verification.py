@@ -317,12 +317,11 @@ def test_local_audit_event_requires_exact_fresh_approval():
         )
 
 
-def test_local_audit_event_rejects_oversized_receipt_export():
+def test_local_authorization_rejects_oversized_receipt_before_audit_export():
     handoff, artifact, _, receipt = _sample()
     approval = LocalExecutionApproval(receipt.request.digest, "r" * 16385)
-    oversized = authorize_local_execution(handoff, artifact, receipt.request, approval)
     with pytest.raises(ValueError, match="canonical JSON size limit"):
-        export_local_execution_audit_event(handoff, artifact, approval, oversized)
+        authorize_local_execution(handoff, artifact, receipt.request, approval)
 
 
 def test_local_audit_event_has_no_runtime_side_effects(monkeypatch):

@@ -104,3 +104,30 @@ def test_authorization_has_no_external_runtime_side_effects(monkeypatch):
         guard.setattr(pathlib.Path, "write_bytes", forbidden)
         receipt = authorize_local_execution(handoff, artifact, request, approval)
     assert receipt.infrastructure_mutated is False
+
+
+@pytest.mark.parametrize("reviewer", [
+    pytest.param("r" * 16385, id="oversized-ascii-reviewer"),
+    pytest.param("\u00e9" * 3000, id="unicode-escape-expansion"),
+])
+def test_authorization_rejects_unexportable_reviewers(reviewer):
+    handoff, artifact, execution = sample()
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        authorize_local_execution(
+            handoff, artifact, execution,
+            LocalExecutionApproval(execution.digest, reviewer),
+        )
+
+
+def test_authorization_rejects_unexportable_target():
+    handoff, artifact, _ = sample()
+    altered_request = replace(handoff.request, target_id="t" * 16385)
+    altered_handoff = replace(
+        handoff, request=altered_request, request_digest=altered_request.digest,
+    )
+    execution = prepare_local_execution_request(altered_handoff, artifact)
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        authorize_local_execution(
+            altered_handoff, artifact, execution,
+            LocalExecutionApproval(execution.digest, "reviewer"),
+        )
