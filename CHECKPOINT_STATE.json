@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+  "current_branch_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed cce49551fc66523dde6d44dc244fd6f6924b5de9: 54 ahead / 0 behind main; PR #6 draft/unmerged. Prepared bounded local handoff document parsing safeguard.",
-  "local_test_status": "One new pytest regression prepared for oversized handoff document rejection before JSON parsing; full repository tests not run locally; exact-head CI pending.",
+  "branch_remote_status": "Observed 4bf240d4c2296400724a2ee7ed86260f31821a39: 55 ahead / 0 behind main; PR #6 draft/unmerged. Fixing test fixture NameError after exact-head CI.",
+  "local_test_status": "One new oversized handoff regression; first exact-head CI: 451 passed, 1 failed due to undefined test helper _handoff. Fixture repair prepared; local full suite not run; repaired-head CI pending.",
   "pr_number": 6,
-  "ci_status": "Previous exact head cce49551fc66523dde6d44dc244fd6f6924b5de9: push CI 40175093984 and PR CI 40175097563 succeeded (451 passed each). New candidate exact-head CI pending.",
+  "ci_status": "Commit 4bf240d4c2296400724a2ee7ed86260f31821a39: push CI 40179013186 and PR CI 40179014945 FAILED (451 passed, 1 NameError in new test). New repair candidate CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 draft; 0 independent reviews; main unprotected, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish one coherent document-size-guard/tests/docs/checkpoint commit; verify exact-head push and PR CI. Independent review and approved merge protections required before guarded merge.",
+  "next_action": "Publish test-fixture repair, verify exact-head push and PR CI and inspect failing logs. Independent review and merge protection still required.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T09:02:13.795Z",
-  "observed_branch_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
-  "observed_feature_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+  "observed_at_utc": "2026-10-25T09:03:15.508Z",
+  "observed_branch_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+  "observed_feature_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,20 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40175093984,
-      "sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
+      "id": 40179013186,
+      "sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
       "event": "push",
       "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40175093984"
+      "conclusion": "failure",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179013186"
     },
     "pr_run": {
-      "id": 40175097563,
-      "source_head_sha": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
-      "tested_merge_sha": "66de2a3af49506da48b7e985e31842805ba995fa",
+      "id": 40179014945,
+      "source_head_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
       "event": "pull_request",
       "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40175097563"
+      "conclusion": "failure",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40179014945"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,11 +61,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "independent review / repository protection / new exact-head CI pending",
-    "BLOCKER": "PR #6 draft, zero independent reviews, no enforced main checks; external worktree ownership unverified.",
-    "SAFE_WORK_COMPLETED": "Prepared 65,536-character pre-parse handoff document guard, one pytest regression and adapter documentation; local product tests not run; exact-head CI pending.",
-    "REMOTE_SHA": "cce49551fc66523dde6d44dc244fd6f6924b5de9",
-    "NEXT_ACTION": "Publish one coherent document-size-guard/tests/docs/checkpoint commit; verify exact-head push and PR CI. Independent review and approved merge protections required before guarded merge."
+    "BLOCKED_LAYER": "CI test fixture NameError / independent review and merge protection",
+    "BLOCKER": "Previous candidate failed exact-head CI due to undefined _handoff test helper; repair pending validation. PR draft and unreviewed.",
+    "SAFE_WORK_COMPLETED": "Diagnosed both exact-head CI failures to one new test fixture NameError; prepared deterministic test helper repair, no infrastructure changes.",
+    "REMOTE_SHA": "4bf240d4c2296400724a2ee7ed86260f31821a39",
+    "NEXT_ACTION": "Publish test-fixture repair, verify exact-head push and PR CI and inspect failing logs. Independent review and merge protection still required."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -126,14 +125,14 @@
   },
   "last_published_safeguard": {
     "name": "bounded pre-parse local handoff document length",
-    "feature_sha": "pending_product_commit",
+    "feature_sha": "4bf240d4c2296400724a2ee7ed86260f31821a39",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_deep_json.py",
     "new_pytest_cases": 1,
     "isolated_predicate_checks": "not_run",
-    "exact_head_push_ci": "pending",
-    "pr_ci": "pending",
+    "exact_head_push_ci": "failed:40179013186",
+    "pr_ci": "failed:40179014945",
     "merged_main_ci": "not_run",
-    "acceptance": "pending"
+    "acceptance": "pending fixture repair"
   }
 }

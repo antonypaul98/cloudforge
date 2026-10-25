@@ -28,6 +28,15 @@ def test_excessively_nested_handoff_document_fails_closed():
         prepare_local_execution_request(forged_handoff, b"synthetic-artifact")
 
 
+def _handoff():
+    plan = derive_requirements(ApplicationProfile("api", "python", port=8080))
+    proposal = render_iac_proposal(plan)
+    request = prepare_deployment_request(plan, proposal, "staging")
+    return authorize_deployment_handoff(
+        plan, proposal, request, DeploymentApproval(request.digest, "reviewer")
+    )
+
+
 def test_oversized_handoff_document_fails_before_json_parsing(monkeypatch):
     """A huge caller-supplied review document must be rejected before parsing."""
     handoff = _handoff()
