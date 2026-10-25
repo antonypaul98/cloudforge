@@ -345,3 +345,119 @@ def test_local_audit_event_has_no_runtime_side_effects(monkeypatch):
         guard.setattr(pathlib.Path, "write_bytes", forbidden)
         exported = export_local_execution_audit_event(handoff, artifact, approval, receipt)
     assert json.loads(exported)["infrastructure_mutated"] is False
+
+from cloudforge.local_adapter import verify_local_execution_audit_event
+
+
+def test_local_audit_event_verification_roundtrip():
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    assert verify_local_execution_audit_event(
+        handoff, artifact, approval, receipt, event
+    ) is True
+
+
+@pytest.mark.parametrize("alter", [
+    pytest.param(lambda s: s.rstrip("\n"), id="missing-newline"),
+    pytest.param(lambda s: s.replace('"status": "authorized-local-only"',
+                                     '"status": "deployed"'), id="forged-status"),
+    pytest.param(lambda s: s.replace('"infrastructure_mutated": false',
+                                     '"infrastructure_mutated": 0'), id="numeric-mutation"),
+    pytest.param(lambda s: s.replace('"format_version": 1',
+                                     '"format_version": true'), id="boolean-version"),
+    pytest.param(lambda s: s.replace('"receipt_sha256":',
+                                     '"receipt_sha256": "0", "receipt_sha256":', 1),
+                 id="duplicate-receipt-hash"),
+    pytest.param(lambda s: s.replace('"request_digest":',
+                                     '"extra": true, "request_digest":', 1),
+                 id="extra-field"),
+    pytest.param(lambda s: s.replace('"request_digest":',
+                                     '"request_digest": "0", "request_digest":', 1),
+                 id="duplicate-request-digest"),
+    pytest.param(lambda s: s.replace('  "status":', ' "status":'),
+                 id="noncanonical-whitespace"),
+    pytest.param(lambda s: s + " " * 2048, id="oversized"),
+    pytest.param(lambda s: "{}", id="missing-fields"),
+])
+def test_local_audit_event_verification_rejects_modified_json(alter):
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    with pytest.raises(ValueError):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, alter(event)
+        )
+
+
+@pytest.mark.parametrize("invalid", [None, b"{}", 0, {}, True])
+def test_local_audit_event_verification_rejects_non_text(invalid):
+    handoff, artifact, approval, receipt = _sample()
+    with pytest.raises(ValueError, match="bounded canonical"):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, invalid
+        )
+
+
+def test_local_audit_event_verification_rejects_changed_artifact():
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    with pytest.raises(ValueError):
+        verify_local_execution_audit_event(
+            handoff, b"different artifact", approval, receipt, event
+        )
+
+
+def test_local_audit_event_verification_requires_fresh_approval():
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    with pytest.raises(ApprovalRequiredError):
+        verify_local_execution_audit_event(
+            handoff, artifact, LocalExecutionApproval("0" * 64, "reviewer"),
+            receipt, event
+        )
+
+
+def test_local_audit_event_verification_rejects_tampered_receipt():
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    with pytest.raises(ValueError):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, replace(receipt, status="deployed"), event
+        )
+
+
+def test_oversized_audit_event_fails_before_receipt_revalidation(monkeypatch):
+    handoff, artifact, approval, receipt = _sample()
+    def unexpected_export(*args, **kwargs):
+        raise AssertionError("oversized event must fail before receipt validation")
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.export_local_execution_audit_event",
+        unexpected_export
+    )
+    with pytest.raises(ValueError, match="bounded canonical"):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, " " * 1025
+        )
+
+
+def test_local_audit_event_verification_has_no_external_side_effects(monkeypatch):
+    import builtins
+    import os
+    import pathlib
+    import socket
+    import subprocess
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("audit verification must not access runtime or infrastructure")
+
+    with monkeypatch.context() as guard:
+        guard.setattr(builtins, "open", forbidden)
+        guard.setattr(os, "system", forbidden)
+        guard.setattr(socket, "socket", forbidden)
+        guard.setattr(subprocess, "Popen", forbidden)
+        guard.setattr(pathlib.Path, "open", forbidden)
+        guard.setattr(pathlib.Path, "write_bytes", forbidden)
+        assert verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, event
+        ) is True

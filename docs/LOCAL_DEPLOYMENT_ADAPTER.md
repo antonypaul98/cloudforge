@@ -181,3 +181,16 @@ controls. Receipt hashing detects changes only when compared against trusted
 reference evidence; it is **not** a signature, authenticated approval, actual
 infrastructure observation, deployment, or recovery. No filesystem, network,
 provider, subprocess or infrastructure operation is performed.
+
+## Canonical redacted audit event verification
+
+`verify_local_execution_audit_event(handoff, artifact, approval, receipt,
+audit_json)` checks an at-most-1,024-character audit string against a freshly
+regenerated canonical redacted event. The original handoff, exact artifact
+bytes, execution approval and receipt are revalidated first. Modified,
+duplicate-key, extra-field, noncanonical or oversized event strings fail closed;
+non-string inputs are rejected before revalidation. A valid event is only
+evidence that matches these caller-supplied inputs. It does **not** authenticate
+an approver, sign evidence, attest to external storage, or prove any actual
+deployment, observation or recovery. No provider, filesystem, network or
+subprocess action is performed.

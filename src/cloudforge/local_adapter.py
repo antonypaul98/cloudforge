@@ -319,3 +319,22 @@ def export_local_execution_audit_event(
         "infrastructure_mutated": False,
     }
     return json.dumps(event, sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+
+# A redacted audit event is comparable evidence, not an authenticated signature.
+# Keep the input bound small before deriving any trusted expected event.
+_MAX_LOCAL_AUDIT_JSON_CHARS = 1024
+
+
+def verify_local_execution_audit_event(
+    handoff: DeploymentHandoff,
+    artifact: bytes,
+    approval: LocalExecutionApproval | None,
+    receipt: LocalExecutionReceipt,
+    audit_json: str,
+) -> bool:
+    """Recheck a canonical redacted audit event against exact original inputs."""
+    if type(audit_json) is not str or len(audit_json) > _MAX_LOCAL_AUDIT_JSON_CHARS:
+        raise ValueError("expected bounded canonical local audit event JSON")
+    if audit_json != export_local_execution_audit_event(handoff, artifact, approval, receipt):
+        raise ValueError("local audit event differs from exact local authorization")
+    return True
