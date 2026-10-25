@@ -306,6 +306,22 @@ def authorize_local_execution(
     # digest consistency, not authentication of the claimed reviewer.
     if approval.request_digest != request.digest:
         raise ApprovalRequiredError("approval does not match the exact local execution request")
+    # A handoff can change its claimed reviewer or receipt metadata without
+    # changing the embedded request digest. Reject stale full-handoff binding
+    # before parsing reviewed IaC, but only for bounded scalar handoffs.
+    # Malformed/oversized handoffs retain the full preparation validation path.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and type(handoff.request.document) is str
+            and len(handoff.request.document) <= _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS
+            and type(handoff.request.format_version) is int
+            and all(type(value) is str for value in (
+                handoff.request.plan_digest, handoff.request.target_id,
+                handoff.request.operation, handoff.approved_by,
+                handoff.request_digest, handoff.status))
+            and type(handoff.infrastructure_mutated) is bool
+            and request.handoff_receipt_sha256 != _digest(asdict(handoff))):
+        raise ValueError("request differs from exact local execution inputs")
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (

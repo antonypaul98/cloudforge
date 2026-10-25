@@ -341,3 +341,25 @@ def test_stale_execution_approval_fails_before_handoff_parse(monkeypatch, bindin
     )
     with pytest.raises(ApprovalRequiredError, match="approval does not match"):
         authorize_local_execution(handoff, artifact, execution, approval)
+
+
+@pytest.mark.parametrize("binding", ["changed-handoff-reviewer", "stale-handoff-receipt-digest"])
+def test_stale_handoff_receipt_binding_fails_before_document_parse(monkeypatch, binding):
+    handoff, artifact, execution = sample()
+    if binding == "changed-handoff-reviewer":
+        handoff = replace(handoff, approved_by="different-handoff-reviewer")
+    else:
+        stale = ("0" * 64 if execution.handoff_receipt_sha256 != "0" * 64
+                 else "f" * 64)
+        execution = replace(execution, handoff_receipt_sha256=stale)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale handoff receipt must fail before handoff parsing")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ValueError, match="request differs from exact local execution inputs"):
+        authorize_local_execution(
+            handoff, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer"),
+        )

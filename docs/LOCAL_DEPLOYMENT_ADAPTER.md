@@ -304,3 +304,15 @@ after approval fails closed without unnecessary document parsing. Matching
 caller-supplied digests still require complete handoff/artifact verification;
 this preflight does not authenticate the claimed approver, execute a provider,
 mutate infrastructure, observe a deployment, or perform recovery.
+
+
+## Early exact handoff receipt binding rejection
+
+Local execution authorization now rejects a stale full-handoff SHA-256 binding
+before parsing the reviewed IaC document when the handoff has bounded scalar
+fields. Changing the handoff's claimed reviewer without changing its embedded
+request, or supplying a stale handoff receipt digest with a matching
+caller-constructed execution approval, fails closed. Malformed or oversized
+handoffs continue through existing full validation rather than bypassing it.
+Two synthetic regressions check early rejection. This is local integrity
+validation, not authenticated reviewer proof or infrastructure execution.
