@@ -32,7 +32,7 @@ No boolean approval bypass is permitted. Approval identity authentication belong
 to the integrating application and must not be inferred from caller-controlled
 text.
 
-## Initial runtime boundary
+Malformed caller-supplied execution-request fields (format, operation, digest\nshapes and target identity) are rejected before parsing the reviewed handoff.\nThis preflight limits unnecessary work; exact input binding and fresh execution\napproval remain mandatory. It does not authenticate the reviewer.\n\n## Initial runtime boundary
 
 The first implementation must remain local-only and deterministic. It must not
 resolve opaque target IDs as URLs, paths, credentials, commands, provider names,

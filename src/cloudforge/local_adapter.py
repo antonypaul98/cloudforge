@@ -251,6 +251,23 @@ def authorize_local_execution(
             or any(char not in "0123456789abcdef"
                    for char in approval.request_digest)):
         raise ApprovalRequiredError("malformed local execution approval digest")
+    # Fail closed on malformed caller-supplied request metadata before parsing
+    # the potentially large reviewed handoff. Exact-request equality and fresh
+    # approval verification still follow; this is not reviewer authentication.
+    if (type(request.format_version) is not int or request.format_version != 1
+            or type(request.operation) is not str
+            or request.operation != "authorize-local-artifact"
+            or any(type(value) is not str or len(value) != 64
+                   or any(char not in "0123456789abcdef" for char in value)
+                   for value in (request.handoff_digest, request.artifact_sha256,
+                                 request.handoff_receipt_sha256))):
+        raise ValueError("malformed local execution request")
+    if type(request.target_id) is str and len(request.target_id) > _MAX_LOCAL_RECEIPT_JSON_CHARS:
+        raise ValueError("local-only receipt exceeds canonical JSON size limit")
+    try:
+        _text(request.target_id, "target_id")
+    except ValueError as exc:
+        raise ValueError("malformed local execution request") from exc
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (

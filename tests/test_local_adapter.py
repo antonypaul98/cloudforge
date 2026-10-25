@@ -173,3 +173,33 @@ def test_invalid_execution_approval_fails_before_handoff_parsing(monkeypatch, in
     )
     with pytest.raises(ApprovalRequiredError):
         authorize_local_execution(handoff, artifact, execution, invalid)
+
+@pytest.mark.parametrize("field,value", [
+    ("format_version", True),
+    ("format_version", 2),
+    ("operation", "deploy"),
+    ("operation", None),
+    ("handoff_digest", "0" * 63),
+    ("handoff_digest", True),
+    ("artifact_sha256", "A" * 64),
+    ("handoff_receipt_sha256", None),
+    ("target_id", ""),
+    ("target_id", " bad"),
+    ("target_id", "bad\\n"),
+    ("target_id", None),
+    ("target_id", "t" * 16385),
+])
+def test_malformed_execution_request_fails_before_handoff_parsing(monkeypatch, field, value):
+    handoff, artifact, execution = sample()
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("malformed request must fail before handoff parsing")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ValueError):
+        authorize_local_execution(
+            handoff, artifact, replace(execution, **{field: value}), approval
+        )
