@@ -165,6 +165,15 @@ def prepare_local_execution_request(
             or len(document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS
             or not document.strip()):
         raise ValueError("malformed handoff provenance or document")
+    # Fail fast on a malformed or stale exact-request digest before parsing
+    # reviewed IaC JSON. This is integrity validation, not reviewer identity.
+    if (type(handoff.request_digest) is not str
+            or len(handoff.request_digest) != 64
+            or any(char not in "0123456789abcdef"
+                   for char in handoff.request_digest)):
+        raise ValueError("malformed handoff request digest")
+    if handoff.request_digest != handoff.request.digest:
+        raise ValueError("handoff digest does not match its exact request")
     # A caller-constructed handoff can carry a self-consistent digest over
     # malformed text. Require the canonical review-only IaC document shape
     # before deriving any separate local execution authorization.
@@ -217,8 +226,6 @@ def prepare_local_execution_request(
             raise ValueError("malformed handoff provenance or document")
     except (TypeError, ValueError, KeyError, RecursionError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc
-    if type(handoff.request_digest) is not str or handoff.request_digest != handoff.request.digest:
-        raise ValueError("handoff digest does not match its exact request")
     return LocalExecutionRequest(
         1,
         handoff.request_digest,

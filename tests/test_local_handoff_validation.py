@@ -130,3 +130,29 @@ def test_execution_approver_rejects_string_subclass():
     request = prepare_local_execution_request(handoff, artifact)
     with pytest.raises(ApprovalRequiredError):
         authorize_local_execution(handoff, artifact, request, LocalExecutionApproval(request.digest, _NoncanonicalString("reviewer")))
+
+@pytest.mark.parametrize("bad_digest", [
+    None, True, "", "0" * 63, "G" * 64, "0" * 65,
+    _AlwaysEqual(), _NoncanonicalString("0" * 64),
+])
+def test_malformed_handoff_digest_fails_before_document_parse(monkeypatch, bad_digest):
+    handoff = replace(_handoff(), request_digest=bad_digest)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("malformed digest must fail before JSON parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
+    with pytest.raises(ValueError, match="malformed handoff request digest"):
+        prepare_local_execution_request(handoff, b"artifact")
+
+
+def test_stale_handoff_digest_fails_before_document_parse(monkeypatch):
+    handoff = _handoff()
+    stale = "0" * 64 if handoff.request_digest != "0" * 64 else "f" * 64
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale digest must fail before JSON parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
+    with pytest.raises(ValueError, match="handoff digest does not match"):
+        prepare_local_execution_request(replace(handoff, request_digest=stale), b"artifact")

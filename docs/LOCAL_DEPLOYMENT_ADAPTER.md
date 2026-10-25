@@ -265,3 +265,12 @@ parameterized regressions cover altered status and forged mutation flags,
 including integer zero (which compares equal to `False` in Python).
 This is a deterministic fail-closed preflight, not authenticated approval,
 execution, observation, or recovery.
+
+## Early exact-handoff digest rejection
+
+Before parsing reviewed IaC JSON, local request preparation rejects a malformed
+handoff request digest (wrong type, noncanonical lowercase SHA-256 shape) or a
+digest that differs from the exact bounded handoff request. This avoids parsing
+untrusted document text for an already-invalid handoff. It does not authenticate
+reviewers, authorize provider actions, mutate infrastructure, observe or recover
+anything. Nine synthetic pytest parameter cases cover malformed and stale digests.
