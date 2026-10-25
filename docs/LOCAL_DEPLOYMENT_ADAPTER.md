@@ -113,3 +113,14 @@ appear blank while changing exact reviewed application, resource, target, or
 reviewer values. This narrow check preserves ordinary Korean text, combining
 accents and other legitimate Unicode identifiers; it does not claim complete
 visual-confusable detection or authenticated reviewer identity.
+
+
+## Local receipt JSON export is fail-closed for deployment claims
+
+LocalExecutionReceipt.to_json() rejects altered status values and any
+infrastructure_mutated value other than literal False (including integer
+zero). A local-only receipt cannot be serialized as deployed, healthy or
+mutated. This narrow output invariant is **not** an authenticated signature:
+consumers must still call verify_local_execution_receipt with the original
+handoff, exact artifact bytes and local approval before trusting a receipt.
+No provider or infrastructure is contacted.

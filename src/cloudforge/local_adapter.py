@@ -78,6 +78,12 @@ class LocalExecutionReceipt:
     infrastructure_mutated: bool = False
 
     def to_json(self) -> str:
+        # A local-only receipt must never serialize a forged deployment claim.
+        # This check does not authenticate the reviewer or replace revalidation
+        # against the original handoff, artifact and execution approval.
+        if (type(self.status) is not str or self.status != "authorized-local-only"
+                or self.infrastructure_mutated is not False):
+            raise ValueError("local-only receipt cannot claim deployment or mutation")
         return json.dumps(asdict(self), sort_keys=True, indent=2, ensure_ascii=True) + "\n"
 
 

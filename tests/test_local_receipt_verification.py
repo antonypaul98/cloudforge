@@ -99,3 +99,20 @@ def test_non_receipt_object_rejected():
     handoff, artifact, approval, _ = _sample()
     with pytest.raises(ValueError, match="expected a local execution receipt"):
         verify_local_execution_receipt(handoff, artifact, approval, {})
+
+
+@pytest.mark.parametrize("field,value", [
+    ("status", "deployed"),
+    ("status", "healthy"),
+    ("status", None),
+    ("status", 0),
+    ("infrastructure_mutated", True),
+    ("infrastructure_mutated", 0),
+    ("infrastructure_mutated", None),
+])
+def test_local_receipt_json_export_cannot_claim_deployment(field, value):
+    handoff, artifact, approval, receipt = _sample()
+    with pytest.raises(ValueError, match="local-only receipt"):
+        replace(receipt, **{field: value}).to_json()
+    assert receipt.infrastructure_mutated is False
+    assert '"authorized-local-only"' in receipt.to_json()
