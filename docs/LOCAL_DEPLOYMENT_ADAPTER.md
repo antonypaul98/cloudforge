@@ -293,3 +293,14 @@ closed, even when the caller supplies a matching self-constructed approval
 digest. The full handoff and approval revalidation remains mandatory for
 matching bytes. This preflight neither authenticates the reviewer nor executes
 infrastructure.
+
+
+## Early stale execution-approval rejection
+
+Local authorization compares the structurally valid execution approval digest
+with the bounded caller-supplied local execution request digest **before**
+parsing the reviewed IaC handoff document. A stale digest or a request changed
+after approval fails closed without unnecessary document parsing. Matching
+caller-supplied digests still require complete handoff/artifact verification;
+this preflight does not authenticate the claimed approver, execute a provider,
+mutate infrastructure, observe a deployment, or perform recovery.

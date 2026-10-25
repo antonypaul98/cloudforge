@@ -319,3 +319,25 @@ def test_stale_artifact_binding_fails_before_handoff_parse(monkeypatch, binding)
         authorize_local_execution(
             handoff, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer"),
         )
+
+
+@pytest.mark.parametrize("binding", ["stale-approval-digest", "modified-request"])
+def test_stale_execution_approval_fails_before_handoff_parse(monkeypatch, binding):
+    handoff, artifact, execution = sample()
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+    if binding == "stale-approval-digest":
+        stale = "0" * 64 if execution.digest != "0" * 64 else "f" * 64
+        approval = LocalExecutionApproval(stale, "reviewer")
+    else:
+        stale = ("0" * 64 if execution.handoff_receipt_sha256 != "0" * 64
+                 else "f" * 64)
+        execution = replace(execution, handoff_receipt_sha256=stale)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale approval must fail before handoff parsing")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ApprovalRequiredError, match="approval does not match"):
+        authorize_local_execution(handoff, artifact, execution, approval)

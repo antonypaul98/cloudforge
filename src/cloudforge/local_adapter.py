@@ -301,6 +301,11 @@ def authorize_local_execution(
     # Only immutable bytes are accepted above; this hash has no side effects.
     if request.artifact_sha256 != hashlib.sha256(artifact).hexdigest():
         raise ValueError("request differs from exact local execution inputs")
+    # Reject stale approval digests before parsing reviewed IaC. The request
+    # shape and bounded identity were validated above; this is only local
+    # digest consistency, not authentication of the claimed reviewer.
+    if approval.request_digest != request.digest:
+        raise ApprovalRequiredError("approval does not match the exact local execution request")
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
