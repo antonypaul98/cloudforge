@@ -244,3 +244,19 @@ def test_large_but_bounded_receipt_still_roundtrips():
     assert verify_local_execution_receipt_json(
         handoff, artifact, approval, issued.to_json()
     ) is True
+
+@pytest.mark.parametrize("field", ["target_id", "approved_by"])
+def test_oversized_receipt_identity_fails_before_request_digest(monkeypatch, field):
+    _, _, _, receipt = _sample()
+    if field == "target_id":
+        request = replace(receipt.request, target_id="t" * 16385)
+        receipt = replace(receipt, request=request, request_digest=request.digest)
+    else:
+        receipt = replace(receipt, approved_by="r" * 16385)
+
+    def unexpected_digest(*args, **kwargs):
+        raise AssertionError("oversized receipt must fail before hashing")
+
+    monkeypatch.setattr("cloudforge.local_adapter._digest", unexpected_digest)
+    with pytest.raises(ValueError, match="canonical JSON size limit"):
+        receipt.to_json()

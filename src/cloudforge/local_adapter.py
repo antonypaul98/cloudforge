@@ -93,6 +93,13 @@ class LocalExecutionReceipt:
         request = self.request
         if type(request) is not LocalExecutionRequest:
             raise ValueError("malformed local-only receipt")
+        # A receipt exceeding the ASCII JSON limit cannot be exported. Reject
+        # obviously oversized identities before hashing a caller-supplied target.
+        if ((type(request.target_id) is str
+             and len(request.target_id) > _MAX_LOCAL_RECEIPT_JSON_CHARS)
+                or (type(self.approved_by) is str
+                    and len(self.approved_by) > _MAX_LOCAL_RECEIPT_JSON_CHARS)):
+            raise ValueError("local-only receipt exceeds canonical JSON size limit")
         digest_fields = (request.handoff_digest, request.artifact_sha256,
                          request.handoff_receipt_sha256, self.request_digest)
         if (type(request.format_version) is not int or request.format_version != 1

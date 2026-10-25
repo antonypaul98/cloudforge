@@ -157,3 +157,12 @@ otherwise self-consistent receipts whose target or reviewer identity expands the
 JSON beyond this limit, including Unicode escape expansion. A receipt produced
 by the exporter must not be too large for its own verifier. This is a bounded
 serialization safeguard, not a runtime or infrastructure deployment capability.
+
+## Early rejection of obviously oversized receipt identities
+
+The receipt exporter rejects target and reviewer strings longer than the
+16,384-character canonical ASCII JSON ceiling **before** calculating a request
+digest. This avoids unnecessary hashing of oversized caller-supplied identities.
+The existing serialized-size check remains authoritative for escaped Unicode
+and JSON overhead. This is an in-process resource bound, not authentication or
+infrastructure execution.
