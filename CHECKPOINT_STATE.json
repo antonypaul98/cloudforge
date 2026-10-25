@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
+  "current_branch_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed exact head de680539c5acd6a3c50d0b8d4bd53a2971e08151 against main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; PR #6 open/ready/unmerged; main ruleset 25825521 active.",
-  "local_test_status": "Previous exact-head push and PR CI: 504 passed each at de680539c5acd6a3c50d0b8d4bd53a2971e08151. Nine new malformed/stale handoff digest regressions awaiting exact-head CI; no local repository suite or physical acceptance run.",
+  "branch_remote_status": "Observed exact head bcc549f14e4efa52191b3b88f6206a3105f6557d against main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; PR #6 open/ready/unmerged; main ruleset 25825521 active.",
+  "local_test_status": "Previous exact-head push and PR CI: 513 passed each at bcc549f14e4efa52191b3b88f6206a3105f6557d. Two new cross-input preparse regressions awaiting exact-head CI; no local repository suite or physical acceptance run.",
   "pr_number": 6,
-  "ci_status": "Previous exact-head push 40214827498 and PR 40214832516 SUCCESS (504 passed each) for de680539c5acd6a3c50d0b8d4bd53a2971e08151. New feature-head CI pending publication.",
+  "ci_status": "Previous exact-head push 40219241194 and PR 40219244742 SUCCESS (513 passed each) for bcc549f14e4efa52191b3b88f6206a3105f6557d. New feature-head CI pending publication.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 has zero independent reviews; main ruleset 25825521 requires one approval and test check, no bypass. Guarded merge blocked; exclusive external writer/worktree ownership unverified.",
-  "next_action": "Publish nine-case malformed/stale handoff digest preflight, inspect exact-head push and PR CI, then await independent reviewer before guarded merge.",
+  "next_action": "Publish two-case early cross-input binding preflight; inspect exact-head push and PR CI; independent review still required before guarded merge.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T17:59:22Z",
-  "observed_branch_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
-  "observed_feature_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
+  "observed_at_utc": "2026-10-25T19:04:29Z",
+  "observed_branch_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
+  "observed_feature_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open, ready for review; 0 independent reviews; merge blocked",
   "ci_state": {
     "push_run": {
-      "id": 40214827498,
-      "sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
+      "id": 40219241194,
+      "sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40214827498"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40219241194"
     },
     "pr_run": {
-      "id": 40214832516,
-      "source_head_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
-      "tested_merge_sha": "fedc6d6",
+      "id": 40219244742,
+      "source_head_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
+      "tested_merge_sha": "bb605ebad9334ae7192bf824989693a0e74a2c7f",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40214832516"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40219244742"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent review and protected merge; local shell Git network unavailable",
-    "BLOCKER": "No independent PR approval; GitHub ruleset active. External worktree writer ownership unverified.",
-    "SAFE_WORK_COMPLETED": "Prepared nine-case malformed/stale handoff digest preflight with documentation; exact-head CI pending publication.",
-    "REMOTE_SHA": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
-    "NEXT_ACTION": "Publish atomic safeguard and inspect exact-head CI; do not merge before independent approval."
+    "BLOCKED_LAYER": "Independent review and protected merge; shell Git network unavailable",
+    "BLOCKER": "No independent PR approval; active GitHub ruleset requires one. External worktree ownership unverified.",
+    "SAFE_WORK_COMPLETED": "Prepared two-case stale target/handoff binding preflight and docs; new-head CI pending publication.",
+    "REMOTE_SHA": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
+    "NEXT_ACTION": "Publish coherent safeguard and inspect exact-head CI; do not merge before independent approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -125,22 +125,22 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "early ineligible-handoff status/mutation preflight",
-    "feature_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
+    "name": "early malformed/stale handoff request digest preflight",
+    "feature_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
     "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_adapter.py",
-    "new_pytest_cases": 7,
-    "exact_head_push_ci": 40214827498,
-    "pr_ci": 40214832516,
+    "regression_path": "tests/test_local_handoff_validation.py",
+    "new_pytest_cases": 9,
+    "exact_head_push_ci": 40219241194,
+    "pr_ci": 40219244742,
     "merged_main_ci": "not_run",
     "acceptance": "in_progress"
   },
   "pending_safeguard": {
-    "name": "early malformed/stale handoff request digest preflight",
-    "base_sha": "de680539c5acd6a3c50d0b8d4bd53a2971e08151",
-    "new_pytest_cases": 9,
+    "name": "early stale target/handoff cross-input binding preflight",
+    "base_sha": "bcc549f14e4efa52191b3b88f6206a3105f6557d",
+    "new_pytest_cases": 2,
     "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_handoff_validation.py",
+    "regression_path": "tests/test_local_adapter.py",
     "ci": "pending"
   }
 }

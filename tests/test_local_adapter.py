@@ -280,3 +280,22 @@ def test_ineligible_handoff_fails_before_document_parse(monkeypatch, field, valu
     monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
     with pytest.raises(ValueError, match="handoff is not eligible"):
         prepare_local_execution_request(handoff, artifact)
+
+
+@pytest.mark.parametrize("binding", ["target_id", "handoff_digest"])
+def test_stale_local_binding_fails_before_handoff_document_parse(monkeypatch, binding):
+    handoff, artifact, execution = sample()
+    if binding == "target_id":
+        forged = replace(execution, target_id="different-target")
+    else:
+        stale = "0" * 64 if execution.handoff_digest != "0" * 64 else "f" * 64
+        forged = replace(execution, handoff_digest=stale)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale binding must fail before handoff JSON parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
+    with pytest.raises(ValueError, match="request differs from exact local execution inputs"):
+        authorize_local_execution(
+            handoff, artifact, forged, LocalExecutionApproval(forged.digest, "reviewer"),
+        )

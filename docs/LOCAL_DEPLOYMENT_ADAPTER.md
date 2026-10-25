@@ -274,3 +274,12 @@ digest that differs from the exact bounded handoff request. This avoids parsing
 untrusted document text for an already-invalid handoff. It does not authenticate
 reviewers, authorize provider actions, mutate infrastructure, observe or recover
 anything. Nine synthetic pytest parameter cases cover malformed and stale digests.
+
+## Early cross-input binding preflight
+
+Local authorization now rejects a caller-supplied execution request whose opaque
+`target_id` or exact `handoff_digest` differs from the supplied handoff before
+parsing the reviewed IaC document. Two parameterized synthetic regressions
+assert this early rejection. Structural request validation still runs first;
+full handoff provenance, artifact-byte equality and fresh execution approval
+remain mandatory. This is not reviewer authentication or infrastructure execution.

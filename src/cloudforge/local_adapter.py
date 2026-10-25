@@ -290,6 +290,13 @@ def authorize_local_execution(
         _text(request.target_id, "target_id")
     except ValueError as exc:
         raise ValueError("malformed local execution request") from exc
+    # Reject stale target/handoff bindings before parsing reviewed IaC JSON.
+    # The full handoff, artifact and approval checks remain mandatory below.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and (request.target_id != handoff.request.target_id
+                 or request.handoff_digest != handoff.request_digest)):
+        raise ValueError("request differs from exact local execution inputs")
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
             or any(type(value) is not str for value in (
