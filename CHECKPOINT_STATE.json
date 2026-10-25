@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
+  "current_branch_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed baaa241487a97f2167f8f2cc2f6d1c754b7279ab: 63 ahead / 0 behind main; PR #6 draft/unmerged. Preparing early nonbytes-artifact preflight.",
-  "local_test_status": "Previous exact-head push/PR CI at baaa241487a97f2167f8f2cc2f6d1c754b7279ab: 487 passed each. New nonbytes preflight regressions not yet run; CI pending publication.",
+  "branch_remote_status": "Observed source head ce94db6d562285f9a0d5549e4b3f295195d20514 against main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; PR #6 open, ready for review, unmerged. Active ruleset 25825521 targets main.",
+  "local_test_status": "Previous exact-head push and PR CI: 497 passed each at ce94db6d562285f9a0d5549e4b3f295195d20514. New seven-case ineligible-handoff preflight awaiting CI; no local full suite or physical acceptance run.",
   "pr_number": 6,
-  "ci_status": "Previous exact-head push 40200322017 and PR 40200325857 SUCCESS (487 passed each) for baaa241487a97f2167f8f2cc2f6d1c754b7279ab. New feature-head CI pending.",
+  "ci_status": "Prior exact-head push 40205311939 and PR 40205316065 SUCCESS (497 passed each) for ce94db6d562285f9a0d5549e4b3f295195d20514. New feature-head CI pending publication.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "PR #6 draft; 0 independent reviews; main protected=false, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish one bounded nonbytes-artifact preflight slice; inspect exact-head push and PR CI; keep draft until independent review and approved branch protection.",
+  "known_blocker": "PR #6 has zero independent reviews; main has active protection ruleset 25825521 (one approval, test check, no bypass). Guarded merge blocked; exclusive external writer/worktree ownership unverified.",
+  "next_action": "Publish one seven-case fail-fast ineligible-handoff slice, validate exact new head with push and PR CI; await independent reviewer before guarded merge.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T15:02:42Z",
-  "observed_branch_sha": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
-  "observed_feature_sha": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
+  "observed_at_utc": "2026-10-25T17:03:46Z",
+  "observed_branch_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
+  "observed_feature_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -31,24 +31,24 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "open draft; independent review pending",
+  "pr_state": "open, ready for review; 0 independent reviews; merge blocked",
   "ci_state": {
     "push_run": {
-      "id": 40200322017,
-      "sha": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
+      "id": 40205311939,
+      "sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40200322017"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40205311939"
     },
     "pr_run": {
-      "id": 40200325857,
-      "source_head_sha": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
-      "tested_merge_sha": "ee3f76d",
+      "id": 40205316065,
+      "source_head_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
+      "tested_merge_sha": "87ae281",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40200325857"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40205316065"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,11 +62,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent review/protection gate for merge; external worktree ownership unverified",
-    "BLOCKER": "PR #6 remains draft and has no independent review; main is unprotected and repository rulesets empty.",
-    "SAFE_WORK_COMPLETED": "Prepared early nonbytes-artifact preflight for local request and authorization, with ten parameterized regression cases and documentation; final-head CI pending.",
-    "REMOTE_SHA": "baaa241487a97f2167f8f2cc2f6d1c754b7279ab",
-    "NEXT_ACTION": "Publish one bounded nonbytes-artifact preflight slice; inspect exact-head push and PR CI; keep draft until independent review and approved branch protection."
+    "BLOCKED_LAYER": "Independent review and protected merge; local shell Git network unavailable",
+    "BLOCKER": "No independent PR approval; GitHub ruleset is active. External worktree writer ownership not verified.",
+    "SAFE_WORK_COMPLETED": "Prepared seven-case ineligible-handoff preflight with documentation; exact-head CI pending publication.",
+    "REMOTE_SHA": "ce94db6d562285f9a0d5549e4b3f295195d20514",
+    "NEXT_ACTION": "Publish atomic safeguard, inspect exact-head CI; do not merge before independent approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -121,18 +121,26 @@
   },
   "help_status": {
     "antony_help_needed": true,
-    "reason": "Owner decision on branch protection policy and independent review arrangement; no Mac/device action.",
+    "reason": "Arrange an eligible independent reviewer for PR #6; no routine Mac/device testing needed.",
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
     "name": "early nonbytes artifact preflight",
-    "feature_sha": "pending_product_commit",
+    "feature_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_adapter.py",
     "new_pytest_cases": 10,
-    "exact_head_push_ci": "pending",
-    "pr_ci": "pending",
+    "exact_head_push_ci": 40205311939,
+    "pr_ci": 40205316065,
     "merged_main_ci": "not_run",
-    "acceptance": "pending"
+    "acceptance": "in_progress"
+  },
+  "pending_safeguard": {
+    "name": "early ineligible-handoff status/mutation preflight",
+    "base_sha": "ce94db6d562285f9a0d5549e4b3f295195d20514",
+    "new_pytest_cases": 7,
+    "source_path": "src/cloudforge/local_adapter.py",
+    "regression_path": "tests/test_local_adapter.py",
+    "ci": "pending"
   }
 }

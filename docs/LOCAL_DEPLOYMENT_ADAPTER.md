@@ -255,3 +255,13 @@ artifacts before parsing or revalidating the reviewed handoff. Mutable
 `bytearray`, `memoryview`, text, booleans and missing artifacts cannot enter
 the digest/approval path. This is a local resource and input-integrity guard,
 not a size limit on legitimate artifact bytes or infrastructure execution.
+
+## Early rejection of ineligible handoff outcomes
+
+Local request preparation rejects a handoff whose status is not exactly
+`ready-for-adapter-review` or whose `infrastructure_mutated` flag is not
+literal `False` **before** parsing its reviewed JSON document. Seven
+parameterized regressions cover altered status and forged mutation flags,
+including integer zero (which compares equal to `False` in Python).
+This is a deterministic fail-closed preflight, not authenticated approval,
+execution, observation, or recovery.

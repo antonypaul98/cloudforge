@@ -148,6 +148,12 @@ def prepare_local_execution_request(
         if type(identity) is str and len(identity) > _MAX_LOCAL_RECEIPT_JSON_CHARS:
             raise ValueError("local handoff identity exceeds size limit")
         _text(identity, name)
+    # Reject ineligible or forged handoff outcomes before parsing the reviewed
+    # document. A local-only execution request cannot derive from deployment.
+    if (handoff.infrastructure_mutated is not False
+            or type(handoff.status) is not str
+            or handoff.status != "ready-for-adapter-review"):
+        raise ValueError("handoff is not eligible for local adapter review")
     # The handoff's digest alone cannot validate caller-constructed metadata.
     # Reject malformed provenance/document fields before deriving execution approval.
     plan_digest = handoff.request.plan_digest
@@ -211,9 +217,6 @@ def prepare_local_execution_request(
             raise ValueError("malformed handoff provenance or document")
     except (TypeError, ValueError, KeyError, RecursionError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc
-    if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
-            or handoff.status != "ready-for-adapter-review"):
-        raise ValueError("handoff is not eligible for local adapter review")
     if type(handoff.request_digest) is not str or handoff.request_digest != handoff.request.digest:
         raise ValueError("handoff digest does not match its exact request")
     return LocalExecutionRequest(

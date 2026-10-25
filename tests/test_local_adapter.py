@@ -260,3 +260,23 @@ def test_nonbytes_artifact_fails_before_authorization_revalidation(monkeypatch, 
     )
     with pytest.raises(ValueError, match="artifact must be exact bytes"):
         authorize_local_execution(handoff, invalid, request, approval)
+
+@pytest.mark.parametrize("field,value", [
+    ("status", None),
+    ("status", True),
+    ("status", "deployed"),
+    ("status", "ready-for-adapter-review "),
+    ("infrastructure_mutated", None),
+    ("infrastructure_mutated", 0),
+    ("infrastructure_mutated", True),
+])
+def test_ineligible_handoff_fails_before_document_parse(monkeypatch, field, value):
+    handoff, artifact, _ = sample()
+    handoff = replace(handoff, **{field: value})
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("ineligible handoff must fail before JSON parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
+    with pytest.raises(ValueError, match="handoff is not eligible"):
+        prepare_local_execution_request(handoff, artifact)
