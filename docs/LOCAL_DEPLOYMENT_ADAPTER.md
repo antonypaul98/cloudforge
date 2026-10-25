@@ -124,3 +124,14 @@ mutated. This narrow output invariant is **not** an authenticated signature:
 consumers must still call verify_local_execution_receipt with the original
 handoff, exact artifact bytes and local approval before trusting a receipt.
 No provider or infrastructure is contacted.
+
+## Receipt export internal consistency
+
+Before JSON export, a local-only receipt now checks its nested request type,
+supported format and operation, literal reviewer and target text, lowercase
+SHA-256 field shapes, and the receipt digest against its own request. This
+prevents obviously malformed or internally inconsistent receipts from being
+exported even when their status still says `authorized-local-only`.
+It cannot prove that a self-consistent receipt was issued by a trusted actor:
+consumers must still revalidate the exact handoff, artifact bytes and approval.
+No infrastructure execution or authenticated identity is implied.

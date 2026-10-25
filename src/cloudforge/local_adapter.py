@@ -84,6 +84,28 @@ class LocalExecutionReceipt:
         if (type(self.status) is not str or self.status != "authorized-local-only"
                 or self.infrastructure_mutated is not False):
             raise ValueError("local-only receipt cannot claim deployment or mutation")
+        # Reject malformed internal bindings before a receipt leaves this process.
+        # This is structural consistency, not approver authentication; callers
+        # still need verify_local_execution_receipt against the original inputs.
+        request = self.request
+        if type(request) is not LocalExecutionRequest:
+            raise ValueError("malformed local-only receipt")
+        digest_fields = (request.handoff_digest, request.artifact_sha256,
+                         request.handoff_receipt_sha256, self.request_digest)
+        if (type(request.format_version) is not int or request.format_version != 1
+                or type(request.operation) is not str
+                or request.operation != "authorize-local-artifact"
+                or any(type(value) is not str or len(value) != 64
+                       or any(char not in "0123456789abcdef" for char in value)
+                       for value in digest_fields)):
+            raise ValueError("malformed local-only receipt")
+        try:
+            _text(request.target_id, "target_id")
+            _text(self.approved_by, "approved_by")
+        except ValueError as exc:
+            raise ValueError("malformed local-only receipt") from exc
+        if self.request_digest != request.digest:
+            raise ValueError("malformed local-only receipt")
         return json.dumps(asdict(self), sort_keys=True, indent=2, ensure_ascii=True) + "\n"
 
 

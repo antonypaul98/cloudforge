@@ -116,3 +116,38 @@ def test_local_receipt_json_export_cannot_claim_deployment(field, value):
         replace(receipt, **{field: value}).to_json()
     assert receipt.infrastructure_mutated is False
     assert '"authorized-local-only"' in receipt.to_json()
+
+
+@pytest.mark.parametrize("field,value", [
+    ("request_digest", "0" * 64),
+    ("request_digest", 0),
+    ("request_digest", None),
+    ("approved_by", " reviewer"),
+    ("approved_by", "reviewer "),
+    ("approved_by", "reviewer\u202e"),
+    ("approved_by", 0),
+    ("request", {"target_id": "staging"}),
+    ("request", None),
+])
+def test_local_receipt_json_export_rejects_malformed_outer_bindings(field, value):
+    _, _, _, receipt = _sample()
+    with pytest.raises(ValueError, match="local-only receipt"):
+        replace(receipt, **{field: value}).to_json()
+
+
+@pytest.mark.parametrize("field,value", [
+    ("format_version", True),
+    ("format_version", 2),
+    ("operation", "deploy"),
+    ("handoff_digest", "0" * 63),
+    ("artifact_sha256", 0),
+    ("handoff_receipt_sha256", "Z" * 64),
+    ("target_id", "staging "),
+    ("target_id", "sta\u202eging"),
+    ("target_id", None),
+    ("operation", 0),
+])
+def test_local_receipt_json_export_rejects_malformed_request_bindings(field, value):
+    _, _, _, receipt = _sample()
+    with pytest.raises(ValueError, match="local-only receipt"):
+        replace(receipt, request=replace(receipt.request, **{field: value})).to_json()
