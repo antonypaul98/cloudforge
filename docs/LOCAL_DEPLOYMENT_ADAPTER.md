@@ -32,7 +32,12 @@ No boolean approval bypass is permitted. Approval identity authentication belong
 to the integrating application and must not be inferred from caller-controlled
 text.
 
-Malformed caller-supplied execution-request fields (format, operation, digest\nshapes and target identity) are rejected before parsing the reviewed handoff.\nThis preflight limits unnecessary work; exact input binding and fresh execution\napproval remain mandatory. It does not authenticate the reviewer.\n\n## Initial runtime boundary
+Malformed caller-supplied execution-request fields (format, operation, digest
+shapes and target identity) are rejected before parsing the reviewed handoff.
+This preflight limits unnecessary work; exact input binding and fresh execution
+approval remain mandatory. It does not authenticate the reviewer.
+
+## Initial runtime boundary
 
 The first implementation must remain local-only and deterministic. It must not
 resolve opaque target IDs as URLs, paths, credentials, commands, provider names,
@@ -233,3 +238,12 @@ the handoff document. A correctly shaped digest still must match the exact
 execution request after full handoff and artifact revalidation. This avoids
 unnecessary processing for obviously invalid approvals; it neither authenticates
 a reviewer nor relaxes approval, infrastructure or runtime restrictions.
+
+## Early handoff identity preflight
+
+Before parsing a potentially large handoff document, local request preparation
+rejects invalid or over-16,384-character target and handoff-reviewer identities.
+This prevents avoidable JSON parsing of inputs that cannot pass local review.
+The original handoff digest, exact artifact, plan provenance and separate fresh
+execution approval remain mandatory. This does not authenticate a reviewer,
+execute infrastructure, observe deployment or perform recovery.

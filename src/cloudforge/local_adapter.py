@@ -136,6 +136,14 @@ def prepare_local_execution_request(
             or type(handoff.request.operation) is not str
             or handoff.request.operation != "deployment-handoff"):
         raise ValueError("unsupported deployment handoff format or operation")
+    # Reject malformed or unbounded review identities before parsing the
+    # potentially large handoff document. The earlier handoff approval is
+    # still only caller-supplied text, not authenticated reviewer evidence.
+    for identity, name in ((handoff.request.target_id, "target_id"),
+                           (handoff.approved_by, "handoff approved_by")):
+        if type(identity) is str and len(identity) > _MAX_LOCAL_RECEIPT_JSON_CHARS:
+            raise ValueError("local handoff identity exceeds size limit")
+        _text(identity, name)
     # The handoff's digest alone cannot validate caller-constructed metadata.
     # Reject malformed provenance/document fields before deriving execution approval.
     plan_digest = handoff.request.plan_digest
@@ -199,13 +207,11 @@ def prepare_local_execution_request(
             raise ValueError("malformed handoff provenance or document")
     except (TypeError, ValueError, KeyError, RecursionError) as exc:
         raise ValueError("malformed handoff provenance or document") from exc
-    _text(handoff.approved_by, "handoff approved_by")
     if (handoff.infrastructure_mutated is not False or type(handoff.status) is not str
             or handoff.status != "ready-for-adapter-review"):
         raise ValueError("handoff is not eligible for local adapter review")
     if type(handoff.request_digest) is not str or handoff.request_digest != handoff.request.digest:
         raise ValueError("handoff digest does not match its exact request")
-    _text(handoff.request.target_id, "target_id")
     if type(artifact) is not bytes:
         raise ValueError("artifact must be exact bytes")
     return LocalExecutionRequest(

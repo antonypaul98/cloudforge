@@ -203,3 +203,27 @@ def test_malformed_execution_request_fails_before_handoff_parsing(monkeypatch, f
         authorize_local_execution(
             handoff, artifact, replace(execution, **{field: value}), approval
         )
+
+
+@pytest.mark.parametrize("identity,value", [
+    ("target_id", "t" * 16385),
+    ("target_id", "bad\n"),
+    ("target_id", None),
+    ("approved_by", "r" * 16385),
+    ("approved_by", "bad\n"),
+    ("approved_by", None),
+])
+def test_invalid_handoff_identity_fails_before_document_parse(monkeypatch, identity, value):
+    handoff, artifact, _ = sample()
+    if identity == "target_id":
+        handoff = replace(handoff, request=replace(handoff.request, target_id=value))
+    else:
+        handoff = replace(handoff, approved_by=value)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("invalid identity must fail before document JSON parsing")
+
+    with monkeypatch.context() as guard:
+        guard.setattr("cloudforge.local_adapter.json.loads", forbidden)
+        with pytest.raises(ValueError):
+            prepare_local_execution_request(handoff, artifact)

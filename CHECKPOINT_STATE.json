@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
+  "current_branch_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed 732526417f70c5bc81cc7aa1f448d312001b3dcb: 59 ahead / 0 behind main; PR #6 draft/unmerged. Preparing malformed execution request preflight.",
-  "local_test_status": "13 new pytest parameter cases prepared; isolated JS preflight model rejected 13 malformed cases and accepted one valid case (not repository Python tests). Full Python repository tests pending exact-head CI.",
+  "branch_remote_status": "Observed 048fa5768f74851c2e34b48f2b95739ddb9448e7: 61 ahead / 0 behind main; PR #6 draft/unmerged. Preparing early malformed handoff identity preflight.",
+  "local_test_status": "6 new pytest parameter cases prepared; repository suite not run locally (shell GitHub DNS unavailable); exact-head CI pending publication.",
   "pr_number": 6,
-  "ci_status": "Previous head 732526417f70c5bc81cc7aa1f448d312001b3dcb: push CI 40191106281 and PR CI 40191109699 successful; new candidate exact-head CI pending.",
+  "ci_status": "Previous exact head 048fa5768f74851c2e34b48f2b95739ddb9448e7: push CI 40195427698 and PR CI 40195431107 successful (481 passed); new candidate exact-head CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "PR #6 draft; 0 independent reviews; main protected=false and rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
-  "next_action": "Publish malformed execution request preflight; inspect exact-head push and PR CI; preserve draft until independent review and approved merge protections.",
+  "known_blocker": "PR #6 draft; 0 independent reviews; main protected=false, rulesets empty; exclusive external writer/worktree ownership unverified. Guarded merge, merged-main CI and final acceptance pending.",
+  "next_action": "Publish early handoff identity preflight; inspect exact-head push/PR CI; preserve draft until independent review and approved merge protections.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-25T12:55:32Z",
-  "observed_branch_sha": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
-  "observed_feature_sha": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
+  "observed_at_utc": "2026-10-25T13:58:20Z",
+  "observed_branch_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+  "observed_feature_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,21 +34,21 @@
   "pr_state": "open draft; independent review pending",
   "ci_state": {
     "push_run": {
-      "id": 40191106281,
-      "sha": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
+      "id": 40195427698,
+      "sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40191106281"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40195427698"
     },
     "pr_run": {
-      "id": 40191109699,
-      "source_head_sha": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
-      "tested_merge_sha": "7bcd0ee5614e923154ed36394edd3f4acbffaec8",
+      "id": 40195431107,
+      "source_head_sha": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+      "tested_merge_sha": "8fe52e1",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40191109699"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40195431107"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -63,10 +63,10 @@
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Independent review / repository protection / new exact-head CI pending",
-    "BLOCKER": "PR #6 draft, zero independent reviews, main unprotected; external worktree ownership unverified; shell GitHub network unavailable.",
-    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for early malformed execution request rejection; isolated JS model 14 checks; full Python tests pending CI.",
-    "REMOTE_SHA": "732526417f70c5bc81cc7aa1f448d312001b3dcb",
-    "NEXT_ACTION": "Publish malformed execution request preflight; inspect exact-head push and PR CI; preserve draft until independent review and approved merge protections."
+    "BLOCKER": "PR #6 draft, zero independent reviews, main unprotected; external worktree ownership unverified; shell GitHub DNS unavailable.",
+    "SAFE_WORK_COMPLETED": "Prepared atomic source/test/docs/checkpoint change for early malformed handoff identity rejection; six new pytest parameter cases; full Python suite pending exact-head CI.",
+    "REMOTE_SHA": "048fa5768f74851c2e34b48f2b95739ddb9448e7",
+    "NEXT_ACTION": "Publish early handoff identity preflight; inspect exact-head push/PR CI; preserve draft until independent review and approved merge protections."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -125,12 +125,11 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "early malformed execution request preflight",
+    "name": "early malformed handoff identity preflight",
     "feature_sha": "pending_product_commit",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_adapter.py",
-    "new_pytest_cases": 13,
-    "isolated_predicate_checks": "13 invalid rejected + 1 valid accepted in JS predicate model (not Python repository tests)",
+    "new_pytest_cases": 6,
     "exact_head_push_ci": "pending",
     "pr_ci": "pending",
     "merged_main_ci": "not_run",
