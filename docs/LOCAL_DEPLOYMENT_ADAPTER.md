@@ -135,3 +135,16 @@ exported even when their status still says `authorized-local-only`.
 It cannot prove that a self-consistent receipt was issued by a trusted actor:
 consumers must still revalidate the exact handoff, artifact bytes and approval.
 No infrastructure execution or authenticated identity is implied.
+
+
+## Canonical receipt JSON revalidation
+
+The function verify_local_execution_receipt_json(handoff, artifact, approval,
+receipt_json) accepts only bounded (at most 16,384 characters), exact canonical
+JSON exported by LocalExecutionReceipt.to_json(). It rejects duplicate/extra
+fields, noncanonical whitespace, malformed types, altered status and mutation
+flags, then rechecks the reconstructed receipt against the original handoff,
+exact artifact bytes and separate execution approval. No parser output is trusted
+solely because its JSON is internally consistent. This is deterministic,
+in-process verification, **not** a signature, reviewer authentication,
+deployment, observation, or recovery mechanism.

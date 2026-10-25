@@ -251,3 +251,35 @@ def verify_local_execution_receipt(
     if receipt != expected:
         raise ValueError("receipt differs from exact local execution authorization")
     return True
+
+
+def verify_local_execution_receipt_json(
+    handoff: DeploymentHandoff,
+    artifact: bytes,
+    approval: LocalExecutionApproval | None,
+    receipt_json: str,
+) -> bool:
+    """Validate canonical receipt JSON against exact original authorization inputs."""
+    if type(receipt_json) is not str or len(receipt_json) > 16384:
+        raise ValueError("expected bounded canonical local receipt JSON")
+    try:
+        payload = json.loads(receipt_json)
+        if type(payload) is not dict or set(payload) != {
+            "request", "approved_by", "request_digest", "status", "infrastructure_mutated"
+        }:
+            raise ValueError("unexpected local receipt fields")
+        request_payload = payload["request"]
+        if type(request_payload) is not dict or set(request_payload) != {
+            "format_version", "handoff_digest", "target_id", "artifact_sha256",
+            "handoff_receipt_sha256", "operation"
+        }:
+            raise ValueError("unexpected local request fields")
+        receipt = LocalExecutionReceipt(
+            LocalExecutionRequest(**request_payload), payload["approved_by"],
+            payload["request_digest"], payload["status"], payload["infrastructure_mutated"],
+        )
+        if receipt.to_json() != receipt_json:
+            raise ValueError("noncanonical local receipt JSON")
+    except (ValueError, TypeError, KeyError, RecursionError) as exc:
+        raise ValueError("malformed local execution receipt JSON") from exc
+    return verify_local_execution_receipt(handoff, artifact, approval, receipt)

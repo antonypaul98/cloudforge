@@ -151,3 +151,71 @@ def test_local_receipt_json_export_rejects_malformed_request_bindings(field, val
     _, _, _, receipt = _sample()
     with pytest.raises(ValueError, match="local-only receipt"):
         replace(receipt, request=replace(receipt.request, **{field: value})).to_json()
+
+
+from cloudforge.local_adapter import verify_local_execution_receipt_json
+
+
+def test_canonical_local_receipt_json_revalidates_exact_inputs():
+    handoff, artifact, approval, receipt = _sample()
+    assert verify_local_execution_receipt_json(
+        handoff, artifact, approval, receipt.to_json()
+    ) is True
+
+
+@pytest.mark.parametrize("alter", [
+    pytest.param(lambda s: s.rstrip("\n"), id="missing-newline"),
+    pytest.param(lambda s: s.replace('"status": "authorized-local-only"',
+                                     '"status": "deployed"'), id="forged-status"),
+    pytest.param(lambda s: s.replace('"infrastructure_mutated": false',
+                                     '"infrastructure_mutated": 0'), id="numeric-mutation"),
+    pytest.param(lambda s: s.replace('"format_version": 1',
+                                     '"format_version": true'), id="boolean-version"),
+    pytest.param(lambda s: s.replace('"target_id": "staging"',
+                                     '"target_id": "production"'), id="changed-target"),
+    pytest.param(lambda s: s.replace('"status":', '"extra": true,\n  "status":'),
+                 id="extra-outer-field"),
+    pytest.param(lambda s: s.replace('"request": {', '"request": {"extra": true,'),
+                 id="extra-request-field"),
+    pytest.param(lambda s: s.replace('"request_digest":',
+                                     '"request_digest": "0", "request_digest":', 1),
+                 id="duplicate-key"),
+    pytest.param(lambda s: s.replace('"status": "authorized-local-only"',
+                                     '"status": NaN'), id="non-json-constant"),
+    pytest.param(lambda s: s.replace('"approved_by": "execution-reviewer"',
+                                     '"approved_by": "someone-else"'), id="changed-reviewer"),
+    pytest.param(lambda s: s + " " * 17000, id="oversized"),
+    pytest.param(lambda s: "[]", id="array"),
+    pytest.param(lambda s: "null", id="null"),
+    pytest.param(lambda s: "", id="empty"),
+])
+def test_serialized_local_receipt_rejects_tampering_and_noncanonical_json(alter):
+    handoff, artifact, approval, receipt = _sample()
+    with pytest.raises(ValueError):
+        verify_local_execution_receipt_json(
+            handoff, artifact, approval, alter(receipt.to_json())
+        )
+
+
+@pytest.mark.parametrize("invalid", [None, b"{}", 0, {}, True])
+def test_serialized_local_receipt_rejects_non_text_inputs(invalid):
+    handoff, artifact, approval, _ = _sample()
+    with pytest.raises(ValueError):
+        verify_local_execution_receipt_json(handoff, artifact, approval, invalid)
+
+
+def test_serialized_local_receipt_rejects_changed_artifact():
+    handoff, _, approval, receipt = _sample()
+    with pytest.raises(ValueError):
+        verify_local_execution_receipt_json(
+            handoff, b"different artifact", approval, receipt.to_json()
+        )
+
+
+def test_serialized_local_receipt_requires_fresh_approval():
+    handoff, artifact, _, receipt = _sample()
+    with pytest.raises(ApprovalRequiredError):
+        verify_local_execution_receipt_json(
+            handoff, artifact, LocalExecutionApproval("0" * 64, "reviewer"),
+            receipt.to_json(),
+        )
