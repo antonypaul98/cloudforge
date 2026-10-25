@@ -363,3 +363,28 @@ def test_stale_handoff_receipt_binding_fails_before_document_parse(monkeypatch, 
         authorize_local_execution(
             handoff, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer"),
         )
+
+@pytest.mark.parametrize("field", [
+    "approved_by", "plan_digest", "operation", "request_digest", "status",
+])
+def test_oversized_handoff_scalar_rejected_before_handoff_hash(monkeypatch, field):
+    handoff, artifact, execution = sample()
+    if field in ("plan_digest", "operation"):
+        handoff = replace(handoff, request=replace(handoff.request, **{field: "x" * 16385}))
+    else:
+        handoff = replace(handoff, **{field: "x" * 16385})
+
+    from cloudforge import local_adapter
+    original_digest = local_adapter._digest
+
+    def guard_digest(value):
+        if isinstance(value, dict) and "request" in value:
+            raise AssertionError("oversized handoff must not be hashed")
+        return original_digest(value)
+
+    monkeypatch.setattr(local_adapter, "_digest", guard_digest)
+    with pytest.raises(ValueError, match="local handoff scalar exceeds size limit"):
+        authorize_local_execution(
+            handoff, artifact, execution,
+            LocalExecutionApproval(execution.digest, "reviewer"),
+        )

@@ -316,3 +316,13 @@ caller-constructed execution approval, fails closed. Malformed or oversized
 handoffs continue through existing full validation rather than bypassing it.
 Two synthetic regressions check early rejection. This is local integrity
 validation, not authenticated reviewer proof or infrastructure execution.
+
+## Bounded handoff scalar hashing
+
+Local authorization rejects oversized handoff reviewer, plan digest, operation,
+request digest, and status strings before computing the full-handoff receipt
+hash. Each is bounded to 16,384 characters; the separately bounded reviewed
+IaC document retains its existing 65,536-character limit. Five synthetic
+regressions verify that oversized scalar fields cannot reach the handoff hash.
+This is a local resource-integrity safeguard, not authenticated approval or
+infrastructure execution.

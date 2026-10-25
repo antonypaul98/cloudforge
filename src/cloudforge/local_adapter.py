@@ -256,6 +256,17 @@ def authorize_local_execution(
             and type(handoff.request.target_id) is str
             and len(handoff.request.target_id) > _MAX_LOCAL_RECEIPT_JSON_CHARS):
         raise ValueError("local-only receipt exceeds canonical JSON size limit")
+    # Bound all other handoff scalar strings before computing the full-handoff
+    # digest. A forged multi-megabyte reviewer, operation or provenance field
+    # must not enter the pre-parse hashing path.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and any(type(value) is str
+                    and len(value) > _MAX_LOCAL_RECEIPT_JSON_CHARS
+                    for value in (handoff.approved_by, handoff.request.plan_digest,
+                                  handoff.request.operation, handoff.request_digest,
+                                  handoff.status))):
+        raise ValueError("local handoff scalar exceeds size limit")
     if (type(approval) is LocalExecutionApproval
             and type(approval.approved_by) is str
             and len(approval.approved_by) > _MAX_LOCAL_RECEIPT_JSON_CHARS):
