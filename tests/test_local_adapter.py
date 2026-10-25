@@ -230,3 +230,33 @@ def test_invalid_handoff_identity_fails_before_document_parse(monkeypatch, ident
         guard.setattr("cloudforge.local_adapter.json.loads", forbidden)
         with pytest.raises(ValueError):
             prepare_local_execution_request(handoff, artifact)
+
+@pytest.mark.parametrize("invalid", [
+    None, True, "artifact text", bytearray(b"artifact"), memoryview(b"artifact"),
+])
+def test_nonbytes_artifact_fails_before_handoff_document_parse(monkeypatch, invalid):
+    handoff, _, _ = sample()
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("nonbytes artifact must fail before document parsing")
+
+    monkeypatch.setattr("cloudforge.local_adapter.json.loads", forbidden)
+    with pytest.raises(ValueError, match="artifact must be exact bytes"):
+        prepare_local_execution_request(handoff, invalid)
+
+
+@pytest.mark.parametrize("invalid", [
+    None, True, "artifact text", bytearray(b"artifact"), memoryview(b"artifact"),
+])
+def test_nonbytes_artifact_fails_before_authorization_revalidation(monkeypatch, invalid):
+    handoff, _, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("nonbytes artifact must fail before handoff revalidation")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.prepare_local_execution_request", forbidden
+    )
+    with pytest.raises(ValueError, match="artifact must be exact bytes"):
+        authorize_local_execution(handoff, invalid, request, approval)

@@ -247,3 +247,11 @@ This prevents avoidable JSON parsing of inputs that cannot pass local review.
 The original handoff digest, exact artifact, plan provenance and separate fresh
 execution approval remain mandatory. This does not authenticate a reviewer,
 execute infrastructure, observe deployment or perform recovery.
+
+## Exact binary input preflight
+
+The local request preparation and authorization boundaries reject non-`bytes`
+artifacts before parsing or revalidating the reviewed handoff. Mutable
+`bytearray`, `memoryview`, text, booleans and missing artifacts cannot enter
+the digest/approval path. This is a local resource and input-integrity guard,
+not a size limit on legitimate artifact bytes or infrastructure execution.

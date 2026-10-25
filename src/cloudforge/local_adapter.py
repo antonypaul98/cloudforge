@@ -129,6 +129,10 @@ def prepare_local_execution_request(
     """Bind an accepted handoff to exact artifact bytes without executing anything."""
     if type(handoff) is not DeploymentHandoff:
         raise ValueError("expected an accepted deployment handoff")
+    # Invalid artifact types cannot be hashed. Reject them before the reviewed
+    # document is parsed, even when the handoff itself is otherwise valid.
+    if type(artifact) is not bytes:
+        raise ValueError("artifact must be exact bytes")
     if type(handoff.request) is not DeploymentRequest:
         raise ValueError("expected a canonical deployment request")
     if (type(handoff.request.format_version) is not int
@@ -212,8 +216,6 @@ def prepare_local_execution_request(
         raise ValueError("handoff is not eligible for local adapter review")
     if type(handoff.request_digest) is not str or handoff.request_digest != handoff.request.digest:
         raise ValueError("handoff digest does not match its exact request")
-    if type(artifact) is not bytes:
-        raise ValueError("artifact must be exact bytes")
     return LocalExecutionRequest(
         1,
         handoff.request_digest,
@@ -232,6 +234,10 @@ def authorize_local_execution(
     """Authorize exact local bytes; deliberately performs no runtime mutation."""
     if type(request) is not LocalExecutionRequest:
         raise ValueError("expected a local execution request")
+    # Reject malformed artifact types before expensive handoff revalidation.
+    # Only immutable exact bytes may be bound to a local execution approval.
+    if type(artifact) is not bytes:
+        raise ValueError("artifact must be exact bytes")
     # A receipt cannot export identities longer than the canonical JSON ceiling.
     # Reject those before parsing the handoff or hashing a huge target/reviewer.
     # Other malformed inputs retain their existing validation paths.
