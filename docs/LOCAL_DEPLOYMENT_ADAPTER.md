@@ -28,6 +28,10 @@ handoff/request digests, blank or control-character identities, unsupported
 format versions, nonliteral approval values, stale approvals, and any request
 whose exact artifact differs after review.
 
+A receipt whose embedded execution request no longer hashes to its claimed
+request digest is rejected before artifact hashing when the supplied approval
+names that claim. This is a bounded integrity check, not identity authentication.
+
 No boolean approval bypass is permitted. Approval identity authentication belongs
 to the integrating application and must not be inferred from caller-controlled
 text.

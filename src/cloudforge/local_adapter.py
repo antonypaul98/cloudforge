@@ -430,6 +430,25 @@ def verify_local_execution_receipt(
             and type(approval.approved_by) is str
             and receipt.approved_by != approval.approved_by):
         raise ValueError("receipt differs from exact local execution authorization")
+    # When a fresh approval names the receipt's claimed digest, reject a
+    # self-inconsistent embedded request before hashing artifact bytes.
+    # Only bounded, structurally valid fields take this fast path; all other
+    # inputs retain the full fail-closed authorization validation below.
+    request = receipt.request
+    if (type(approval) is LocalExecutionApproval
+            and approval.request_digest == receipt.request_digest
+            and type(request.format_version) is int
+            and request.format_version == 1
+            and type(request.operation) is str
+            and request.operation == "authorize-local-artifact"
+            and type(request.target_id) is str
+            and len(request.target_id) <= _MAX_LOCAL_RECEIPT_JSON_CHARS
+            and all(type(value) is str and len(value) == 64
+                    and all(char in "0123456789abcdef" for char in value)
+                    for value in (request.handoff_digest, request.artifact_sha256,
+                                  request.handoff_receipt_sha256))
+            and receipt.request_digest != request.digest):
+        raise ValueError("receipt differs from exact local execution authorization")
     expected = authorize_local_execution(handoff, artifact, receipt.request, approval)
     if receipt != expected:
         raise ValueError("receipt differs from exact local execution authorization")

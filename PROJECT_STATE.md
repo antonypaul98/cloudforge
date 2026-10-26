@@ -59,3 +59,13 @@ Deployment handoff foundation COMPLETE through PR #5. Exact head
 Merged main `79abcd9782ecfc3c235072886666940d1319824c` passed CI `37216883981`
 and 80 local tests (zero skipped). This is review-only software acceptance;
 actual deployment, observation, simulation and recovery remain unimplemented.
+
+## Bounded local deployment adapter — in progress (2026-10-26)
+
+PR #6 on `build/local-deployment-adapter` provides local-only authorization,
+receipt verification and redacted audit evidence. Current changes add early
+rejection of forged embedded receipt-request digests with two synthetic
+regressions. Exact-head CI, independent approval, guarded merge and merged-main
+CI remain separate gates. No provider, network, subprocess, container or
+infrastructure mutation is authorized or claimed; runtime, observation and
+recovery acceptance remain pending.

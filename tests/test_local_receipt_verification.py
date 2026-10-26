@@ -542,3 +542,23 @@ def test_forged_receipt_reviewer_fails_before_artifact_hash(monkeypatch, forged_
         verify_local_execution_receipt(
             handoff, artifact, approval, replace(receipt, approved_by=forged_reviewer)
         )
+
+
+@pytest.mark.parametrize("field", ["artifact_sha256", "handoff_receipt_sha256"])
+def test_forged_receipt_request_digest_fails_before_artifact_hash(monkeypatch, field):
+    handoff, artifact, approval, receipt = _sample()
+    current = getattr(receipt.request, field)
+    changed = "0" * 64 if current != "0" * 64 else "f" * 64
+    forged_request = replace(receipt.request, **{field: changed})
+    forged_receipt = replace(receipt, request=forged_request)
+    from cloudforge import local_adapter
+    original_sha256 = local_adapter.hashlib.sha256
+
+    def guarded_sha256(value=b"", *args, **kwargs):
+        if value == artifact:
+            raise AssertionError("forged receipt must fail before artifact hashing")
+        return original_sha256(value, *args, **kwargs)
+
+    monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
+    with pytest.raises(ValueError, match="receipt differs from exact local execution authorization"):
+        verify_local_execution_receipt(handoff, artifact, approval, forged_receipt)
