@@ -469,3 +469,34 @@ def test_stale_handoff_request_digest_fails_before_artifact_hash(monkeypatch, fi
         authorize_local_execution(
             forged, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer")
         )
+
+@pytest.mark.parametrize("case,error", [
+    ("stale-approval", ApprovalRequiredError),
+    ("changed-handoff-reviewer", ValueError),
+    ("stale-handoff-receipt", ValueError),
+])
+def test_stale_authorization_binding_fails_before_artifact_hash(monkeypatch, case, error):
+    handoff, artifact, execution = sample()
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+    if case == "stale-approval":
+        stale = "0" * 64 if execution.digest != "0" * 64 else "f" * 64
+        approval = LocalExecutionApproval(stale, "reviewer")
+    elif case == "changed-handoff-reviewer":
+        handoff = replace(handoff, approved_by="different-handoff-reviewer")
+    else:
+        stale = ("0" * 64 if execution.handoff_receipt_sha256 != "0" * 64
+                 else "f" * 64)
+        execution = replace(execution, handoff_receipt_sha256=stale)
+        approval = LocalExecutionApproval(execution.digest, "reviewer")
+
+    from cloudforge import local_adapter
+    original_sha256 = local_adapter.hashlib.sha256
+
+    def guarded_sha256(value=b"", *args, **kwargs):
+        if value == artifact:
+            raise AssertionError("stale authorization must not hash artifact bytes")
+        return original_sha256(value, *args, **kwargs)
+
+    monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
+    with pytest.raises(error):
+        authorize_local_execution(handoff, artifact, execution, approval)

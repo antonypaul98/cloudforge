@@ -385,3 +385,14 @@ regressions cover changed plan-digest and document fields while forbidding
 artifact hashing. A matching digest is not reviewer authentication or
 sufficient authorization: canonical IaC, artifact, receipt and execution
 approval revalidation still follow. No infrastructure is executed.
+
+## Early stale authorization rejection before artifact hashing
+
+The local-only adapter checks the bounded execution-approval digest and exact
+handoff receipt binding before hashing potentially large artifact bytes. A
+changed claimed handoff reviewer, forged handoff receipt digest, or stale
+execution approval fails closed without hashing the artifact. Three synthetic
+regressions assert this ordering. Matching metadata still requires exact artifact
+SHA-256, canonical handoff validation, and full receipt serialization checks.
+This is resource-efficient integrity validation, not authenticated approval,
+deployment, infrastructure observation, or recovery.

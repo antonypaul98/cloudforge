@@ -343,10 +343,7 @@ def authorize_local_execution(
             and type(handoff.request) is DeploymentRequest
             and handoff.request_digest != handoff.request.digest):
         raise ValueError("handoff digest does not match its exact request")
-    # Fail fast on stale exact-artifact bindings before parsing reviewed IaC.
-    # Only immutable bytes are accepted above; this hash has no side effects.
-    if request.artifact_sha256 != hashlib.sha256(artifact).hexdigest():
-        raise ValueError("request differs from exact local execution inputs")
+    # Check the small approval digest before hashing potentially large artifact bytes.
     # Reject stale approval digests before parsing reviewed IaC. The request
     # shape and bounded identity were validated above; this is only local
     # digest consistency, not authentication of the claimed reviewer.
@@ -367,6 +364,12 @@ def authorize_local_execution(
                 handoff.request_digest, handoff.status))
             and type(handoff.infrastructure_mutated) is bool
             and request.handoff_receipt_sha256 != _digest(asdict(handoff))):
+        raise ValueError("request differs from exact local execution inputs")
+    # Hash exact artifact bytes only after the bounded approval and handoff
+    # receipt bindings have passed their fail-fast checks. Full validation follows.
+    # Fail fast on stale exact-artifact bindings before parsing reviewed IaC.
+    # Only immutable bytes are accepted above; this hash has no side effects.
+    if request.artifact_sha256 != hashlib.sha256(artifact).hexdigest():
         raise ValueError("request differs from exact local execution inputs")
     expected = prepare_local_execution_request(handoff, artifact)
     if (type(request.format_version) is not int
