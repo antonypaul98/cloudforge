@@ -406,3 +406,23 @@ def test_malformed_handoff_document_fails_before_artifact_hash(monkeypatch, docu
     monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
     with pytest.raises(ValueError, match="malformed handoff provenance or document"):
         authorize_local_execution(handoff, artifact, request, approval)
+
+@pytest.mark.parametrize("field,value", [
+    ("status", "deployed"),
+    ("status", True),
+    ("status", None),
+    ("infrastructure_mutated", True),
+    ("infrastructure_mutated", 0),
+    ("infrastructure_mutated", None),
+])
+def test_ineligible_handoff_rejected_before_artifact_hash(monkeypatch, field, value):
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+    handoff = replace(handoff, **{field: value})
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("ineligible handoff must not hash artifact bytes")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="handoff is not eligible"):
+        authorize_local_execution(handoff, artifact, request, approval)

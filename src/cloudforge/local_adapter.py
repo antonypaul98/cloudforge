@@ -309,6 +309,13 @@ def authorize_local_execution(
             and (type(handoff.request.document) is not str
                  or len(handoff.request.document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS)):
         raise ValueError("malformed handoff provenance or document")
+    # A forged or ineligible handoff must not trigger artifact hashing.
+    # Full canonical handoff validation still follows for eligible inputs.
+    if (type(handoff) is DeploymentHandoff
+            and (handoff.infrastructure_mutated is not False
+                 or type(handoff.status) is not str
+                 or handoff.status != "ready-for-adapter-review")):
+        raise ValueError("handoff is not eligible for local adapter review")
     # Reject stale target/handoff bindings before parsing reviewed IaC JSON.
     # The full handoff, artifact and approval checks remain mandatory below.
     if (type(handoff) is DeploymentHandoff

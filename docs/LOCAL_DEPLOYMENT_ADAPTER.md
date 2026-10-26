@@ -336,3 +336,13 @@ forbidding SHA-256 calls. This is a resource-use guard only: the full canonical
 handoff, provenance, artifact and separate approval checks still apply. It does
 not read a filesystem, run a provider, mutate infrastructure, or authenticate
 a reviewer.
+
+## Early ineligible-handoff rejection before artifact hashing
+
+Local authorization rejects a handoff whose status is not exactly
+`ready-for-adapter-review` or whose infrastructure-mutation flag is not
+literal `False` before hashing artifact bytes. Six synthetic regression
+cases cover forged status and mutation values, including integer zero.
+The complete canonical handoff, exact artifact and fresh execution approval
+checks remain mandatory for eligible inputs. This is a local resource guard,
+not authenticated approval, infrastructure execution, observation or recovery.
