@@ -491,6 +491,16 @@ def verify_local_execution_audit_event(
             raise ValueError("noncanonical audit event")
     except (ValueError, TypeError, KeyError, RecursionError) as exc:
         raise ValueError("malformed canonical local audit event") from exc
+    # Reject stale canonical audit bindings before revalidating original inputs.
+    # This comparison is not proof that a caller-supplied receipt is authentic.
+    if (type(receipt) is not LocalExecutionReceipt
+            or type(receipt.request_digest) is not str
+            or payload["request_digest"] != receipt.request_digest):
+        raise ValueError("local audit event differs from exact local authorization")
+    if payload["receipt_sha256"] != hashlib.sha256(
+        receipt.to_json().encode("ascii")
+    ).hexdigest():
+        raise ValueError("local audit event differs from exact local authorization")
     if audit_json != export_local_execution_audit_event(handoff, artifact, approval, receipt):
         raise ValueError("local audit event differs from exact local authorization")
     return True

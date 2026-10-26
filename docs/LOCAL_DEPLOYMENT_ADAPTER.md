@@ -365,3 +365,13 @@ handoff, artifact and approval. Ten synthetic regressions assert that invalid
 audit strings cannot trigger receipt revalidation. Structurally valid but
 forged or stale audit evidence still requires full exact-input verification.
 This is not a signature, authenticated approval, deployment or recovery.
+
+## Early stale canonical audit-binding rejection
+
+After canonical audit-event shape validation, the verifier rejects a stale
+request digest or receipt SHA-256 before recomputing the full audit event from
+the original handoff, artifact and approval. Two parameterized synthetic
+regressions forbid original-input revalidation for those stale bindings.
+Matching digests are not proof of authenticated approval: full exact-input
+revalidation still follows. No provider execution, infrastructure mutation,
+observation, recovery or physical acceptance is claimed.

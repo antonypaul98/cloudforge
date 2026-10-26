@@ -487,3 +487,21 @@ def test_malformed_audit_event_rejected_before_receipt_revalidation(monkeypatch,
         verify_local_execution_audit_event(
             handoff, artifact, approval, receipt, alter(event)
         )
+
+
+@pytest.mark.parametrize("field", ["request_digest", "receipt_sha256"])
+def test_stale_canonical_audit_binding_fails_before_original_revalidation(monkeypatch, field):
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+    payload = json.loads(event)
+    payload[field] = "0" * 64 if payload[field] != "0" * 64 else "f" * 64
+    stale_event = json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\\n"
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("stale audit binding must fail before original-input revalidation")
+
+    monkeypatch.setattr("cloudforge.local_adapter.export_local_execution_audit_event", forbidden)
+    with pytest.raises(ValueError, match="local audit event differs"):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, stale_event
+        )
