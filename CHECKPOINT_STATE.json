@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
+  "current_branch_sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed PR #6 head ccedad54b1bdebeb9701b3c07db0ded744bdd2df against main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; open/ready/unmerged; active ruleset 25825521; zero independent reviews.",
-  "local_test_status": "Prior exact-head push/PR CI: 555 passed each at ccedad54b1bdebeb9701b3c07db0ded744bdd2df. Two isolated synthetic model checks passed in Python 3.13.5 (not repository suite). Two new early stale handoff-digest pytest regressions prepared; new-head CI pending.",
+  "branch_remote_status": "Verified PR #6 source head b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0 against main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; open/ready/unmerged; active ruleset 25825521; zero independent reviews.",
+  "local_test_status": "Exact-head push/PR CI at b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0: 557 passed each, Python 3.11.17. 2 isolated Python 3.13.5 synthetic model checks passed (not repository suite). 2 new pytest regressions included. Infrastructure guard 16 tests with one inapplicable skip. No physical acceptance.",
   "pr_number": 6,
-  "ci_status": "Prior exact-head push 40266990520 and PR 40266994565 SUCCESS (555 passed each) for ccedad54b1bdebeb9701b3c07db0ded744bdd2df. New feature-head CI pending.",
+  "ci_status": "Exact-head push 40272430083 and PR 40272433082 SUCCESS (557 passed each) for source b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0. Merged-main CI not run.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified guarded merge and successful merged-main CI"
   ],
   "known_blocker": "PR #6 has zero independent reviews; active main ruleset 25825521 requires one approval and test check, no bypass. Guarded merge blocked; exclusive external writer/worktree ownership unverified.",
-  "next_action": "Verify exact-head push/PR CI for early stale handoff request-digest guard; independent review still required before protected merge.",
+  "next_action": "Independent review of PR #6 required by active main ruleset; after approval, guarded merge and merged-main CI. Continue only bounded provider-neutral safeguards until then.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-26T05:03:11Z",
-  "observed_branch_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
-  "observed_feature_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
+  "observed_at_utc": "2026-10-26T05:06:09Z",
+  "observed_branch_sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
+  "observed_feature_sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,20 +34,20 @@
   "pr_state": "open, ready for review; 0 independent reviews; merge blocked",
   "ci_state": {
     "push_run": {
-      "id": 40266990520,
-      "sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
+      "id": 40272430083,
+      "sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40266990520"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40272430083"
     },
     "pr_run": {
-      "id": 40266994565,
-      "source_head_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
+      "id": 40272433082,
+      "source_head_sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40266994565"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40272433082"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -62,10 +62,10 @@
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Independent review and protected merge; shell GitHub DNS unavailable",
-    "BLOCKER": "Zero independent PR reviews; active main ruleset requires one. Exclusive external writer/worktree ownership unverified.",
-    "SAFE_WORK_COMPLETED": "Published early stale handoff request-digest guard with two synthetic regressions; new-head CI pending.",
-    "REMOTE_SHA": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
-    "NEXT_ACTION": "Verify exact-head push/PR CI for early stale handoff request-digest guard; independent review still required before protected merge."
+    "BLOCKER": "Zero independent reviews; main ruleset requires one and no bypass. Exclusive external writer/worktree ownership unverified.",
+    "SAFE_WORK_COMPLETED": "Published and verified two new early stale handoff request-digest regressions at b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0; 557 passed in push and PR CI.",
+    "REMOTE_SHA": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
+    "NEXT_ACTION": "Independent review of PR #6 required by active main ruleset; after approval, guarded merge and merged-main CI. Continue only bounded provider-neutral safeguards until then."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -124,22 +124,14 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "early stale canonical audit binding rejection",
-    "feature_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
-    "source_path": "src/cloudforge/local_adapter.py",
-    "regression_path": "tests/test_local_receipt_verification.py",
-    "new_pytest_cases": 2,
-    "exact_head_push_ci": 40266990520,
-    "pr_ci": 40266994565,
-    "merged_main_ci": "not_run",
-    "acceptance": "in_progress"
-  },
-  "pending_safeguard": {
     "name": "early stale handoff request digest rejection before artifact hash",
-    "base_sha": "ccedad54b1bdebeb9701b3c07db0ded744bdd2df",
-    "new_pytest_cases": 2,
+    "feature_sha": "b06968e9c66ebc18eae8fcdd05fb6eeb3338a7f0",
     "source_path": "src/cloudforge/local_adapter.py",
     "regression_path": "tests/test_local_adapter.py",
-    "ci": "pending"
+    "new_pytest_cases": 2,
+    "exact_head_push_ci": 40272430083,
+    "pr_ci": 40272433082,
+    "merged_main_ci": "not_run",
+    "acceptance": "in_progress"
   }
 }
