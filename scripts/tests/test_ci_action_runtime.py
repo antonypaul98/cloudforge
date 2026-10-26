@@ -9,7 +9,7 @@ class CIActionRuntimeTests(unittest.TestCase):
     def test_ci_uses_node24_compatible_checkout_and_python_actions(self):
         workflow = (Path(__file__).resolve().parents[2] / ".github/workflows/ci.yml").read_text()
         uses = re.findall(
-            r"(?m)^\\s*-\\s*uses:\\s*(actions/(?:checkout|setup-python))@v(\\d+)\\s*$",
+            r"(?m)^\s*-\s*uses:\s*(actions/(?:checkout|setup-python))@v(\d+)\s*$",
             workflow,
         )
         self.assertEqual(len(uses), 2, "Expected one checkout and one setup-python action")
