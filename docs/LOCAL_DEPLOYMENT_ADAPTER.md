@@ -375,3 +375,13 @@ regressions forbid original-input revalidation for those stale bindings.
 Matching digests are not proof of authenticated approval: full exact-input
 revalidation still follows. No provider execution, infrastructure mutation,
 observation, recovery or physical acceptance is claimed.
+
+## Early stale handoff-request digest rejection
+
+For a structurally bounded local-only handoff, authorization now rejects a
+handoff whose stored request digest no longer matches its exact reviewed
+request **before hashing the artifact bytes**. Two parameterized synthetic
+regressions cover changed plan-digest and document fields while forbidding
+artifact hashing. A matching digest is not reviewer authentication or
+sufficient authorization: canonical IaC, artifact, receipt and execution
+approval revalidation still follow. No infrastructure is executed.

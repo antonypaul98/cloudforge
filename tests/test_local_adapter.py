@@ -448,3 +448,24 @@ def test_malformed_handoff_metadata_fails_before_artifact_hash(monkeypatch, fiel
     monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
     with pytest.raises(ValueError, match="malformed handoff request metadata"):
         authorize_local_execution(handoff, artifact, request, approval)
+
+@pytest.mark.parametrize("field", ["plan_digest", "document"])
+def test_stale_handoff_request_digest_fails_before_artifact_hash(monkeypatch, field):
+    handoff, artifact, execution = sample()
+    changed = ("0" * 64 if handoff.request.plan_digest != "0" * 64 else "f" * 64)
+    if field == "document":
+        changed = handoff.request.document + " "
+    forged = replace(handoff, request=replace(handoff.request, **{field: changed}))
+    from cloudforge import local_adapter
+    original_sha256 = local_adapter.hashlib.sha256
+
+    def guarded_sha256(value=b"", *args, **kwargs):
+        if value == artifact:
+            raise AssertionError("stale handoff must fail before hashing artifact bytes")
+        return original_sha256(value, *args, **kwargs)
+
+    monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
+    with pytest.raises(ValueError, match="handoff digest does not match its exact request"):
+        authorize_local_execution(
+            forged, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer")
+        )

@@ -336,6 +336,13 @@ def authorize_local_execution(
             and (request.target_id != handoff.request.target_id
                  or request.handoff_digest != handoff.request_digest)):
         raise ValueError("request differs from exact local execution inputs")
+    # A handoff's recorded digest must still bind its exact reviewed request.
+    # Check this bounded request before hashing potentially large artifact bytes.
+    # Full canonical IaC and approval validation remains mandatory below.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and handoff.request_digest != handoff.request.digest):
+        raise ValueError("handoff digest does not match its exact request")
     # Fail fast on stale exact-artifact bindings before parsing reviewed IaC.
     # Only immutable bytes are accepted above; this hash has no side effects.
     if request.artifact_sha256 != hashlib.sha256(artifact).hexdigest():
