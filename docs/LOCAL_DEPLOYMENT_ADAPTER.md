@@ -418,3 +418,11 @@ Seven synthetic regression cases prohibit artifact hashing on these invalid
 container shapes. Valid handoffs still require complete canonical provenance,
 exact artifact binding and fresh execution approval. This does not authenticate
 a reviewer, access a provider or mutate infrastructure.
+
+## Reject forged receipt outcomes before artifact hashing
+
+Verification now rejects a local-only receipt that claims deployment, an
+ineligible status, or infrastructure mutation before hashing artifact bytes or
+revalidating the handoff. Four synthetic regressions guard the early failure.
+Valid receipts still undergo exact artifact, handoff, approval and provenance
+revalidation. This is not reviewer authentication or real deployment evidence.

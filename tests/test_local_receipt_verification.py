@@ -505,3 +505,22 @@ def test_stale_canonical_audit_binding_fails_before_original_revalidation(monkey
         verify_local_execution_audit_event(
             handoff, artifact, approval, receipt, stale_event
         )
+
+
+@pytest.mark.parametrize("field,value", [
+    ("status", "deployed"),
+    ("status", "ready-for-adapter-review"),
+    ("status", ""),
+    ("infrastructure_mutated", True),
+])
+def test_forged_receipt_claim_fails_before_artifact_hash(monkeypatch, field, value):
+    handoff, artifact, approval, receipt = _sample()
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("forged receipt must not hash artifact bytes")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="local-only receipt cannot claim deployment or mutation"):
+        verify_local_execution_receipt(
+            handoff, artifact, approval, replace(receipt, **{field: value})
+        )

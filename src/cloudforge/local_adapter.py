@@ -416,6 +416,11 @@ def verify_local_execution_receipt(
             or type(receipt.status) is not str
             or type(receipt.infrastructure_mutated) is not bool):
         raise ValueError("malformed local execution receipt")
+    # A forged local-only receipt must not trigger artifact hashing or full
+    # handoff revalidation. Type checks above prevent bool/int equivalence.
+    if (receipt.status != "authorized-local-only"
+            or receipt.infrastructure_mutated is not False):
+        raise ValueError("local-only receipt cannot claim deployment or mutation")
     expected = authorize_local_execution(handoff, artifact, receipt.request, approval)
     if receipt != expected:
         raise ValueError("receipt differs from exact local execution authorization")
