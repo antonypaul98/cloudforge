@@ -346,3 +346,12 @@ cases cover forged status and mutation values, including integer zero.
 The complete canonical handoff, exact artifact and fresh execution approval
 checks remain mandatory for eligible inputs. This is a local resource guard,
 not authenticated approval, infrastructure execution, observation or recovery.
+
+## Malformed handoff metadata before artifact hashing
+
+Local authorization rejects unsupported or nonliteral handoff format versions,
+operations other than `deployment-handoff`, and malformed 64-character lowercase
+SHA-256 plan digests before hashing potentially large artifact bytes. Eight
+synthetic regression cases guard this early failure path. Full canonical
+provenance validation remains mandatory; this does not authenticate an approver,
+execute infrastructure, or prove runtime acceptance.

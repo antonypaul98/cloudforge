@@ -316,6 +316,19 @@ def authorize_local_execution(
                  or type(handoff.status) is not str
                  or handoff.status != "ready-for-adapter-review")):
         raise ValueError("handoff is not eligible for local adapter review")
+    # Fail closed on malformed handoff metadata before hashing artifact bytes.
+    # The full provenance/document validation still runs for eligible inputs.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and (type(handoff.request.format_version) is not int
+                 or handoff.request.format_version != 1
+                 or type(handoff.request.operation) is not str
+                 or handoff.request.operation != "deployment-handoff"
+                 or type(handoff.request.plan_digest) is not str
+                 or len(handoff.request.plan_digest) != 64
+                 or any(char not in "0123456789abcdef"
+                        for char in handoff.request.plan_digest))):
+        raise ValueError("malformed handoff request metadata")
     # Reject stale target/handoff bindings before parsing reviewed IaC JSON.
     # The full handoff, artifact and approval checks remain mandatory below.
     if (type(handoff) is DeploymentHandoff
