@@ -388,11 +388,12 @@ approval revalidation still follow. No infrastructure is executed.
 
 ## Early stale authorization rejection before artifact hashing
 
-The local-only adapter checks the bounded execution-approval digest and exact
-handoff receipt binding before hashing potentially large artifact bytes. A
-changed claimed handoff reviewer, forged handoff receipt digest, or stale
-execution approval fails closed without hashing the artifact. Three synthetic
-regressions assert this ordering. Matching metadata still requires exact artifact
+When a caller-supplied execution-approval digest matches the exact request,
+the local-only adapter checks the bounded handoff receipt binding before hashing
+potentially large artifact bytes. A changed claimed handoff reviewer or forged
+handoff receipt digest fails closed before artifact hashing. Two synthetic
+regressions assert this ordering. When approval is stale, artifact mismatches
+retain their prior error precedence. Matching metadata still requires exact artifact
 SHA-256, canonical handoff validation, and full receipt serialization checks.
 This is resource-efficient integrity validation, not authenticated approval,
 deployment, infrastructure observation, or recovery.

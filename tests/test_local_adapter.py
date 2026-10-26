@@ -470,18 +470,13 @@ def test_stale_handoff_request_digest_fails_before_artifact_hash(monkeypatch, fi
             forged, artifact, execution, LocalExecutionApproval(execution.digest, "reviewer")
         )
 
-@pytest.mark.parametrize("case,error", [
-    ("stale-approval", ApprovalRequiredError),
-    ("changed-handoff-reviewer", ValueError),
-    ("stale-handoff-receipt", ValueError),
+@pytest.mark.parametrize("case", [
+    "changed-handoff-reviewer", "stale-handoff-receipt",
 ])
-def test_stale_authorization_binding_fails_before_artifact_hash(monkeypatch, case, error):
+def test_stale_handoff_receipt_fails_before_artifact_hash(monkeypatch, case):
     handoff, artifact, execution = sample()
     approval = LocalExecutionApproval(execution.digest, "reviewer")
-    if case == "stale-approval":
-        stale = "0" * 64 if execution.digest != "0" * 64 else "f" * 64
-        approval = LocalExecutionApproval(stale, "reviewer")
-    elif case == "changed-handoff-reviewer":
+    if case == "changed-handoff-reviewer":
         handoff = replace(handoff, approved_by="different-handoff-reviewer")
     else:
         stale = ("0" * 64 if execution.handoff_receipt_sha256 != "0" * 64
@@ -498,5 +493,5 @@ def test_stale_authorization_binding_fails_before_artifact_hash(monkeypatch, cas
         return original_sha256(value, *args, **kwargs)
 
     monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
-    with pytest.raises(error):
+    with pytest.raises(ValueError, match="request differs from exact local execution inputs"):
         authorize_local_execution(handoff, artifact, execution, approval)
