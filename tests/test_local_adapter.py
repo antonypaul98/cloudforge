@@ -535,3 +535,29 @@ def test_malformed_handoff_reviewer_fails_before_artifact_hash(monkeypatch, revi
     monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
     with pytest.raises(ValueError, match="handoff approved_by"):
         authorize_local_execution(forged, artifact, execution, approval)
+
+@pytest.mark.parametrize("invalid", [None, True, "forged", {}])
+def test_wrong_handoff_container_fails_before_artifact_hash(monkeypatch, invalid):
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("wrong handoff type must not hash artifact bytes")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="expected an accepted deployment handoff"):
+        authorize_local_execution(invalid, artifact, request, approval)
+
+
+@pytest.mark.parametrize("invalid", [None, True, "forged"])
+def test_wrong_handoff_request_type_fails_before_artifact_hash(monkeypatch, invalid):
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+    forged = replace(handoff, request=invalid)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("wrong nested request type must not hash artifact bytes")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="expected a canonical deployment request"):
+        authorize_local_execution(forged, artifact, request, approval)

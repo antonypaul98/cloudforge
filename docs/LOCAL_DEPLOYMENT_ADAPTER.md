@@ -409,3 +409,12 @@ self-consistent forged handoff receipt binding. Matching metadata is not
 authenticated reviewer proof: exact canonical handoff, artifact and fresh
 execution approval validation remain mandatory. No provider or infrastructure
 action is performed.
+
+## Early malformed handoff-container rejection
+
+Local-only authorization rejects a caller-supplied handoff or nested request
+that is not the exact expected dataclass type before hashing artifact bytes.
+Seven synthetic regression cases prohibit artifact hashing on these invalid
+container shapes. Valid handoffs still require complete canonical provenance,
+exact artifact binding and fresh execution approval. This does not authenticate
+a reviewer, access a provider or mutate infrastructure.

@@ -248,6 +248,12 @@ def authorize_local_execution(
     # Only immutable exact bytes may be bound to a local execution approval.
     if type(artifact) is not bytes:
         raise ValueError("artifact must be exact bytes")
+    # Reject forged container types before hashing exact artifact bytes. Full
+    # provenance and execution-approval validation still follow for valid types.
+    if type(handoff) is not DeploymentHandoff:
+        raise ValueError("expected an accepted deployment handoff")
+    if type(handoff.request) is not DeploymentRequest:
+        raise ValueError("expected a canonical deployment request")
     # A receipt cannot export identities longer than the canonical JSON ceiling.
     # Reject those before parsing the handoff or hashing a huge target/reviewer.
     # Other malformed inputs retain their existing validation paths.
