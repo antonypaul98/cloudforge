@@ -470,6 +470,27 @@ def verify_local_execution_audit_event(
     """Recheck a canonical redacted audit event against exact original inputs."""
     if type(audit_json) is not str or len(audit_json) > _MAX_LOCAL_AUDIT_JSON_CHARS:
         raise ValueError("expected bounded canonical local audit event JSON")
+    # Reject malformed evidence before expensive original-input revalidation.
+    # Canonical structure is not authenticity: exact receipt/approval checks follow.
+    try:
+        payload = json.loads(audit_json)
+        if (type(payload) is not dict
+                or set(payload) != {"format_version", "request_digest",
+                                   "receipt_sha256", "status", "infrastructure_mutated"}
+                or type(payload["format_version"]) is not int
+                or payload["format_version"] != 1
+                or payload["status"] != "authorized-local-only"
+                or type(payload["status"]) is not str
+                or payload["infrastructure_mutated"] is not False
+                or any(type(payload[key]) is not str
+                       or len(payload[key]) != 64
+                       or any(char not in "0123456789abcdef" for char in payload[key])
+                       for key in ("request_digest", "receipt_sha256"))
+                or audit_json != json.dumps(payload, sort_keys=True, indent=2,
+                                            ensure_ascii=True, allow_nan=False) + "\n"):
+            raise ValueError("noncanonical audit event")
+    except (ValueError, TypeError, KeyError, RecursionError) as exc:
+        raise ValueError("malformed canonical local audit event") from exc
     if audit_json != export_local_execution_audit_event(handoff, artifact, approval, receipt):
         raise ValueError("local audit event differs from exact local authorization")
     return True

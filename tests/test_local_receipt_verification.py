@@ -460,3 +460,30 @@ def test_local_audit_event_verification_has_no_external_side_effects(monkeypatch
         assert verify_local_execution_audit_event(
             handoff, artifact, approval, receipt, event
         ) is True
+
+@pytest.mark.parametrize("alter", [
+    pytest.param(lambda s: s.replace('"format_version": 1', '"format_version": true'), id="bool-version"),
+    pytest.param(lambda s: s.replace('"status": "authorized-local-only"', '"status": "deployed"'), id="forged-status"),
+    pytest.param(lambda s: s.replace('"infrastructure_mutated": false', '"infrastructure_mutated": 0'), id="numeric-mutation"),
+    pytest.param(lambda s: s.replace('"receipt_sha256": "', '"receipt_sha256": "0'), id="long-receipt-digest"),
+    pytest.param(lambda s: s.replace('"request_digest": "', '"request_digest": "G'), id="nonhex-request-digest"),
+    pytest.param(lambda s: s.replace('"status":', '"extra": true, "status":'), id="extra-field"),
+    pytest.param(lambda s: s.replace('"status":', '"status": "deployed", "status":'), id="duplicate-field"),
+    pytest.param(lambda s: s.replace('  "status":', ' "status":'), id="noncanonical-spacing"),
+    pytest.param(lambda s: s.rstrip("\n"), id="missing-newline"),
+    pytest.param(lambda s: "{broken", id="invalid-json"),
+])
+def test_malformed_audit_event_rejected_before_receipt_revalidation(monkeypatch, alter):
+    handoff, artifact, approval, receipt = _sample()
+    event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("malformed audit event must not revalidate original inputs")
+
+    monkeypatch.setattr(
+        "cloudforge.local_adapter.export_local_execution_audit_event", forbidden
+    )
+    with pytest.raises(ValueError, match="malformed canonical local audit event"):
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, alter(event)
+        )

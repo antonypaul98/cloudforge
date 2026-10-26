@@ -355,3 +355,13 @@ SHA-256 plan digests before hashing potentially large artifact bytes. Eight
 synthetic regression cases guard this early failure path. Full canonical
 provenance validation remains mandatory; this does not authenticate an approver,
 execute infrastructure, or prove runtime acceptance.
+
+## Fail-fast canonical audit-event preflight
+
+The redacted audit-event verifier rejects malformed JSON, noncanonical encoding,
+wrong format/status/mutation flags, extra or duplicate fields, and malformed
+lowercase SHA-256 fields **before** regenerating evidence from the original
+handoff, artifact and approval. Ten synthetic regressions assert that invalid
+audit strings cannot trigger receipt revalidation. Structurally valid but
+forged or stale audit evidence still requires full exact-input verification.
+This is not a signature, authenticated approval, deployment or recovery.
