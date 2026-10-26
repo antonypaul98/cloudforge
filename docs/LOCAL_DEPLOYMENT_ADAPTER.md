@@ -440,3 +440,18 @@ ordinary approval-required path. This is a bounded fail-fast integrity check,
 not authentication of either caller-supplied reviewer identity; full exact-input
 revalidation remains mandatory for matching identities. Three synthetic cases
 cover mismatched, whitespace-suffixed and bidirectional-control reviewer names.
+
+## Credential-free synthetic end-to-end demonstration
+
+After installing the package locally (`python -m pip install -e .`), run
+`python -m cloudforge.synthetic_demo`. It creates only in-memory synthetic
+plan, handoff and execution approvals, checks the exact immutable artifact,
+verifies canonical receipt and redacted audit evidence, then asserts that an
+altered artifact and a forged `recovered` audit status are rejected. The
+output is deterministic JSON with only SHA-256 digests, local-only status and
+explicit flags that authenticated review, deployment, observation and recovery
+have **not** occurred. Reviewer names, target identity and artifact bytes are
+not printed. No credentials, provider, network, shell or physical device are
+needed. Two integration tests also fail if this demo attempts network or shell
+entry points. This is synthetic integration evidence, not real-world deployment
+acceptance or approval authentication.

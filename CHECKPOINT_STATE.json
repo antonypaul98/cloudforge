@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
+  "current_branch_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #6 source head f696efbeb3680feaa6ee6d21c6087b14776072a9; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
-  "local_test_status": "CI permission-boundary regression: 3 scratch unittest cases passed (existing action guard plus 2 new); exact-source push and PR CI both passed 19 infrastructure tests (1 inapplicable skip) and 584 pytest tests on Python 3.11.17. Local full product suite not run.",
+  "branch_remote_status": "PR #6 source head 9a356b4002289138e6d7fbd216a8c838bcc8ac51; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
+  "local_test_status": "Credential-free synthetic demo and two integration regressions passed in exact-source push/PR CI: 586 pytest passed on Python 3.11.17, plus 19 infrastructure unittests (1 inapplicable skip). Local full product suite not run.",
   "pr_number": 6,
-  "ci_status": "Exact source-head push CI 40336513539 SUCCESS and PR CI 40336523024 SUCCESS (synthetic merge 5dc6b46 into main e4d9db3), both 19 infrastructure tests (1 skip) and 584 pytest passed. Final checkpoint evidence commit requires its own exact-head CI.",
+  "ci_status": "Source head 9a356b4002289138e6d7fbd216a8c838bcc8ac51: push CI 40416854601 SUCCESS and PR CI 40416862749 SUCCESS, both 586 pytest passed and 19 infrastructure tests (1 skip). Final checkpoint-evidence commit requires separate exact-head CI.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
-    "Independent exact-head review",
-    "Verified guarded merge and successful merged-main CI"
+    "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
+    "Verified SHA-guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Independent approval required by main ruleset 25825521; zero reviews. Guarded merge and merged-main CI not performed. External writer/worktree ownership unverified.",
-  "next_action": "Verify exact-head push/PR CI for checkpoint evidence commit, then obtain eligible independent approval; guarded merge and merged-main CI only after all gates pass. No infrastructure mutation.",
+  "known_blocker": "Main ruleset 25825521 still requires one eligible independent approval (zero reviews). Owner requested solo workflow, but ruleset write is not available through connected integration. Guarded merge and merged-main CI pending; exclusive external writer/worktree ownership unverified.",
+  "next_action": "Verify final evidence-head push and PR CI, then have owner set required approvals to 0 in ruleset 25825521 while retaining required test and non-fast-forward/deletion rules. Re-read ruleset and PR checks before SHA-guarded merge. Verify merged-main CI; no infrastructure mutation.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-26T14:07:37.496Z",
-  "observed_branch_sha": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
-  "observed_feature_sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
+  "observed_at_utc": "2026-10-26T23:02:16Z",
+  "observed_branch_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
+  "observed_feature_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -31,23 +31,23 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "open, ready for review; zero reviews; merge blocked by independent approval",
+  "pr_state": "open, ready for review; zero reviews; merge blocked by unchanged independent approval ruleset",
   "ci_state": {
     "push_run": {
-      "id": 40336513539,
-      "sha": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
+      "id": 40416854601,
+      "sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40336513539"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40416854601"
     },
     "pr_run": {
-      "id": 40336523024,
-      "source_head_sha": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
+      "id": 40416862749,
+      "source_head_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40336523024"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40416862749"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -69,11 +69,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent PR review",
-    "BLOCKER": "Zero submitted reviews; main ruleset 25825521 requires one independent approval. No guarded merge.",
-    "SAFE_WORK_COMPLETED": "Read-only PR CI permission guard with two new unittest cases and four synthetic escalation variants; exact-source push and PR CI passed 19 infrastructure tests (1 skip), 584 product tests each.",
-    "REMOTE_SHA": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
-    "NEXT_ACTION": "Verify final checkpoint-head CI; obtain independent approval before guarded merge."
+    "BLOCKED_LAYER": "Repository branch ruleset (not test failure)",
+    "BLOCKER": "Ruleset 25825521 requires one independent review; zero submitted. Connected GitHub integration cannot write rulesets.",
+    "SAFE_WORK_COMPLETED": "Published synthetic in-memory end-to-end local authorization demo and 2 integration tests; exact-source push CI 40416854601 and PR CI 40416862749 succeeded (586 pytest, 19 infrastructure tests with 1 skip). No real execution.",
+    "REMOTE_SHA": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
+    "NEXT_ACTION": "Verify final evidence-head CI, then owner changes required approvals to zero; revalidate before guarded merge."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -128,7 +128,7 @@
   },
   "help_status": {
     "antony_help_needed": true,
-    "reason": "One eligible independent reviewer or an explicitly authorized review-policy decision; no routine Mac/device testing.",
+    "reason": "User-only GitHub ruleset change to required approvals=0 (user explicitly authorized solo workflow); no routine Mac/device testing.",
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
@@ -182,6 +182,19 @@
     "synthetic_merge_sha": "5dc6b46",
     "local_scratch_unittest_passed": 3,
     "external_infrastructure_mutated": false,
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_local_acceptance_demo": {
+    "source_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
+    "module": "src/cloudforge/synthetic_demo.py",
+    "tests": "tests/test_synthetic_demo.py",
+    "new_tests": 2,
+    "source_push_ci": 40416854601,
+    "source_pr_ci": 40416862749,
+    "pytest_passed": 586,
+    "infrastructure_tests": 19,
+    "infrastructure_skipped": 1,
+    "scope": "Synthetic approvals, exact artifact and audit verification, forged recovery and changed-artifact rejection; no external infrastructure or reviewer authentication.",
     "merged_main_ci": "not_run"
   }
 }

@@ -69,3 +69,23 @@ regressions. Exact-head CI, independent approval, guarded merge and merged-main
 CI remain separate gates. No provider, network, subprocess, container or
 infrastructure mutation is authorized or claimed; runtime, observation and
 recovery acceptance remain pending.
+
+## Synthetic local authorization smoke acceptance — 2026-10-26
+
+The credential-free, in-memory demo `python -m cloudforge.synthetic_demo`
+exercises the full synthetic plan → handoff → exact-artifact authorization →
+receipt verification → redacted audit path. It rejects a changed artifact and
+a forged recovery status; two integration regressions cover deterministic,
+redacted output and forbidden network/shell entry points. Synthetic reviewer
+names are NOT authenticated human approvals. No provider, deployment, runtime,
+observability or recovery acceptance is claimed.
+
+Source commit `9a356b4002289138e6d7fbd216a8c838bcc8ac51` passed push CI
+[40416854601](https://github.com/antonypaul98/cloudforge/actions/runs/40416854601)
+and PR CI
+[40416862749](https://github.com/antonypaul98/cloudforge/actions/runs/40416862749):
+586 pytest passed and 19 infrastructure tests ran (1 inapplicable skip) on
+Python 3.11.17. The final checkpoint evidence commit needs its own exact-head CI.
+PR #6 is unmerged; main ruleset 25825521 still requires an independent approval.
+The repository owner has requested a solo-developer workflow, but that ruleset
+change has not been applied. No guarded merge or merged-main CI.
