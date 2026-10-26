@@ -495,3 +495,43 @@ def test_stale_handoff_receipt_fails_before_artifact_hash(monkeypatch, case):
     monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
     with pytest.raises(ValueError, match="request differs from exact local execution inputs"):
         authorize_local_execution(handoff, artifact, execution, approval)
+
+
+
+@pytest.mark.parametrize("document", ["", " ", "\n\t"])
+def test_blank_handoff_document_fails_before_artifact_hash(monkeypatch, document):
+    handoff, artifact, execution = sample()
+    forged = replace(handoff, request=replace(handoff.request, document=document))
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("blank handoff document must not hash artifact")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        authorize_local_execution(forged, artifact, execution, approval)
+
+
+@pytest.mark.parametrize("reviewer", [
+    "", " reviewer", "reviewer ", "reviewer\n", "rev\u202eiewer", None,
+])
+def test_malformed_handoff_reviewer_fails_before_artifact_hash(monkeypatch, reviewer):
+    from dataclasses import asdict
+    from cloudforge.local_adapter import _digest
+    handoff, artifact, execution = sample()
+    forged = replace(handoff, approved_by=reviewer)
+    # Match the forged full-handoff digest to exercise identity validation,
+    # rather than accidentally passing only because the receipt is stale.
+    execution = replace(execution, handoff_receipt_sha256=_digest(asdict(forged)))
+    approval = LocalExecutionApproval(execution.digest, "reviewer")
+    from cloudforge import local_adapter
+    original_sha256 = local_adapter.hashlib.sha256
+
+    def guarded_sha256(value=b"", *args, **kwargs):
+        if value == artifact:
+            raise AssertionError("malformed reviewer must not hash artifact")
+        return original_sha256(value, *args, **kwargs)
+
+    monkeypatch.setattr(local_adapter.hashlib, "sha256", guarded_sha256)
+    with pytest.raises(ValueError, match="handoff approved_by"):
+        authorize_local_execution(forged, artifact, execution, approval)

@@ -307,7 +307,8 @@ def authorize_local_execution(
     if (type(handoff) is DeploymentHandoff
             and type(handoff.request) is DeploymentRequest
             and (type(handoff.request.document) is not str
-                 or len(handoff.request.document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS)):
+                 or len(handoff.request.document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS
+                 or not handoff.request.document.strip())):
         raise ValueError("malformed handoff provenance or document")
     # A forged or ineligible handoff must not trigger artifact hashing.
     # Full canonical handoff validation still follows for eligible inputs.
@@ -347,6 +348,11 @@ def authorize_local_execution(
     # A matching caller-supplied digest permits an early handoff receipt check;
     # it does not authenticate the reviewer.
     approval_matches_request = approval.request_digest == request.digest
+    # An ambiguous claimed handoff reviewer cannot authorize even local work.
+    # Fail before hashing artifact bytes when approval matches the request;
+    # the full exact-input validation still follows for eligible handoffs.
+    if approval_matches_request and type(handoff) is DeploymentHandoff:
+        _text(handoff.approved_by, "handoff approved_by")
     # A handoff can change its claimed reviewer or receipt metadata without
     # changing the embedded request digest. Reject stale full-handoff binding
     # before parsing reviewed IaC, but only for bounded scalar handoffs.

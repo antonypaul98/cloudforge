@@ -397,3 +397,15 @@ retain their prior error precedence. Matching metadata still requires exact arti
 SHA-256, canonical handoff validation, and full receipt serialization checks.
 This is resource-efficient integrity validation, not authenticated approval,
 deployment, infrastructure observation, or recovery.
+
+
+## Early blank-document and ambiguous-reviewer rejection
+
+Local-only authorization rejects an empty or whitespace-only reviewed handoff
+document and malformed claimed handoff reviewer text before hashing artifact
+bytes. Nine synthetic regression cases cover blank documents and reviewer
+whitespace, invisible controls, and missing identities, including a
+self-consistent forged handoff receipt binding. Matching metadata is not
+authenticated reviewer proof: exact canonical handoff, artifact and fresh
+execution approval validation remain mandatory. No provider or infrastructure
+action is performed.
