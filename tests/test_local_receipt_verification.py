@@ -495,7 +495,7 @@ def test_stale_canonical_audit_binding_fails_before_original_revalidation(monkey
     event = export_local_execution_audit_event(handoff, artifact, approval, receipt)
     payload = json.loads(event)
     payload[field] = "0" * 64 if payload[field] != "0" * 64 else "f" * 64
-    stale_event = json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\\n"
+    stale_event = json.dumps(payload, sort_keys=True, indent=2, ensure_ascii=True) + "\n"
 
     def forbidden(*args, **kwargs):
         raise AssertionError("stale audit binding must fail before original-input revalidation")
