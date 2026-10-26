@@ -301,6 +301,14 @@ def authorize_local_execution(
         _text(request.target_id, "target_id")
     except ValueError as exc:
         raise ValueError("malformed local execution request") from exc
+    # A malformed or oversized reviewed document cannot authorize local work.
+    # Reject it before hashing potentially large artifact bytes. Full canonical
+    # document and provenance validation still occurs in preparation below.
+    if (type(handoff) is DeploymentHandoff
+            and type(handoff.request) is DeploymentRequest
+            and (type(handoff.request.document) is not str
+                 or len(handoff.request.document) > _MAX_LOCAL_HANDOFF_DOCUMENT_CHARS)):
+        raise ValueError("malformed handoff provenance or document")
     # Reject stale target/handoff bindings before parsing reviewed IaC JSON.
     # The full handoff, artifact and approval checks remain mandatory below.
     if (type(handoff) is DeploymentHandoff

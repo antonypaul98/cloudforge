@@ -388,3 +388,21 @@ def test_oversized_handoff_scalar_rejected_before_handoff_hash(monkeypatch, fiel
             handoff, artifact, execution,
             LocalExecutionApproval(execution.digest, "reviewer"),
         )
+
+
+@pytest.mark.parametrize("document", [
+    pytest.param("x" * 65537, id="oversized-document"),
+    pytest.param(None, id="missing-document"),
+    pytest.param(b"{}", id="binary-document"),
+])
+def test_malformed_handoff_document_fails_before_artifact_hash(monkeypatch, document):
+    handoff, artifact, request = sample()
+    approval = LocalExecutionApproval(request.digest, "reviewer")
+    handoff = replace(handoff, request=replace(handoff.request, document=document))
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("invalid handoff document must not hash artifact bytes")
+
+    monkeypatch.setattr("cloudforge.local_adapter.hashlib.sha256", forbidden)
+    with pytest.raises(ValueError, match="malformed handoff provenance or document"):
+        authorize_local_execution(handoff, artifact, request, approval)

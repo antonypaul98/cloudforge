@@ -326,3 +326,13 @@ IaC document retains its existing 65,536-character limit. Five synthetic
 regressions verify that oversized scalar fields cannot reach the handoff hash.
 This is a local resource-integrity safeguard, not authenticated approval or
 infrastructure execution.
+
+## Early malformed-document rejection before artifact hashing
+
+Local authorization now rejects a non-text or greater-than-65,536-character
+handoff document before hashing the exact artifact bytes. Three synthetic
+regressions cover oversized text, missing text, and binary document input while
+forbidding SHA-256 calls. This is a resource-use guard only: the full canonical
+handoff, provenance, artifact and separate approval checks still apply. It does
+not read a filesystem, run a provider, mutate infrastructure, or authenticate
+a reviewer.
