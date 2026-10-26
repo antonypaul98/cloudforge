@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
+  "current_branch_sha": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Source head a62f6ec511c4660e260ad98fc428e0e85ef5a29a published on PR #6; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; ruleset 25825521.",
-  "local_test_status": "Two new synthetic pytest regressions for forged embedded receipt request bindings; local pinned-Python suite not run due shell GitHub DNS. Exact source-head push and PR CI both passed 584 tests on Python 3.11.17.",
+  "branch_remote_status": "PR #6 at 01f5a7779b15af6d9b75b07a5639b943df8c7081; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
+  "local_test_status": "Node 24-compatible CI actions and one infrastructure guard regression published. Exact source-head PR CI 40329631314 succeeded: 17 infrastructure tests (1 inapplicable skip), 584 pytest passed on Python 3.11.17. Local pinned suite not run; shell GitHub DNS unavailable.",
   "pr_number": 6,
-  "ci_status": "Source head a62f6ec511c4660e260ad98fc428e0e85ef5a29a: push 40320003614 SUCCESS, PR 40320010790 SUCCESS, 584 pytest passed each; PR synthetic merge 8704944 into main e4d9db3. Final checkpoint-only commit requires its own CI.",
+  "ci_status": "PR synthetic-merge CI 40329631314 SUCCESS at source head 01f5a7779b15af6d9b75b07a5639b943df8c7081; push run not independently confirmed; final checkpoint-state commit requires its own exact-head CI.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Active main ruleset 25825521 requires independent approval and passing test; zero reviews. No merge. Exclusive external writer/worktree ownership unverified.",
-  "next_action": "Verify CI for final checkpoint evidence commit, obtain independent approval, guarded merge and merged-main CI; no infrastructure mutation.",
+  "known_blocker": "Independent approval required by main ruleset 25825521; zero reviews. Guarded merge and merged-main CI not performed. External writer/worktree ownership unverified.",
+  "next_action": "Verify CI for final checkpoint-state commit; obtain independent approval before guarded merge and merged-main CI. No infrastructure mutation.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-26T12:07:28.007Z",
-  "observed_branch_sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
+  "observed_at_utc": "2026-10-26T13:20:51.205Z",
+  "observed_branch_sha": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
   "observed_feature_sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
@@ -33,7 +33,17 @@
   },
   "pr_state": "open, ready for review; zero reviews; merge blocked by independent approval",
   "ci_state": {
-    "push_run": {
+    "push_run": null,
+    "pr_run": {
+      "id": 40329631314,
+      "source_head_sha": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40329631314"
+    },
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 40320003614,
       "sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
       "event": "push",
@@ -41,25 +51,22 @@
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40320003614"
     },
-    "pr_run": {
+    "previous_pr_run": {
       "id": 40320010790,
       "source_head_sha": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40320010790"
-    },
-    "merged_main_run": null,
-    "previous_push_run": null,
-    "previous_pr_run": null
+    }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Independent PR review; shell GitHub DNS unavailable",
     "BLOCKER": "Zero independent reviews; guarded merge blocked.",
-    "SAFE_WORK_COMPLETED": "Published early forged embedded receipt request binding rejection with 2 synthetic regressions; source push and PR CI passed 584 tests each at a62f6ec511c4660e260ad98fc428e0e85ef5a29a.",
-    "REMOTE_SHA": "a62f6ec511c4660e260ad98fc428e0e85ef5a29a",
-    "NEXT_ACTION": "Verify final checkpoint-head CI and obtain independent approval before merge."
+    "SAFE_WORK_COMPLETED": "Updated Node 20-dependent CI actions to Node 24-compatible majors and added one infrastructure guard regression; source-head PR CI 40329631314 succeeded with 17 infrastructure tests (1 skip) and 584 pytest passed.",
+    "REMOTE_SHA": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
+    "NEXT_ACTION": "Verify final checkpoint-head CI; obtain independent approval before merge."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -144,5 +151,17 @@
     "pr_ci": 40304740484,
     "merged_main_ci": "not_run",
     "acceptance": "in_progress"
+  },
+  "ci_runtime_maintenance": {
+    "change": "actions/checkout@v4 to @v5; actions/setup-python@v5 to @v6; Node 24-compatible action runtimes",
+    "source_head_sha": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
+    "pr_ci_run": 40329631314,
+    "infrastructure_guard_tests": 17,
+    "inapplicable_skips": 1,
+    "pytest_passed": 584,
+    "source": "GitHub PR job logs",
+    "push_ci": "unverified",
+    "final_checkpoint_head_ci": "pending",
+    "infrastructure_mutated": false
   }
 }
