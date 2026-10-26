@@ -421,6 +421,15 @@ def verify_local_execution_receipt(
     if (receipt.status != "authorized-local-only"
             or receipt.infrastructure_mutated is not False):
         raise ValueError("local-only receipt cannot claim deployment or mutation")
+    # When the supplied execution approval is bound to this same request,
+    # reject a forged receipt reviewer before hashing artifact bytes. Stale
+    # approvals still follow the normal ApprovalRequiredError path below.
+    # Matching caller-supplied names are not proof of authenticated identity.
+    if (type(approval) is LocalExecutionApproval
+            and approval.request_digest == receipt.request_digest
+            and type(approval.approved_by) is str
+            and receipt.approved_by != approval.approved_by):
+        raise ValueError("receipt differs from exact local execution authorization")
     expected = authorize_local_execution(handoff, artifact, receipt.request, approval)
     if receipt != expected:
         raise ValueError("receipt differs from exact local execution authorization")

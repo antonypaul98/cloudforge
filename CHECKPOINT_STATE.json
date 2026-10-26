@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
+  "current_branch_sha": "df47f62401b53c5713b852afdd8327ab6eb91581",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #6 source head f2a03092abf7f173475ee4f87a6c6c9d30283078, main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7, 0 reviews; active ruleset 25825521.",
-  "local_test_status": "Four new synthetic regressions added. Shell local suite not run (GitHub DNS unavailable). Exact-source push and PR CI both passed 579 pytest cases on Python 3.11.17.",
+  "branch_remote_status": "Observed PR #6 head df47f62401b53c5713b852afdd8327ab6eb91581, main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7, zero reviews, ruleset 25825521; new change publication pending.",
+  "local_test_status": "Three new synthetic regressions authored; shell local suite not run (GitHub DNS unavailable). Exact-head CI pending. Prior 579 passing tests apply only to df47f624.",
   "pr_number": 6,
-  "ci_status": "Exact source head f2a03092abf7f173475ee4f87a6c6c9d30283078: push CI 40304732336 SUCCESS; PR CI 40304740484 SUCCESS (synthetic merge 7e93c1ac into main e4d9db3), 579 pytest passed each. Follow-up checkpoint-only commit will require its own CI.",
+  "ci_status": "PENDING for new source/test/docs/checkpoint commit; previous exact-head push CI 40304882337 and PR CI 40304890743 passed 579 tests at df47f624 only.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Independent exact-head review",
     "Verified guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Active main ruleset 25825521 requires one independent approving review and passing test check. Zero reviews; guarded merge blocked. External writer/worktree ownership unverified.",
-  "next_action": "Verify CI on the final checkpoint-record commit, obtain independent approval, then guarded merge and merged-main CI. Do not mutate infrastructure.",
+  "known_blocker": "Independent approving review required by active main ruleset 25825521; zero reviews. CI for new head pending; external writer/worktree ownership unverified.",
+  "next_action": "Verify new exact-head push and PR CI; update canonical checkpoint evidence; obtain independent approval before guarded merge and merged-main CI.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-26T10:06:28Z",
-  "observed_branch_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
-  "observed_feature_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
+  "observed_branch_sha": "df47f62401b53c5713b852afdd8327ab6eb91581",
+  "observed_feature_sha": "df47f62401b53c5713b852afdd8327ab6eb91581",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,7 +33,10 @@
   },
   "pr_state": "open, ready for review; zero reviews; merge blocked by independent approval",
   "ci_state": {
-    "push_run": {
+    "push_run": null,
+    "pr_run": null,
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 40304732336,
       "sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
       "event": "push",
@@ -41,31 +44,22 @@
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40304732336"
     },
-    "pr_run": {
+    "previous_pr_run": {
       "id": 40304740484,
       "source_head_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40304740484"
-    },
-    "merged_main_run": null,
-    "previous_push_run": {
-      "id": 38166433256,
-      "sha": "ed7b59fc2b104f50c809f0e52d506bc1ab980fe4",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/38166433256"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Independent PR review; shell GitHub DNS unavailable",
-    "BLOCKER": "Zero independent reviews; exclusive external writer/worktree ownership unverified.",
-    "SAFE_WORK_COMPLETED": "Early forged receipt outcomes rejected before artifact hashing; 4 synthetic regressions; exact source head f2a03092abf7f173475ee4f87a6c6c9d30283078 push and PR CI both passed 579 pytest cases.",
-    "REMOTE_SHA": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
-    "NEXT_ACTION": "Verify final checkpoint-head CI, obtain independent review before merge."
+    "BLOCKER": "Zero independent reviews; new exact-head CI pending.",
+    "SAFE_WORK_COMPLETED": "Three forged receipt-reviewer early-failure synthetic regressions authored; no infrastructure mutation.",
+    "REMOTE_SHA": "df47f62401b53c5713b852afdd8327ab6eb91581",
+    "NEXT_ACTION": "Publish and verify exact-head CI, then preserve evidence; obtain independent approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -124,6 +118,23 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
+    "name": "early forged receipt reviewer mismatch rejection before artifact hashing",
+    "feature_sha": null,
+    "source_path": "src/cloudforge/local_adapter.py",
+    "regression_path": "tests/test_local_receipt_verification.py",
+    "new_pytest_cases": 3,
+    "exact_head_push_ci": null,
+    "pr_ci": null,
+    "merged_main_ci": "not_run",
+    "acceptance": "pending exact-head CI and independent review"
+  },
+  "intermediate_failed_ci": {
+    "sha": "6563a204bed6c3a18e9dfb9d840191b51e17d891",
+    "push_run": 40278002880,
+    "pr_run": 40278008615,
+    "result": "1 failed, 559 passed; existing binary-digest error precedence; corrected in 459766b25696fa1802e3b6608cb7c9e96159b379"
+  },
+  "previous_safeguard": {
     "name": "early forged local-only receipt outcome rejection before artifact hashing",
     "feature_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
     "source_path": "src/cloudforge/local_adapter.py",
@@ -133,11 +144,5 @@
     "pr_ci": 40304740484,
     "merged_main_ci": "not_run",
     "acceptance": "in_progress"
-  },
-  "intermediate_failed_ci": {
-    "sha": "6563a204bed6c3a18e9dfb9d840191b51e17d891",
-    "push_run": 40278002880,
-    "pr_run": 40278008615,
-    "result": "1 failed, 559 passed; existing binary-digest error precedence; corrected in 459766b25696fa1802e3b6608cb7c9e96159b379"
   }
 }

@@ -426,3 +426,13 @@ ineligible status, or infrastructure mutation before hashing artifact bytes or
 revalidating the handoff. Four synthetic regressions guard the early failure.
 Valid receipts still undergo exact artifact, handoff, approval and provenance
 revalidation. This is not reviewer authentication or real deployment evidence.
+
+## Early forged receipt-reviewer rejection
+
+When a supplied execution approval references the same request digest as a
+local-only receipt, receipt verification rejects a different claimed reviewer
+before hashing artifact bytes. Stale or missing approvals still follow the
+ordinary approval-required path. This is a bounded fail-fast integrity check,
+not authentication of either caller-supplied reviewer identity; full exact-input
+revalidation remains mandatory for matching identities. Three synthetic cases
+cover mismatched, whitespace-suffixed and bidirectional-control reviewer names.
