@@ -558,3 +558,9 @@ The previous local execution approval must fail with `ApprovalRequiredError`.
 This is a synthetic authorization-boundary regression, not authenticated
 reviewer identity, provider execution, deployment, observation or recovery.
 CI and protected-main integration are separate acceptance gates.
+
+Source commit `150bc7627228f42ec2a287aa4bee389e78c23eea` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493027663)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493033349):
+597 pytest passed; 19 infrastructure tests (1 skipped), Python 3.11.17.
+Final evidence-head CI and protected integration remain pending.

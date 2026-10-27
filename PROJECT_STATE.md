@@ -224,3 +224,15 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485790877)
 **596 pytest passed**, 19 infrastructure tests (1 skipped), Python 3.11.17.
 Final evidence-head CI, protected merge and merged-main CI are separate gates.
 PR #6 remains unmerged due to the active independent-review rule.
+
+## Synthetic changed-target approval replay — 2026-10-27 ET
+
+A fresh synthetic handoff for a different target, with unchanged plan and
+artifact bytes, now requires a fresh local execution approval. One regression
+checks fail-closed replay behavior. Source commit `150bc7627228f42ec2a287aa4bee389e78c23eea` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493027663)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493033349):
+**597 pytest passed**, 19 infrastructure tests (1 skipped), Python 3.11.17.
+Final evidence-head CI and protected integration are separate gates. PR #6
+remains blocked by one independent approving review. No real deployment,
+observation, recovery or authenticated human approval is claimed.
