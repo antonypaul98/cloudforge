@@ -285,3 +285,19 @@ synthetic determinism guard only, not universal sandboxing, authenticated
 human review, deployment, observation or recovery. Exact final-head CI and
 protected merge remain separate acceptance gates. PR #6 is still open because
 main requires an independent approving review.
+
+## Cross-artifact redacted audit replay regression — 2026-10-27 ET
+
+A new credential-free test constructs two separately authorized synthetic local
+artifacts under the same handoff, target and reviewer text. Each produces valid
+redacted audit evidence, but replaying either valid event against the other
+artifact's fresh authorization must fail. The test also checks that raw artifact
+bytes, target and reviewer strings are absent from the redacted audit. This is
+an in-process provenance regression, not authenticated human review or a real
+provider execution. Source commit `d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67`
+passed [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40546226344):
+603 pytest passed and 19 infrastructure tests run (18 passed, 1 skipped),
+Python 3.11.17. Push CI has not been independently verified. PR #6 is open;
+GitHub rejected the SHA-guarded merge (HTTP 405) because one independent
+approving review is still required. Merged-main CI and real deployment,
+observation and recovery remain unaccepted.
