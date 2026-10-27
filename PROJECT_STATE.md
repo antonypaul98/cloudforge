@@ -250,3 +250,12 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40500602003)
 Final evidence-head CI and protected integration are separate gates.
 This is synthetic digest binding, not reviewer authentication, deployment,
 observation or recovery.
+
+## Synthetic forged authenticated-review audit claim — 2026-10-27 ET
+
+The credential-free demo now rejects an added `authenticated_review: true` field
+in otherwise canonical local audit JSON. One regression asserts the fail-closed
+result and that the original redacted audit contains no authentication claim.
+This is synthetic evidence-schema integrity, not identity authentication,
+provider deployment, observation or recovery. Published source `489aa6935d63718ccfcd49beb24f60443855d94f`;
+exact-head CI, protected merge and merged-main CI remain unverified.
