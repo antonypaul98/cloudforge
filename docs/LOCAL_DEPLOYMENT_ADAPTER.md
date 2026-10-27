@@ -597,3 +597,7 @@ authorization demo runs. This helps detect accidental reads of local credentials
 or user files in the smoke path. It is not a complete filesystem sandbox or
 proof that every possible syscall is blocked. No real infrastructure,
 observation, recovery, or authenticated human review is performed.
+
+## Synthetic process-environment boundary regression
+
+The credential-free in-memory demo is tested with common Python process-environment read and mutation entry points forbidden (`os.getenv`, `os.putenv`, `os.unsetenv` and standard `os.environ` mapping methods). This helps catch accidental credential access during the synthetic authorization path. It is not an OS sandbox, a proof of all environment isolation, an authenticated review, deployment, observation or recovery. The regression runs without real credentials or infrastructure.

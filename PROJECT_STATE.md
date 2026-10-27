@@ -270,3 +270,7 @@ it is not a full OS sandbox or a runtime acceptance test. Source commit
 40517987403 were queued when recorded; success is not yet claimed. Final
 state-head CI, protected merge and merged-main CI are separate gates. No real
 infrastructure mutation, authenticated review, observation or recovery.
+
+## Synthetic process-environment privacy regression — 2026-10-27
+
+PR #6 now includes `tests/test_synthetic_environment_guard.py`, which blocks common Python environment reads and writes while the credential-free in-memory authorization demonstration executes. This is a bounded regression, not complete process isolation, reviewer authentication or deployment proof. Exact-head CI, protected merge, merged-main CI and checkpoint acceptance remain pending. No real infrastructure was modified.
