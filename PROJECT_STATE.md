@@ -132,11 +132,15 @@ main's one-independent-review requirement. No real deployment, observation,
 recovery, or physical hardware acceptance.
 
 
-## Synthetic forged observation/recovery evidence — CI pending (2026-10-26)
+## Synthetic forged observation/recovery evidence — source CI passed (2026-10-26)
 
 The local-only demo now independently rejects canonical-shaped audit events
 with injected `deployment_observed: true` or `recovery_performed: true` claims.
 One dedicated regression checks both rejection flags and ensures the redacted
 original event contains neither field. This is synthetic schema integrity only,
-not real observation or recovery. Source-head CI, protected merge and merged-main
-CI remain pending; the main ruleset still requires independent approval.
+not real observation or recovery. Source commit `0ad71e8aa5d56a81f1e079c816cad815f2fa5376` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40442346284)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40442352291):
+**589 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
+separate gates; the main ruleset still requires independent approval.
