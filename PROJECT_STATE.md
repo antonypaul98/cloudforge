@@ -94,5 +94,10 @@ change has not been applied. No guarded merge or merged-main CI.
 
 The in-memory smoke demo also tests rejection of a forged receipt reviewer and
 cross-target authorization despite a self-consistent caller-supplied approval.
-The expanded regression must pass exact-head CI before it is accepted; this is
-not authenticated reviewer identity, deployment, observation or recovery.
+Source commit `b3a05446f9668341203e285a29f87dc58c485f2c` passed push CI
+[40424017068](https://github.com/antonypaul98/cloudforge/actions/runs/40424017068)
+and PR CI
+[40424023059](https://github.com/antonypaul98/cloudforge/actions/runs/40424023059):
+586 pytest passed and 19 infrastructure tests ran (1 inapplicable skip) on
+Python 3.11.17. The final evidence-state commit requires separate CI.
+This is not authenticated reviewer identity, deployment, observation or recovery.
