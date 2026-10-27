@@ -19,6 +19,6 @@ python -m cloudforge.synthetic_demo
 python -m pytest -q
 ```
 
-The demo prints deterministic JSON with a redacted audit event and four synthetic rejection checks: altered artifact, forged recovery status, forged receipt reviewer and cross-target authorization. Look for `"demo_only": true`, `"infrastructure_mutated": false`, `"deployment_observed": false`, `"recovery_performed": false` and `"authenticated_review": false`. A passing demonstration proves only the synthetic authorization path, **not** a real deployment or authenticated human approval.
+The demo prints deterministic JSON with a redacted audit event and seven synthetic rejection checks: altered artifact, forged recovery status, forged receipt reviewer, cross-target authorization, forged infrastructure mutation, forged deployment observation and forged recovery evidence. Look for `"demo_only": true`, `"infrastructure_mutated": false`, `"deployment_observed": false`, `"recovery_performed": false` and `"authenticated_review": false`. A passing demonstration proves only the synthetic authorization path, **not** a real deployment or authenticated human approval.
 
 For implementation boundaries, see [the local adapter specification](docs/LOCAL_DEPLOYMENT_ADAPTER.md) and [checkpoint state](CHECKPOINT_STATE.json). Real deployment and recovery require separate runtime implementation, independent validation and explicit authorization.

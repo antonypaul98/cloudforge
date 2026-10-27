@@ -109,6 +109,22 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("forged infrastructure mutation was accepted")
 
+    # A redacted authorization event cannot be promoted to proof of
+    # deployment observation or recovery by appending canonical JSON fields.
+    for forbidden_claim in ("deployment_observed", "recovery_performed"):
+        forged_claim_audit = json.dumps(
+            {**json.loads(audit_json), forbidden_claim: True},
+            sort_keys=True, indent=2, ensure_ascii=True,
+        ) + "\n"
+        try:
+            verify_local_execution_audit_event(
+                handoff, artifact, approval, receipt, forged_claim_audit,
+            )
+        except ValueError:
+            pass
+        else:
+            raise RuntimeError(f"forged {forbidden_claim} audit claim was accepted")
+
     return {
         "demo_only": True,
         "authenticated_review": False,
@@ -121,6 +137,8 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
             "forged_mutation_evidence": True,
+            "forged_observation_evidence": True,
+            "forged_recovery_evidence": True,
         },
         "redacted_audit_event": json.loads(audit_json),
     }

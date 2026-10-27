@@ -21,6 +21,8 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "forged_receipt_reviewer": True,
         "cross_target_authorization": True,
         "forged_mutation_evidence": True,
+        "forged_observation_evidence": True,
+        "forged_recovery_evidence": True,
     }
     event = first["redacted_audit_event"]
     assert event["status"] == "authorized-local-only"
@@ -79,5 +81,18 @@ def test_synthetic_demo_rejects_forged_infrastructure_mutation_claim():
     result = run_synthetic_local_authorization_demo()
     assert result["synthetic_rejections"]["forged_mutation_evidence"] is True
     assert result["redacted_audit_event"]["infrastructure_mutated"] is False
+    assert result["deployment_observed"] is False
+    assert result["recovery_performed"] is False
+
+
+
+def test_synthetic_demo_rejects_forged_observation_and_recovery_claims():
+    """Local authorization audit evidence cannot claim observed or recovered."""
+    result = run_synthetic_local_authorization_demo()
+    assert result["synthetic_rejections"]["forged_observation_evidence"] is True
+    assert result["synthetic_rejections"]["forged_recovery_evidence"] is True
+    event = result["redacted_audit_event"]
+    assert "deployment_observed" not in event
+    assert "recovery_performed" not in event
     assert result["deployment_observed"] is False
     assert result["recovery_performed"] is False

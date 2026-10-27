@@ -472,3 +472,13 @@ The credential-free in-memory demo also changes the canonical audit event's
 that the local-only audit verifier rejects this forged claim. The public demo
 reports only a redacted rejection boolean. It does not authenticate an approver,
 mutate infrastructure, observe a deployment or perform recovery.
+
+
+## Synthetic forged observation and recovery audit rejection
+
+The credential-free demo also injects canonical JSON fields claiming
+`deployment_observed: true` and `recovery_performed: true` into the
+redacted local authorization audit event. Each forged claim must be rejected
+independently by exact-schema audit verification. The output exposes only
+redacted rejection booleans; it does not authenticate reviewers, observe a
+provider, perform deployment or recover infrastructure.

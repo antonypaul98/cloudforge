@@ -130,3 +130,13 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40436198964)
 3.11.17. Final evidence-head CI is separate; PR #6 remains unmerged due to
 main's one-independent-review requirement. No real deployment, observation,
 recovery, or physical hardware acceptance.
+
+
+## Synthetic forged observation/recovery evidence — CI pending (2026-10-26)
+
+The local-only demo now independently rejects canonical-shaped audit events
+with injected `deployment_observed: true` or `recovery_performed: true` claims.
+One dedicated regression checks both rejection flags and ensures the redacted
+original event contains neither field. This is synthetic schema integrity only,
+not real observation or recovery. Source-head CI, protected merge and merged-main
+CI remain pending; the main ruleset still requires independent approval.
