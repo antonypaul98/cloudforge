@@ -500,3 +500,12 @@ entry points forbidden when present on the test platform. This supplements
 existing subprocess and shell checks. It is a bounded synthetic regression,
 not a complete operating-system sandbox, a provider integration, a real
 deployment, or authenticated reviewer evidence.
+
+## Credential-free CLI environment independence (synthetic regression)
+
+`tests/test_synthetic_demo.py` launches the documented CLI with only fabricated
+AWS, OpenAI and CloudForge environment sentinels added to the test process.
+It asserts identical canonical redacted JSON and absence of those sentinels
+from stdout. This detects accidental dependence on these environment values;
+it does not prove that all possible credentials are inaccessible, authenticate
+reviewers, or authorize external execution, deployment, observation or recovery.

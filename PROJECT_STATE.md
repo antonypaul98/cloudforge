@@ -171,3 +171,16 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40453392675)
 3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
 separate gates. No authenticated reviewer, provider call, real infrastructure
 mutation, observation, recovery or physical Mac acceptance is claimed.
+
+## Synthetic CLI environment independence — source CI passed (2026-10-27 ET)
+
+One regression invokes the documented credential-free CLI with **fake**
+AWS, OpenAI and CloudForge environment values, then verifies that its canonical
+redacted JSON is unchanged and contains none of those fake values. This is a
+bounded synthetic privacy/determinism check, not proof of universal secret
+isolation or of authenticated review, deployment, observation or recovery.
+Source commit `ad8f17041ae6d68f10f14d9e18c93df5d75d2626` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40458470056)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40458472949):
+**592 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI, independent-review policy, guarded merge
+and merged-main CI remain separate gates. No infrastructure mutation.
