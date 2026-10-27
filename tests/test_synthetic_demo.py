@@ -131,3 +131,22 @@ def test_synthetic_demo_does_not_mutate_local_files(monkeypatch):
         result = run_synthetic_local_authorization_demo()
     assert result["demo_only"] is True
     assert result["infrastructure_mutated"] is False
+
+def test_synthetic_demo_does_not_launch_direct_os_processes(monkeypatch):
+    """Guard os-level process launches not covered by subprocess entry points."""
+    def forbidden(*args, **kwargs):
+        raise AssertionError("synthetic authorization must not launch processes")
+
+    with monkeypatch.context() as guard:
+        for name in (
+            "popen", "fork", "forkpty", "posix_spawn", "posix_spawnp",
+            "spawnl", "spawnle", "spawnlp", "spawnlpe",
+            "spawnv", "spawnve", "spawnvp", "spawnvpe",
+            "execl", "execle", "execlp", "execlpe",
+            "execv", "execve", "execvp", "execvpe",
+        ):
+            if hasattr(os, name):
+                guard.setattr(os, name, forbidden)
+        result = run_synthetic_local_authorization_demo()
+    assert result["demo_only"] is True
+    assert result["infrastructure_mutated"] is False

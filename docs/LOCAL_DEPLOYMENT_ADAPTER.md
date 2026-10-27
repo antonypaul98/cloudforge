@@ -491,3 +491,12 @@ that rejects write-mode builtins/io/os file opens and common os/pathlib file
 mutation entry points. This tests the current in-memory demonstration, not a
 complete filesystem sandbox or a real deployment. The demonstration still
 cannot authenticate a human, deploy, observe or recover infrastructure.
+
+## Synthetic demo direct process-launch regression
+
+The credential-free in-memory demonstration is also tested with direct
+`os.popen`, `os.fork`, `os.posix_spawn*`, `os.spawn*`, and `os.exec*`
+entry points forbidden when present on the test platform. This supplements
+existing subprocess and shell checks. It is a bounded synthetic regression,
+not a complete operating-system sandbox, a provider integration, a real
+deployment, or authenticated reviewer evidence.
