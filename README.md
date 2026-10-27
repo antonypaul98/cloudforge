@@ -2,7 +2,7 @@
 
 Provider-neutral infrastructure planning, reviewable deployment handoffs, and local-only authorization safeguards. **This repository does not yet deploy cloud infrastructure, observe deployed services, or perform recovery.**
 
-A separate [read-only observation proposal](docs/OBSERVATION_PLAN.md) can now describe bounded startup/readiness/liveness checks tied to an exact local authorization receipt. It does not run probes or verify health.
+A separate [read-only observation proposal](docs/OBSERVATION_PLAN.md) can now describe bounded startup/readiness/liveness checks tied to an exact local authorization receipt. It does not run probes or verify health. A separate [in-memory observation evidence intake](docs/OBSERVATION_EVIDENCE.md) can verify keyed, exact-plan-bound synthetic sample envelopes, but cannot authenticate a live collector or establish service health.
 
 ## Try the credential-free synthetic demo
 
