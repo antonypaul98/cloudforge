@@ -102,11 +102,16 @@ and PR CI
 Python 3.11.17. The final evidence-state commit requires separate CI.
 This is not authenticated reviewer identity, deployment, observation or recovery.
 
-## Runnable synthetic CLI entrypoint — validation pending (2026-10-26)
+## Runnable synthetic CLI entrypoint — source CI passed (2026-10-26)
 
-The branch README now documents a credential-free Python 3.11 quickstart for
-`python -m cloudforge.synthetic_demo`. A new regression invokes that exact CLI
-and compares canonical redacted JSON to the in-process deterministic result.
-This tests the user-facing command, not infrastructure deployment or real
-reviewer authentication. Exact-new-head CI, protected merge and merged-main
-acceptance remain pending. No physical device or cloud resources were used.
+The branch README documents a credential-free Python 3.11 quickstart for
+`python -m cloudforge.synthetic_demo`. A subprocess regression executes
+the exact CLI and compares canonical redacted JSON to the in-process
+deterministic result. Source commit `df1cafd07d7a0d62eec5c1018b22bf1b105e8415` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40429988623)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40429994124):
+**587 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI remains a separate gate. No authenticated
+review, infrastructure deployment, external observation, recovery or physical
+hardware acceptance is claimed. PR #6 remains unmerged due to the one-review
+main ruleset.

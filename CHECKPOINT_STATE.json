@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
+  "current_branch_sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed pre-edit PR #6 head 53327e642a289b0f9bee478ced98a71a698c1ead; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge. CLI entrypoint smoke test and quickstart are pending exact-new-head CI.",
-  "local_test_status": "New CLI entrypoint regression not run locally; pending GitHub CI. Prior exact head 53327e642a289b0f9bee478ced98a71a698c1ead passed 586 pytest and 19 infrastructure tests (1 skip). Physical/hardware tests not run.",
+  "branch_remote_status": "Observed pre-edit PR #6 source head df1cafd07d7a0d62eec5c1018b22bf1b105e8415; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
+  "local_test_status": "Source-head GitHub CI on Python 3.11.17: 587 pytest passed, 19 infrastructure unittests (1 skip). No local physical/hardware test run.",
   "pr_number": 6,
-  "ci_status": "Prior exact head 53327e642a289b0f9bee478ced98a71a698c1ead passed push CI 40424138390 and PR CI 40424144048 (586 pytest, 19 infrastructure tests with 1 skip). New documentation/CLI regression commit pending exact-head CI.",
+  "ci_status": "Source head df1cafd07d7a0d62eec5c1018b22bf1b105e8415: push CI 40429988623 SUCCESS, PR CI 40429994124 SUCCESS, each 587 pytest passed and 19 infrastructure tests (1 skip). Final evidence-head commit requires separate exact-head CI.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
   "known_blocker": "Main ruleset 25825521 still requires one eligible independent approval (zero reviews). Owner requested solo workflow, but ruleset write is not available through connected integration. Guarded merge and merged-main CI pending; exclusive external writer/worktree ownership unverified.",
-  "next_action": "Verify exact-new-head push and PR CI for the documented CLI smoke test. Owner-only change required: main ruleset 25825521 approvals 1→0 while preserving required test and non-fast-forward/deletion protections. Then re-read PR/ruleset/checks, SHA-guarded merge, merged-main CI, and canonical checkpoint acceptance. No infrastructure mutation.",
+  "next_action": "Verify exact final evidence-head push and PR CI; owner-only ruleset 25825521 approvals 1→0 while retaining test/non-fast-forward/deletion rules. Re-read rule, PR, exact checks, SHA-guarded merge, merged-main CI, canonical checkpoint acceptance. No real infrastructure changes.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T00:59:15Z",
-  "observed_branch_sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
-  "observed_feature_sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
+  "observed_at_utc": "2026-10-27T01:01:05Z",
+  "observed_branch_sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
+  "observed_feature_sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,20 +34,20 @@
   "pr_state": "open, ready for review; zero reviews; main ruleset requires one independent approval; merge not attempted",
   "ci_state": {
     "push_run": {
-      "id": 40424138390,
-      "sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
+      "id": 40429988623,
+      "sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40424138390"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40429988623"
     },
     "pr_run": {
-      "id": 40424144048,
-      "source_head_sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
+      "id": 40429994124,
+      "source_head_sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40424144048"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40429994124"
     },
     "merged_main_run": null,
     "previous_push_run": {
@@ -69,11 +69,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Main branch merge ruleset; CLI regression validation pending",
-    "BLOCKER": "Ruleset 25825521 still requires one eligible independent approval; zero reviews; GitHub integration cannot edit rulesets.",
-    "SAFE_WORK_COMPLETED": "Prepared a documented credential-free CLI entrypoint and regression to assert exact canonical redacted JSON; no local product suite or infrastructure execution claimed. Previous exact head 53327e642a289b0f9bee478ced98a71a698c1ead passed 586 pytest.",
-    "REMOTE_SHA": "53327e642a289b0f9bee478ced98a71a698c1ead",
-    "NEXT_ACTION": "Publish and validate CLI smoke test on exact head; owner changes approvals to 0 before guarded merge."
+    "BLOCKED_LAYER": "Main branch merge ruleset",
+    "BLOCKER": "Ruleset 25825521 still requires one eligible independent approval; zero reviews; integration has no ruleset-write capability.",
+    "SAFE_WORK_COMPLETED": "Published documented synthetic CLI entrypoint and subprocess regression; source-head push CI 40429988623 and PR CI 40429994124 passed 587 pytest, 19 infrastructure tests (1 skip) on Python 3.11.17. No infrastructure mutation.",
+    "REMOTE_SHA": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
+    "NEXT_ACTION": "Verify evidence-head CI, owner changes approvals to zero, then guarded merge and merged-main CI."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -132,16 +132,19 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "synthetic demo rejects forged receipt reviewer and cross-target execution authorization",
-    "feature_sha": "b3a05446f9668341203e285a29f87dc58c485f2c",
-    "source_path": "src/cloudforge/synthetic_demo.py",
+    "name": "documented credential-free CLI entrypoint with subprocess regression",
+    "feature_sha": "df1cafd07d7a0d62eec5c1018b22bf1b105e8415",
+    "source_path": "README.md",
     "regression_path": "tests/test_synthetic_demo.py",
-    "new_pytest_cases": 0,
-    "existing_regression_expanded": true,
-    "exact_head_push_ci": 40424017068,
-    "pr_ci": 40424023059,
+    "new_pytest_cases": 1,
+    "exact_head_push_ci": 40429988623,
+    "pr_ci": 40429994124,
+    "pytest_passed": 587,
+    "infrastructure_tests": 19,
+    "infrastructure_skipped": 1,
     "merged_main_ci": "not_run",
-    "acceptance": "source CI passed; final evidence-head CI pending; branch ruleset and merged-main CI pending"
+    "acceptance": "source CI passed; final evidence-head CI and protected merge/merged-main CI pending",
+    "infrastructure_mutated": false
   },
   "intermediate_failed_ci": {
     "sha": "6563a204bed6c3a18e9dfb9d840191b51e17d891",
@@ -197,15 +200,5 @@
     "infrastructure_skipped": 1,
     "scope": "Synthetic approvals, exact artifact and audit verification, forged recovery and changed-artifact rejection; no external infrastructure or reviewer authentication.",
     "merged_main_ci": "not_run"
-  },
-  "pending_safeguard": {
-    "name": "Document and verify python -m cloudforge.synthetic_demo CLI entrypoint",
-    "source_path": "README.md",
-    "regression_path": "tests/test_synthetic_demo.py",
-    "new_pytest_cases": 1,
-    "pre_edit_head_sha": "53327e642a289b0f9bee478ced98a71a698c1ead",
-    "ci": "pending",
-    "merged_main_ci": "not_run",
-    "infrastructure_mutated": false
   }
 }
