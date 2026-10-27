@@ -93,6 +93,22 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("cross-target authorization was accepted")
 
+    # A synthetic authorization receipt is not evidence of a real mutation.
+    # Reject a canonical-shaped audit event that falsely claims one.
+    forged_mutation_audit = audit_json.replace(
+        '"infrastructure_mutated": false', '"infrastructure_mutated": true',
+    )
+    if forged_mutation_audit == audit_json:
+        raise RuntimeError("synthetic audit mutation field was not found")
+    try:
+        verify_local_execution_audit_event(
+            handoff, artifact, approval, receipt, forged_mutation_audit,
+        )
+    except ValueError:
+        pass
+    else:
+        raise RuntimeError("forged infrastructure mutation was accepted")
+
     return {
         "demo_only": True,
         "authenticated_review": False,
@@ -104,6 +120,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "changed_artifact": True,
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
+            "forged_mutation_evidence": True,
         },
         "redacted_audit_event": json.loads(audit_json),
     }

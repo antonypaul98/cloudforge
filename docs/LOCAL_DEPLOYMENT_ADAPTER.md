@@ -464,3 +464,11 @@ and an otherwise self-consistent execution approval for a different opaque
 target. Both must be rejected. The demo reports only redacted boolean rejection
 outcomes and does not authenticate any human, contact a provider, execute
 infrastructure, observe deployment, or perform recovery.
+
+## Synthetic forged infrastructure-mutation audit rejection
+
+The credential-free in-memory demo also changes the canonical audit event's
+`infrastructure_mutated` flag from literal `false` to `true` and verifies
+that the local-only audit verifier rejects this forged claim. The public demo
+reports only a redacted rejection boolean. It does not authenticate an approver,
+mutate infrastructure, observe a deployment or perform recovery.

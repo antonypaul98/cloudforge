@@ -20,6 +20,7 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "changed_artifact": True,
         "forged_receipt_reviewer": True,
         "cross_target_authorization": True,
+        "forged_mutation_evidence": True,
     }
     event = first["redacted_audit_event"]
     assert event["status"] == "authorized-local-only"
@@ -71,3 +72,12 @@ def test_synthetic_demo_cli_entrypoint_emits_canonical_redacted_json():
     assert payload["infrastructure_mutated"] is False
     assert payload["deployment_observed"] is False
     assert payload["recovery_performed"] is False
+
+
+def test_synthetic_demo_rejects_forged_infrastructure_mutation_claim():
+    """A redacted local authorization audit cannot be upgraded to deployment proof."""
+    result = run_synthetic_local_authorization_demo()
+    assert result["synthetic_rejections"]["forged_mutation_evidence"] is True
+    assert result["redacted_audit_event"]["infrastructure_mutated"] is False
+    assert result["deployment_observed"] is False
+    assert result["recovery_performed"] is False
