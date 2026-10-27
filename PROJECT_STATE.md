@@ -89,3 +89,10 @@ Python 3.11.17. The final checkpoint evidence commit needs its own exact-head CI
 PR #6 is unmerged; main ruleset 25825521 still requires an independent approval.
 The repository owner has requested a solo-developer workflow, but that ruleset
 change has not been applied. No guarded merge or merged-main CI.
+
+## Synthetic local boundary coverage extension — 2026-10-26
+
+The in-memory smoke demo also tests rejection of a forged receipt reviewer and
+cross-target authorization despite a self-consistent caller-supplied approval.
+The expanded regression must pass exact-head CI before it is accepted; this is
+not authenticated reviewer identity, deployment, observation or recovery.

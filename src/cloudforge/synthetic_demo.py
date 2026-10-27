@@ -6,6 +6,7 @@ authenticate a reviewer, deploy, observe infrastructure, or perform recovery.
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 
 from .deployment import (
     DeploymentApproval,
@@ -65,6 +66,33 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("changed artifact reused a stale approval")
 
+    # A receipt reviewer is caller-controlled text, never an authenticated
+    # identity. Even a canonical forged receipt must fail exact revalidation.
+    forged_reviewer_receipt = replace(receipt, approved_by="forged-reviewer")
+    try:
+        verify_local_execution_receipt_json(
+            handoff, artifact, approval, forged_reviewer_receipt.to_json(),
+        )
+    except ValueError:
+        pass
+    else:
+        raise RuntimeError("forged receipt reviewer was accepted")
+
+    # A separately constructed approval cannot authorize a different target
+    # than the exact reviewed handoff, even when its own digest is consistent.
+    cross_target_request = replace(execution, target_id="synthetic-other-target")
+    cross_target_approval = LocalExecutionApproval(
+        cross_target_request.digest, "synthetic-execution-reviewer",
+    )
+    try:
+        authorize_local_execution(
+            handoff, artifact, cross_target_request, cross_target_approval,
+        )
+    except ValueError:
+        pass
+    else:
+        raise RuntimeError("cross-target authorization was accepted")
+
     return {
         "demo_only": True,
         "authenticated_review": False,
@@ -74,6 +102,8 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
         "synthetic_rejections": {
             "forged_recovery_status": True,
             "changed_artifact": True,
+            "forged_receipt_reviewer": True,
+            "cross_target_authorization": True,
         },
         "redacted_audit_event": json.loads(audit_json),
     }

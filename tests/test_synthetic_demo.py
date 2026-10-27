@@ -18,6 +18,8 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
     assert first["synthetic_rejections"] == {
         "forged_recovery_status": True,
         "changed_artifact": True,
+        "forged_receipt_reviewer": True,
+        "cross_target_authorization": True,
     }
     event = first["redacted_audit_event"]
     assert event["status"] == "authorized-local-only"
@@ -31,6 +33,8 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "synthetic-target",
         "cloudforge-synthetic-artifact-v1",
         "ready-for-adapter-review",
+        "forged-reviewer",
+        "synthetic-other-target",
     ):
         assert secret_or_identity not in text
 

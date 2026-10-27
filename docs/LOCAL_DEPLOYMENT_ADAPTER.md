@@ -455,3 +455,12 @@ not printed. No credentials, provider, network, shell or physical device are
 needed. Two integration tests also fail if this demo attempts network or shell
 entry points. This is synthetic integration evidence, not real-world deployment
 acceptance or approval authentication.
+
+## Synthetic receipt-reviewer and cross-target rejection demo
+
+The credential-free in-memory smoke demo now also exercises two fail-closed
+integrity cases: a canonical receipt with a forged claimed execution reviewer,
+and an otherwise self-consistent execution approval for a different opaque
+target. Both must be rejected. The demo reports only redacted boolean rejection
+outcomes and does not authenticate any human, contact a provider, execute
+infrastructure, observe deployment, or perform recovery.
