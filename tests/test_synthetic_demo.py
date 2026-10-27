@@ -21,6 +21,7 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "stale_approval_replay": True,
         "stale_plan_approval_replay": True,
         "stale_target_approval_replay": True,
+        "stale_handoff_reviewer_approval_replay": True,
         "forged_receipt_reviewer": True,
         "cross_target_authorization": True,
         "forged_mutation_evidence": True,
@@ -43,6 +44,7 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "ready-for-adapter-review",
         "forged-reviewer",
         "synthetic-other-target",
+        "synthetic-other-handoff-reviewer",
     ):
         assert secret_or_identity not in text
 
@@ -101,6 +103,14 @@ def test_synthetic_demo_rejects_replayed_approval_for_fresh_other_target():
     """A newly reviewed target needs fresh local execution approval."""
     result = run_synthetic_local_authorization_demo()
     assert result["synthetic_rejections"]["stale_target_approval_replay"] is True
+    assert result["authenticated_review"] is False
+    assert result["infrastructure_mutated"] is False
+
+
+def test_synthetic_demo_rejects_replayed_approval_for_changed_handoff_reviewer():
+    """A new claimed handoff reviewer must not inherit the old local approval."""
+    result = run_synthetic_local_authorization_demo()
+    assert result["synthetic_rejections"]["stale_handoff_reviewer_approval_replay"] is True
     assert result["authenticated_review"] is False
     assert result["infrastructure_mutated"] is False
 

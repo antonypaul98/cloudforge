@@ -132,6 +132,28 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("stale execution approval authorized changed target")
 
+    # A changed claimed handoff reviewer changes the full receipt binding,
+    # even when the original reviewed request and artifact bytes are unchanged.
+    # These names are synthetic text, not authenticated human identities.
+    different_reviewer_handoff = replace(
+        handoff, approved_by="synthetic-other-handoff-reviewer",
+    )
+    reviewer_execution = prepare_local_execution_request(
+        different_reviewer_handoff, artifact,
+    )
+    if reviewer_execution.handoff_digest != execution.handoff_digest:
+        raise RuntimeError("reviewer change altered original handoff request")
+    if reviewer_execution.digest == execution.digest:
+        raise RuntimeError("reviewer change did not change execution request")
+    try:
+        authorize_local_execution(
+            different_reviewer_handoff, artifact, reviewer_execution, approval,
+        )
+    except ApprovalRequiredError:
+        pass
+    else:
+        raise RuntimeError("stale approval authorized changed handoff reviewer")
+
     # A receipt reviewer is caller-controlled text, never an authenticated
     # identity. Even a canonical forged receipt must fail exact revalidation.
     forged_reviewer_receipt = replace(receipt, approved_by="forged-reviewer")
@@ -224,6 +246,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "stale_approval_replay": True,
             "stale_plan_approval_replay": True,
             "stale_target_approval_replay": True,
+            "stale_handoff_reviewer_approval_replay": True,
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
             "forged_mutation_evidence": True,

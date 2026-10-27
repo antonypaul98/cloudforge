@@ -564,3 +564,13 @@ Source commit `150bc7627228f42ec2a287aa4bee389e78c23eea` passed
 and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493033349):
 597 pytest passed; 19 infrastructure tests (1 skipped), Python 3.11.17.
 Final evidence-head CI and protected integration remain pending.
+
+## Synthetic changed-handoff-reviewer approval replay (pending integration)
+
+The credential-free demonstration also changes only the caller-supplied handoff
+reviewer name, keeping the reviewed request, target, plan and artifact bytes
+unchanged. The full handoff receipt fingerprint and new execution request
+must change, and the old local execution approval must fail closed. A dedicated
+regression checks the redacted result. This does **not** authenticate either
+reviewer or authorize provider execution, deployment, observation or recovery.
+Source-head CI, protected merge and merged-main CI are separate gates.
