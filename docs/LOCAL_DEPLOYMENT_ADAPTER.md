@@ -533,4 +533,4 @@ changed artifact bytes and verifies that the original approval is rejected with
 an old receipt: it demonstrates that request renewal alone cannot reuse stale
 approval. It does not authenticate a human or execute, observe or recover infrastructure.
 
-Source-head CI and protected integration for this slice are pending.
+Source-head commit `236d545d9607b010bb8894dc4ce0084bee077213` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477790248) and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477796079) on Python 3.11.17: 595 pytest passed, 19 infrastructure tests (1 skip). Final evidence-head CI and protected integration remain pending.

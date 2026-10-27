@@ -203,3 +203,9 @@ The in-memory demo now exercises a changed artifact with a freshly prepared
 execution request and requires the old approval to fail closed. One regression
 checks the redacted outcome. Source-head CI, protected merge and merged-main
 acceptance remain pending; no infrastructure or physical device was touched.
+
+Source-head verification for the 2026-10-27 stale-approval replay slice:
+commit `236d545d9607b010bb8894dc4ce0084bee077213` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477790248)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477796079)
+on Python 3.11.17: **595 pytest passed**, 19 infrastructure tests (1 skip).
+Final evidence-head CI, protected merge and merged-main CI remain pending.
