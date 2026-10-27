@@ -259,3 +259,14 @@ result and that the original redacted audit contains no authentication claim.
 This is synthetic evidence-schema integrity, not identity authentication,
 provider deployment, observation or recovery. Published source `489aa6935d63718ccfcd49beb24f60443855d94f`;
 exact-head CI, protected merge and merged-main CI remain unverified.
+
+## Synthetic local-file read privacy guard — 2026-10-27 ET
+
+The in-memory authorization demo now has a regression that forbids standard
+Python file-reading entry points during its execution. This narrows the chance
+of accidentally reading local user files or credentials in the smoke path;
+it is not a full OS sandbox or a runtime acceptance test. Source commit
+`e16fa50c5eff1c7a77a21b67ca4387ab911d39c9` was published on PR #6. Push CI 40517979671 and PR CI
+40517987403 were queued when recorded; success is not yet claimed. Final
+state-head CI, protected merge and merged-main CI are separate gates. No real
+infrastructure mutation, authenticated review, observation or recovery.
