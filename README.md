@@ -4,14 +4,13 @@ Provider-neutral infrastructure planning, reviewable deployment handoffs, and lo
 
 ## Try the credential-free synthetic demo
 
-The demonstration is currently on [PR #6](https://github.com/antonypaul98/cloudforge/pull/6), branch `build/local-deployment-adapter`, **not yet merged into `main`**. It uses in-memory synthetic reviewers, a synthetic target and fixed artifact bytes. It does not require AWS credentials, a cloud account or physical hardware.
+The demonstration was integrated into `main` through [PR #6](https://github.com/antonypaul98/cloudforge/pull/6) after exact-head CI and merged-main CI passed. It uses in-memory synthetic reviewers, a synthetic target and fixed artifact bytes. It does not require AWS credentials, a cloud account or physical hardware.
 
 With Python 3.11 installed:
 
 ```sh
 git clone https://github.com/antonypaul98/cloudforge.git
 cd cloudforge
-git switch build/local-deployment-adapter
 python3.11 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e . pytest
