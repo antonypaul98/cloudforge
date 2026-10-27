@@ -482,3 +482,12 @@ redacted local authorization audit event. Each forged claim must be rejected
 independently by exact-schema audit verification. The output exposes only
 redacted rejection booleans; it does not authenticate reviewers, observe a
 provider, perform deployment or recover infrastructure.
+
+
+## Synthetic demo filesystem mutation regression
+
+The synthetic authorization demo is additionally exercised under a test guard
+that rejects write-mode builtins/io/os file opens and common os/pathlib file
+mutation entry points. This tests the current in-memory demonstration, not a
+complete filesystem sandbox or a real deployment. The demonstration still
+cannot authenticate a human, deploy, observe or recover infrastructure.

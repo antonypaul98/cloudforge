@@ -144,3 +144,16 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40442352291)
 **589 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
 3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
 separate gates; the main ruleset still requires independent approval.
+
+
+## Synthetic demo local filesystem write guard — source CI passed (2026-10-26 ET)
+
+One new regression blocks write-mode builtins/io/os file opens and common
+os/pathlib mutation operations while the in-memory authorization demo runs.
+This supplements existing network/shell guards; it is not a universal sandbox
+or evidence of authenticated review, cloud deployment, observation or recovery.
+Source commit `728c30831edaead22008fea2cd7435bcb1bea394` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40447174646)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40447178174):
+**590 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
+pending. Main ruleset 25825521 still requires one independent approval.
