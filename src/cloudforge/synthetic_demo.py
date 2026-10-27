@@ -79,6 +79,36 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("stale execution approval authorized changed artifact")
 
+    # A newly reviewed plan changes the handoff even if the target and
+    # artifact bytes stay identical. The old local execution approval must
+    # not carry over to a different infrastructure plan.
+    changed_plan = derive_requirements(
+        ApplicationProfile("synthetic-api", "python", port=8081)
+    )
+    changed_proposal = render_iac_proposal(changed_plan)
+    changed_handoff_request = prepare_deployment_request(
+        changed_plan, changed_proposal, "synthetic-target",
+    )
+    changed_handoff = authorize_deployment_handoff(
+        changed_plan, changed_proposal, changed_handoff_request,
+        DeploymentApproval(
+            changed_handoff_request.digest, "synthetic-handoff-reviewer",
+        ),
+    )
+    changed_plan_execution = prepare_local_execution_request(
+        changed_handoff, artifact,
+    )
+    if changed_plan_execution.digest == execution.digest:
+        raise RuntimeError("changed plan did not change execution request")
+    try:
+        authorize_local_execution(
+            changed_handoff, artifact, changed_plan_execution, approval,
+        )
+    except ApprovalRequiredError:
+        pass
+    else:
+        raise RuntimeError("stale execution approval authorized changed plan")
+
     # A receipt reviewer is caller-controlled text, never an authenticated
     # identity. Even a canonical forged receipt must fail exact revalidation.
     forged_reviewer_receipt = replace(receipt, approved_by="forged-reviewer")
@@ -169,6 +199,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "forged_recovery_status": True,
             "changed_artifact": True,
             "stale_approval_replay": True,
+            "stale_plan_approval_replay": True,
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
             "forged_mutation_evidence": True,
