@@ -27,6 +27,7 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
         "forged_mutation_evidence": True,
         "forged_observation_evidence": True,
         "forged_recovery_evidence": True,
+        "forged_authentication_evidence": True,
         "forged_request_digest": True,
         "forged_receipt_digest": True,
     }
@@ -136,6 +137,15 @@ def test_synthetic_demo_rejects_forged_observation_and_recovery_claims():
     assert result["deployment_observed"] is False
     assert result["recovery_performed"] is False
 
+
+
+def test_synthetic_demo_rejects_forged_authenticated_review_claim():
+    """Local-only audit evidence cannot impersonate authenticated human review."""
+    result = run_synthetic_local_authorization_demo()
+    assert result["synthetic_rejections"]["forged_authentication_evidence"] is True
+    assert result["authenticated_review"] is False
+    assert "authenticated_review" not in result["redacted_audit_event"]
+    assert result["infrastructure_mutated"] is False
 
 
 def test_synthetic_demo_rejects_forged_provenance_digests():
