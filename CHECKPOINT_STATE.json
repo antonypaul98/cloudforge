@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "bounded loopback HEAD observation fixture",
-  "active_branch": "build/observation-http-head-20261027",
+  "active_branch": "main",
   "main_sha_at_start": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
-  "current_branch_sha": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
+  "current_branch_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "New isolated build/observation-http-head-20261027 branch created from verified main 92d61e599fa7c4283ed349a73ae75bbdf2765d77; source publication and PR CI pending; external worktree ownership unverified.",
-  "local_test_status": "New module and regression test files syntax-compiled in isolated container with local Python; full integrated tests not run yet. Shell GitHub DNS unavailable; connected GitHub publication available.",
-  "pr_number": null,
-  "ci_status": "PENDING: exact-head feature PR CI, merged-main CI and final acceptance not run.",
-  "merge_status": "NOT MERGED: new bounded fixture-only HEAD collector pending CI and protected merge.",
+  "branch_remote_status": "PR #15 exact feature head 046c11d8d63ec0ac904dce8101ac7220528f66fe guarded squash-merged as a4339ba0c1161388df6b92262acfd5a644dd87db; feature branch preserved. No exclusive external worktree ownership proof.",
+  "local_test_status": "Local isolated source/test syntax compilation completed. GitHub Python 3.11.17 exact-head PR and merged-main full CI each passed 718 pytest, 18 infrastructure guards (1 skipped). No physical Mac or real service tests.",
+  "pr_number": 15,
+  "ci_status": "PR CI 40592445791 SUCCESS at 046c11d8d63ec0ac904dce8101ac7220528f66fe; merged-main CI 40592539823 SUCCESS at a4339ba0c1161388df6b92262acfd5a644dd87db. Both report 718 pytest passed, 18 infrastructure guards passed (1 skipped).",
+  "merge_status": "MERGED: PR #15 SHA-guarded squash a4339ba0c1161388df6b92262acfd5a644dd87db; exact-head PR and merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "Exact-head integrated CI and guarded merge pending. No authenticated source/key provisioning, real service acceptance or infrastructure deployment.",
-  "next_action": "Publish bounded HEAD-only fixture collector on isolated branch; run full exact-head PR CI; guarded merge only on green CI; verify merged-main CI; separately record canonical acceptance. No real infrastructure calls.",
-  "feature_checkpoint_advanced": false,
+  "known_blocker": "No blocker for fixture-only loopback HEAD software acceptance. Trusted allowlist/source-key provisioning, real service runtime, HMAC signing, durable replay binding, monitoring, deployment, recovery and physical hardware acceptance remain unverified; external worktree ownership unverified.",
+  "next_action": "Scope a bounded signed fixture-collector integration using existing observation evidence and durable replay ledger, with explicit trusted source/key/clock configuration and no real-service claims. Require exact-head CI and guarded merge.",
+  "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-27T22:04:17Z",
-  "observed_branch_sha": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
-  "observed_feature_sha": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
+  "observed_branch_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+  "observed_feature_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -72,11 +72,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "None for connected GitHub source publication; shell GitHub DNS unavailable",
-    "BLOCKER": "Feature CI and protected merge pending; external worktree ownership unverified",
-    "SAFE_WORK_COMPLETED": "Prepared a bounded loopback-only HEAD fixture collector and synthetic regression tests; no actual service or cloud contacted.",
-    "REMOTE_SHA": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
-    "NEXT_ACTION": "Publish coherent source commit and verify exact-head CI; no deployment."
+    "BLOCKED_LAYER": "None for fixture-only software acceptance; shell GitHub DNS unavailable",
+    "BLOCKER": "Real authenticated collector, trusted source/key/clock, durable evidence integration and service monitoring unimplemented; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #15 merged; exact-head PR CI and merged-main CI passed 718 pytest, 18 infrastructure guards (1 skipped), Python 3.11.17. HEAD-only ephemeral loopback fixture tests; no real service or infrastructure modified.",
+    "REMOTE_SHA": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+    "NEXT_ACTION": "Build bounded signed fixture-collector integration; no real deployment or hardware testing."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -88,7 +88,7 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "IN_PROGRESS",
+  "checkpoint_status": "COMPLETE",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
   "checkpoint_branch": "build/observation-replay-ledger-20261027",
   "previous_completed_checkpoint": {
@@ -98,9 +98,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "92d61e599fa7c4283ed349a73ae75bbdf2765d77",
-  "merge_commit_sha": null,
-  "final_pr_head": null,
+  "verified_main_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+  "merge_commit_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+  "final_pr_head": "046c11d8d63ec0ac904dce8101ac7220528f66fe",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -392,15 +392,32 @@
     "physical_hardware_accepted": false
   },
   "observation_http_fixture": {
-    "scope": "Loopback IPv4 127.0.0.1 HEAD-only fixture, exact target allowlist, no redirects or credentials",
+    "scope": "Opt-in literal IPv4 127.0.0.1 HEAD-only fixture; exact trusted target allowlist; no redirects, proxy or response body; unsigned raw samples",
     "source_branch": "build/observation-http-head-20261027",
-    "source_sha": null,
-    "pr": null,
-    "pr_ci": null,
-    "merged_main_ci": null,
-    "status": "IN_PROGRESS",
+    "source_sha": "046c11d8d63ec0ac904dce8101ac7220528f66fe",
+    "pr": 15,
+    "pr_ci": 40592445791,
+    "merged_main_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+    "merged_main_ci": 40592539823,
+    "pytest_passed": 718,
+    "new_tests": 37,
+    "infrastructure_tests": {
+      "passed": 18,
+      "skipped": 1
+    },
+    "status": "COMPLETE_FIXTURE_ONLY",
     "real_infrastructure_modified": false,
     "physical_mac_test": "not_run",
     "external_worktree_ownership": "unverified"
+  },
+  "accepted_observation_http": {
+    "checkpoint": "bounded loopback HEAD observation fixture",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "pr": 15,
+    "head_sha": "046c11d8d63ec0ac904dce8101ac7220528f66fe",
+    "merge_commit_sha": "a4339ba0c1161388df6b92262acfd5a644dd87db",
+    "pr_ci_run": 40592445791,
+    "merged_main_ci_run": 40592539823,
+    "pytest_passed": 718
   }
 }
