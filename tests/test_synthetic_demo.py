@@ -51,3 +51,23 @@ def test_synthetic_demo_does_not_use_network_or_shell(monkeypatch):
         guard.setattr(os, "system", forbidden)
         result = run_synthetic_local_authorization_demo()
     assert result["infrastructure_mutated"] is False
+
+def test_synthetic_demo_cli_entrypoint_emits_canonical_redacted_json():
+    """Verify the documented python -m entry point, not only its Python API."""
+    import sys
+
+    completed = subprocess.run(
+        [sys.executable, "-m", "cloudforge.synthetic_demo"],
+        check=True, capture_output=True, text=True, timeout=20,
+    )
+    assert completed.stderr == ""
+    expected = json.dumps(
+        run_synthetic_local_authorization_demo(), sort_keys=True, indent=2
+    ) + "\n"
+    assert completed.stdout == expected
+    payload = json.loads(completed.stdout)
+    assert payload["demo_only"] is True
+    assert payload["authenticated_review"] is False
+    assert payload["infrastructure_mutated"] is False
+    assert payload["deployment_observed"] is False
+    assert payload["recovery_performed"] is False

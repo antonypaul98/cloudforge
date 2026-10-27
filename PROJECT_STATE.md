@@ -101,3 +101,12 @@ and PR CI
 586 pytest passed and 19 infrastructure tests ran (1 inapplicable skip) on
 Python 3.11.17. The final evidence-state commit requires separate CI.
 This is not authenticated reviewer identity, deployment, observation or recovery.
+
+## Runnable synthetic CLI entrypoint — validation pending (2026-10-26)
+
+The branch README now documents a credential-free Python 3.11 quickstart for
+`python -m cloudforge.synthetic_demo`. A new regression invokes that exact CLI
+and compares canonical redacted JSON to the in-process deterministic result.
+This tests the user-facing command, not infrastructure deployment or real
+reviewer authentication. Exact-new-head CI, protected merge and merged-main
+acceptance remain pending. No physical device or cloud resources were used.
