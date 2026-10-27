@@ -20,7 +20,10 @@ trusted collector identity. Production use requires those separate controls.
   or repeated slashes. No user-supplied HTTP headers or bodies are sent.
 - The only method is `HEAD`. A 2xx HTTP status maps to a raw `pass` sample;
   non-2xx, including 3xx redirects and 405, maps to `fail`; transport errors
-  map to `unknown`. No redirect is followed and no response body is read.
+  map to `unknown`. A connection-close OSError or HTTPException also maps to
+  `unknown`, even if HEAD returned 2xx, so failed cleanup cannot sign a
+  successful observation. Unexpected cleanup exceptions still abort collection
+  without publishing evidence. No redirect is followed and no response body is read.
 - Individual probe timeout is limited to 1–10 seconds. The existing observation
   plan's larger allowable timeout values are rejected for this adapter. At most
   three sequential requests are issued. This is not a hard total deadline.
@@ -53,11 +56,28 @@ trusted collector identity. Production use requires those separate controls.
 
 Regression tests cover a fixture-only 2xx HEAD path, 3xx redirect refusal,
 non-2xx classification, malformed/ambiguous host/path/port, allowlist/order,
-changed artifact, excessive timeout, transport refusal and no network before
-validation. Exact-head PR and merged-main CI are required for acceptance.
+changed artifact, excessive timeout, transport refusal, close failures
+(including the signed-evidence integration), unexpected cleanup exceptions,
+and no network before validation. Exact-head PR and merged-main CI are
+required for acceptance.
 
 **Not accepted:** real service monitoring, authenticated source/key provisioning,
 trusted time, HMAC signing, durable replay integration, provider execution,
 cloud deployment, alerting, automatic recovery, rollback or physical hardware
 acceptance. An actual collector runtime needs separately authorized end-to-end
 security, source identity, scheduling, provenance and lifecycle validation.
+
+## Bounded transport cleanup safeguard (2026-10-27)
+
+The existing Python 3.11 `http.client.HTTPConnection.close` cleanup path
+is now treated as part of the transport outcome. Known OSError/HTTPException
+close failures yield `unknown` even after a 2xx response; unexpected runtime
+exceptions fail the entire collection and do not reach the signing/ledger
+boundary. No new dependency, network target, source key, schema, approval
+path or external implementation is introduced. Reuse was preferred over
+switching to requests/httpx, which would broaden dependencies and URL
+handling without addressing trusted collector provenance.
+
+Reference: https://docs.python.org/3.11/library/http.client.html
+This is fixture failure handling, not collector authentication, trusted
+time, service-health proof, production monitoring or infrastructure recovery.

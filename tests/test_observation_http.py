@@ -1,5 +1,6 @@
 """Bounded fixture-only HTTP HEAD collector regression tests."""
 from dataclasses import replace
+import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 
@@ -194,3 +195,43 @@ def test_rejects_long_probe_timeout_before_io(monkeypatch):
     long_plan = replace(context[-1], probes=(long_probe, context[-1].probes[1]))
     with pytest.raises(ValueError):
         _collect((*context[:-1], long_plan), _targets(12345))
+
+
+@pytest.mark.parametrize("close_error", [
+    OSError("fixture close failed"),
+    http.client.HTTPException("fixture close failed"),
+])
+def test_cleanup_failure_never_reports_pass(monkeypatch, close_error):
+    import cloudforge.observation_http as module
+
+    class FailingClose:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, method, path, headers):
+            assert method == "HEAD" and path == "/health"
+        def getresponse(self):
+            return type("Response", (), {"status": 204})()
+        def close(self):
+            raise close_error
+
+    monkeypatch.setattr(module.http.client, "HTTPConnection", FailingClose)
+    assert [sample.outcome for sample in _collect(_context(), _targets(12345))] == [
+        "unknown", "unknown",
+    ]
+
+
+def test_cleanup_failure_does_not_mask_transport_refusal(monkeypatch):
+    import cloudforge.observation_http as module
+
+    class RefuseAndFailClose:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, *_args, **_kwargs):
+            raise ConnectionRefusedError("fixture connection refused")
+        def close(self):
+            raise OSError("fixture close failed")
+
+    monkeypatch.setattr(module.http.client, "HTTPConnection", RefuseAndFailClose)
+    assert [sample.outcome for sample in _collect(_context(), _targets(12345))] == [
+        "unknown", "unknown",
+    ]

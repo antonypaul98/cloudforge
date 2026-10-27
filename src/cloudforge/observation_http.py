@@ -83,7 +83,11 @@ def collect_loopback_http_samples(
             outcome = "unknown"
         finally:
             if connection is not None:
-                connection.close()
+                try:
+                    connection.close()
+                except (OSError, http.client.HTTPException):
+                    # Failed cleanup invalidates even a successful HEAD status.
+                    outcome = "unknown"
         elapsed_ms = min(300_000, max(0, int((time.monotonic() - started) * 1000)))
         samples.append(ObservationSample(probe.kind, outcome, elapsed_ms))
     return tuple(samples)
