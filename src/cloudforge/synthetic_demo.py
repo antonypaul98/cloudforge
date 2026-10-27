@@ -109,6 +109,29 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
     else:
         raise RuntimeError("stale execution approval authorized changed plan")
 
+    # A fresh handoff for another target cannot inherit an earlier local
+    # execution approval, even when the plan and artifact bytes are identical.
+    retargeted_request = prepare_deployment_request(
+        plan, proposal, "synthetic-other-target",
+    )
+    retargeted_handoff = authorize_deployment_handoff(
+        plan, proposal, retargeted_request,
+        DeploymentApproval(retargeted_request.digest, "synthetic-handoff-reviewer"),
+    )
+    retargeted_execution = prepare_local_execution_request(
+        retargeted_handoff, artifact,
+    )
+    if retargeted_execution.digest == execution.digest:
+        raise RuntimeError("retargeted handoff did not change execution request")
+    try:
+        authorize_local_execution(
+            retargeted_handoff, artifact, retargeted_execution, approval,
+        )
+    except ApprovalRequiredError:
+        pass
+    else:
+        raise RuntimeError("stale execution approval authorized changed target")
+
     # A receipt reviewer is caller-controlled text, never an authenticated
     # identity. Even a canonical forged receipt must fail exact revalidation.
     forged_reviewer_receipt = replace(receipt, approved_by="forged-reviewer")
@@ -200,6 +223,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "changed_artifact": True,
             "stale_approval_replay": True,
             "stale_plan_approval_replay": True,
+            "stale_target_approval_replay": True,
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
             "forged_mutation_evidence": True,

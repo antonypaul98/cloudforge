@@ -549,3 +549,12 @@ Source-head commit `e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9` passed [push CI](h
 and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485790877):
 596 pytest passed, 19 infrastructure tests (1 skip), Python 3.11.17.
 Final evidence-head CI and protected integration remain pending.
+
+## Synthetic fresh-target approval replay (pending integration)
+
+The credential-free demonstration now prepares a new handoff for a different
+opaque target while retaining the original plan and exact artifact bytes.
+The previous local execution approval must fail with `ApprovalRequiredError`.
+This is a synthetic authorization-boundary regression, not authenticated
+reviewer identity, provider execution, deployment, observation or recovery.
+CI and protected-main integration are separate acceptance gates.
