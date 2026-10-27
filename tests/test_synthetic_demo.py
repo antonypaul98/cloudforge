@@ -150,3 +150,28 @@ def test_synthetic_demo_does_not_launch_direct_os_processes(monkeypatch):
         result = run_synthetic_local_authorization_demo()
     assert result["demo_only"] is True
     assert result["infrastructure_mutated"] is False
+
+
+def test_synthetic_demo_cli_is_independent_of_synthetic_provider_credentials():
+    """Provider-like environment settings must not change or leak into the demo."""
+    import sys
+
+    synthetic_secrets = {
+        "AWS_ACCESS_KEY_ID": "cloudforge-test-access-id-not-real",
+        "AWS_SECRET_ACCESS_KEY": "cloudforge-test-secret-key-not-real",
+        "OPENAI_API_KEY": "cloudforge-test-openai-key-not-real",
+        "CLOUDFORGE_TARGET": "cloudforge-test-external-target-not-real",
+    }
+    environment = dict(os.environ)
+    environment.update(synthetic_secrets)
+    completed = subprocess.run(
+        [sys.executable, "-m", "cloudforge.synthetic_demo"],
+        check=True, capture_output=True, text=True, timeout=20,
+        env=environment,
+    )
+    expected = json.dumps(
+        run_synthetic_local_authorization_demo(), sort_keys=True, indent=2
+    ) + "\n"
+    assert completed.stderr == ""
+    assert completed.stdout == expected
+    assert all(value not in completed.stdout for value in synthetic_secrets.values())
