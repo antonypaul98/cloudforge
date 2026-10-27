@@ -323,3 +323,27 @@ Mac/device acceptance is claimed. Earlier in-progress and review-blocked notes
 above are historical snapshots, superseded by this verified integration receipt.
 Future real execution requires separately scoped design, exact artifacts,
 authenticated authorization, safe rollback and independent acceptance evidence.
+
+## Provider-neutral observation proposal accepted — 2026-10-27 ET
+
+[PR #9](https://github.com/antonypaul98/cloudforge/pull/9) adds an immutable,
+deterministic startup/readiness/liveness *proposal* bound to a previously
+reverified exact-artifact local authorization receipt. The module reuses the
+existing local receipt verifier and standard-library SHA-256 canonical JSON,
+rejects malformed, duplicate, stale and forged claims, and performs no network
+or subprocess calls. The bounded [design and reuse decision](docs/OBSERVATION_PLAN.md)
+records the consulted Kubernetes probe-role concepts; no third-party code,
+model, SDK or algorithm was imported.
+
+Exact PR head `7023b0b3b5f20a0ac96c1d8fedacc35f2b693a22` passed
+[PR CI 40564999962](https://github.com/antonypaul98/cloudforge/actions/runs/40564999962).
+Guarded squash merge `b443133831a4a7111c92535cf93d804527296381`
+passed [merged-main push CI 40565157396](https://github.com/antonypaul98/cloudforge/actions/runs/40565157396).
+Both runs: Python 3.11.17, **632 pytest passed** (29 new), 19
+infrastructure-guard tests run (18 passed, 1 skipped). The source branch is
+preserved. No physical Mac test or shell GitHub push was performed.
+
+**Acceptance is planning-only.** Probe execution, trusted external observation,
+authenticated reviewer identity, real deployment, recovery, rollback and
+hardware acceptance remain unimplemented/unverified. Earlier checkpoint
+receipts above remain historical, not proof of these future capabilities.
