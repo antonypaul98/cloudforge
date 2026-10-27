@@ -236,3 +236,17 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40493033349)
 Final evidence-head CI and protected integration are separate gates. PR #6
 remains blocked by one independent approving review. No real deployment,
 observation, recovery or authenticated human approval is claimed.
+
+## Synthetic changed-handoff-reviewer replay — 2026-10-27 ET
+
+A changed caller-supplied handoff reviewer with unchanged reviewed request,
+target, plan and artifact produces a different full handoff receipt binding.
+The synthetic demo requires the old local execution approval to fail closed
+against a freshly prepared request. One new integration regression checks
+this redacted outcome and absence of the changed reviewer name.
+Source commit `c68d6857146cee1d509b8e54e5933023df1b8e32` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40500596530)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40500602003):
+**598 pytest passed**, 19 infrastructure tests (1 skipped), Python 3.11.17.
+Final evidence-head CI and protected integration are separate gates.
+This is synthetic digest binding, not reviewer authentication, deployment,
+observation or recovery.

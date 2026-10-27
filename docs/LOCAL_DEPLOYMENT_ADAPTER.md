@@ -574,3 +574,8 @@ must change, and the old local execution approval must fail closed. A dedicated
 regression checks the redacted result. This does **not** authenticate either
 reviewer or authorize provider execution, deployment, observation or recovery.
 Source-head CI, protected merge and merged-main CI are separate gates.
+
+Source commit `c68d6857146cee1d509b8e54e5933023df1b8e32` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40500596530)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40500602003):
+598 pytest passed, 19 infrastructure tests (1 skip), Python 3.11.17.
+Final evidence-head CI and protected integration remain separate gates.
