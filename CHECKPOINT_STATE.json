@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
+  "current_branch_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed source PR #6 head 728c30831edaead22008fea2cd7435bcb1bea394; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
-  "local_test_status": "Exact source-head GitHub push and PR CI on Python 3.11.17: 590 pytest passed; 19 infrastructure tests (1 skip). No local Mac/device tests.",
+  "branch_remote_status": "Observed source PR #6 head b4f790812b288bc0c703b181ba214a0af2866770; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; no merge.",
+  "local_test_status": "Exact source-head GitHub push and PR CI on Python 3.11.17: 591 pytest passed; 19 infrastructure tests (1 skip). No physical Mac/device tests.",
   "pr_number": 6,
-  "ci_status": "Source head 728c308: push CI 40447174646 SUCCESS, PR CI 40447178174 SUCCESS; each 590 pytest passed, 19 infrastructure tests (1 skip). Final evidence-head CI pending.",
+  "ci_status": "Source head b4f7908: push CI 40453387287 SUCCESS, PR CI 40453392675 SUCCESS; each 591 pytest passed, 19 infrastructure tests (1 skip). Final evidence-head CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -21,9 +21,9 @@
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T03:59:12Z",
-  "observed_branch_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
-  "observed_feature_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
+  "observed_at_utc": "2026-10-27T05:06:21Z",
+  "observed_branch_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
+  "observed_feature_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,6 +34,23 @@
   "pr_state": "open, ready for review; zero reviews; active main ruleset requires one independent approval; no merge",
   "ci_state": {
     "push_run": {
+      "id": 40453387287,
+      "sha": "b4f790812b288bc0c703b181ba214a0af2866770",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40453387287"
+    },
+    "pr_run": {
+      "id": 40453392675,
+      "source_head_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40453392675"
+    },
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 40447174646,
       "sha": "728c30831edaead22008fea2cd7435bcb1bea394",
       "event": "push",
@@ -41,38 +58,21 @@
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40447174646"
     },
-    "pr_run": {
+    "previous_pr_run": {
       "id": 40447178174,
       "source_head_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40447178174"
-    },
-    "merged_main_run": null,
-    "previous_push_run": {
-      "id": 40442346284,
-      "sha": "0ad71e8aa5d56a81f1e079c816cad815f2fa5376",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40442346284"
-    },
-    "previous_pr_run": {
-      "id": 40442352291,
-      "source_head_sha": "0ad71e8aa5d56a81f1e079c816cad815f2fa5376",
-      "event": "pull_request",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40442352291"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Main branch merge ruleset",
     "BLOCKER": "Ruleset 25825521 requires one independent approval; zero reviews; connected integration has no ruleset-write capability.",
-    "SAFE_WORK_COMPLETED": "Published one synthetic regression prohibiting local file writes during credential-free demo; source push CI 40447174646 and PR CI 40447178174 passed 590 pytest and 19 infrastructure tests (1 skip) on Python 3.11.17. No infrastructure mutation.",
-    "REMOTE_SHA": "728c30831edaead22008fea2cd7435bcb1bea394",
+    "SAFE_WORK_COMPLETED": "Published one synthetic regression blocking direct os-level process-launch entry points; source push CI 40453387287 and PR CI 40453392675 passed 591 pytest and 19 infrastructure tests (1 skip) on Python 3.11.17. No infrastructure mutation.",
+    "REMOTE_SHA": "b4f790812b288bc0c703b181ba214a0af2866770",
     "NEXT_ACTION": "Verify final evidence-head CI, owner changes approvals to zero, then SHA-guarded merge and merged-main CI."
   },
   "infrastructure_validation": {
@@ -132,13 +132,13 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "synthetic demo local filesystem write prohibition",
-    "feature_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
+    "name": "synthetic demo direct os-level process launch prohibition",
+    "feature_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
     "regression_path": "tests/test_synthetic_demo.py",
     "new_pytest_cases": 1,
-    "exact_head_push_ci": 40447174646,
-    "pr_ci": 40447178174,
-    "pytest_passed": 590,
+    "exact_head_push_ci": 40453387287,
+    "pr_ci": 40453392675,
+    "pytest_passed": 591,
     "infrastructure_tests": 19,
     "infrastructure_skipped": 1,
     "merged_main_ci": "not_run",
@@ -222,6 +222,14 @@
     "pr_ci": 40447178174,
     "pytest_passed": 590,
     "scope": "Synthetic demo test rejects write-mode open, os.open write flags, and common os/pathlib mutation entry points; does not prove absence of all possible filesystem effects or any real deployment.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_direct_process_launch_regression": {
+    "source_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
+    "push_ci": 40453387287,
+    "pr_ci": 40453392675,
+    "pytest_passed": 591,
+    "scope": "Synthetic demo test prohibits direct os-level process-launch entry points when present; does not prove complete sandboxing, authenticated review, deployment, observation or recovery.",
     "merged_main_ci": "not_run"
   }
 }

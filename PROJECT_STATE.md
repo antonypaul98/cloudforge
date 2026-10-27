@@ -157,3 +157,17 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40447178174)
 **590 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
 3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
 pending. Main ruleset 25825521 still requires one independent approval.
+
+## Synthetic demo direct OS process-launch guard — source CI passed (2026-10-27 ET)
+
+One regression forbids direct `os.popen`, `os.fork*`, `os.posix_spawn*`,
+`os.spawn*` and `os.exec*` entry points during the credential-free in-memory
+authorization demo. This supplements the existing subprocess and shell checks;
+it is not a complete process sandbox or evidence of a real deployment.
+Source commit `b4f790812b288bc0c703b181ba214a0af2866770` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40453387287)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40453392675):
+**591 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI, protected merge and merged-main CI remain
+separate gates. No authenticated reviewer, provider call, real infrastructure
+mutation, observation, recovery or physical Mac acceptance is claimed.
