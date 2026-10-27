@@ -274,3 +274,14 @@ infrastructure mutation, authenticated review, observation or recovery.
 ## Synthetic process-environment privacy regression — 2026-10-27
 
 PR #6 now includes `tests/test_synthetic_environment_guard.py`, which blocks common Python environment reads and writes while the credential-free in-memory authorization demonstration executes. This is a bounded regression, not complete process isolation, reviewer authentication or deployment proof. Exact-head CI, protected merge, merged-main CI and checkpoint acceptance remain pending. No real infrastructure was modified.
+
+
+## Synthetic clock/entropy independence guard — 2026-10-27 ET
+
+One bounded regression asserts that the credential-free in-memory authorization
+smoke demo produces identical redacted evidence while common Python clock,
+random, secrets, UUID and os.urandom entry points are forbidden. This is a
+synthetic determinism guard only, not universal sandboxing, authenticated
+human review, deployment, observation or recovery. Exact final-head CI and
+protected merge remain separate acceptance gates. PR #6 is still open because
+main requires an independent approving review.

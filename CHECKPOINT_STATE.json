@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
+  "current_branch_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Synthetic process-environment access regression published at c70c2117986d22947dc6651e1c86f7c135074d6c on PR #6; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; independent review still required.",
-  "local_test_status": "New test published; no local/physical Mac execution. Exact-head remote CI pending; prior final PR head 7e2db7dd passed 600 pytest and 19 infrastructure tests (1 skip).",
+  "branch_remote_status": "Observed exact head 5c81d6979ef19ad1117e2b71183806e7b013afa8; clock/entropy synthetic regression staged as one atomic guarded publish on existing PR #6; main unchanged.",
+  "local_test_status": "Not run in local shell: GitHub DNS unavailable; new regression awaits exact-head remote CI. Previous head 5c81d6979ef19ad1117e2b71183806e7b013afa8 passed 601 pytest and 19 infrastructure tests (1 skip).",
   "pr_number": 6,
-  "ci_status": "Source-head push 40526221746 and PR 40526228335 queued at publication; final documentation/state commit requires separate exact-head CI. No new success claimed.",
-  "merge_status": "NOT MERGED: active ruleset 25825521 requires one independent approval; zero reviews; guarded merge and merged-main CI pending.",
+  "ci_status": "New clock/entropy guard exact-head push and PR CI pending; prior head 5c81d6979ef19ad1117e2b71183806e7b013afa8 push 40526348067 and PR 40526358589 succeeded.",
+  "merge_status": "NOT MERGED: ruleset 25825521 requires one independent approval, PR #6 has zero reviews; guarded merge and merged-main CI pending.",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "One independent approval required; no eligible reviews. Shell GitHub DNS resolution failed; connector can publish. Exclusive writer/worktree ownership unverified.",
-  "next_action": "Verify final-head push and PR CI on the actual published state commit. If both required checks pass, guarded merge only after independent review or explicit owner-approved ruleset change; then merged-main CI and canonical acceptance. No real deployment.",
+  "known_blocker": "One independent approving review required, no reviews. Local shell GitHub DNS resolution failed; GitHub connector available. Exclusive writer/worktree ownership unverified.",
+  "next_action": "Verify final published head and exact-head push/PR CI for clock/entropy regression. Do not merge until an eligible independent review or owner-approved ruleset change; then SHA-guarded merge and merged-main CI. No real deployment.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-27T14:57:43Z",
-  "observed_branch_sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
-  "observed_feature_sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
+  "observed_branch_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
+  "observed_feature_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,47 +33,33 @@
   },
   "pr_state": "open, unmerged, zero reviews; active ruleset 25825521 requires one independent approval",
   "ci_state": {
-    "push_run": {
-      "id": 40526221746,
-      "sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
-      "event": "push",
-      "status": "queued",
-      "conclusion": null,
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526221746"
-    },
-    "pr_run": {
-      "id": 40526228335,
-      "source_head_sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
-      "event": "pull_request",
-      "status": "queued",
-      "conclusion": null,
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526228335"
-    },
+    "push_run": null,
+    "pr_run": null,
     "merged_main_run": null,
     "previous_push_run": {
-      "id": 40518090071,
-      "sha": "7e2db7dd57ed9dbce1454eec3f24645115b69863",
+      "id": 40526348067,
+      "sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40518090071"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526348067"
     },
     "previous_pr_run": {
-      "id": 40518099120,
-      "source_head_sha": "7e2db7dd57ed9dbce1454eec3f24645115b69863",
+      "id": 40526358589,
+      "source_head_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40518099120"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526358589"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Protected main independent-review gate",
     "BLOCKER": "One independent approval required; zero reviews. New exact-head CI pending.",
-    "SAFE_WORK_COMPLETED": "Published synthetic process-environment access regression at c70c2117986d22947dc6651e1c86f7c135074d6c and updated documentation.",
-    "REMOTE_SHA": "c70c2117986d22947dc6651e1c86f7c135074d6c",
-    "NEXT_ACTION": "Verify exact final-head CI; do not merge without the required review or explicit owner ruleset change."
+    "SAFE_WORK_COMPLETED": "Published bounded synthetic clock/entropy guard as one atomic PR branch commit with state and documentation.",
+    "REMOTE_SHA": "resolve live branch SHA after publication",
+    "NEXT_ACTION": "Verify final-head CI, then guarded merge only after GitHub review policy satisfied."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -128,20 +114,20 @@
   },
   "help_status": {
     "antony_help_needed": true,
-    "reason": "Owner-controlled GitHub review-count change or eligible independent review; no physical Mac testing.",
+    "reason": "Owner-controlled review count change or eligible independent reviewer; no Mac testing.",
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "synthetic in-memory authorization forbids common process-environment reads and writes",
-    "feature_sha": "c70c2117986d22947dc6651e1c86f7c135074d6c",
-    "regression_path": "tests/test_synthetic_environment_guard.py",
+    "name": "synthetic in-memory authorization rejects common clock and entropy entry points",
+    "feature_sha": null,
+    "regression_path": "tests/test_synthetic_clock_entropy_guard.py",
     "new_pytest_cases": 1,
-    "push_ci": 40526221746,
-    "pr_ci": 40526228335,
+    "push_ci": null,
+    "pr_ci": null,
     "pytest_passed": null,
     "infrastructure_tests": null,
     "merged_main_ci": "not_run",
-    "acceptance": "published; final-head CI pending",
+    "acceptance": "published pending exact-head CI",
     "infrastructure_mutated": false
   },
   "intermediate_failed_ci": {

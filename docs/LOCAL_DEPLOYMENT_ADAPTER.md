@@ -601,3 +601,13 @@ observation, recovery, or authenticated human review is performed.
 ## Synthetic process-environment boundary regression
 
 The credential-free in-memory demo is tested with common Python process-environment read and mutation entry points forbidden (`os.getenv`, `os.putenv`, `os.unsetenv` and standard `os.environ` mapping methods). This helps catch accidental credential access during the synthetic authorization path. It is not an OS sandbox, a proof of all environment isolation, an authenticated review, deployment, observation or recovery. The regression runs without real credentials or infrastructure.
+
+
+## Synthetic demo clock and entropy independence
+
+The test `tests/test_synthetic_clock_entropy_guard.py` executes the local-only
+in-memory demo with common Python time, random, secrets, UUID and os.urandom
+entry points disabled, then compares its redacted result to an unpatched run.
+It guards deterministic evidence against accidental clock or entropy inputs.
+It does not cover every native or third-party entropy source, establish an OS
+sandbox, authenticate a reviewer, or deploy, observe or recover infrastructure.
