@@ -199,7 +199,8 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
 
     # A redacted authorization event cannot be promoted to proof of
     # deployment observation or recovery by appending canonical JSON fields.
-    for forbidden_claim in ("deployment_observed", "recovery_performed"):
+    for forbidden_claim in ("deployment_observed", "recovery_performed",
+                            "authenticated_review"):
         forged_claim_audit = json.dumps(
             {**json.loads(audit_json), forbidden_claim: True},
             sort_keys=True, indent=2, ensure_ascii=True,
@@ -252,6 +253,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "forged_mutation_evidence": True,
             "forged_observation_evidence": True,
             "forged_recovery_evidence": True,
+            "forged_authentication_evidence": True,
             "forged_request_digest": True,
             "forged_receipt_digest": True,
         },
