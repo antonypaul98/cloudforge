@@ -588,3 +588,12 @@ result and that the original redacted audit contains no authentication claim.
 This is synthetic evidence-schema integrity, not identity authentication,
 provider deployment, observation or recovery. Published source `489aa6935d63718ccfcd49beb24f60443855d94f`;
 exact-head CI, protected merge and merged-main CI remain unverified.
+
+## Synthetic demo local-file read guard (2026-10-27)
+
+A regression forbids standard Python file-reading entry points (builtins,
+`io`, `os.open`, and `pathlib.Path`) while the credential-free, in-memory
+authorization demo runs. This helps detect accidental reads of local credentials
+or user files in the smoke path. It is not a complete filesystem sandbox or
+proof that every possible syscall is blocked. No real infrastructure,
+observation, recovery, or authenticated human review is performed.
