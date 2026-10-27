@@ -1,25 +1,29 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "deployment handoff foundation",
-  "active_branch": "main",
+  "current_checkpoint": "bounded local deployment adapter",
+  "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "79abcd9782ecfc3c235072886666940d1319824c",
+  "current_branch_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Implementation merged; exact PR-head and merged-main CI succeeded.",
-  "local_test_status": "Python 3.12.14: 80 passed, 0 skipped on reviewed tree and merged main; pinned Python 3.11 CI also passed.",
-  "pr_number": 5,
-  "ci_status": "Exact PR head 37216846708 and merged-main 37216883981 succeeded. Receipt commit requires its own normal CI.",
-  "merge_status": "MERGED AND VERIFIED",
-  "external_acceptance_required": [],
-  "known_blocker": null,
-  "next_action": "Review docs/DEPLOYMENT_HANDOFF.md and specify bounded local deployment adapter with exact artifact execution approval before implementing runtime mutation.",
-  "feature_checkpoint_advanced": true,
+  "branch_remote_status": "Cross-artifact audit replay test source d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67 published and PR CI verified; documentation commit 25a9aa35c1e119e559438c98a7e5bfa337e1757e; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7 unchanged, PR #6 open, zero reviews.",
+  "local_test_status": "Local shell GitHub access failed DNS resolution; source PR CI passed 603 pytest and 19 infrastructure tests (18 passed, 1 skipped) on Python 3.11.17. Source push CI unverified. Final state-head CI pending.",
+  "pr_number": 6,
+  "ci_status": "Source PR CI 40546226344 SUCCESS at d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67; 603 pytest passed and infrastructure 18 passed/1 skipped. Final state-head CI pending.",
+  "merge_status": "NOT MERGED: exact-SHA squash merge rejected HTTP 405 on source head d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67; GitHub requires one approving reviewer with write access, PR #6 has zero reviews. Merged-main CI not run.",
+  "external_acceptance_required": [
+    "Exact final PR head and successful PR-event CI",
+    "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
+    "Verified SHA-guarded merge and successful merged-main CI"
+  ],
+  "known_blocker": "Independent review gate (one approval required, zero reviews). GitHub shell DNS unavailable; connector writes work. Exclusive writer/worktree ownership unverified.",
+  "next_action": "Verify final state-head PR CI; merge only after eligible independent approval or owner-controlled rule change, then verify merged-main CI and record canonical acceptance. No real deployment.",
+  "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-04T16:29:00Z",
-  "observed_branch_sha": "79abcd9782ecfc3c235072886666940d1319824c",
-  "observed_feature_sha": "a5663fbe9cdb39cd2f3f2af01e62314ca812057f",
+  "observed_at_utc": "2026-10-27T16:06:02Z",
+  "observed_branch_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
+  "observed_feature_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,36 +31,42 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": {
-    "number": 5,
-    "state": "merged",
-    "head_sha": "a5663fbe9cdb39cd2f3f2af01e62314ca812057f",
-    "url": "https://github.com/antonypaul98/cloudforge/pull/5",
-    "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c"
-  },
+  "pr_state": "open, unmerged, zero reviews; exact-SHA merge rejected by independent-review gate",
   "ci_state": {
+    "push_run": null,
     "pr_run": {
-      "id": 37216846708,
-      "sha": "a5663fbe9cdb39cd2f3f2af01e62314ca812057f",
+      "id": 40546226344,
+      "source_head_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
       "event": "pull_request",
       "status": "completed",
-      "conclusion": "success"
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40546226344"
     },
-    "merged_main_run": {
-      "id": 37216883981,
-      "sha": "79abcd9782ecfc3c235072886666940d1319824c",
+    "merged_main_run": null,
+    "previous_push_run": {
+      "id": 40526348067,
+      "sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
       "event": "push",
       "status": "completed",
-      "conclusion": "success"
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526348067"
+    },
+    "previous_pr_run": {
+      "id": 40526358589,
+      "source_head_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526358589"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": null,
-    "BLOCKER": null,
-    "SAFE_WORK_COMPLETED": "Deployment handoff foundation merged after 80 tests and exact-head CI; merged-main CI succeeded. No infrastructure mutation or real deployment acceptance.",
-    "REMOTE_SHA": "79abcd9782ecfc3c235072886666940d1319824c",
-    "NEXT_ACTION": "Review docs/DEPLOYMENT_HANDOFF.md and specify bounded local deployment adapter with exact artifact execution approval before implementing runtime mutation."
+    "BLOCKED_LAYER": "Protected main independent-review gate",
+    "BLOCKER": "One approving review with write access required; zero reviews. Final state-head CI pending.",
+    "SAFE_WORK_COMPLETED": "Published and PR-CI-tested cross-artifact redacted audit replay regression (603 pytest passed; 18 infrastructure passed, 1 skipped). No real infrastructure changes.",
+    "REMOTE_SHA": "25a9aa35c1e119e559438c98a7e5bfa337e1757e",
+    "NEXT_ACTION": "Verify final state-head PR CI; guarded merge after review or owner-controlled rule change; merged-main CI and canonical acceptance. No real deployment."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -68,20 +78,198 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "COMPLETE",
+  "checkpoint_status": "IN_PROGRESS",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/deployment-handoff",
+  "checkpoint_branch": "build/local-deployment-adapter",
   "previous_completed_checkpoint": {
-    "name": "deterministic IaC",
-    "merge_commit_sha": "96eb078366b0dfd8f377cac2a9e5c6d69152c0e3",
-    "pr": 4,
-    "completion_main_sha": "5fef9517f56760f67467ea8686de7f721aa20c66",
-    "completion_main_ci": 37156157915
+    "name": "deployment handoff foundation",
+    "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
+    "pr": 5,
+    "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
+    "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "79abcd9782ecfc3c235072886666940d1319824c",
-  "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
-  "final_pr_head": "a5663fbe9cdb39cd2f3f2af01e62314ca812057f",
+  "verified_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
+  "merge_commit_sha": null,
+  "final_pr_head": null,
   "later_checkpoint_requirements": [
     "Authenticated exact-target execution approval and available runtime for future deployment adapter acceptance; not required for completed review-only handoff."
-  ]
+  ],
+  "accepted_deployment_handoff": {
+    "checkpoint": "deployment handoff foundation",
+    "status": "COMPLETE",
+    "pr": 5,
+    "head_sha": "a5663fbe9cdb39cd2f3f2af01e62314ca812057f",
+    "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
+    "pr_ci_run": 37216846708,
+    "merged_main_ci_run": 37216883981,
+    "local_tests": "80 passed"
+  },
+  "published_regression_evidence": {
+    "path": "tests/test_local_binary_edge.py",
+    "blob_sha": "f1c48deb5c055f31bd1ad0626215b874105cfdaf",
+    "test_count": 9,
+    "commit_sha": "92ebef3f0e5e1343765e6d21caea99b8a9cbc17d",
+    "ci_run": 38093736240,
+    "ci_test_count": 178
+  },
+  "published_extended_regression_evidence": {
+    "path": "tests/test_local_binary_extended.py",
+    "blob_sha": "6ffc34faed882d56dbca861bc85aab73a0f5a311",
+    "test_count": 6,
+    "commit_sha": "0ed0ca4dcdaecdfd60f2ffe6e70837483ee8ad3a",
+    "ci_run": 38100607440
+  },
+  "help_status": {
+    "antony_help_needed": true,
+    "reason": "Owner-controlled required-approvals change or eligible independent reviewer; no Mac testing.",
+    "user_only_gate_on_immediate_path": true
+  },
+  "last_published_safeguard": {
+    "name": "valid redacted audit events cannot replay across separately authorized synthetic artifacts",
+    "feature_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
+    "regression_path": "tests/test_local_audit_cross_artifact_replay.py",
+    "new_pytest_cases": 1,
+    "pr_ci": 40546226344,
+    "push_ci": "unverified",
+    "pytest_passed": 603,
+    "infrastructure_tests": "19 run, 18 passed, 1 skipped",
+    "merged_main_ci": "not_run",
+    "acceptance": "source PR CI passed; final state-head CI and protected merge pending",
+    "infrastructure_mutated": false
+  },
+  "intermediate_failed_ci": {
+    "sha": "6563a204bed6c3a18e9dfb9d840191b51e17d891",
+    "push_run": 40278002880,
+    "pr_run": 40278008615,
+    "result": "1 failed, 559 passed; existing binary-digest error precedence; corrected in 459766b25696fa1802e3b6608cb7c9e96159b379"
+  },
+  "previous_safeguard": {
+    "name": "early forged local-only receipt outcome rejection before artifact hashing",
+    "feature_sha": "f2a03092abf7f173475ee4f87a6c6c9d30283078",
+    "source_path": "src/cloudforge/local_adapter.py",
+    "regression_path": "tests/test_local_receipt_verification.py",
+    "new_pytest_cases": 4,
+    "exact_head_push_ci": 40304732336,
+    "pr_ci": 40304740484,
+    "merged_main_ci": "not_run",
+    "acceptance": "in_progress"
+  },
+  "ci_runtime_maintenance": {
+    "change": "actions/checkout@v4 to @v5; actions/setup-python@v5 to @v6; Node 24-compatible action runtimes",
+    "source_head_sha": "01f5a7779b15af6d9b75b07a5639b943df8c7081",
+    "pr_ci_run": 40329631314,
+    "infrastructure_guard_tests": 17,
+    "inapplicable_skips": 1,
+    "pytest_passed": 584,
+    "source": "GitHub PR job logs",
+    "push_ci": "unverified",
+    "final_checkpoint_head_ci": "pending",
+    "infrastructure_mutated": false
+  },
+  "ci_permission_guard": {
+    "change": "Assert push/pull_request-only workflow triggers, exactly one read-only contents permission grant, and reject synthetic privileged PR trigger/write-token/job override/extra-scope variants",
+    "source_sha": "f696efbeb3680feaa6ee6d21c6087b14776072a9",
+    "push_ci_run": 40336513539,
+    "pr_ci_run": 40336523024,
+    "infrastructure_tests": 19,
+    "inapplicable_skips": 1,
+    "pytest_passed": 584,
+    "synthetic_merge_sha": "5dc6b46",
+    "local_scratch_unittest_passed": 3,
+    "external_infrastructure_mutated": false,
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_local_acceptance_demo": {
+    "source_sha": "9a356b4002289138e6d7fbd216a8c838bcc8ac51",
+    "module": "src/cloudforge/synthetic_demo.py",
+    "tests": "tests/test_synthetic_demo.py",
+    "new_tests": 2,
+    "source_push_ci": 40416854601,
+    "source_pr_ci": 40416862749,
+    "pytest_passed": 586,
+    "infrastructure_tests": 19,
+    "infrastructure_skipped": 1,
+    "scope": "Synthetic approvals, exact artifact and audit verification, forged recovery and changed-artifact rejection; no external infrastructure or reviewer authentication.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_forged_mutation_audit": {
+    "source_sha": "531e5b6ba67bc66b34485cc809f61203fc24f47b",
+    "source_push_ci": 40436195209,
+    "source_pr_ci": 40436198964,
+    "pytest_passed": 588,
+    "scope": "In-memory synthetic audit event mutation flag forged from false to true must be rejected; no real provider, authenticated reviewer, deployment, observation or recovery.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_forged_observation_recovery_audit": {
+    "source_sha": "0ad71e8aa5d56a81f1e079c816cad815f2fa5376",
+    "source_push_ci": 40442346284,
+    "source_pr_ci": 40442352291,
+    "pytest_passed": 589,
+    "scope": "Synthetic canonical audit events claiming deployment_observed or recovery_performed are independently rejected; no runtime/provider action.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_no_file_write_regression": {
+    "source_sha": "728c30831edaead22008fea2cd7435bcb1bea394",
+    "push_ci": 40447174646,
+    "pr_ci": 40447178174,
+    "pytest_passed": 590,
+    "scope": "Synthetic demo test rejects write-mode open, os.open write flags, and common os/pathlib mutation entry points; does not prove absence of all possible filesystem effects or any real deployment.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_direct_process_launch_regression": {
+    "source_sha": "b4f790812b288bc0c703b181ba214a0af2866770",
+    "push_ci": 40453387287,
+    "pr_ci": 40453392675,
+    "pytest_passed": 591,
+    "scope": "Synthetic demo test prohibits direct os-level process-launch entry points when present; does not prove complete sandboxing, authenticated review, deployment, observation or recovery.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_cli_environment_independence": {
+    "source_sha": "ad8f17041ae6d68f10f14d9e18c93df5d75d2626",
+    "push_ci": 40458470056,
+    "pr_ci": 40458472949,
+    "pytest_passed": 592,
+    "scope": "CLI output remains identical with synthetic AWS/OpenAI/CLOUDFORGE environment sentinels and does not echo those sentinel values. No proof of universal secret isolation or actual credential use.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_stale_approval_replay": {
+    "source_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
+    "push_ci": 40477790248,
+    "pr_ci": 40477796079,
+    "pytest_passed": 595,
+    "scope": "Fresh changed-artifact request cannot replay original local execution approval; no authenticated reviewer or provider execution.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_changed_plan_approval_replay": {
+    "source_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+    "push_ci": 40485782079,
+    "pr_ci": 40485790877,
+    "pytest_passed": 596,
+    "scope": "A changed infrastructure plan (port 8080 to 8081) with the same target and exact artifact bytes, freshly approved handoff and freshly prepared local request cannot reuse the old execution approval; synthetic only.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_changed_target_approval_replay": {
+    "source_sha": "150bc7627228f42ec2a287aa4bee389e78c23eea",
+    "push_ci": 40493027663,
+    "pr_ci": 40493033349,
+    "pytest_passed": 597,
+    "scope": "Fresh handoff for a different opaque target with the same plan and exact artifact bytes cannot reuse the previous local execution approval. Synthetic only; no authenticated reviewer, provider, deployment, observation or recovery.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_changed_handoff_reviewer_approval_replay": {
+    "source_sha": "c68d6857146cee1d509b8e54e5933023df1b8e32",
+    "push_ci": 40500596530,
+    "pr_ci": 40500602003,
+    "pytest_passed": 598,
+    "scope": "Changing only caller-supplied handoff reviewer text with identical reviewed request and artifact bytes changes full handoff receipt binding; fresh local request cannot reuse stale execution approval. No authenticated identity, provider, deployment, observation or recovery.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_forged_authenticated_review_audit": {
+    "source_sha": "489aa6935d63718ccfcd49beb24f60443855d94f",
+    "scope": "Reject caller-added authenticated_review=true field in canonical synthetic local audit evidence. Does not authenticate reviewers or prove runtime deployment.",
+    "push_ci": null,
+    "pr_ci": null,
+    "pytest_passed": null,
+    "merged_main_ci": "not_run"
+  }
 }
