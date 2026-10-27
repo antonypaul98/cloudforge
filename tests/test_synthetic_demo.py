@@ -96,3 +96,38 @@ def test_synthetic_demo_rejects_forged_observation_and_recovery_claims():
     assert "recovery_performed" not in event
     assert result["deployment_observed"] is False
     assert result["recovery_performed"] is False
+
+def test_synthetic_demo_does_not_mutate_local_files(monkeypatch):
+    """A credential-free authorization demonstration must remain read-only."""
+    import builtins
+    import io
+    from pathlib import Path
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("synthetic authorization must not mutate local files")
+
+    def guarded_open(opener):
+        def check(file, mode="r", *args, **kwargs):
+            if any(flag in mode for flag in ("w", "a", "x", "+")):
+                forbidden()
+            return opener(file, mode, *args, **kwargs)
+        return check
+
+    original_os_open = os.open
+
+    def guarded_os_open(path, flags, *args, **kwargs):
+        if flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND):
+            forbidden()
+        return original_os_open(path, flags, *args, **kwargs)
+
+    with monkeypatch.context() as guard:
+        guard.setattr(builtins, "open", guarded_open(builtins.open))
+        guard.setattr(io, "open", guarded_open(io.open))
+        guard.setattr(os, "open", guarded_os_open)
+        for name in ("remove", "unlink", "rename", "replace", "mkdir", "makedirs", "rmdir"):
+            guard.setattr(os, name, forbidden)
+        for name in ("write_text", "write_bytes", "touch", "unlink", "mkdir", "rename", "replace"):
+            guard.setattr(Path, name, forbidden)
+        result = run_synthetic_local_authorization_demo()
+    assert result["demo_only"] is True
+    assert result["infrastructure_mutated"] is False
