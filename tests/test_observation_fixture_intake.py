@@ -197,3 +197,45 @@ def test_transport_refusal_yields_unknown_signed_sample(monkeypatch, tmp_path):
     monkeypatch.setattr(http_module.http.client, "HTTPConnection", Refuse)
     evidence = _collect(_context(), _targets(12345), tmp_path / "ledger.db")
     assert [s.outcome for s in evidence.samples] == ["unknown", "unknown"]
+
+
+def test_cleanup_failure_cannot_sign_a_passing_sample(monkeypatch, tmp_path):
+    import cloudforge.observation_http as http_module
+
+    class FailingClose:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, method, path, headers):
+            assert method == "HEAD" and path == "/ok"
+        def getresponse(self):
+            return type("Response", (), {"status": 204})()
+        def close(self):
+            raise OSError("fixture close failed")
+
+    monkeypatch.setattr(http_module.http.client, "HTTPConnection", FailingClose)
+    ledger = tmp_path / "ledger.db"
+    evidence = _collect(_context(), _targets(12345), ledger)
+    assert [sample.outcome for sample in evidence.samples] == ["unknown", "unknown"]
+    assert evidence.sequence == 1
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (1,)
+
+
+def test_unexpected_cleanup_exception_never_persists_evidence(monkeypatch, tmp_path):
+    import cloudforge.observation_http as http_module
+
+    class UnexpectedClose:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, *_args, **_kwargs):
+            pass
+        def getresponse(self):
+            return type("Response", (), {"status": 204})()
+        def close(self):
+            raise RuntimeError("unexpected fixture failure")
+
+    monkeypatch.setattr(http_module.http.client, "HTTPConnection", UnexpectedClose)
+    ledger = tmp_path / "ledger.db"
+    with pytest.raises(RuntimeError, match="unexpected fixture failure"):
+        _collect(_context(), _targets(12345), ledger)
+    assert not ledger.exists()
