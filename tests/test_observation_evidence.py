@@ -165,10 +165,10 @@ def test_malformed_samples_fail_closed(samples):
 
 
 @pytest.mark.parametrize("override", [
-    {"observed_at_unix": True},
-    {"observed_at_unix": -1},
-    {"sequence": True},
-    {"sequence": 0},
+    {"at": True},
+    {"at": -1},
+    {"seq": True},
+    {"seq": 0},
     {"source_id": "https://example.com"},
     {"source_id": "collector\n1"},
     {"source_id": "COLLECTOR"},
