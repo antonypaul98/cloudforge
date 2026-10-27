@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 from dataclasses import replace
 
+from .approval import ApprovalRequiredError
 from .deployment import (
     DeploymentApproval,
     authorize_deployment_handoff,
@@ -65,6 +66,18 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
         pass
     else:
         raise RuntimeError("changed artifact reused a stale approval")
+
+    # Even when the altered bytes receive a fresh, internally valid request,
+    # the approval for the old request cannot be replayed. This is an
+    # exact-artifact freshness check, not authenticated reviewer evidence.
+    changed_artifact = artifact + b"-changed"
+    changed_execution = prepare_local_execution_request(handoff, changed_artifact)
+    try:
+        authorize_local_execution(handoff, changed_artifact, changed_execution, approval)
+    except ApprovalRequiredError:
+        pass
+    else:
+        raise RuntimeError("stale execution approval authorized changed artifact")
 
     # A receipt reviewer is caller-controlled text, never an authenticated
     # identity. Even a canonical forged receipt must fail exact revalidation.
@@ -155,6 +168,7 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
         "synthetic_rejections": {
             "forged_recovery_status": True,
             "changed_artifact": True,
+            "stale_approval_replay": True,
             "forged_receipt_reviewer": True,
             "cross_target_authorization": True,
             "forged_mutation_evidence": True,

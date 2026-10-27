@@ -18,6 +18,7 @@ def test_synthetic_demo_is_deterministic_redacted_and_fail_closed():
     assert first["synthetic_rejections"] == {
         "forged_recovery_status": True,
         "changed_artifact": True,
+        "stale_approval_replay": True,
         "forged_receipt_reviewer": True,
         "cross_target_authorization": True,
         "forged_mutation_evidence": True,
@@ -76,6 +77,14 @@ def test_synthetic_demo_cli_entrypoint_emits_canonical_redacted_json():
     assert payload["infrastructure_mutated"] is False
     assert payload["deployment_observed"] is False
     assert payload["recovery_performed"] is False
+
+
+def test_synthetic_demo_rejects_replayed_approval_for_new_artifact_request():
+    """Changed bytes with a fresh request still require fresh approval."""
+    result = run_synthetic_local_authorization_demo()
+    assert result["synthetic_rejections"]["stale_approval_replay"] is True
+    assert result["authenticated_review"] is False
+    assert result["infrastructure_mutated"] is False
 
 
 def test_synthetic_demo_rejects_forged_infrastructure_mutation_claim():

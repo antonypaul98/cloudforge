@@ -524,3 +524,13 @@ Source-head evidence: commit `42ae155b42fb79ccd2658e2909575b2abb670614` passed
 and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40470344578)
 with 594 pytest passed and 19 infrastructure tests (1 skipped), Python 3.11.17.
 Final evidence-head CI and protected integration remain separate gates.
+
+## Synthetic stale-approval replay with fresh changed-artifact request
+
+The in-memory demo now prepares a new, internally valid execution request for
+changed artifact bytes and verifies that the original approval is rejected with
+`ApprovalRequiredError`. This is distinct from rejecting changed bytes against
+an old receipt: it demonstrates that request renewal alone cannot reuse stale
+approval. It does not authenticate a human or execute, observe or recover infrastructure.
+
+Source-head CI and protected integration for this slice are pending.

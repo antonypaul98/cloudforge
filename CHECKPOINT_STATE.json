@@ -3,26 +3,26 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "42ae155b42fb79ccd2658e2909575b2abb670614",
+  "current_branch_sha": "bf02840c68d9948c2d3564b160247ca87bb4bd87",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #6 source head 42ae155b42fb79ccd2658e2909575b2abb670614; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; merge rejected by active one-approval ruleset.",
-  "local_test_status": "Source-head push/PR GitHub CI Python 3.11.17: 594 pytest passed; 19 infrastructure tests (1 skip). No local/physical Mac tests.",
+  "branch_remote_status": "Observed PR #6 head bf02840c68d9948c2d3564b160247ca87bb4bd87 and main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7 before new stale-approval-replay slice; zero reviews; active ruleset requires one approval.",
+  "local_test_status": "Not run locally (container GitHub DNS unavailable); new exact-head remote CI pending. Prior 594-passed final-head CI remains historical evidence only.",
   "pr_number": 6,
-  "ci_status": "Source-head push CI 40470341201 SUCCESS and PR CI 40470344578 SUCCESS (594 pytest; 19 infrastructure tests, 1 skip). Evidence-head CI pending.",
-  "merge_status": "NOT MERGED: expected-SHA merge rejected HTTP 405, 1 approving review required",
+  "ci_status": "Prior final-head push 40470460873 and PR 40470465882 SUCCESS at bf02840c68d9948c2d3564b160247ca87bb4bd87 (594 pytest, 19 infrastructure tests, 1 skip); new slice CI pending.",
+  "merge_status": "NOT MERGED: active one-independent-approval rule, zero reviews; previous expected-SHA merge rejected HTTP 405.",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Live ruleset 25825521 active and requires 1 independent approval; zero PR reviews; SHA-guarded merge at source head rejected HTTP 405. Connected integration has no ruleset-write action. Exclusive writer/worktree ownership unverified.",
-  "next_action": "Verify final evidence-head CI and live ruleset; owner-authorized solo-workflow change required approvals 1→0 (retain CI/deletion/non-fast-forward) or eligible review; SHA-guarded merge, merged-main CI, canonical acceptance. No real infrastructure mutation without explicit approval.",
+  "known_blocker": "Active ruleset 25825521 requires one independent review, zero reviews; no connected ruleset-write action. Shell GitHub DNS unavailable; exclusive writer/worktree ownership unverified.",
+  "next_action": "Verify newly published source-head CI and live rule, then owner-authorized solo-review setting change or eligible review; expected-SHA merge, merged-main CI, canonical acceptance. No real infrastructure mutation.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T07:58:18Z",
-  "observed_branch_sha": "42ae155b42fb79ccd2658e2909575b2abb670614",
+  "observed_at_utc": "2026-10-27T09:00:54Z",
+  "observed_branch_sha": "bf02840c68d9948c2d3564b160247ca87bb4bd87",
   "observed_feature_sha": "42ae155b42fb79ccd2658e2909575b2abb670614",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
@@ -69,11 +69,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Main branch merge ruleset",
-    "BLOCKER": "Active ruleset 25825521 requires 1 independent approval; zero reviews; SHA-guarded merge HTTP 405.",
-    "SAFE_WORK_COMPLETED": "Published synthetic audit provenance-digest regression at 42ae155b42fb79ccd2658e2909575b2abb670614; push CI 40470341201 and PR CI 40470344578 passed with 594 pytest, 19 infrastructure tests (1 skip).",
-    "REMOTE_SHA": "42ae155b42fb79ccd2658e2909575b2abb670614",
-    "NEXT_ACTION": "Verify evidence-head PR CI; owner-authorized review-count change or eligible approval; expected-SHA merge and merged-main CI."
+    "BLOCKED_LAYER": "Main branch independent-review requirement",
+    "BLOCKER": "Ruleset 25825521 requires one approving review; zero reviews. Owner-only change or eligible review required.",
+    "SAFE_WORK_COMPLETED": "Prepared bounded synthetic stale-approval replay check and regression; new source-head CI pending.",
+    "REMOTE_SHA": "bf02840c68d9948c2d3564b160247ca87bb4bd87",
+    "NEXT_ACTION": "Verify new PR-head CI; then guarded merge only after required review rule is satisfied."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -239,5 +239,13 @@
     "pytest_passed": 592,
     "scope": "CLI output remains identical with synthetic AWS/OpenAI/CLOUDFORGE environment sentinels and does not echo those sentinel values. No proof of universal secret isolation or actual credential use.",
     "merged_main_ci": "not_run"
+  },
+  "pending_synthetic_stale_approval_replay": {
+    "scope": "Newly prepared request for changed bytes cannot reuse the original execution approval; synthetic only, no provider or authenticated human.",
+    "status": "PENDING_EXACT_HEAD_CI",
+    "prior_head_sha": "bf02840c68d9948c2d3564b160247ca87bb4bd87",
+    "new_pytest_cases": 1,
+    "physical_mac_tests": "not_run",
+    "infrastructure_mutated": false
   }
 }

@@ -196,3 +196,10 @@ Final evidence-head CI remains separate; main's one-independent-review rule
 rejected the guarded merge (HTTP 405), and PR #6 remains unmerged.
 No provider execution, infrastructure mutation, authenticated reviewer,
 external observation or recovery is claimed.
+
+## Synthetic stale-approval replay check — 2026-10-27 ET (pending CI)
+
+The in-memory demo now exercises a changed artifact with a freshly prepared
+execution request and requires the old approval to fail closed. One regression
+checks the redacted outcome. Source-head CI, protected merge and merged-main
+acceptance remain pending; no infrastructure or physical device was touched.
