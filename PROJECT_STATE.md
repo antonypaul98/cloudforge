@@ -184,3 +184,12 @@ and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40458472949)
 **592 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
 3.11.17. Final evidence-head CI, independent-review policy, guarded merge
 and merged-main CI remain separate gates. No infrastructure mutation.
+
+## Synthetic audit provenance-digest demonstration — 2026-10-27 ET
+
+The credential-free local-only demo now independently rejects a forged
+`request_digest` or `receipt_sha256` in a canonical-shaped redacted audit
+event. A regression covers both outcomes. Exact-head CI is pending on the new
+commit; main's one-independent-review rule remains active and PR #6 unmerged.
+No provider execution, infrastructure mutation, authenticated reviewer,
+external observation or recovery is claimed.

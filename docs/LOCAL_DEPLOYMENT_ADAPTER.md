@@ -509,3 +509,12 @@ It asserts identical canonical redacted JSON and absence of those sentinels
 from stdout. This detects accidental dependence on these environment values;
 it does not prove that all possible credentials are inaccessible, authenticate
 reviewers, or authorize external execution, deployment, observation or recovery.
+
+## Synthetic audit provenance-digest rejection
+
+The credential-free in-memory demonstration now separately substitutes the
+redacted audit event's request digest and receipt SHA-256 with well-formed but
+incorrect 64-character values. The verifier must reject both before the demo
+reports success. One regression checks both fail-closed outcomes. These are
+caller-supplied digest comparisons, **not** signatures, authenticated reviewer
+identity, external observation, deployment, or recovery evidence.

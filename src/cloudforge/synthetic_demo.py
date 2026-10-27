@@ -27,7 +27,7 @@ from .planner import derive_requirements
 
 
 def run_synthetic_local_authorization_demo() -> dict[str, object]:
-    """Exercise exact binding, redacted evidence and two fail-closed paths."""
+    """Exercise exact binding, redacted evidence and fail-closed paths."""
     plan = derive_requirements(ApplicationProfile("synthetic-api", "python", port=8080))
     proposal = render_iac_proposal(plan)
     request = prepare_deployment_request(plan, proposal, "synthetic-target")
@@ -125,6 +125,27 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
         else:
             raise RuntimeError(f"forged {forbidden_claim} audit claim was accepted")
 
+    # A canonical-shaped audit must not accept substituted request or receipt
+    # digests. These digests bind the redacted evidence to exact inputs; they
+    # are not authenticated signatures or evidence of infrastructure activity.
+    for digest_field in ("request_digest", "receipt_sha256"):
+        forged_digest_payload = json.loads(audit_json)
+        original_digest = forged_digest_payload[digest_field]
+        forged_digest_payload[digest_field] = (
+            ("0" if original_digest[0] != "0" else "f") * 64
+        )
+        forged_digest_audit = json.dumps(
+            forged_digest_payload, sort_keys=True, indent=2, ensure_ascii=True,
+        ) + "\n"
+        try:
+            verify_local_execution_audit_event(
+                handoff, artifact, approval, receipt, forged_digest_audit,
+            )
+        except ValueError:
+            pass
+        else:
+            raise RuntimeError(f"forged {digest_field} audit digest was accepted")
+
     return {
         "demo_only": True,
         "authenticated_review": False,
@@ -139,6 +160,8 @@ def run_synthetic_local_authorization_demo() -> dict[str, object]:
             "forged_mutation_evidence": True,
             "forged_observation_evidence": True,
             "forged_recovery_evidence": True,
+            "forged_request_digest": True,
+            "forged_receipt_digest": True,
         },
         "redacted_audit_event": json.loads(audit_json),
     }

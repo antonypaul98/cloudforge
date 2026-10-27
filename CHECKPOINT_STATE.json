@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "ad8f17041ae6d68f10f14d9e18c93df5d75d2626",
+  "current_branch_sha": "5df04479612aa1be3ef442bcbd869d9deab97955",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #6 source head ad8f17041ae6d68f10f14d9e18c93df5d75d2626; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; merge blocked by active one-approval ruleset.",
-  "local_test_status": "Exact source-head push and PR CI on Python 3.11.17: 592 pytest passed; 19 infrastructure tests (1 skip). No physical Mac/device tests.",
+  "branch_remote_status": "PR #6 head observed 5df04479612aa1be3ef442bcbd869d9deab97955 before synthetic audit-digest slice; new commit/CI pending; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews; ruleset 25825521 requires 1 approval.",
+  "local_test_status": "Not run locally in this session (container GitHub DNS unavailable); new exact-head remote CI pending.",
   "pr_number": 6,
-  "ci_status": "Source head ad8f1704: push CI 40458470056 SUCCESS, PR CI 40458472949 SUCCESS; each 592 pytest passed, 19 infrastructure tests (1 skip). Final evidence-head CI pending.",
+  "ci_status": "Prior PR head 5df04479612aa1be3ef442bcbd869d9deab97955 passed PR CI 40465711030 (593 pytest); new audit-digest slice exact-head CI pending.",
   "merge_status": "NOT MERGED",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "PR #6 unmerged. Last confirmed main ruleset 25825521 requires one independent approval; zero reviews; connected integration has no ruleset-write action. Live ruleset read unavailable in this run; SHA-guarded merge and merged-main CI pending. Exclusive external writer/worktree ownership unverified.",
-  "next_action": "Re-read final evidence-head PR CI and active main ruleset. Owner-authorized solo workflow: change required approvals 1→0 while retaining CI/non-fast-forward/deletion protections; otherwise obtain an eligible independent approval. Then expected-SHA guarded merge, merged-main CI and canonical acceptance. Never mutate infrastructure without explicit approval.",
+  "known_blocker": "Live ruleset 25825521 requires 1 independent approval, zero PR reviews; no connector ruleset-write action. No merge/merged-main CI. Shell GitHub DNS unavailable; exclusive writer ownership unverified.",
+  "next_action": "Verify new exact-head CI, then owner-authorized ruleset change 1→0 or eligible review; guarded expected-SHA merge, merged-main CI, canonical acceptance. Never mutate real infrastructure without explicit approval.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T07:11:49Z",
-  "observed_branch_sha": "192a30e162670723feed1c233d9a75e2df349a50",
-  "observed_feature_sha": "192a30e162670723feed1c233d9a75e2df349a50",
+  "observed_at_utc": "2026-10-27T07:56:30Z",
+  "observed_branch_sha": "5df04479612aa1be3ef442bcbd869d9deab97955",
+  "observed_feature_sha": "5df04479612aa1be3ef442bcbd869d9deab97955",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -34,15 +34,7 @@
   "pr_state": "open, unmerged, zero reviews at latest inspection; merge policy last confirmed requires one independent approval",
   "ci_state": {
     "push_run": null,
-    "pr_run": {
-      "id": 40465634836,
-      "source_head_sha": "192a30e162670723feed1c233d9a75e2df349a50",
-      "event": "pull_request",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40465634836",
-      "tested_merge_ref": "86edab1"
-    },
+    "pr_run": null,
     "merged_main_run": null,
     "previous_push_run": {
       "id": 40458470056,
@@ -63,11 +55,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Main branch merge ruleset",
-    "BLOCKER": "Last confirmed ruleset 25825521 requires one independent approval; zero reviews. Live ruleset read unavailable in this run; no bypass attempted.",
-    "SAFE_WORK_COMPLETED": "Published one synthetic DNS lookup regression at 192a30e162670723feed1c233d9a75e2df349a50. Exact-source PR CI 40465634836 succeeded with 593 pytest and 19 infrastructure tests (1 skip), Python 3.11.17. No real infrastructure mutation.",
-    "REMOTE_SHA": "192a30e162670723feed1c233d9a75e2df349a50",
-    "NEXT_ACTION": "Verify final evidence-head PR CI and main approval rule, then authorized SHA-guarded merge and merged-main CI."
+    "BLOCKED_LAYER": "Main branch review ruleset",
+    "BLOCKER": "Live ruleset 25825521 requires 1 independent approval; no eligible reviews; merge/merged-main CI pending.",
+    "SAFE_WORK_COMPLETED": "Prepared one synthetic audit provenance-digest rejection slice for remote publication; exact-head CI pending.",
+    "REMOTE_SHA": "5df04479612aa1be3ef442bcbd869d9deab97955",
+    "NEXT_ACTION": "Verify new source/head CI and owner-authorized merge gate; do not bypass."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -126,17 +118,16 @@
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "synthetic demo DNS/hostname lookup guard",
-    "feature_sha": "192a30e162670723feed1c233d9a75e2df349a50",
-    "regression_path": "tests/test_synthetic_dns_guard.py",
+    "name": "synthetic forged request/receipt digest audit rejection",
+    "source_parent_sha": "5df04479612aa1be3ef442bcbd869d9deab97955",
+    "feature_sha": null,
+    "regression_path": "tests/test_synthetic_demo.py",
     "new_pytest_cases": 1,
-    "exact_head_push_ci": null,
-    "pr_ci": 40465634836,
-    "pytest_passed": 593,
-    "infrastructure_tests": 19,
-    "infrastructure_skipped": 1,
+    "push_ci": null,
+    "pr_ci": null,
+    "pytest_passed": null,
     "merged_main_ci": "not_run",
-    "acceptance": "source-head PR CI passed; push run unverified; final evidence-head CI and protected merge pending",
+    "acceptance": "pending exact-head CI",
     "infrastructure_mutated": false
   },
   "intermediate_failed_ci": {
