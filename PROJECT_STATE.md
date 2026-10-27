@@ -372,3 +372,30 @@ collector identity/key management, durable atomic replay counters, trusted
 clocks, live read-only observation, real deployment, alerting, recovery,
 rollback and physical Mac acceptance remain separate unverified checkpoints.
 Earlier historical entries above are not evidence of those capabilities.
+
+## Durable observation replay ledger accepted — 2026-10-27 ET
+
+[PR #13](https://github.com/antonypaul98/cloudforge/pull/13) adds an opt-in,
+local SQLite replay counter for the existing exact-verified HMAC observation
+envelopes. It validates the MAC, source, plan and caller-supplied freshness
+before opening the database, then atomically advances the accepted sequence
+per (plan SHA-256, source alias) with a transactional conditional UPSERT.
+Duplicate, older, corrupt-database and concurrent duplicate attempts fail
+closed. The [design and operating contract](docs/OBSERVATION_REPLAY.md) records
+local file permissions, trusted-clock assumptions, rollback hazards and
+standard-library reuse; no third-party code or dependency was added.
+
+Exact feature head `5d15ec34fcade162d5efa6c00c650f51bf9879cb` passed
+[PR CI 40582748697](https://github.com/antonypaul98/cloudforge/actions/runs/40582748697).
+Guarded squash merge `e5fbbcc16590248f60ba9240d8a3fc1970afb99d` passed
+[merged-main push CI 40582825623](https://github.com/antonypaul98/cloudforge/actions/runs/40582825623).
+Both used Python 3.11.17, **681 pytest passed** (12 new cases) and 19
+infrastructure-guard tests run (18 passed, 1 skipped). The feature branch is
+preserved; external worktree ownership remains unverified.
+
+**Acceptance is local durable replay-state behavior only.** Tests used local
+SQLite files and synthetic sample envelopes. No live probe, authenticated
+collector, trusted external clock, provider execution, infrastructure
+deployment, health claim, distributed ledger, recovery or physical Mac
+acceptance is established. Earlier in-memory evidence acceptance remains
+valid but does not imply a live monitoring service.

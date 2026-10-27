@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "bounded observation evidence intake",
+  "current_checkpoint": "durable observation replay ledger",
   "active_branch": "main",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
+  "current_branch_sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #11 exact head e44ef4129bab806c1e0e3a38e9159e693b97e580 integrated by guarded squash merge 0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7; feature branch preserved; external worktree ownership unverified.",
-  "local_test_status": "No pinned Python 3.11 local shell test run; exact-head PR and merged-main CI each passed 669 pytest and 19 infrastructure guards (18 passed, 1 skipped), Python 3.11.17.",
-  "pr_number": 11,
-  "ci_status": "PR CI 40575145608 SUCCESS at e44ef4129bab806c1e0e3a38e9159e693b97e580; merged-main push CI 40575241241 SUCCESS at 0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7; 669 pytest passed and 18 infrastructure guards passed (1 skipped) in both.",
-  "merge_status": "MERGED: PR #11 guarded squash 0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7; exact-head and merged-main CI successful.",
+  "branch_remote_status": "PR #13 exact source head 5d15ec34fcade162d5efa6c00c650f51bf9879cb guarded squash-merged as e5fbbcc16590248f60ba9240d8a3fc1970afb99d; source branch preserved. No exclusive external worktree ownership proof.",
+  "local_test_status": "No pinned Python 3.11 local shell test; exact-head PR and merged-main CI each passed 681 pytest and 19 infrastructure guards (18 passed, 1 skipped) on Python 3.11.17.",
+  "pr_number": 13,
+  "ci_status": "PR CI 40582748697 SUCCESS at 5d15ec34fcade162d5efa6c00c650f51bf9879cb; merged-main CI 40582825623 SUCCESS at e5fbbcc16590248f60ba9240d8a3fc1970afb99d; both report 681 pytest passed, 18 infrastructure guards passed (1 skipped).",
+  "merge_status": "MERGED: PR #13 guarded squash e5fbbcc16590248f60ba9240d8a3fc1970afb99d; exact-head PR and merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "No blocker for in-memory evidence intake. Trusted live collector identity/key management, durable atomic replay state, actual read-only probes, service-health acceptance, deployment and recovery remain unimplemented/unverified. External worktree ownership unverified.",
-  "next_action": "Scope a safe read-only collector with explicit endpoint allowlist, authenticated source, trusted clock and atomic replay storage. Reuse existing evidence verifier; validate fixtures, CI and live acceptance separately. No infrastructure mutation authorized.",
+  "known_blocker": "No blocker for local durable replay-counter software acceptance. Actual read-only collector, authenticated source/key management, trusted clocks, real service health, distributed replay coordination, deployment and recovery remain unimplemented/unverified; external worktree ownership unverified.",
+  "next_action": "Scope a bounded loopback-only read-only HTTP probe collector with explicit target/path allowlist, no redirects, trusted source/key provisioning, no deployment or recovery claims; validate fixture and CI before any merge.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T20:07:54Z",
-  "observed_branch_sha": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
-  "observed_feature_sha": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
+  "observed_at_utc": "2026-10-27T20:59:21Z",
+  "observed_branch_sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
+  "observed_feature_sha": "5d15ec34fcade162d5efa6c00c650f51bf9879cb",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,31 +27,31 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #11 exact head e44ef4129bab806c1e0e3a38e9159e693b97e580 integrated as 0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7",
+  "pr_state": "closed, merged; PR #13 exact head 5d15ec34fcade162d5efa6c00c650f51bf9879cb integrated as e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
   "ci_state": {
     "push_run": {
-      "id": 40575121496,
-      "sha": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
+      "id": 40582722927,
+      "sha": "5d15ec34fcade162d5efa6c00c650f51bf9879cb",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40575121496"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40582722927"
     },
     "pr_run": {
-      "id": 40575145608,
-      "source_head_sha": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
+      "id": 40582748697,
+      "source_head_sha": "5d15ec34fcade162d5efa6c00c650f51bf9879cb",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40575145608"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40582748697"
     },
     "merged_main_run": {
-      "id": 40575241241,
-      "sha": "0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7",
+      "id": 40582825623,
+      "sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40575241241"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40582825623"
     },
     "previous_push_run": {
       "id": 40526348067,
@@ -72,11 +72,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "None for synthetic evidence intake; local Git transport DNS unavailable",
-    "BLOCKER": "Real authenticated collector and durable replay state are not yet implemented; external worktree ownership unverified",
-    "SAFE_WORK_COMPLETED": "PR #11 integrated; PR CI and merged-main CI passed 669 pytest and 18 infrastructure guards (1 skipped), Python 3.11.17. No live probes or infrastructure mutation.",
-    "REMOTE_SHA": "0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7",
-    "NEXT_ACTION": "Record canonical acceptance and then scope a separate safe read-only collector with explicit trust and target boundaries."
+    "BLOCKED_LAYER": "None for durable local replay acceptance; shell GitHub DNS unavailable",
+    "BLOCKER": "Live authenticated collector, trusted clock and real observation still unimplemented; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #13 merged; exact-head and merged-main CI passed 681 pytest, 18 infrastructure guards (1 skipped), Python 3.11.17. SQLite local replay state only; no real probes or infrastructure changes.",
+    "REMOTE_SHA": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
+    "NEXT_ACTION": "Scope a bounded loopback-only read-only probe collector; no cloud execution, hardware test or external action."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -90,7 +90,7 @@
   },
   "checkpoint_status": "COMPLETE",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/observation-evidence-20261027",
+  "checkpoint_branch": "build/observation-replay-ledger-20261027",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
@@ -98,9 +98,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7",
-  "merge_commit_sha": "0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7",
-  "final_pr_head": "e44ef4129bab806c1e0e3a38e9159e693b97e580",
+  "verified_main_sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
+  "merge_commit_sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
+  "final_pr_head": "5d15ec34fcade162d5efa6c00c650f51bf9879cb",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -132,7 +132,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "No user-only action needed for synthetic observation evidence intake; no real probes or physical Mac validation requested.",
+    "reason": "No user-only action needed for durable local SQLite replay-state acceptance; no physical Mac or real infrastructure access.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -354,6 +354,35 @@
     "scope": "HMAC-SHA256 source-key envelope bound to exact verified observation proposal; bounded age and caller-managed monotonic sequence, no network or runtime.",
     "external_code_copied": false,
     "new_dependencies": false,
+    "authenticated_collector": false,
+    "actual_probes_executed": false,
+    "actual_infrastructure_mutated": false,
+    "real_deployment_accepted": false,
+    "observability_accepted": false,
+    "recovery_accepted": false,
+    "physical_hardware_accepted": false
+  },
+  "accepted_observation_replay": {
+    "checkpoint": "durable observation replay ledger",
+    "status": "COMPLETE — local SQLite software acceptance",
+    "pr": 13,
+    "final_pr_head": "5d15ec34fcade162d5efa6c00c650f51bf9879cb",
+    "merge_commit_sha": "e5fbbcc16590248f60ba9240d8a3fc1970afb99d",
+    "source_push_ci_run": 40582722927,
+    "pr_ci_run": 40582748697,
+    "merged_main_ci_run": 40582825623,
+    "python": "3.11.17",
+    "pytest_passed": 681,
+    "new_pytest_cases": 12,
+    "infrastructure_guard_tests": {
+      "run": 19,
+      "passed": 18,
+      "skipped": 1
+    },
+    "scope": "Atomic SQLite sequence acceptance for exact-verified HMAC observation evidence per plan digest and source alias; persistent local file, no external services.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "local_database_io": true,
     "authenticated_collector": false,
     "actual_probes_executed": false,
     "actual_infrastructure_mutated": false,
