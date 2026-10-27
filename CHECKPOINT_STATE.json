@@ -3,12 +3,12 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
+  "current_branch_sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Observed exact head 5c81d6979ef19ad1117e2b71183806e7b013afa8; clock/entropy synthetic regression staged as one atomic guarded publish on existing PR #6; main unchanged.",
-  "local_test_status": "Not run in local shell: GitHub DNS unavailable; new regression awaits exact-head remote CI. Previous head 5c81d6979ef19ad1117e2b71183806e7b013afa8 passed 601 pytest and 19 infrastructure tests (1 skip).",
+  "branch_remote_status": "Clock/entropy guard source commit a419548c477af72782119dc557ee44ab0e3e0abe published and verified; main e4d9db3e unchanged, PR #6 open, zero reviews.",
+  "local_test_status": "No local shell tests (GitHub DNS unavailable). Remote source-head push and PR CI each passed 602 pytest and 19 infrastructure tests (1 skip) on Python 3.11.17; final state-head CI pending.",
   "pr_number": 6,
-  "ci_status": "New clock/entropy guard exact-head push and PR CI pending; prior head 5c81d6979ef19ad1117e2b71183806e7b013afa8 push 40526348067 and PR 40526358589 succeeded.",
+  "ci_status": "Source-head push 40537507564 and PR 40537518002 completed SUCCESS at a419548c477af72782119dc557ee44ab0e3e0abe; 602 pytest passed and 19 infrastructure tests (1 skip). Final state commit requires exact-head CI.",
   "merge_status": "NOT MERGED: ruleset 25825521 requires one independent approval, PR #6 has zero reviews; guarded merge and merged-main CI pending.",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
@@ -16,14 +16,14 @@
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
   "known_blocker": "One independent approving review required, no reviews. Local shell GitHub DNS resolution failed; GitHub connector available. Exclusive writer/worktree ownership unverified.",
-  "next_action": "Verify final published head and exact-head push/PR CI for clock/entropy regression. Do not merge until an eligible independent review or owner-approved ruleset change; then SHA-guarded merge and merged-main CI. No real deployment.",
+  "next_action": "Verify exact final documentation/state head CI, then guarded merge only after GitHub's independent review or explicit owner-controlled ruleset change; verify merged-main CI and record canonical acceptance. No real deployment.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T14:57:43Z",
-  "observed_branch_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
-  "observed_feature_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
+  "observed_at_utc": "2026-10-27T16:06:02Z",
+  "observed_branch_sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
+  "observed_feature_sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -33,8 +33,22 @@
   },
   "pr_state": "open, unmerged, zero reviews; active ruleset 25825521 requires one independent approval",
   "ci_state": {
-    "push_run": null,
-    "pr_run": null,
+    "push_run": {
+      "id": 40537507564,
+      "sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40537507564"
+    },
+    "pr_run": {
+      "id": 40537518002,
+      "source_head_sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40537518002"
+    },
     "merged_main_run": null,
     "previous_push_run": {
       "id": 40526348067,
@@ -56,10 +70,10 @@
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Protected main independent-review gate",
-    "BLOCKER": "One independent approval required; zero reviews. New exact-head CI pending.",
-    "SAFE_WORK_COMPLETED": "Published bounded synthetic clock/entropy guard as one atomic PR branch commit with state and documentation.",
-    "REMOTE_SHA": "resolve live branch SHA after publication",
-    "NEXT_ACTION": "Verify final-head CI, then guarded merge only after GitHub review policy satisfied."
+    "BLOCKER": "One independent approval required; zero reviews. Final state-head CI pending.",
+    "SAFE_WORK_COMPLETED": "Published and remotely tested synthetic clock/entropy independence regression: 602 pytest and 19 infrastructure tests (1 skip) on source-head push and PR CI.",
+    "REMOTE_SHA": "a419548c477af72782119dc557ee44ab0e3e0abe",
+    "NEXT_ACTION": "Verify exact final documentation/state head CI, then guarded merge only after GitHub's independent review or explicit owner-controlled ruleset change; verify merged-main CI and record canonical acceptance. No real deployment."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -119,15 +133,15 @@
   },
   "last_published_safeguard": {
     "name": "synthetic in-memory authorization rejects common clock and entropy entry points",
-    "feature_sha": null,
+    "feature_sha": "a419548c477af72782119dc557ee44ab0e3e0abe",
     "regression_path": "tests/test_synthetic_clock_entropy_guard.py",
     "new_pytest_cases": 1,
-    "push_ci": null,
-    "pr_ci": null,
-    "pytest_passed": null,
-    "infrastructure_tests": null,
+    "push_ci": 40537507564,
+    "pr_ci": 40537518002,
+    "pytest_passed": 602,
+    "infrastructure_tests": "19 run, 18 passed, 1 skipped",
     "merged_main_ci": "not_run",
-    "acceptance": "published pending exact-head CI",
+    "acceptance": "source-head CI passed; protected integration and final state-head CI pending",
     "infrastructure_mutated": false
   },
   "intermediate_failed_ci": {
