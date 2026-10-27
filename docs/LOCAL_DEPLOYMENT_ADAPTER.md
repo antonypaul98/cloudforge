@@ -534,3 +534,18 @@ an old receipt: it demonstrates that request renewal alone cannot reuse stale
 approval. It does not authenticate a human or execute, observe or recover infrastructure.
 
 Source-head commit `236d545d9607b010bb8894dc4ce0084bee077213` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477790248) and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477796079) on Python 3.11.17: 595 pytest passed, 19 infrastructure tests (1 skip). Final evidence-head CI and protected integration remain pending.
+
+## Synthetic changed-plan approval replay
+
+The credential-free in-memory demo also prepares a different infrastructure
+plan (port 8081 instead of 8080), obtains a fresh synthetic handoff for the
+same target and artifact bytes, and constructs the new local execution request.
+The prior local execution approval must fail with `ApprovalRequiredError`.
+One regression checks the redacted result. This demonstrates request lineage
+binding, not human identity authentication, provider execution, real deployment,
+observation or recovery.
+
+Source-head commit `e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485782079)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485790877):
+596 pytest passed, 19 infrastructure tests (1 skip), Python 3.11.17.
+Final evidence-head CI and protected integration remain pending.

@@ -3,27 +3,27 @@
   "current_checkpoint": "bounded local deployment adapter",
   "active_branch": "build/local-deployment-adapter",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
+  "current_branch_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Source-head 236d545d9607b010bb8894dc4ce0084bee077213 published to PR #6, main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews and independent-review ruleset still active.",
-  "local_test_status": "Source-head GitHub CI Python 3.11.17: 595 pytest passed, 19 infrastructure tests (1 skip). No local/physical Mac tests.",
+  "branch_remote_status": "Source-head e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9 published to PR #6; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7; zero reviews, one independent approval still required.",
+  "local_test_status": "Source-head GitHub CI Python 3.11.17: 596 pytest passed; 19 infrastructure tests (1 skip). No local or physical Mac tests.",
   "pr_number": 6,
-  "ci_status": "Source-head push CI 40477790248 SUCCESS and PR CI 40477796079 SUCCESS, 595 pytest and 19 infrastructure tests (1 skip). Final evidence-head CI pending.",
+  "ci_status": "Source-head push CI 40485782079 SUCCESS and PR CI 40485790877 SUCCESS, 596 pytest and 19 infrastructure tests (1 skip). Final evidence-head CI pending.",
   "merge_status": "NOT MERGED: one independent approval required, zero reviews; guarded merge and merged-main CI pending.",
   "external_acceptance_required": [
     "Exact final PR head and successful PR-event CI",
     "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
     "Verified SHA-guarded merge and successful merged-main CI"
   ],
-  "known_blocker": "Active ruleset 25825521 requires one independent review, zero reviews; no connected ruleset-write action. Shell GitHub DNS unavailable; exclusive writer/worktree ownership unverified.",
-  "next_action": "Verify final evidence-head CI, recheck ruleset and reviews; after owner-authorized approval-count change or eligible review, expected-SHA guarded merge, merged-main CI, canonical acceptance. No real infrastructure mutation.",
+  "known_blocker": "Active ruleset 25825521 requires one independent review, zero reviews; no connected ruleset-write action. Container GitHub DNS unavailable; exclusive writer/worktree ownership unverified.",
+  "next_action": "Verify final evidence-head CI; recheck live main, PR head, reviews and ruleset; only after authorized owner rule change or eligible independent approval attempt expected-SHA merge, merged-main CI and canonical acceptance. No real infrastructure mutation.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T09:02:44Z",
-  "observed_branch_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
-  "observed_feature_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
+  "observed_at_utc": "2026-10-27T10:05:45Z",
+  "observed_branch_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+  "observed_feature_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -31,9 +31,26 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "open, unmerged, zero reviews at latest inspection; merge policy last confirmed requires one independent approval",
+  "pr_state": "open, unmerged, zero reviews at latest inspection; ruleset 25825521 requires one independent approval",
   "ci_state": {
     "push_run": {
+      "id": 40485782079,
+      "sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40485782079"
+    },
+    "pr_run": {
+      "id": 40485790877,
+      "source_head_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40485790877"
+    },
+    "merged_main_run": null,
+    "previous_push_run": {
       "id": 40477790248,
       "sha": "236d545d9607b010bb8894dc4ce0084bee077213",
       "event": "push",
@@ -41,39 +58,22 @@
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40477790248"
     },
-    "pr_run": {
+    "previous_pr_run": {
       "id": 40477796079,
       "source_head_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
       "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40477796079"
-    },
-    "merged_main_run": null,
-    "previous_push_run": {
-      "id": 40470341201,
-      "sha": "42ae155b42fb79ccd2658e2909575b2abb670614",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40470341201"
-    },
-    "previous_pr_run": {
-      "id": 40470344578,
-      "source_head_sha": "42ae155b42fb79ccd2658e2909575b2abb670614",
-      "event": "pull_request",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40470344578"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Protected main branch independent-review requirement",
-    "BLOCKER": "Active ruleset 25825521 requires one approval; zero reviews. Owner-only change or eligible independent review needed.",
-    "SAFE_WORK_COMPLETED": "Published source 236d545d9607b010bb8894dc4ce0084bee077213; exact-source push CI 40477790248 and PR CI 40477796079 passed: 595 pytest, 19 infrastructure tests (1 skip).",
-    "REMOTE_SHA": "236d545d9607b010bb8894dc4ce0084bee077213",
-    "NEXT_ACTION": "Verify final evidence-head CI and live ruleset; guarded merge only after independent-review gate is legitimately satisfied."
+    "BLOCKED_LAYER": "Protected main independent-review requirement",
+    "BLOCKER": "Active ruleset 25825521 requires one approving review; zero reviews. Owner-controlled change or eligible independent review needed.",
+    "SAFE_WORK_COMPLETED": "Published plan-change replay source e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9; exact-source push CI 40485782079 and PR CI 40485790877 passed: 596 pytest, 19 infrastructure tests (1 skip).",
+    "REMOTE_SHA": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+    "NEXT_ACTION": "Verify final evidence-head CI; merge only after independent-review gate is legitimately satisfied."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -128,17 +128,17 @@
   },
   "help_status": {
     "antony_help_needed": true,
-    "reason": "Owner-only GitHub ruleset approval-count change (or eligible independent review); no Mac testing required.",
+    "reason": "Owner-controlled GitHub ruleset approval-count change, or eligible independent review; no physical Mac testing required.",
     "user_only_gate_on_immediate_path": true
   },
   "last_published_safeguard": {
-    "name": "synthetic stale approval replay after changed artifact and fresh request",
-    "feature_sha": "236d545d9607b010bb8894dc4ce0084bee077213",
+    "name": "synthetic stale approval replay after changed plan and fresh handoff",
+    "feature_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
     "regression_path": "tests/test_synthetic_demo.py",
     "new_pytest_cases": 1,
-    "push_ci": 40477790248,
-    "pr_ci": 40477796079,
-    "pytest_passed": 595,
+    "push_ci": 40485782079,
+    "pr_ci": 40485790877,
+    "pytest_passed": 596,
     "infrastructure_tests": 19,
     "infrastructure_skipped": 1,
     "merged_main_ci": "not_run",
@@ -246,6 +246,14 @@
     "pr_ci": 40477796079,
     "pytest_passed": 595,
     "scope": "Fresh changed-artifact request cannot replay original local execution approval; no authenticated reviewer or provider execution.",
+    "merged_main_ci": "not_run"
+  },
+  "synthetic_changed_plan_approval_replay": {
+    "source_sha": "e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9",
+    "push_ci": 40485782079,
+    "pr_ci": 40485790877,
+    "pytest_passed": 596,
+    "scope": "A changed infrastructure plan (port 8080 to 8081) with the same target and exact artifact bytes, freshly approved handoff and freshly prepared local request cannot reuse the old execution approval; synthetic only.",
     "merged_main_ci": "not_run"
   }
 }

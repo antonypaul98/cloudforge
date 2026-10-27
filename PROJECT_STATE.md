@@ -197,7 +197,7 @@ rejected the guarded merge (HTTP 405), and PR #6 remains unmerged.
 No provider execution, infrastructure mutation, authenticated reviewer,
 external observation or recovery is claimed.
 
-## Synthetic stale-approval replay check — 2026-10-27 ET (pending CI)
+## Synthetic stale-approval replay check — 2026-10-27 ET (source CI passed)
 
 The in-memory demo now exercises a changed artifact with a freshly prepared
 execution request and requires the old approval to fail closed. One regression
@@ -209,3 +209,18 @@ commit `236d545d9607b010bb8894dc4ce0084bee077213` passed [push CI](https://githu
 and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40477796079)
 on Python 3.11.17: **595 pytest passed**, 19 infrastructure tests (1 skip).
 Final evidence-head CI, protected merge and merged-main CI remain pending.
+
+## Synthetic changed-plan approval replay — 2026-10-27 ET
+
+The credential-free in-memory demonstration now changes a plan's port from
+8080 to 8081 while keeping the same target and artifact bytes. It creates a
+fresh synthetic handoff and local request, then requires the previous local
+execution approval to fail with `ApprovalRequiredError`. One regression
+checks the redacted outcome. This is caller-supplied synthetic identity,
+not authenticated review, deployment, observation or recovery.
+
+Source commit `e0d82d585fe0bdcf6d8f1ec60ea9a1007018eef9` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485782079)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40485790877):
+**596 pytest passed**, 19 infrastructure tests (1 skipped), Python 3.11.17.
+Final evidence-head CI, protected merge and merged-main CI are separate gates.
+PR #6 remains unmerged due to the active independent-review rule.
