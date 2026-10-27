@@ -399,3 +399,33 @@ collector, trusted external clock, provider execution, infrastructure
 deployment, health claim, distributed ledger, recovery or physical Mac
 acceptance is established. Earlier in-memory evidence acceptance remains
 valid but does not imply a live monitoring service.
+
+## Bounded loopback HEAD observation fixture accepted — 2026-10-27 ET
+
+[PR #15](https://github.com/antonypaul98/cloudforge/pull/15) adds an opt-in
+numeric IPv4 `127.0.0.1` HTTP `HEAD` probe fixture that revalidates the
+exact existing handoff/artifact/local approval/receipt and observation plan
+before any network call. An explicit operator-supplied `(kind, host, port, path)`
+allowlist must match the request exactly; only safe ASCII origin paths,
+bounded 1–10s per-probe timeouts and the planned probe order are accepted.
+No redirects, proxy discovery, response-body reads, cloud endpoints or
+credential use are included. The [scope and reuse contract](docs/OBSERVATION_HTTP.md)
+records Python standard-library reuse and OWASP SSRF guidance; no third-party
+code, dependency or algorithm was imported.
+
+Exact source head `046c11d8d63ec0ac904dce8101ac7220528f66fe` passed
+[PR CI 40592445791](https://github.com/antonypaul98/cloudforge/actions/runs/40592445791).
+Guarded squash merge `a4339ba0c1161388df6b92262acfd5a644dd87db` passed
+[merged-main push CI 40592539823](https://github.com/antonypaul98/cloudforge/actions/runs/40592539823).
+Both used Python 3.11.17 and reported **718 pytest passed** (37 new tests)
+and 19 infrastructure tests run (18 passed, 1 skipped). CI tests exercised
+only ephemeral loopback fixture servers. The source branch is preserved;
+external worktree ownership remains unverified.
+
+**Acceptance is fixture-only unsigned HTTP-status collection.** An explicit
+allowlist parameter is not authenticated operator authorization; HTTP 2xx
+does not establish trusted service health. No real service, authenticated
+collector identity, source key, signed evidence, replay-ledger integration,
+deployment, recovery, rollback or physical Mac/device acceptance is claimed.
+Earlier observation-plan/evidence/replay acceptance does not imply those
+capabilities are connected to this fixture collector.
