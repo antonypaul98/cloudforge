@@ -347,3 +347,28 @@ preserved. No physical Mac test or shell GitHub push was performed.
 authenticated reviewer identity, real deployment, recovery, rollback and
 hardware acceptance remain unimplemented/unverified. Earlier checkpoint
 receipts above remain historical, not proof of these future capabilities.
+
+## Bounded observation evidence intake accepted — 2026-10-27 ET
+
+[PR #11](https://github.com/antonypaul98/cloudforge/pull/11) added a
+provider-neutral, in-memory HMAC-SHA256 sample envelope bound to the exact
+reverified observation proposal and local authorization inputs. It checks a
+configured opaque source alias, ordered probe kinds, bounded timestamps,
+caller-maintained monotonic sequence and constant-time MAC comparison.
+The [trust contract](docs/OBSERVATION_EVIDENCE.md) records standard-library
+reuse, source-key provisioning and replay-state limitations. No third-party
+source code, dependency, cloud SDK, live probe or infrastructure action was added.
+
+Exact source head `e44ef4129bab806c1e0e3a38e9159e693b97e580` passed
+[PR CI 40575145608](https://github.com/antonypaul98/cloudforge/actions/runs/40575145608).
+The guarded squash merge `0fb1f07b3096f5f3b95d61b6a5a48b52fb2989a7`
+passed [merged-main push CI 40575241241](https://github.com/antonypaul98/cloudforge/actions/runs/40575241241).
+Both runs used Python 3.11.17 and reported **669 pytest passed** (37 new
+synthetic tests), with 19 infrastructure-guard tests run (18 passed, 1 skipped).
+
+**Acceptance is synthetic envelope verification only.** MAC possession does not
+prove a trusted collector ran a probe, or that a service is healthy. Actual
+collector identity/key management, durable atomic replay counters, trusted
+clocks, live read-only observation, real deployment, alerting, recovery,
+rollback and physical Mac acceptance remain separate unverified checkpoints.
+Earlier historical entries above are not evidence of those capabilities.
