@@ -429,3 +429,40 @@ collector identity, source key, signed evidence, replay-ledger integration,
 deployment, recovery, rollback or physical Mac/device acceptance is claimed.
 Earlier observation-plan/evidence/replay acceptance does not imply those
 capabilities are connected to this fixture collector.
+
+
+## Bounded signed fixture intake accepted — 2026-10-27 ET
+
+[PR #17](https://github.com/antonypaul98/cloudforge/pull/17) composes
+the existing numeric-loopback HEAD fixture collector, exact-plan HMAC-SHA256
+sample envelope and SQLite durable replay guard into one opt-in synchronous
+fixture-only path. It validates the allowlist, exact authorization, source/key,
+caller-supplied freshness and ledger-path shape before any network call, then
+signs the actual HEAD results and returns the envelope only after transactional
+replay acceptance. A duplicate sequence may still issue HEAD before the
+database rejects it; this is not exactly-once probing.
+
+The [reuse and threat contract](docs/OBSERVATION_FIXTURE_INTAKE.md) documents
+the Python 3.11 standard-library and existing-module reuse, unchanged
+schemas, no imported third-party code or dependency, and the caller's
+responsibility for identity, source key, trusted clock, sequence and ledger.
+Tests cover 204/503/302 fixture outcomes, source/clock/target/artifact
+fail-closed validation before network, signed samples, durable acceptance,
+replay and redacted output.
+
+Exact PR head
+`abb58dbb8d48a6427e31505a32bce976b64849b1` passed
+[PR CI 40599062565](https://github.com/antonypaul98/cloudforge/actions/runs/40599062565)
+and [source push CI 40599034734](https://github.com/antonypaul98/cloudforge/actions/runs/40599034734).
+Guarded squash merge
+`574cf86ed199e2c50e16777dc977c9fe0d3df630` passed
+[merged-main CI 40599169006](https://github.com/antonypaul98/cloudforge/actions/runs/40599169006).
+All three used Python 3.11.17, **737 pytest passed** (19 new test cases),
+19 infrastructure guards run (18 passed, 1 skipped). The source branch is
+preserved; exclusive external worktree ownership remains unverified.
+
+**Acceptance is fixture-only composition.** Signing in a caller-controlled
+process is not authenticated collector identity or trustworthy service health.
+No production service, independent key/clock provisioning, cloud provider,
+real deployment, monitoring scheduler, alerting, recovery, rollback or physical
+Mac/device acceptance is established. No real infrastructure was modified.
