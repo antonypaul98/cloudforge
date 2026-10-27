@@ -518,3 +518,9 @@ incorrect 64-character values. The verifier must reject both before the demo
 reports success. One regression checks both fail-closed outcomes. These are
 caller-supplied digest comparisons, **not** signatures, authenticated reviewer
 identity, external observation, deployment, or recovery evidence.
+
+Source-head evidence: commit `42ae155b42fb79ccd2658e2909575b2abb670614` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40470341201)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40470344578)
+with 594 pytest passed and 19 infrastructure tests (1 skipped), Python 3.11.17.
+Final evidence-head CI and protected integration remain separate gates.

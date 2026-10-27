@@ -189,7 +189,10 @@ and merged-main CI remain separate gates. No infrastructure mutation.
 
 The credential-free local-only demo now independently rejects a forged
 `request_digest` or `receipt_sha256` in a canonical-shaped redacted audit
-event. A regression covers both outcomes. Exact-head CI is pending on the new
-commit; main's one-independent-review rule remains active and PR #6 unmerged.
+event. A regression covers both outcomes. Source commit `42ae155b42fb79ccd2658e2909575b2abb670614` passed [push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40470341201)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40470344578):
+**594 pytest passed**, 19 infrastructure tests (1 skip), Python 3.11.17.
+Final evidence-head CI remains separate; main's one-independent-review rule
+rejected the guarded merge (HTTP 405), and PR #6 remains unmerged.
 No provider execution, infrastructure mutation, authenticated reviewer,
 external observation or recovery is claimed.
