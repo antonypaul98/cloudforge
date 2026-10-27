@@ -116,9 +116,17 @@ review, infrastructure deployment, external observation, recovery or physical
 hardware acceptance is claimed. PR #6 remains unmerged due to the one-review
 main ruleset.
 
-## Synthetic forged mutation-evidence regression — source CI pending (2026-10-26)
+## Synthetic forged mutation-evidence regression — source CI passed (2026-10-26)
 
 The local-only synthetic demo now rejects a canonical-shaped audit event falsely
 claiming `infrastructure_mutated: true`, with a dedicated regression and redacted
 result flag. This is not deployment or recovery evidence. Exact source-head push
 and PR CI, protected merge, and merged-main CI must be verified separately.
+
+Source commit `531e5b6ba67bc66b34485cc809f61203fc24f47b` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40436195209)
+and [PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40436198964):
+**588 pytest passed**, 19 infrastructure tests (1 inapplicable skip), Python
+3.11.17. Final evidence-head CI is separate; PR #6 remains unmerged due to
+main's one-independent-review requirement. No real deployment, observation,
+recovery, or physical hardware acceptance.
