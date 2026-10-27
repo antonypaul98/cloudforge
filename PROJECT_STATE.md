@@ -301,3 +301,25 @@ Python 3.11.17. Push CI has not been independently verified. PR #6 is open;
 GitHub rejected the SHA-guarded merge (HTTP 405) because one independent
 approving review is still required. Merged-main CI and real deployment,
 observation and recovery remain unaccepted.
+
+## Bounded local adapter integration accepted — 2026-10-27 ET
+
+PR [#6](https://github.com/antonypaul98/cloudforge/pull/6) integrated the
+provider-neutral, deterministic in-memory authorization, receipt verification,
+redacted audit and credential-free synthetic regression suite into `main`.
+Exact final PR head `690ba1e052ef08d768f4cfb0e25e0877fa2ef994` passed
+[PR CI 40546384064](https://github.com/antonypaul98/cloudforge/actions/runs/40546384064).
+The SHA-guarded squash merge produced
+[`4f93ab34963a7c038eec63c184dea80aaf073376`](https://github.com/antonypaul98/cloudforge/commit/4f93ab34963a7c038eec63c184dea80aaf073376),
+and [merged-main push CI 40549975251](https://github.com/antonypaul98/cloudforge/actions/runs/40549975251)
+succeeded. Both CI receipts report Python 3.11.17, **603 pytest passed**, and
+19 infrastructure-guard tests run (18 passed, 1 skipped). The active `main`
+ruleset retains PR and required `test` checks with zero mandatory reviews.
+
+**Acceptance is strictly synthetic local-only software behavior.** Caller-supplied
+reviewer strings are not authenticated approvals; no provider, cloud resource,
+filesystem mutation, live deployment, external observation, recovery, or physical
+Mac/device acceptance is claimed. Earlier in-progress and review-blocked notes
+above are historical snapshots, superseded by this verified integration receipt.
+Future real execution requires separately scoped design, exact artifacts,
+authenticated authorization, safe rollback and independent acceptance evidence.

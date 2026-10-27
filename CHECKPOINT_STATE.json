@@ -1,29 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "bounded local deployment adapter",
-  "active_branch": "build/local-deployment-adapter",
+  "active_branch": "main",
   "main_sha_at_start": "5fef9517f56760f67467ea8686de7f721aa20c66",
-  "current_branch_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
+  "current_branch_sha": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Cross-artifact audit replay test source d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67 published and PR CI verified; documentation commit 25a9aa35c1e119e559438c98a7e5bfa337e1757e; main e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7 unchanged, PR #6 open, zero reviews.",
-  "local_test_status": "Local shell GitHub access failed DNS resolution; source PR CI passed 603 pytest and 19 infrastructure tests (18 passed, 1 skipped) on Python 3.11.17. Source push CI unverified. Final state-head CI pending.",
+  "branch_remote_status": "Feature branch 690ba1e052ef08d768f4cfb0e25e0877fa2ef994 integrated into main via PR #6 squash merge 4f93ab34963a7c038eec63c184dea80aaf073376; original feature branch preserved. No feature worktree ownership claimed.",
+  "local_test_status": "Shell GitHub DNS unavailable, so no physical/local suite rerun in this documentation follow-up. GitHub CI on final PR head passed 603 pytest, 19 infrastructure guards (18 passed, 1 skipped), Python 3.11.17; merged-main push CI independently passed the same suite.",
   "pr_number": 6,
-  "ci_status": "Source PR CI 40546226344 SUCCESS at d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67; 603 pytest passed and infrastructure 18 passed/1 skipped. Final state-head CI pending.",
-  "merge_status": "NOT MERGED: exact-SHA squash merge rejected HTTP 405 on source head d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67; GitHub requires one approving reviewer with write access, PR #6 has zero reviews. Merged-main CI not run.",
-  "external_acceptance_required": [
-    "Exact final PR head and successful PR-event CI",
-    "Owner-authorized solo-workflow ruleset change from 1 to 0, or an eligible independent approval under current ruleset",
-    "Verified SHA-guarded merge and successful merged-main CI"
-  ],
-  "known_blocker": "Independent review gate (one approval required, zero reviews). GitHub shell DNS unavailable; connector writes work. Exclusive writer/worktree ownership unverified.",
-  "next_action": "Verify final state-head PR CI; merge only after eligible independent approval or owner-controlled rule change, then verify merged-main CI and record canonical acceptance. No real deployment.",
+  "ci_status": "Exact PR head 690ba1e0 CI 40546384064 SUCCESS; merged-main 4f93ab34 push CI 40549975251 SUCCESS; 603 pytest passed, 18 infrastructure guards passed, 1 skipped on each run.",
+  "merge_status": "MERGED: PR #6 SHA-guarded squash merge into main 4f93ab34963a7c038eec63c184dea80aaf073376 at 2026-10-27T17:22:28Z. Final-head PR CI 40546384064 and merged-main push CI 40549975251 both successful.",
+  "external_acceptance_required": [],
+  "known_blocker": "No blocker for synthetic local-only checkpoint acceptance. Shell GitHub DNS prevents local preflight; exclusive external writer/worktree ownership remains unverified. Real infrastructure execution, authenticated reviewer identity, observation and recovery remain separate unaccepted work.",
+  "next_action": "Preserve accepted synthetic checkpoint. Before any next feature, reuse-first review existing contracts/tests and relevant proven implementations; scope provider-neutral runtime/observability/recovery design separately. Do not execute real infrastructure without exact artifacts, authenticated approval and independent acceptance.",
   "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-27T16:06:02Z",
-  "observed_branch_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
-  "observed_feature_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
+  "observed_at_utc": "2026-10-27T18:01:12Z",
+  "observed_branch_sha": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
+  "observed_feature_sha": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -31,18 +27,25 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "open, unmerged, zero reviews; exact-SHA merge rejected by independent-review gate",
+  "pr_state": "closed, merged; PR #6 exact head 690ba1e0 integrated at 4f93ab34",
   "ci_state": {
     "push_run": null,
     "pr_run": {
-      "id": 40546226344,
-      "source_head_sha": "d591a6ee9de37ad7afbfbda40bf61fdcf58a7e67",
+      "id": 40546384064,
+      "source_head_sha": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40546226344"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40546384064"
     },
-    "merged_main_run": null,
+    "merged_main_run": {
+      "id": 40549975251,
+      "sha": "4f93ab34963a7c038eec63c184dea80aaf073376",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40549975251"
+    },
     "previous_push_run": {
       "id": 40526348067,
       "sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
@@ -62,11 +65,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Protected main independent-review gate",
-    "BLOCKER": "One approving review with write access required; zero reviews. Final state-head CI pending.",
-    "SAFE_WORK_COMPLETED": "Published and PR-CI-tested cross-artifact redacted audit replay regression (603 pytest passed; 18 infrastructure passed, 1 skipped). No real infrastructure changes.",
-    "REMOTE_SHA": "25a9aa35c1e119e559438c98a7e5bfa337e1757e",
-    "NEXT_ACTION": "Verify final state-head PR CI; guarded merge after review or owner-controlled rule change; merged-main CI and canonical acceptance. No real deployment."
+    "BLOCKED_LAYER": "None for synthetic checkpoint; local Git transport DNS unavailable",
+    "BLOCKER": "Real runtime/observation/recovery acceptance not yet implemented; exclusive writer/worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #6 merged and verified on main: 603 pytest passed, 18 infrastructure guards passed, 1 skipped on Python 3.11.17. Documentation follow-up planned; no infrastructure mutation.",
+    "REMOTE_SHA": "4f93ab34963a7c038eec63c184dea80aaf073376",
+    "NEXT_ACTION": "Record canonical acceptance in docs-only PR; separately scope next provider-neutral safeguard. No real deployment."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -78,7 +81,7 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "IN_PROGRESS",
+  "checkpoint_status": "COMPLETE",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
   "checkpoint_branch": "build/local-deployment-adapter",
   "previous_completed_checkpoint": {
@@ -88,9 +91,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
-  "merge_commit_sha": null,
-  "final_pr_head": null,
+  "verified_main_sha": "4f93ab34963a7c038eec63c184dea80aaf073376",
+  "merge_commit_sha": "4f93ab34963a7c038eec63c184dea80aaf073376",
+  "final_pr_head": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
   "later_checkpoint_requirements": [
     "Authenticated exact-target execution approval and available runtime for future deployment adapter acceptance; not required for completed review-only handoff."
   ],
@@ -120,9 +123,9 @@
     "ci_run": 38100607440
   },
   "help_status": {
-    "antony_help_needed": true,
-    "reason": "Owner-controlled required-approvals change or eligible independent reviewer; no Mac testing.",
-    "user_only_gate_on_immediate_path": true
+    "antony_help_needed": false,
+    "reason": "Solo-workflow ruleset active with 0 required approvals; protected merge and CI completed. No Mac or user-only step for this checkpoint.",
+    "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
     "name": "valid redacted audit events cannot replay across separately authorized synthetic artifacts",
@@ -133,8 +136,8 @@
     "push_ci": "unverified",
     "pytest_passed": 603,
     "infrastructure_tests": "19 run, 18 passed, 1 skipped",
-    "merged_main_ci": "not_run",
-    "acceptance": "source PR CI passed; final state-head CI and protected merge pending",
+    "merged_main_ci": 40549975251,
+    "acceptance": "Final-head PR CI and merged-main CI succeeded; integrated through PR #6. Synthetic local-only safeguard, not runtime deployment.",
     "infrastructure_mutated": false
   },
   "intermediate_failed_ci": {
@@ -271,5 +274,28 @@
     "pr_ci": null,
     "pytest_passed": null,
     "merged_main_ci": "not_run"
+  },
+  "accepted_local_adapter": {
+    "checkpoint": "bounded local deployment adapter",
+    "status": "COMPLETE — synthetic local-only software acceptance",
+    "pr": 6,
+    "final_pr_head": "690ba1e052ef08d768f4cfb0e25e0877fa2ef994",
+    "merge_commit_sha": "4f93ab34963a7c038eec63c184dea80aaf073376",
+    "pr_ci_run": 40546384064,
+    "merged_main_ci_run": 40549975251,
+    "python": "3.11.17",
+    "pytest_passed": 603,
+    "infrastructure_guard_tests": {
+      "run": 19,
+      "passed": 18,
+      "skipped": 1
+    },
+    "review_policy": "GitHub main ruleset 25825521 active; required approvals 0; required test status and pull request retained",
+    "actual_infrastructure_mutated": false,
+    "authenticated_human_review": false,
+    "real_deployment_accepted": false,
+    "observability_accepted": false,
+    "recovery_accepted": false,
+    "physical_hardware_accepted": false
   }
 }
