@@ -541,3 +541,147 @@ def test_over_budget_head_is_signed_as_unknown_not_pass(monkeypatch, tmp_path):
     )
     with sqlite3.connect(ledger) as db:
         assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (1,)
+
+
+# A distinct, short-lived operator permit binds the exact loopback HEAD targets
+# before any HTTP or SQLite activity. These tests do not authenticate a person.
+from cloudforge.observation_operator_permit import (
+    issue_loopback_operator_permit, verify_loopback_operator_permit,
+)
+from cloudforge.observation_fixture_intake import (
+    collect_and_accept_operator_permitted_loopback_fixture_evidence,
+)
+
+_OPERATOR_KEY = bytes(range(32, 64))
+
+
+def _operator_permit(context, targets):
+    return issue_loopback_operator_permit(
+        context[-1], targets, source_id="fixture-collector",
+        source_key=_KEY, operator_key=_OPERATOR_KEY,
+        valid_from_unix=_NOW - 30, valid_until_unix=_NOW + 30,
+    )
+
+
+def _permitted_collect(context, targets, ledger, permit, **changes):
+    settings = dict(
+        allowed_targets=targets, operator_permit=permit,
+        operator_key=_OPERATOR_KEY, source_id="fixture-collector",
+        source_key=_KEY, observed_at_unix=1_800_000_000,
+        now_unix=_NOW, sequence=1, max_age_seconds=30,
+        ledger_path=str(ledger),
+    )
+    settings.update(changes)
+    return collect_and_accept_operator_permitted_loopback_fixture_evidence(
+        *context, targets, **settings,
+    )
+
+
+def test_distinct_operator_permit_allows_exact_fixture_only(fixture_server, tmp_path):
+    context = _context()
+    targets = _targets(fixture_server)
+    permit = _operator_permit(context, targets)
+    ledger = tmp_path / "operator.db"
+    evidence = _permitted_collect(context, targets, ledger, permit)
+    assert evidence.sequence == 1
+    assert [s.outcome for s in evidence.samples] == ["pass", "pass"]
+    assert Handler.calls == [("HEAD", "/ok"), ("HEAD", "/ok")]
+    assert ledger.exists()
+    assert _OPERATOR_KEY.hex() not in evidence.to_json()
+    assert verify_loopback_operator_permit(
+        context[-1], targets, permit, source_id="fixture-collector",
+        source_key=_KEY, operator_key=_OPERATOR_KEY,
+        observed_at_unix=1_800_000_000, now_unix=_NOW,
+    )
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda p: replace(p, plan_sha256="0" * 64),
+    lambda p: replace(p, targets_sha256="0" * 64),
+    lambda p: replace(p, source_key_sha256="0" * 64),
+    lambda p: replace(p, source_id="other"),
+    lambda p: replace(p, mac_sha256="0" * 64),
+    lambda p: replace(p, format_version=True),
+    lambda p: replace(p, valid_until_unix=_NOW - 1),
+    lambda p: replace(p, valid_until_unix=_NOW + 301),
+    lambda p: "forged",
+])
+def test_operator_permit_tampering_fails_before_network_or_ledger(
+    monkeypatch, tmp_path, mutation,
+):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before operator permit"),
+    )
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "no-permit.db"
+    with pytest.raises(ValueError):
+        _permitted_collect(context, targets, ledger,
+                           mutation(_operator_permit(context, targets)))
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("change", [
+    {"operator_key": bytes(range(1, 33))},
+    {"source_key": bytes(range(1, 33))},
+    {"now_unix": _NOW + 31},
+    {"observed_at_unix": _NOW - 31},
+    {"operator_key": _KEY},
+    {"operator_key": None},
+])
+def test_operator_permit_context_rejected_before_network_or_ledger(
+    monkeypatch, tmp_path, change,
+):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before operator context"),
+    )
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "bad-context.db"
+    with pytest.raises(ValueError):
+        _permitted_collect(context, targets, ledger,
+                           _operator_permit(context, targets), **change)
+    assert not ledger.exists()
+
+
+def test_operator_permit_cannot_be_reused_for_another_allowed_target(monkeypatch, tmp_path):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before target binding"),
+    )
+    context, targets = _context(), _targets(12345)
+    different = _targets(12346)
+    ledger = tmp_path / "changed-target.db"
+    with pytest.raises(ValueError, match="operator permit mismatch"):
+        _permitted_collect(context, different, ledger,
+                           _operator_permit(context, targets))
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("window", [
+    (_NOW, _NOW),
+    (True, _NOW + 1),
+    (_NOW - 1, True),
+    (_NOW - 301, _NOW + 1),
+])
+def test_operator_permit_issuance_rejects_invalid_windows(window):
+    context, targets = _context(), _targets(12345)
+    with pytest.raises(ValueError, match="validity window"):
+        issue_loopback_operator_permit(
+            context[-1], targets, source_id="fixture-collector",
+            source_key=_KEY, operator_key=_OPERATOR_KEY,
+            valid_from_unix=window[0], valid_until_unix=window[1],
+        )
+
+
+def test_operator_permit_issuance_rejects_same_role_key():
+    context, targets = _context(), _targets(12345)
+    with pytest.raises(ValueError, match="distinct"):
+        issue_loopback_operator_permit(
+            context[-1], targets, source_id="fixture-collector",
+            source_key=_KEY, operator_key=_KEY,
+            valid_from_unix=_NOW - 30, valid_until_unix=_NOW + 30,
+        )
