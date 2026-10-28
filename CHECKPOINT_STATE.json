@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "observation replay ledger file-type safeguard",
+  "current_checkpoint": "observation replay ledger hard-link alias safeguard",
   "active_branch": "main",
-  "main_sha_at_start": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
-  "current_branch_sha": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
+  "main_sha_at_start": "80e4cefb59672515c66dd9ee4ab9f53791376f75",
+  "current_branch_sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #25 exact head 29867b4099eb0c759334212242edaa96b8ff8a5e merged as 7b203daa27d2df559ad1f80c1e68751a07e2201e; external worktree ownership unverified.",
-  "local_test_status": "GitHub PR and merged-main CI on Python 3.11.17 passed 753 pytest and 19 infrastructure tests (18 passed, 1 skipped); shell GitHub DNS unavailable; no physical Mac tests.",
-  "pr_number": 25,
-  "ci_status": "Source push 40624569759, exact-head PR 40624587668, merged-main push 40624657198 all SUCCESS; 753 pytest passed, 18 infrastructure passed/1 skipped on Python 3.11.17.",
-  "merge_status": "MERGED: PR #25 SHA-guarded squash 7b203daa27d2df559ad1f80c1e68751a07e2201e; merged-main CI successful.",
+  "branch_remote_status": "PR #27 exact head 275d1693730ec6117e284204adc15036d5075753 merged as 15ff562ad9b52ac6876228aa7a497df2e8e0c03f; exclusive external worktree ownership unverified.",
+  "local_test_status": "GitHub PR and merged-main CI Python 3.11.17: 755 pytest passed; 19 infrastructure tests ran, 18 passed, 1 skipped. Local POSIX hard-link smoke test passed; full local suite not run. No physical Mac validation.",
+  "pr_number": 27,
+  "ci_status": "Source push 40630392569, exact-head PR 40630422561, merged-main push 40630475417 all SUCCESS; 755 pytest passed, 18 infrastructure passed/1 skipped on Python 3.11.17.",
+  "merge_status": "MERGED: PR #27 SHA-guarded squash 15ff562ad9b52ac6876228aa7a497df2e8e0c03f; merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "No blocker for bounded file-type guard. This is not an atomic no-follow open; parent symlinks, directory replacement races, ledger rollback, authenticated collector/key/clock and production monitoring/deployment/recovery remain unaccepted. External worktree ownership unverified.",
-  "next_action": "Scope one bounded authenticated source-key provenance or read-only observation safeguard after reuse-first audit; exact-head and merged-main CI required. No infrastructure mutation.",
+  "known_blocker": "Existing SQLite path inspection remains non-atomic; parent symlinks, path replacement races, ledger backup rollback, authenticated source/key/clock and production monitoring/deployment/recovery remain unaccepted. External worktree ownership unverified.",
+  "next_action": "Resume bounded trusted collector source-key provenance/rotation safeguards with explicit caller-provisioned trust; do not claim production authentication or mutate infrastructure.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-28T03:05:38Z",
-  "observed_branch_sha": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
-  "observed_feature_sha": "29867b4099eb0c759334212242edaa96b8ff8a5e",
+  "observed_at_utc": "2026-10-28T04:07:38.574Z",
+  "observed_branch_sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
+  "observed_feature_sha": "275d1693730ec6117e284204adc15036d5075753",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,55 +27,39 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #25 source head 29867b4099eb0c759334212242edaa96b8ff8a5e integrated as 7b203daa27d2df559ad1f80c1e68751a07e2201e",
+  "pr_state": "closed, merged; PR #27 source head 275d1693730ec6117e284204adc15036d5075753 integrated as 15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
   "ci_state": {
     "push_run": {
-      "id": 40624569759,
-      "sha": "29867b4099eb0c759334212242edaa96b8ff8a5e",
+      "id": 40630392569,
+      "sha": "275d1693730ec6117e284204adc15036d5075753",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40624569759"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40630392569"
     },
     "pr_run": {
-      "id": 40624587668,
-      "source_head_sha": "29867b4099eb0c759334212242edaa96b8ff8a5e",
+      "id": 40630422561,
+      "source_head_sha": "275d1693730ec6117e284204adc15036d5075753",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40624587668"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40630422561"
     },
     "merged_main_run": {
-      "id": 40624657198,
-      "sha": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
+      "id": 40630475417,
+      "sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40624657198"
-    },
-    "previous_push_run": {
-      "id": 40526348067,
-      "sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526348067"
-    },
-    "previous_pr_run": {
-      "id": 40526358589,
-      "source_head_sha": "5c81d6979ef19ad1117e2b71183806e7b013afa8",
-      "event": "pull_request",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40526358589"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40630475417"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "None for fixture-only file-type safeguard; shell GitHub DNS unavailable",
-    "BLOCKER": "Production identity/key/clock, path-race/rollback resistance, deployment/recovery remain unaccepted; external worktree ownership unverified",
-    "SAFE_WORK_COMPLETED": "PR #25 merged; source PR and merged-main CI passed 753 pytest, 18 infrastructure passed/1 skipped on Python 3.11.17; no real infrastructure modified.",
-    "REMOTE_SHA": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
+    "BLOCKED_LAYER": "None for fixture-only hard-link safeguard; shell GitHub DNS unavailable",
+    "BLOCKER": "Production collector identity/key/clock, path-race/rollback resistance, deployment/recovery remain unaccepted; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #27 merged; exact-head PR and merged-main CI passed 755 pytest, 18 infrastructure passed/1 skipped; no real infrastructure modified.",
+    "REMOTE_SHA": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
     "NEXT_ACTION": "Resume bounded trusted source-key/collector provenance safeguard with independent CI; no real deployment."
   },
   "infrastructure_validation": {
@@ -90,7 +74,7 @@
   },
   "checkpoint_status": "COMPLETE_FIXTURE_ONLY",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/observation-ledger-filetype-20261027",
+  "checkpoint_branch": "build/observation-ledger-hardlink-20261028",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
@@ -98,9 +82,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
-  "merge_commit_sha": "7b203daa27d2df559ad1f80c1e68751a07e2201e",
-  "final_pr_head": "29867b4099eb0c759334212242edaa96b8ff8a5e",
+  "verified_main_sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
+  "merge_commit_sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
+  "final_pr_head": "275d1693730ec6117e284204adc15036d5075753",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -132,7 +116,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Fixture-only key/clock regressions passed exact-head and merged-main CI; no user-only or physical Mac action required.",
+    "reason": "Fixture-only hard-link regression passed exact-head and merged-main CI; no user-only or physical Mac action required.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -527,5 +511,24 @@
     "external_hardware_acceptance": "not_run",
     "work_astra_invoked": false,
     "acceptance_record_pr": "pending"
+  },
+  "accepted_observation_replay_hardlink": {
+    "checkpoint": "reject existing SQLite replay ledger hard-link aliases",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "feature_pr": 27,
+    "feature_head_sha": "275d1693730ec6117e284204adc15036d5075753",
+    "merge_commit_sha": "15ff562ad9b52ac6876228aa7a497df2e8e0c03f",
+    "push_ci_run": 40630392569,
+    "pr_ci_run": 40630422561,
+    "merged_main_ci_run": 40630475417,
+    "pytest_passed": 755,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "new_pytest_cases": 2,
+    "source_path": "src/cloudforge/observation_replay.py",
+    "test_path": "tests/test_observation_replay.py",
+    "limitations": "Pre-open path check only, not atomic race protection, trusted source identity, deployment, monitoring or recovery.",
+    "infrastructure_mutated": false,
+    "physical_mac_tested": false
   }
 }
