@@ -780,3 +780,36 @@ collector identity, trusted key/clock provisioning, real service monitoring,
 deployment, recovery or physical Mac/device validation. No real infrastructure
 was modified. External worktree exclusivity remains unverified. Work/Astra
 was not invoked.
+
+
+## Verified observation failure thresholds — accepted fixture-only (2026-10-28 ET)
+
+[Feature PR #43](https://github.com/antonypaul98/cloudforge/pull/43)
+adds a bounded, pure read-only evaluator of 1–10 already signed observation
+envelopes. Every envelope is reverified against the exact artifact, plan,
+source, HMAC, freshness, replay context and optional source pin/revocation
+policy. Per-probe consecutive explicit `fail` outcomes are compared with
+the plan's existing `failure_threshold`; `pass` or `unknown` breaks the
+proven failure streak. Subsequent sequences must be contiguous and
+caller-supplied timestamps cannot go backward. A false threshold flag is
+**not** evidence of service health, and no polling, alerting or recovery occurs.
+See [threshold semantics and reuse review](docs/OBSERVATION_THRESHOLDS.md).
+
+Exact source head `9b35c06b03e631dc450c6fd8bf9a8fc783973958` passed
+[push CI 40685231584](https://github.com/antonypaul98/cloudforge/actions/runs/40685231584)
+and [exact-head PR CI 40685256016](https://github.com/antonypaul98/cloudforge/actions/runs/40685256016).
+Expected-head SHA-guarded squash merge
+`55ef3a327f18fe725916a6db758e5a378c1808e1` passed
+[merged-main CI 40685395798](https://github.com/antonypaul98/cloudforge/actions/runs/40685395798).
+Python 3.11.17: **839 pytest passed** (14 new parameterized cases);
+19 infrastructure guards ran (18 passed, 1 skipped). No separate local
+full-suite or physical Mac validation. Existing CloudForge verification
+and Python standard library reused; no external code, new dependencies,
+permissions, credentials or provider costs. No real infrastructure changed.
+
+**Still unaccepted:** independently authenticated collectors, trusted
+clock/key provisioning, durable monitoring cadence, live service-health
+observation, deployment, rollback and recovery. External worktree
+exclusivity remains unverified. Next: design a small independently
+verifiable, explicitly authorized read-only runtime observation boundary,
+without accessing real services before approval. No Work/Astra invocation.
