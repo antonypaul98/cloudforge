@@ -898,3 +898,35 @@ of a configured operator key, not a human decision or authenticated collector.
 No live service, real infrastructure, production deployment, recovery, trusted
 clock/key distribution, or physical Mac was tested or accepted. External
 worktree exclusivity remains unverified. No Work/Astra invoked.
+
+## Scoped one-ledger/sequence operator permit (v2) — 2026-10-28
+
+Opt-in v2 extends the separately keyed loopback HEAD fixture permit with an
+HMAC-bound digest of the exact normalized absolute SQLite replay-ledger path
+and one positive 63-bit sequence. Strict mode rejects legacy v1; existing
+non-strict v1 callers remain compatible. The scoped permit is verified before
+HEAD requests or SQLite access. The ledger path itself is not exported in the
+permit. See `docs/OBSERVATION_OPERATOR_PERMIT.md` for the precise contract,
+reuse-first provenance and rollback limitations.
+
+Feature [PR #51](https://github.com/antonypaul98/cloudforge/pull/51)
+exact head `11792a88859d91d25064818be036af0a74f9a3a1` passed
+[push CI #40722564237](https://github.com/antonypaul98/cloudforge/actions/runs/40722564237)
+and [PR CI #40722607886](https://github.com/antonypaul98/cloudforge/actions/runs/40722607886).
+Guarded merge `0632ce7726f024d911dcfd28ac0caf605729bc6d` passed
+[merged-main CI #40722806845](https://github.com/antonypaul98/cloudforge/actions/runs/40722806845):
+**888 pytest passed** (19 additional regression cases), 19 infrastructure
+checks (18 passed, 1 skipped), Python 3.11.17. No separate local full
+repository suite or physical Mac acceptance was performed.
+
+**Boundary:** This is fixture-only software acceptance, not globally
+single-use authorization. A copied/rolled-back SQLite ledger is not protected.
+A MAC does not authenticate a human operator or collector, and timestamps
+remain caller-supplied. No real service was contacted, infrastructure modified,
+cloud provider used, deployment performed, or recovery tested. No new
+third-party code or dependencies. External worktree exclusivity remains
+unverified; Work/Astra were not invoked.
+
+**Next:** Independently authenticated operator/collector provenance and trusted
+key/clock provisioning before any separately approved read-only runtime
+observation. Do not extend fixture acceptance into production claims.
