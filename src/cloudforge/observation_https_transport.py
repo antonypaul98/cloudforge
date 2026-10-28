@@ -10,6 +10,7 @@ import http.client
 import ipaddress
 import socket
 import ssl
+import time
 
 from .observation_http import _PATH
 from .observation_runtime_dns import _validate_address_sets
@@ -59,6 +60,8 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
         self._pinned_address = address
         self._target_path = target.path
         self._head_guard_active = False
+        self._deadline = None
+        self._request_sent = False
 
     def set_tunnel(self, *args, **kwargs) -> None:
         raise ValueError("HTTP CONNECT tunneling is forbidden")
@@ -72,6 +75,8 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
         """
         if self._head_guard_active:
             raise ValueError("nested HTTPS HEAD requests are forbidden")
+        if self._request_sent:
+            raise ValueError("previous HTTPS HEAD response is pending")
         if (type(method) is not str or method != "HEAD"
                 or type(url) is not str or url != self._target_path
                 or body is not None
@@ -79,12 +84,55 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
                 or encode_chunked is not False):
             raise ValueError("only exact bodyless HTTPS HEAD requests are supported")
         host = self.host if self.port == 443 else f"{self.host}:{self.port}"
+        self._deadline = time.monotonic() + self.timeout
         self._head_guard_active = True
         try:
             super().request("HEAD", self._target_path,
                             headers={"Host": host, "Connection": "close"})
+            self._remaining()
+            self._request_sent = True
+        except BaseException:
+            self.close()
+            raise
         finally:
             self._head_guard_active = False
+
+    def _remaining(self) -> float:
+        """Use one monotonic budget across connect, TLS, send and response."""
+        if self._deadline is None:
+            return self.timeout
+        remaining = self._deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("HTTPS HEAD transaction deadline exceeded")
+        return remaining
+
+    def getresponse(self):
+        """Reject late headers; never interpret an overdue HEAD as success."""
+        if not self._request_sent or self._deadline is None:
+            raise ValueError("HTTPS HEAD response requires a pending request")
+        deadline = self._deadline
+        try:
+            if self.sock is not None:
+                self.sock.settimeout(self._remaining())
+            response = super().getresponse()
+            # http.client may call self.close() for Connection: close.
+            # Check the captured deadline, not self._deadline, which close clears.
+            if time.monotonic() >= deadline:
+                raise TimeoutError("HTTPS HEAD transaction deadline exceeded")
+            return response
+        except BaseException:
+            self.close()
+            raise
+        finally:
+            self._request_sent = False
+            self._deadline = None
+
+    def close(self) -> None:
+        try:
+            super().close()
+        finally:
+            self._deadline = None
+            self._request_sent = False
 
     def _require_head_guard(self) -> None:
         if not self._head_guard_active:
@@ -104,6 +152,9 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
 
     def send(self, *args, **kwargs) -> None:
         self._require_head_guard()
+        remaining = self._remaining()
+        if self.sock is not None:
+            self.sock.settimeout(remaining)
         return super().send(*args, **kwargs)
 
     def connect(self) -> None:
@@ -111,11 +162,18 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
                   else socket.AF_INET6)
         raw = socket.socket(family, socket.SOCK_STREAM)
         try:
-            raw.settimeout(self.timeout)
+            raw.settimeout(self._remaining())
             # A numeric IP is sent directly to the socket. Never resolve the
             # hostname again at connection time, including after a redirect.
             raw.connect((str(self._pinned_address), self.port))
+            if self._deadline is not None:
+                raw.settimeout(self._remaining())
             self.sock = self._context.wrap_socket(raw, server_hostname=self.host)
+            if self._deadline is not None:
+                self.sock.settimeout(self._remaining())
         except BaseException:
+            if self.sock is not None:
+                self.sock.close()
+                self.sock = None
             raw.close()
             raise
