@@ -1,24 +1,24 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "verified observation failure-threshold window (fixture-only, no runtime monitoring)",
+  "current_checkpoint": "signed observation threshold window minimum claimed cadence (fixture-only)",
   "active_branch": "main",
   "main_sha_at_start": "55ef3a327f18fe725916a6db758e5a378c1808e1",
   "current_branch_sha": "55ef3a327f18fe725916a6db758e5a378c1808e1",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
   "branch_remote_status": "PR #43 exact-head source 9b35c06b03e631dc450c6fd8bf9a8fc783973958 expected-head SHA-guarded squash merged as 55ef3a327f18fe725916a6db758e5a378c1808e1; external worktree exclusivity unverified.",
   "local_test_status": "No separate local full repository suite (shell github.com DNS unavailable). Exact-head Python 3.11.17 push/PR and merged-main CI: 839 pytest passed; 19 infrastructure guards (18 passed, 1 skipped). No physical Mac or real-service validation.",
-  "pr_number": 43,
-  "ci_status": "Feature push 40685231584, exact-head PR 40685256016, merged-main 40685395798 all SUCCESS; 839 pytest passed; infrastructure 18 passed/1 skipped.",
-  "merge_status": "MERGED: PR #43 expected-head SHA-guarded squash 55ef3a327f18fe725916a6db758e5a378c1808e1; merged-main CI successful.",
+  "pr_number": 45,
+  "ci_status": "Exact-head PR CI 40693213476 and merged-main CI 40693332293 SUCCESS on Python 3.11.17; 842 pytest passed, infrastructure 18 passed/1 skipped.",
+  "merge_status": "MERGED: PR #45 expected-head SHA-guarded squash 05931222a1df886d43befca43821eee160b2464f; merged-main CI successful.",
   "external_acceptance_required": [],
   "known_blocker": "Window evaluation is pure caller-supplied fixture interpretation. Collector identity, trusted clock/key distribution, durable runtime replay, live service monitoring, deployment, recovery and physical device acceptance remain unverified; external worktree ownership unverified.",
-  "next_action": "Design and test the smallest operator-authorized read-only runtime observation boundary with independently verifiable collector provenance; no real endpoint access or infrastructure mutation without explicit approval.",
+  "next_action": "Prioritize independently authenticated, operator-approved read-only collector provenance and trusted clock/key lifecycle; no live endpoint or infrastructure access before exact approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-28T12:08:55Z",
-  "observed_branch_sha": "55ef3a327f18fe725916a6db758e5a378c1808e1",
+  "observed_branch_sha": "05931222a1df886d43befca43821eee160b2464f",
   "observed_feature_sha": "9b35c06b03e631dc450c6fd8bf9a8fc783973958",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
@@ -27,31 +27,23 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #43 source 9b35c06b03e631dc450c6fd8bf9a8fc783973958 integrated as 55ef3a327f18fe725916a6db758e5a378c1808e1",
+  "pr_state": "closed, merged; PR #45 exact head 044e3d2adb77128963ccd75a777575a5e9eb327e integrated as 05931222a1df886d43befca43821eee160b2464f",
   "ci_state": {
-    "push_run": {
-      "id": 40685231584,
-      "sha": "9b35c06b03e631dc450c6fd8bf9a8fc783973958",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40685231584"
-    },
     "pr_run": {
-      "id": 40685256016,
-      "source_head_sha": "9b35c06b03e631dc450c6fd8bf9a8fc783973958",
+      "id": 40693213476,
+      "source_head_sha": "044e3d2adb77128963ccd75a777575a5e9eb327e",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40685256016"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40693213476"
     },
     "merged_main_run": {
-      "id": 40685395798,
-      "sha": "55ef3a327f18fe725916a6db758e5a378c1808e1",
+      "id": 40693332293,
+      "sha": "05931222a1df886d43befca43821eee160b2464f",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40685395798"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40693332293"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
@@ -81,7 +73,7 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "55ef3a327f18fe725916a6db758e5a378c1808e1",
+  "verified_main_sha": "05931222a1df886d43befca43821eee160b2464f",
   "merge_commit_sha": "55ef3a327f18fe725916a6db758e5a378c1808e1",
   "final_pr_head": "9b35c06b03e631dc450c6fd8bf9a8fc783973958",
   "later_checkpoint_requirements": [
@@ -115,7 +107,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Synthetic threshold evaluation merged and validated in exact-head and merged-main CI; no user-only action required.",
+    "reason": "Source PR #45 and merged-main CI passed; no user-only action needed for synthetic timestamp cadence guard.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -710,5 +702,31 @@
     "deployment_accepted": false,
     "recovery_accepted": false,
     "physical_mac_accepted": false
+  },
+  "accepted_observation_cadence": {
+    "checkpoint": "minimum claimed timestamp separation for signed failure windows",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "feature_pr": 45,
+    "source_head_sha": "044e3d2adb77128963ccd75a777575a5e9eb327e",
+    "merge_commit_sha": "05931222a1df886d43befca43821eee160b2464f",
+    "exact_head_pr_ci_run": 40693213476,
+    "merged_main_ci_run": 40693332293,
+    "python": "3.11.17",
+    "pytest_passed": 842,
+    "new_tests": 3,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "Reject equal or accelerated claimed timestamps inside a signed evidence window; require at least the longest configured probe interval between envelopes. Does not verify real polling cadence or clock origin.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "actual_infrastructure_mutated": false,
+    "authenticated_collector": false,
+    "trusted_clock": false,
+    "real_monitoring_accepted": false,
+    "deployment_accepted": false,
+    "recovery_accepted": false,
+    "physical_mac_accepted": false,
+    "external_worktree_exclusive": "unverified",
+    "work_astra_invoked": false
   }
 }
