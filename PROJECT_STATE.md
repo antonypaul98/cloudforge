@@ -753,3 +753,30 @@ distribution, secure key lifecycle, trusted clock, atomic replay within pure
 rollup, actual service monitoring, deployment, recovery or physical Mac
 validation. No real infrastructure was modified. External worktree ownership
 remains unverified. Work/Astra was not invoked.
+
+## Read-only SQLite replay preflight before local HEAD — accepted fixture-only (2026-10-28 ET)
+
+[PR #41](https://github.com/antonypaul98/cloudforge/pull/41) adds a best-effort
+read-only check of the existing SQLite replay ledger **before** any local
+fixture HTTP HEAD probe. A known duplicate sequence, corrupt counter, altered
+schema or unreadable database fails before network I/O. The original durable
+`BEGIN IMMEDIATE` transaction remains authoritative for concurrent acceptance.
+Missing ledgers and valid empty SQLite databases still initialize normally.
+Five new synthetic tests cover these cases and reserved URI filename characters.
+
+Feature head `b51298e2aeb9586fb9886cffa52c3d7251eec278` passed
+[push CI 40677140018](https://github.com/antonypaul98/cloudforge/actions/runs/40677140018)
+and [exact-head PR CI 40677180391](https://github.com/antonypaul98/cloudforge/actions/runs/40677180391).
+Expected-head guarded squash merge `d4f83056dfc176f749042df68749da2b869bded0` passed
+[merged-main CI 40677299069](https://github.com/antonypaul98/cloudforge/actions/runs/40677299069).
+All three ran on Python 3.11.17: **825 pytest passed** (5 new cases) and
+19 infrastructure tests (18 passed, 1 skipped). A separate isolated Python
+3.13 SQLite URI prototype passed 7 checks, not the repository suite.
+No new dependency, third-party code, provider permission or service cost.
+See [reuse and limitations](docs/OBSERVATION_FIXTURE_INTAKE.md).
+
+**Not accepted:** race-free replay reservation or filesystem access, authenticated
+collector identity, trusted key/clock provisioning, real service monitoring,
+deployment, recovery or physical Mac/device validation. No real infrastructure
+was modified. External worktree exclusivity remains unverified. Work/Astra
+was not invoked.
