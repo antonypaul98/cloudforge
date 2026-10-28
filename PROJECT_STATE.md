@@ -645,3 +645,28 @@ production deployment, recovery, ledger rollback defense, or physical Mac
 validation. The pin is optional and cannot attest a caller-controlled key
 or clock. External worktree exclusivity remains unverified. Work/Astra was
 not invoked; no real infrastructure was modified.
+
+
+## Fixture source trust policy accepted — 2026-10-28 ET
+
+[PR #33](https://github.com/antonypaul98/cloudforge/pull/33) added an opt-in
+strict source-pin requirement and bounded caller-provided revoked-key fingerprint
+preflight to the local HEAD → HMAC → SQLite fixture intake. A revoked key or
+missing required pin fails before HTTP/ledger I/O; rotation retains the
+existing durable sequence. No new dependencies or external source code were
+used; see [reuse and trust limitations](docs/OBSERVATION_SOURCE_PIN.md).
+
+Exact feature head 7c28694ea44ec6ead2ae4a1f953317a07c2abb63 passed
+[push CI 40647718177](https://github.com/antonypaul98/cloudforge/actions/runs/40647718177)
+and [PR CI 40647741775](https://github.com/antonypaul98/cloudforge/actions/runs/40647741775).
+The SHA-guarded squash merge a16bfe9c894324a294cc61622fa9f242918ae0d0
+passed [merged-main CI 40647818226](https://github.com/antonypaul98/cloudforge/actions/runs/40647818226).
+All three runs used Python 3.11.17: **787 pytest passed** (13 new),
+19 infrastructure tests (18 passed, 1 skipped). Isolated helper-only Python
+3.13 smoke passed 21 tests, but is not full-repository evidence.
+
+**Acceptance is fixture-only.** The policy is optional and caller-provisioned:
+no independently authenticated collector, trusted key distribution/revocation,
+trusted clocks, rollback-resistant storage, production monitoring, deployment,
+recovery or physical Mac/device validation is claimed. No real infrastructure
+was modified. External worktree ownership remains unverified.
