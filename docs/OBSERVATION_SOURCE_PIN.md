@@ -51,3 +51,35 @@ are required for acceptance.
 No real collector, key distribution, secure revocation, independently trusted
 clock, hardware attestation, live monitoring, deployment or recovery has been
 implemented or tested. No physical Mac or cloud resource is accessed.
+
+
+## Optional strict pin and key-revocation preflight (fixture-only, 2026-10-28)
+
+The fixture intake also accepts require_source_pin=True and an immutable
+revoked_key_sha256 tuple of at most 64 distinct lowercase SHA-256 fingerprints.
+With strict mode, omitting source_pin fails before HTTP or ledger I/O. A
+nonempty revocation list also requires a pin. The configured key's fingerprint
+is compared with the list before collection; a match fails closed. Malformed
+types, duplicates and fingerprints are rejected. An unrelated revoked
+fingerprint does not block a valid pinned key. Key rotation continues to use
+the existing (plan, source) SQLite sequence without resetting it.
+
+These settings are caller-provisioned, not retrieved from an authenticated
+revocation service. A caller able to remove the policy, alter its denylist,
+replace a trusted pin or use the old unpinned API can bypass this opt-in guard.
+No runtime collector identity, trusted distribution, revocation propagation,
+trusted clock, rollback defense or real service health is established.
+
+Reuse review: the existing source pin and replay verifier remain unchanged.
+Python 3.11 stdlib SHA-256 and constant-time digest comparison are sufficient
+for this bounded fixture policy; no external code, SDK, model, dependency or
+provider API is introduced. Considered SPIFFE/SPIRE workload identity and
+cloud KMS/secret managers, but these need deployment and identity trust that
+cannot be validated by the current local fixture. References:
+https://docs.python.org/3.11/library/hashlib.html and
+https://docs.python.org/3.11/library/hmac.html and
+https://spiffe.io/docs/latest/spiffe-about/overview/ .
+
+Acceptance requires exact-head complete Python 3.11 CI, infrastructure guards,
+protected merge and merged-main CI. Isolated policy-only smoke tests are not
+a substitute for full repository or real-service validation.
