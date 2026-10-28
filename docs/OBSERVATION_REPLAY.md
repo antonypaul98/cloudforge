@@ -52,3 +52,22 @@ Not accepted: a live read-only collector, authenticated key provisioning,
 trusted runtime measurements, multi-host distributed replay protection,
 real deployment, service health, monitoring or recovery. A local ledger is
 not a distributed consensus store and must not be shared across hosts.
+
+
+## Canonical schema and counter-integrity guard (2026-10-27)
+
+The replay store now checks the exact canonical SQLite table definition and
+rejects unexpected triggers inside the same BEGIN IMMEDIATE transaction as the
+conditional UPSERT. A lookalike TEXT counter can compare 9 > 10
+lexicographically; an altered schema, missing CHECK constraint, trigger or
+corrupt noninteger/out-of-range counter now fails closed. No automatic schema
+migration is attempted. This uses the existing Python 3.11 sqlite3 module,
+SQLite sqlite_master, and no external code or new dependencies.
+
+Upstream references (reviewed 2026-10-27):
+https://www.sqlite.org/schematab.html
+https://docs.python.org/3.11/library/sqlite3.html
+
+This is local corruption/tamper detection, not authenticated database ownership.
+A privileged attacker can still replace or roll back a ledger backup. Collector
+identity, trusted clocks, deployment, live monitoring and recovery are unproven.

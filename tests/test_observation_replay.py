@@ -156,3 +156,61 @@ def test_durable_verifier_does_not_use_network_shell_or_wall_clock(tmp_path, mon
         guard.setattr(os, "system", forbidden)
         guard.setattr(time, "time", forbidden)
         assert _accept(context, _evidence(context), tmp_path / "replay.db")
+
+
+@pytest.mark.parametrize("counter_type", ["TEXT", "INTEGER"])
+def test_altered_replay_table_schema_rejected_before_counter_update(
+    tmp_path, counter_type,
+):
+    path = tmp_path / "replay.db"
+    context = _context()
+    evidence = _evidence(context, seq=9)
+    with sqlite3.connect(path) as db:
+        db.execute(
+            "CREATE TABLE observation_replay ("
+            "plan_sha256 TEXT NOT NULL, source_id TEXT NOT NULL, "
+            f"last_sequence {counter_type} NOT NULL, "
+            "PRIMARY KEY (plan_sha256, source_id)) WITHOUT ROWID"
+        )
+        db.execute(
+            "INSERT INTO observation_replay VALUES (?, ?, ?)",
+            (evidence.plan_sha256, evidence.source_id, 10),
+        )
+    with pytest.raises(ValueError, match="schema mismatch"):
+        _accept(context, evidence, path)
+    with sqlite3.connect(path) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (("10",) if counter_type == "TEXT" else (10,))
+
+
+def test_replay_ledger_trigger_rejected_before_counter_update(tmp_path):
+    path = tmp_path / "replay.db"
+    context = _context()
+    assert _accept(context, _evidence(context), path)
+    with sqlite3.connect(path) as db:
+        db.execute(
+            "CREATE TRIGGER reset_counter AFTER UPDATE ON observation_replay "
+            "BEGIN UPDATE observation_replay SET last_sequence = 1; END"
+        )
+    with pytest.raises(ValueError, match="schema mismatch"):
+        _accept(context, _evidence(context, seq=2), path)
+    with sqlite3.connect(path) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (1,)
+
+
+def test_corrupted_replay_counter_type_fails_closed(tmp_path):
+    path = tmp_path / "replay.db"
+    context = _context()
+    assert _accept(context, _evidence(context, seq=10), path)
+    with sqlite3.connect(path) as db:
+        db.execute("PRAGMA ignore_check_constraints = ON")
+        db.execute("UPDATE observation_replay SET last_sequence = 'corrupt'")
+    with pytest.raises(ValueError, match="already accepted"):
+        _accept(context, _evidence(context, seq=11), path)
+    with sqlite3.connect(path) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == ("corrupt",)
