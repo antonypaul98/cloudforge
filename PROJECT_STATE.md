@@ -615,3 +615,33 @@ source identity, key provisioning, clocks, real service monitoring,
 deployment, recovery and physical Mac/device acceptance remain unproven.
 No real infrastructure was modified; external worktree ownership unverified.
 Next: bounded collector/source-key provenance with independent verification.
+
+## Optional observation source/key pin accepted (fixture-only) — 2026-10-28
+
+PR [#31](https://github.com/antonypaul98/cloudforge/pull/31) integrated an
+opt-in, independently caller-provisioned source/key/plan/time pin before
+local fixture HEAD network I/O and SQLite replay-ledger I/O. It rejects
+changed source aliases, key fingerprints, plan digests, invalid validity
+windows and key substitution. A rotated key requires a new trusted pin while
+the existing per-plan/source replay counter remains monotonic. The original
+unpinned fixture interface remains compatible. No external code, dependency,
+provider or infrastructure change was introduced. See
+[OBSERVATION_SOURCE_PIN.md](docs/OBSERVATION_SOURCE_PIN.md).
+
+Exact source head `5545e393538eb0dbfc5ae6ade98c4b7da54bd1be` passed
+[push CI 40641365009](https://github.com/antonypaul98/cloudforge/actions/runs/40641365009)
+and [PR CI 40641391039](https://github.com/antonypaul98/cloudforge/actions/runs/40641391039).
+The SHA-guarded squash merge produced
+`6f15c2d7b9b2064d6695ed14b55c13f8dc937a12`, and
+[merged-main CI 40641476831](https://github.com/antonypaul98/cloudforge/actions/runs/40641476831)
+passed. Python 3.11.17: **774 pytest passed**, 19 infrastructure tests
+(18 passed, 1 skipped). Isolated Python 3.13 compile and 6 smoke checks
+are separate, not the pinned suite. The canonical acceptance record is in
+CHECKPOINT_STATE.json.
+
+**Not accepted:** authenticated collector identity, trusted configuration
+provisioning, key revocation, trusted clock, live service monitoring,
+production deployment, recovery, ledger rollback defense, or physical Mac
+validation. The pin is optional and cannot attest a caller-controlled key
+or clock. External worktree exclusivity remains unverified. Work/Astra was
+not invoked; no real infrastructure was modified.
