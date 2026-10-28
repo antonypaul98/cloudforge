@@ -670,3 +670,31 @@ no independently authenticated collector, trusted key distribution/revocation,
 trusted clocks, rollback-resistant storage, production monitoring, deployment,
 recovery or physical Mac/device validation is claimed. No real infrastructure
 was modified. External worktree ownership remains unverified.
+
+## Unsafe ledger path preflight before HEAD — accepted fixture-only (2026-10-28)
+
+[PR #35](https://github.com/antonypaul98/cloudforge/pull/35) reuses the
+existing SQLite replay ledger path guard in the composed local observation
+fixture, after authorization and MAC/freshness verification but before any
+HTTP HEAD probe. It rejects known symlinked files and parent directories,
+hard-link aliases, noncanonical paths and missing parents without network
+traffic. The durable writer repeats the path check before opening SQLite.
+Five new synthetic regressions verify rejection before HEAD and sentinel
+file preservation. Existing Python 3.11 os/stat logic reused; no third-party
+source, dependency, provider permission or infrastructure mutation.
+
+Exact feature head `0333edb9bcb31e7837cb5939c6b3849f10f7afb2` passed
+[push CI 40654232366](https://github.com/antonypaul98/cloudforge/actions/runs/40654232366)
+and [PR CI 40654276119](https://github.com/antonypaul98/cloudforge/actions/runs/40654276119).
+SHA-guarded squash merge `7fb2080e8310bec1f43168eb716300e4de220abb` passed
+[merged-main CI 40654407144](https://github.com/antonypaul98/cloudforge/actions/runs/40654407144).
+All ran Python 3.11.17: **792 pytest passed** (5 new), 19 infrastructure
+tests (18 passed, 1 skipped). No local full-suite or physical Mac tests
+were run; GitHub CI supplies the exact-head validation.
+
+**Acceptance is fixture-only.** The checks are not atomic and do not
+prevent concurrent path replacement, backup rollback or duplicate-sequence
+HEAD requests. Authenticated collector provenance, secure key distribution,
+trusted clocks, real runtime monitoring, deployment and recovery remain
+unaccepted. External worktree ownership is unverified. Work/Astra was not
+invoked and no real infrastructure was modified.
