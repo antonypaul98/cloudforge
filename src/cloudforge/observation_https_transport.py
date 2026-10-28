@@ -58,6 +58,7 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
                          context=ssl.create_default_context())
         self._pinned_address = address
         self._target_path = target.path
+        self._head_guard_active = False
 
     def set_tunnel(self, *args, **kwargs) -> None:
         raise ValueError("HTTP CONNECT tunneling is forbidden")
@@ -69,6 +70,8 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
         This constrains the intended request API, not low-level inherited APIs
         or independent authorization. The connection remains unwired.
         """
+        if self._head_guard_active:
+            raise ValueError("nested HTTPS HEAD requests are forbidden")
         if (type(method) is not str or method != "HEAD"
                 or type(url) is not str or url != self._target_path
                 or body is not None
@@ -76,8 +79,32 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
                 or encode_chunked is not False):
             raise ValueError("only exact bodyless HTTPS HEAD requests are supported")
         host = self.host if self.port == 443 else f"{self.host}:{self.port}"
-        super().request("HEAD", self._target_path,
-                        headers={"Host": host, "Connection": "close"})
+        self._head_guard_active = True
+        try:
+            super().request("HEAD", self._target_path,
+                            headers={"Host": host, "Connection": "close"})
+        finally:
+            self._head_guard_active = False
+
+    def _require_head_guard(self) -> None:
+        if not self._head_guard_active:
+            raise ValueError("low-level HTTP request APIs are forbidden")
+
+    def putrequest(self, *args, **kwargs) -> None:
+        self._require_head_guard()
+        return super().putrequest(*args, **kwargs)
+
+    def putheader(self, *args, **kwargs) -> None:
+        self._require_head_guard()
+        return super().putheader(*args, **kwargs)
+
+    def endheaders(self, *args, **kwargs) -> None:
+        self._require_head_guard()
+        return super().endheaders(*args, **kwargs)
+
+    def send(self, *args, **kwargs) -> None:
+        self._require_head_guard()
+        return super().send(*args, **kwargs)
 
     def connect(self) -> None:
         family = (socket.AF_INET if type(self._pinned_address) is ipaddress.IPv4Address
