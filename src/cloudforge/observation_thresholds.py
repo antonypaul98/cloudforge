@@ -75,6 +75,13 @@ def evaluate_verified_observation_thresholds(
         if (previous_time is not None
                 and evidence.observed_at_unix < previous_time):
             raise ValueError("observation window clock moved backward")
+        # Each envelope contains every proposed probe. A failure streak must
+        # not be accelerated by multiple signed samples inside one interval.
+        # This checks caller-supplied timestamps, not a trusted runtime clock.
+        if (previous_time is not None
+                and evidence.observed_at_unix - previous_time
+                < max(probe.interval_seconds for probe in plan.probes)):
+            raise ValueError("observation window is faster than proposed probe interval")
         for sample in evidence.samples:
             streaks[sample.kind] = (
                 streaks.get(sample.kind, 0) + 1 if sample.outcome == "fail" else 0
