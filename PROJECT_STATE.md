@@ -930,3 +930,36 @@ unverified; Work/Astra were not invoked.
 **Next:** Independently authenticated operator/collector provenance and trusted
 key/clock provisioning before any separately approved read-only runtime
 observation. Do not extend fixture acceptance into production claims.
+
+## Redacted HTTPS runtime observation target proposal — 2026-10-28
+
+A new planning-only API binds ordered, syntactically validated HTTPS HEAD
+runtime targets to the exact existing observation plan, handoff, artifact,
+approval and local receipt. The exported immutable proposal contains only
+plan/target digests and `pending-independent-approval`; no hostnames, paths,
+reviewers, artifacts, credentials, deployment or health claims. No DNS, network,
+provider call, subprocess, deployment or recovery is performed. This is a
+meaningful **runtime-target handoff prerequisite**, not a live collector or
+authorization to probe a service.
+
+Feature [PR #53](https://github.com/antonypaul98/cloudforge/pull/53)
+exact head `d674d1d56a97e332b3a446d4ee02026dff7257a0` passed
+[push CI #40732181839](https://github.com/antonypaul98/cloudforge/actions/runs/40732181839)
+and [PR CI #40732231789](https://github.com/antonypaul98/cloudforge/actions/runs/40732231789).
+Guarded merge `44e6dd78d5b29145f82bdc2f66c12210d5730e27` passed
+[merged-main CI #40732399857](https://github.com/antonypaul98/cloudforge/actions/runs/40732399857):
+**920 pytest passed** (32 additional synthetic cases), 19 infrastructure
+checks (18 passed, 1 skipped), Python 3.11.17. See
+`docs/OBSERVATION_RUNTIME_REQUEST.md` for the exact trust boundary,
+reuse-first review, threat limitations and rollback. No external code,
+dependencies, credentials or permissions were added. No separate local full
+suite or physical Mac acceptance was performed.
+
+**Still required before live monitoring:** Independently authenticated
+operator approval and collector identity, trusted key/clock custody, endpoint
+allowlist, DNS resolution and IP pinning/revalidation, TLS peer verification,
+SSRF and redirect controls, measured runtime evidence and safe rollback.
+Even a valid proposed DNS hostname may later resolve to a prohibited address.
+No live service, infrastructure or recovery acceptance is claimed. Connected
+GitHub integration was the writer; exclusive external worktree ownership is
+unverified. Work/Astra were not invoked.
