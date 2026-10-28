@@ -96,3 +96,27 @@ Python 3.11 `os.lstat` and `stat.S_ISREG` are sufficient for this narrow
 pre-open guard. No third-party code or dependency was added.
 References: https://docs.python.org/3.11/library/os.html#os.lstat and
 https://docs.python.org/3.11/library/stat.html#stat.S_ISREG .
+
+
+## Existing ledger hard-link alias safeguard (2026-10-28)
+
+The final-component `os.lstat` guard now additionally requires exactly one
+hard link for an existing regular SQLite ledger. Two filenames can otherwise
+refer to the same inode even when neither is a symlink. This check rejects
+both names once a second hard link exists, before SQLite opens the file or
+advances the sequence. Parametrized fixture tests exercise both names and
+confirm the stored counter remains unchanged.
+
+This is a conservative, pre-open **best-effort** check, not atomic protection:
+an untrusted process with directory write access can race the check, and parent
+directory aliases, inode replacement, backup rollback and external collectors
+remain outside this checkpoint. Existing ledger files on filesystems with
+unavailable/unknown link counts fail closed. Operators must still protect the
+entire ledger directory.
+
+Reuse-first: extended the existing `os.lstat` inspection using Python 3.11
+`os.stat_result.st_nlink`, without new packages, third-party source code,
+network permissions or infrastructure changes. Compared with platform-specific
+openat/O_NOFOLLOW and external stores, neither solves the existing
+`sqlite3.connect(path)` race within this narrow change. Official reference:
+https://docs.python.org/3.11/library/os.html#os.stat_result
