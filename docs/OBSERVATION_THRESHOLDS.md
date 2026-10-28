@@ -8,6 +8,11 @@ freshness, replay context, and optional source pin and key revocation policy.
 
 The first sequence must be greater than caller-provided `last_sequence`;
 subsequent sequences must be contiguous, and timestamps cannot move backward.
+Each subsequent envelope must also be timestamped at least the **longest**
+proposed probe interval after its predecessor. Every envelope contains all
+probes, so the longest interval is required for the full window. Equal or
+accelerated timestamps fail closed; exact-interval timestamps are accepted.
+This only checks caller-supplied time claims, not real polling or clock trust.
 A `fail` sample increments that probe's current consecutive-failure count.
 `pass` or `unknown` resets the proven-failure streak to zero. The returned
 immutable per-probe record contains the streak, the existing plan's
@@ -20,8 +25,11 @@ verified envelopes contain enough consecutive explicit `fail` values in
 this exact window. `False` is not a healthy-service or safe-deployment
 assertion. The caller may omit earlier history, and this function cannot
 attest real probe execution, collector identity, key custody, clock origin,
-durable replay state or actual service health. It does not enforce polling
-cadence; `interval_seconds` remains a proposal, not a measured schedule.
+durable replay state or actual service health. It enforces a minimum **claimed timestamp separation** using
+`interval_seconds`, but does not measure polling cadence or independently
+verify the timestamp source. A source with the signing key can still forge
+plausible times, and the absence of real authenticated collection remains a
+hard boundary.
 
 ## Reuse-first / compatibility gate
 
@@ -55,3 +63,21 @@ are required before this is accepted as a **fixture-only** checkpoint.
 authentication, trusted clocks/keys, distributed replay, scheduling, alerting,
 production deployment, rollback or infrastructure recovery. No physical Mac,
 cloud service or real infrastructure is contacted.
+
+## 2026-10-28 cadence guard and provenance
+
+Reuse-first audit: the existing immutable `ObservationPlan.probes` already
+contains bounded integer intervals (5–300 seconds), and the existing HMAC
+verifier already authenticates the envelope bytes under a caller-provided key.
+Reusing these contracts and Python's built-in `max` avoids new dependencies,
+licenses, runtime permissions, or changes to signed evidence schemas. Compared
+with adding an external scheduler or monitoring SDK, this narrowly rejects
+accelerated **claimed** failure streaks without creating a network surface.
+No external code or algorithm was copied or translated.
+
+New synthetic regressions cover equal/too-short intervals, exact-interval
+acceptance, and mixed probe intervals using the longest required separation.
+A passing full Python 3.11 exact-head CI suite, infrastructure checks, guarded
+merge and merged-main CI are required before this change is accepted. No
+collector authentication, trusted clock, live service, alert, rollback or
+recovery is established by this safeguard.
