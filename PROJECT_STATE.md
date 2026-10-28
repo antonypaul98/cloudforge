@@ -1112,3 +1112,37 @@ worktree exclusivity unverified. No Work/Astra invoked.
 **Next:** Build the independently authenticated, exact-endpoint/IP-
 approved HEAD-only collector with a complete deadline and evidence
 boundary. No live endpoint access before explicit human approval.
+
+## Unwired HTTPS inherited low-level guard — 2026-10-28
+
+Feature [PR #63](https://github.com/antonypaul98/cloudforge/pull/63)
+merged as `020a8bd673f8b24e158bf88bee1f5986ab9746e7`. Exact source head `49d6d2022752db9753805ac3b9e596d75d7cd6a0`
+passed [push CI #40776427159](https://github.com/antonypaul98/cloudforge/actions/runs/40776427159)
+and [PR CI #40776436834](https://github.com/antonypaul98/cloudforge/actions/runs/40776436834).
+[Feature merged-main CI #40776555260](https://github.com/antonypaul98/cloudforge/actions/runs/40776555260)
+passed on Python 3.11.17: **1059 pytest passed** (8 additional synthetic
+regressions), 19 infrastructure tests (18 passed, 1 skipped). An isolated
+Python 3.13 standalone prototype passed six low-level rejections and
+canonical HEAD wire; it is not repository acceptance. This documentation
+checkpoint requires its own exact-head and final merged-main CI.
+
+The private, unwired pinned HTTPS connection now rejects ordinary direct
+use of inherited `putrequest`, `putheader`, `endheaders`, `send`,
+`_send_request` and `_send_output` outside its exact bodyless HEAD request.
+Guard state resets after failed sends. Existing CloudForge code and Python
+3.11 standard library were reused; official `http.client` docs were
+reviewed. No third-party code, new dependencies, licenses, costs, schema
+changes, credentials, live endpoint access or infrastructure mutation.
+See [scope, tests and rollback](docs/OBSERVATION_HTTPS_TRANSPORT.md).
+
+**Software-only safeguard, not a security sandbox:** explicit base-class
+calls, monkeypatching, mutable attributes or raw sockets remain possible
+from arbitrary same-process Python. No independently authenticated operator
+or collector, trusted DNS/allowlist/key/clock, exact approved live endpoint,
+complete transaction deadline, signed runtime evidence, service monitoring,
+deployment, recovery or physical Mac/device acceptance. The GitHub connector
+was the writer; external worktree exclusivity unverified. No Work/Astra used.
+
+**Next:** Independently authenticated and operator-approved exact-endpoint/IP
+HEAD-only collector with full elapsed deadline, evidence and rollback
+boundaries; synthetic testing first. No live endpoint before explicit approval.
