@@ -104,3 +104,58 @@ def test_real_default_ssl_policy_requires_certificate_and_hostname():
     conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
     assert conn._context.verify_mode == ssl.CERT_REQUIRED
     assert conn._context.check_hostname is True
+
+
+@pytest.mark.parametrize("port,host", [
+    (443, "api.example.com"),
+    (8443, "api.example.com:8443"),
+])
+def test_head_guard_canonical_host_and_bodyless_wire_bytes(port, host):
+    target = replace(_target(), port=port)
+    conn = _PinnedHTTPSConnection(target, "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    payload = b"".join(call.args[0] for call in fake.sendall.call_args_list)
+    assert payload.startswith(b"HEAD /ready HTTP/1.1\\r\\n")
+    assert payload.count(b"Host: ") == 1
+    assert ("Host: " + host + "\\r\\n").encode() in payload
+    assert b"Connection: close\\r\\n" in payload
+    assert b"Accept-Encoding: identity\\r\\n" in payload
+    assert b"Content-Length:" not in payload
+    assert b"Transfer-Encoding:" not in payload
+
+
+@pytest.mark.parametrize("args,kwargs", [
+    (("GET", "/ready"), {}),
+    (("POST", "/ready"), {}),
+    (("HEAD", "/other"), {}),
+    (("HEAD", "https://api.example.com/ready"), {}),
+    (("HEAD", "/ready?token=x"), {}),
+    (("HEAD", "/ready"), {"body": b""}),
+    (("HEAD", "/ready"), {"body": "x"}),
+    (("HEAD", "/ready"), {"headers": {"Host": "evil.example.com"}}),
+    (("HEAD", "/ready"), {"headers": {"Authorization": "secret"}}),
+    (("HEAD", "/ready"), {"headers": {"Transfer-Encoding": "chunked"}}),
+    (("HEAD", "/ready"), {"headers": [("Host", "evil")]}),
+    (("HEAD", "/ready"), {"encode_chunked": True}),
+    (("head", "/ready"), {}),
+    ((True, "/ready"), {}),
+    (("HEAD", None), {}),
+])
+def test_head_guard_rejects_variants_before_io(args, kwargs):
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    with pytest.raises(ValueError, match="bodyless HTTPS HEAD"):
+        conn.request(*args, **kwargs)
+    fake.sendall.assert_not_called()
+
+
+def test_head_guard_explicit_empty_headers_still_canonical():
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready", headers={})
+    payload = b"".join(call.args[0] for call in fake.sendall.call_args_list)
+    assert payload.count(b"Host: ") == 1
