@@ -545,3 +545,21 @@ remains unverified.
 attacker can replace or roll back the database. Authenticated collector identity,
 trusted keys/clocks, real monitoring, deployment, recovery, rollback and physical
 Mac/device acceptance are not established. No real infrastructure was modified.
+
+## Observation replay ledger file-type safeguard — 2026-10-27 ET
+
+Fixture-only source change accepted through PR #25. Exact feature head
+`29867b4099eb0c759334212242edaa96b8ff8a5e` passed push CI
+`40624569759` and PR CI `40624587668`; SHA-guarded squash merge
+`7b203daa27d2df559ad1f80c1e68751a07e2201e` passed merged-main CI `40624657198`.
+Python 3.11.17 CI: **753 pytest passed**; 19 infrastructure guards run
+(18 passed, 1 skipped). Four new regressions verify symlink/special-file
+rejection and MAC verification before filesystem metadata access.
+
+Existing CloudForge HMAC and SQLite logic is reused; Python standard-library
+`os.lstat`/`stat.S_ISREG` adds best-effort path hygiene, not race-free
+file opening. Parent-directory symlinks, untrusted directory writers,
+rollback-resistant storage, authenticated collectors, trusted key/clock
+provisioning, production monitoring, deployment and recovery remain outside
+this acceptance. No physical Mac tests or real infrastructure mutation.
+See `docs/OBSERVATION_REPLAY.md` for threat model and limitations.
