@@ -91,3 +91,50 @@ def collect_and_accept_loopback_fixture_evidence(
         ledger_path=ledger_path,
     )
     return evidence
+
+
+def collect_and_accept_operator_permitted_loopback_fixture_evidence(
+    handoff: DeploymentHandoff,
+    artifact: bytes,
+    approval: LocalExecutionApproval | None,
+    receipt: LocalExecutionReceipt,
+    plan: ObservationPlan,
+    targets: tuple[LoopbackHTTPProbeTarget, ...],
+    *,
+    allowed_targets: tuple[LoopbackHTTPProbeTarget, ...],
+    operator_permit: "LoopbackOperatorPermit",
+    operator_key: bytes,
+    source_id: str,
+    source_key: bytes,
+    observed_at_unix: int,
+    now_unix: int,
+    sequence: int,
+    max_age_seconds: int,
+    ledger_path: str,
+    source_pin: ObservationSourcePin | None = None,
+    require_source_pin: bool = False,
+    revoked_key_sha256: tuple[str, ...] = (),
+) -> ObservationEvidence:
+    """Require a distinct operator-key MAC before fixture HEAD or SQLite I/O.
+
+    This opt-in wrapper does not authenticate a real operator or collector.
+    The operator key, trusted allowlist and time must come from outside the
+    collector's control. The original fixture entrypoint remains available.
+    """
+    from .observation_operator_permit import verify_loopback_operator_permit
+
+    _validate_targets(plan, targets, allowed_targets)
+    verify_loopback_operator_permit(
+        plan, targets, operator_permit, source_id=source_id,
+        source_key=source_key, operator_key=operator_key,
+        observed_at_unix=observed_at_unix, now_unix=now_unix,
+    )
+    return collect_and_accept_loopback_fixture_evidence(
+        handoff, artifact, approval, receipt, plan, targets,
+        allowed_targets=allowed_targets, source_id=source_id,
+        source_key=source_key, observed_at_unix=observed_at_unix,
+        now_unix=now_unix, sequence=sequence,
+        max_age_seconds=max_age_seconds, ledger_path=ledger_path,
+        source_pin=source_pin, require_source_pin=require_source_pin,
+        revoked_key_sha256=revoked_key_sha256,
+    )
