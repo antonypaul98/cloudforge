@@ -963,3 +963,38 @@ Even a valid proposed DNS hostname may later resolve to a prohibited address.
 No live service, infrastructure or recovery acceptance is claimed. Connected
 GitHub integration was the writer; exclusive external worktree ownership is
 unverified. Work/Astra were not invoked.
+
+## Runtime IPv4 pinset preflight — 2026-10-28
+
+Feature [PR #55](https://github.com/antonypaul98/cloudforge/pull/55)
+merged as `3b9c68865cb1d8caba24b036c12ceb0c48a73813`. Exact feature
+head `c66dff25a31d626cf2ca32659333ec2788e93e74` passed
+[push CI #40741131775](https://github.com/antonypaul98/cloudforge/actions/runs/40741131775)
+and [exact-head PR CI #40741170910](https://github.com/antonypaul98/cloudforge/actions/runs/40741170910).
+[Feature merged-main CI #40741305989](https://github.com/antonypaul98/cloudforge/actions/runs/40741305989)
+passed on Python 3.11.17: **965 pytest passed** (45 additional regression
+cases), 19 infrastructure tests (18 passed, 1 skipped). A separate
+isolated Python 3.13 module smoke passed 9 checks, but no separate local
+full-repository suite or physical Mac/device validation was performed.
+
+The pure, deterministic `RuntimeIPv4Pinset` checks caller-supplied IPv4
+resolution against an exact separately supplied allowlist for each ordered
+HTTPS observation target, after revalidating the existing handoff, receipt,
+plan and proposal. Canonical public IPv4-only sets reject private, loopback,
+metadata, shared, reserved, multicast, malformed, duplicate and misordered
+addresses. The exported receipt is digest-only and always pending independent
+approval. It does not contact DNS, network or services. See
+[reuse-first provenance, tests and rollback](docs/OBSERVATION_RUNTIME_IPV4_PIN.md).
+No third-party code, dependencies, credentials, provider costs or
+infrastructure mutation were introduced.
+
+**Not accepted:** independently authenticated operator or collector,
+trusted DNS/allowlist provenance, AAAA/IPv6 validation, DNS rebinding
+protection at connection time, TLS/SNI, trusted keys/clocks, actual runtime
+service monitoring, deployment, recovery or physical hardware acceptance.
+A caller can forge both supplied sets. External worktree exclusivity remains
+unverified. No Work/Astra was invoked.
+
+**Next:** Implement a separately approved, independently authenticated
+read-only HTTPS collector with complete DNS/IP and connection-time TLS pinning.
+No real endpoint may be contacted before exact human authorization.
