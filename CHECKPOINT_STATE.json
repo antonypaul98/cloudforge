@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
   "current_checkpoint": "canonical observation replay ledger schema integrity",
-  "active_branch": "build/observation-ledger-schema-20261027",
-  "main_sha_at_start": "66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983",
-  "current_branch_sha": "66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983",
+  "active_branch": "main",
+  "main_sha_at_start": "bbd66024e9b2a126655bbb24202f04c51245b086",
+  "current_branch_sha": "bbd66024e9b2a126655bbb24202f04c51245b086",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Connector-owned new branch created at 66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983; exact-head CI pending.",
-  "local_test_status": "GitHub Python 3.11.17 source push/PR and merged-main CI passed 745 pytest and 19 infrastructure guards (18 passed, 1 skipped). New key/clock tests are synthetic SQLite fixtures only; shell GitHub DNS unavailable, physical Mac not tested.",
-  "pr_number": null,
-  "ci_status": "NOT RUN for new feature; previous main CI 40612896053 passed at 66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983",
-  "merge_status": "NOT MERGED for new feature",
+  "branch_remote_status": "PR #23 exact head 93234a57577ff0d474bc7cf0e22f0f2dc01ab3e3 merged as bbd66024e9b2a126655bbb24202f04c51245b086; feature branch preserved, external worktree ownership unverified.",
+  "local_test_status": "GitHub CI on Python 3.11.17 passed 749 pytest and 19 infrastructure tests (18 passed, 1 skipped). Shell GitHub DNS unavailable; no physical Mac tests.",
+  "pr_number": 23,
+  "ci_status": "Source push 40618298894, exact-head PR 40618312748, merged-main push 40618385665 all SUCCESS; 749 pytest passed, 19 infrastructure tests (18 passed, 1 skipped), Python 3.11.17.",
+  "merge_status": "MERGED: PR #23 SHA-guarded squash bbd66024e9b2a126655bbb24202f04c51245b086; merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "Feature CI pending. Trusted collector, key/clock, ledger rollback, deployment and recovery unaccepted; external worktree ownership unverified.",
-  "next_action": "Validate exact-head PR CI, guarded merge, merged-main CI and record canonical acceptance; no infrastructure deployment.",
+  "known_blocker": "No blocker for fixture-only schema guard. Authenticated collector identity, secure keys, trusted clocks, rollback-resistant ledger, production monitoring, deployment and recovery remain unverified. External worktree ownership unverified.",
+  "next_action": "Scope one bounded trusted source-key/collector provenance or read-only observation safeguard; reuse-first, exact-head CI and merged-main acceptance. No real infrastructure mutation.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-28T01:04:01Z",
-  "observed_branch_sha": "66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983",
-  "observed_feature_sha": "66c6df3e9d0a331b9c6f20ef7f9a1457a0ac9983",
+  "observed_branch_sha": "bbd66024e9b2a126655bbb24202f04c51245b086",
+  "observed_feature_sha": "93234a57577ff0d474bc7cf0e22f0f2dc01ab3e3",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -72,11 +72,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "None for fixture-only key/clock regression; shell GitHub DNS unavailable",
-    "BLOCKER": "Trusted collector/key/clock lifecycle and production monitoring remain unaccepted; external worktree ownership unverified",
-    "SAFE_WORK_COMPLETED": "PR #21 merged; source push, exact-head PR and merged-main CI passed 745 pytest, 18 infrastructure guards (1 skipped), Python 3.11.17. No real infrastructure modified.",
-    "REMOTE_SHA": "2050a1a515e30b1ed62ddb8a56f46a7315cf839a",
-    "NEXT_ACTION": "Bound trusted source-key lifecycle or collector provenance in a separately tested fixture-only checkpoint."
+    "BLOCKED_LAYER": "None for fixture-only schema guard; shell GitHub DNS unavailable",
+    "BLOCKER": "Production collector/key/clock/ledger rollback/deployment/recovery remain unaccepted; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #23 merged and merged-main CI passed 749 pytest and 19 infrastructure tests (18 passed, 1 skipped) on Python 3.11.17; no infrastructure modified.",
+    "REMOTE_SHA": "bbd66024e9b2a126655bbb24202f04c51245b086",
+    "NEXT_ACTION": "Resume bounded trusted collector provenance safeguard with independent CI and no real deployment."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -88,7 +88,7 @@
     "physical_camera": "not_run",
     "new_head_CI": "intentionally_not_run"
   },
-  "checkpoint_status": "IN_PROGRESS",
+  "checkpoint_status": "COMPLETE_FIXTURE_ONLY",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
   "checkpoint_branch": "build/observation-key-clock-20261027",
   "previous_completed_checkpoint": {
@@ -98,7 +98,7 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "2050a1a515e30b1ed62ddb8a56f46a7315cf839a",
+  "verified_main_sha": "bbd66024e9b2a126655bbb24202f04c51245b086",
   "merge_commit_sha": "2050a1a515e30b1ed62ddb8a56f46a7315cf839a",
   "final_pr_head": "17fd69c733cfac9672e570d82a894ecc5bf28898",
   "later_checkpoint_requirements": [
@@ -490,5 +490,21 @@
     "real_infrastructure_modified": false,
     "physical_mac_test": "not_run",
     "external_worktree_ownership": "unverified"
+  },
+  "accepted_observation_replay_schema": {
+    "checkpoint": "canonical observation replay ledger schema integrity",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "feature_pr": 23,
+    "feature_head_sha": "93234a57577ff0d474bc7cf0e22f0f2dc01ab3e3",
+    "feature_push_ci": 40618298894,
+    "feature_pr_ci": 40618312748,
+    "feature_merge_sha": "bbd66024e9b2a126655bbb24202f04c51245b086",
+    "merged_main_ci": 40618385665,
+    "pytest_passed": 749,
+    "infra_tests_run": 19,
+    "infra_passed": 18,
+    "infra_skipped": 1,
+    "interpreter": "Python 3.11.17",
+    "scope": "Canonical SQLite schema and trigger validation plus persisted counter type/range guard; no live collector or deployment."
   }
 }

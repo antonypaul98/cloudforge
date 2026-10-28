@@ -518,3 +518,30 @@ or revoke real keys, authenticate collectors, establish trusted time, prevent
 ledger-backup rollback, monitor services, deploy infrastructure, recover or
 roll back resources, or validate physical Mac/device behavior.
 No real infrastructure was modified.
+
+
+## Canonical observation replay ledger schema guard accepted — 2026-10-27 ET
+
+[PR #23](https://github.com/antonypaul98/cloudforge/pull/23)
+rejects lookalike SQLite replay tables with TEXT sequence affinity or missing
+constraints, unexpected triggers on the replay table, and noninteger or
+out-of-range persisted counters. The canonical schema is checked within the
+same BEGIN IMMEDIATE transaction before a conditional sequence UPSERT.
+This prevents an altered TEXT counter from accepting sequence 9 after 10
+through lexicographic comparison. No new external code or dependencies were
+added; Python 3.11 sqlite3 and SQLite's schema catalog are reused.
+
+Exact feature head `93234a57577ff0d474bc7cf0e22f0f2dc01ab3e3`
+passed [push CI 40618298894](https://github.com/antonypaul98/cloudforge/actions/runs/40618298894)
+and [PR CI 40618312748](https://github.com/antonypaul98/cloudforge/actions/runs/40618312748).
+SHA-guarded squash merge `bbd66024e9b2a126655bbb24202f04c51245b086` passed
+[merged-main CI 40618385665](https://github.com/antonypaul98/cloudforge/actions/runs/40618385665).
+All ran Python 3.11.17 and reported **749 pytest passed** (four new
+parametrized cases) and 19 infrastructure guards (18 passed, 1 skipped).
+The feature branch is preserved; exclusive external worktree ownership
+remains unverified.
+
+**Acceptance is fixture-only local SQLite integrity checking.** A privileged
+attacker can replace or roll back the database. Authenticated collector identity,
+trusted keys/clocks, real monitoring, deployment, recovery, rollback and physical
+Mac/device acceptance are not established. No real infrastructure was modified.
