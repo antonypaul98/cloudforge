@@ -84,3 +84,29 @@ repository acceptance. Neither CI nor local fixture testing is evidence of
 production collector identity, key management, trusted time, durable backup
 safety, real deployment, service health, recovery, rollback or physical Mac
 acceptance. Those remain separate future checkpoints.
+
+## Read-only replay preflight before HEAD (2026-10-28)
+
+After validating authorization, source trust policy, MAC, freshness and targets,
+the fixture adapter now reads an existing SQLite replay ledger in `mode=ro`
+before issuing HEAD. Known duplicate sequences, corrupted counters, altered
+schemas and unreadable databases fail before probing. Missing or empty valid
+SQLite files still initialize through the existing durable writer after probes.
+URI escaping handles reserved filename characters.
+
+This is **not** an atomic reservation or exactly-once guarantee. Concurrent
+writers may advance the ledger after preflight; the existing `BEGIN IMMEDIATE`
+write transaction remains authoritative. Path checks are not race-free and
+SQLite may use auxiliary files. No collector authentication, production
+monitoring, deployment or recovery is established.
+
+Reuse-first: the existing schema validator and replay ledger plus Python 3.11
+`sqlite3`, `urllib.parse.quote` and `contextlib.closing` were reused. No
+third-party source code, dependency, license, permissions or service cost was
+added. Official API references (not copied implementations):
+https://docs.python.org/3.11/library/sqlite3.html#how-to-work-with-sqlite-uris
+and https://www.sqlite.org/uri.html .
+
+New synthetic tests cover duplicate rejection, corrupted DB/counter/schema,
+empty database initialization and reserved URI characters. Full exact-head
+and merged-main CI remain required for acceptance.
