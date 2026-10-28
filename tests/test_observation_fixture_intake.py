@@ -309,3 +309,106 @@ def test_pinned_source_key_rotation_requires_new_operator_pin(fixture_server, tm
                     source_key=new_key, sequence=2).sequence == 2
     with sqlite3.connect(ledger) as db:
         assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (2,)
+
+
+def test_strict_source_pin_policy_allows_valid_fixture(fixture_server, tmp_path):
+    context = _context()
+    ledger = tmp_path / "strict.db"
+    evidence = _collect(
+        context, _targets(fixture_server), ledger,
+        source_pin=_source_pin(context), require_source_pin=True,
+        revoked_key_sha256=("0" * 64,),
+    )
+    assert evidence.sequence == 1
+    assert len(Handler.calls) == 2
+    assert ledger.exists()
+
+
+@pytest.mark.parametrize("policy", [
+    {"require_source_pin": True},
+    {"revoked_key_sha256": (hashlib.sha256(_KEY).hexdigest(),)},
+])
+def test_policy_cannot_be_enabled_without_pin_before_io(
+    monkeypatch, tmp_path, policy,
+):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(
+        http_module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before policy"),
+    )
+    ledger = tmp_path / "no-pin.db"
+    with pytest.raises(ValueError, match="pin required"):
+        _collect(_context(), _targets(12345), ledger, **policy)
+    assert not ledger.exists()
+
+
+def test_revoked_key_rejected_before_network_or_ledger(monkeypatch, tmp_path):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(
+        http_module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before revocation check"),
+    )
+    context = _context()
+    ledger = tmp_path / "revoked.db"
+    with pytest.raises(ValueError, match="key is revoked"):
+        _collect(
+            context, _targets(12345), ledger,
+            source_pin=_source_pin(context), require_source_pin=True,
+            revoked_key_sha256=(hashlib.sha256(_KEY).hexdigest(),),
+        )
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("policy", [
+    {"require_source_pin": 1},
+    {"require_source_pin": None},
+    {"revoked_key_sha256": ["0" * 64]},
+    {"revoked_key_sha256": ("A" * 64,)},
+    {"revoked_key_sha256": ("g" * 64,)},
+    {"revoked_key_sha256": (None,)},
+    {"revoked_key_sha256": ("0" * 64, "0" * 64)},
+    {"revoked_key_sha256": ("0" * 64,) * 65},
+])
+def test_malformed_source_policy_fails_before_io(monkeypatch, tmp_path, policy):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(
+        http_module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before policy validation"),
+    )
+    context = _context()
+    ledger = tmp_path / "bad-policy.db"
+    with pytest.raises(ValueError, match="invalid observation source trust policy"):
+        _collect(
+            context, _targets(12345), ledger,
+            source_pin=_source_pin(context), **policy,
+        )
+    assert not ledger.exists()
+
+
+def test_revoked_old_key_rotation_preserves_sequence(fixture_server, tmp_path):
+    context = _context()
+    targets = _targets(fixture_server)
+    ledger = tmp_path / "revocation-rotation.db"
+    assert _collect(
+        context, targets, ledger, source_pin=_source_pin(context),
+        require_source_pin=True,
+    ).sequence == 1
+    old_digest = hashlib.sha256(_KEY).hexdigest()
+    with pytest.raises(ValueError, match="key is revoked"):
+        _collect(
+            context, targets, ledger, source_pin=_source_pin(context),
+            require_source_pin=True, revoked_key_sha256=(old_digest,),
+            sequence=2,
+        )
+    new_key = bytes(range(1, 33))
+    evidence = _collect(
+        context, targets, ledger, source_pin=_source_pin(context, new_key),
+        source_key=new_key, require_source_pin=True,
+        revoked_key_sha256=(old_digest,), sequence=2,
+    )
+    assert evidence.sequence == 2
+    assert old_digest not in evidence.to_json()
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (2,)

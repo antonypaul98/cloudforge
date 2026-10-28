@@ -19,6 +19,7 @@ from .observation_http import (
 from .observation_plan import ObservationPlan
 from .observation_replay import accept_observation_evidence_durably
 from .observation_source_pin import ObservationSourcePin, verify_observation_source_pin
+from .observation_source_policy import verify_observation_source_policy
 
 
 def collect_and_accept_loopback_fixture_evidence(
@@ -38,6 +39,8 @@ def collect_and_accept_loopback_fixture_evidence(
     max_age_seconds: int,
     ledger_path: str,
     source_pin: ObservationSourcePin | None = None,
+    require_source_pin: bool = False,
+    revoked_key_sha256: tuple[str, ...] = (),
 ) -> ObservationEvidence:
     """Return signed fixture samples only after durable replay acceptance.
 
@@ -49,6 +52,10 @@ def collect_and_accept_loopback_fixture_evidence(
     if (type(ledger_path) is not str or not ledger_path
             or not os.path.isabs(ledger_path) or "\x00" in ledger_path):
         raise ValueError("replay ledger requires an absolute local file path")
+    verify_observation_source_policy(
+        source_key, source_pin, require_source_pin=require_source_pin,
+        revoked_key_sha256=revoked_key_sha256,
+    )
     if source_pin is not None:
         verify_observation_source_pin(
             plan, source_pin, source_id=source_id, source_key=source_key,
