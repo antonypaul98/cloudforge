@@ -1,5 +1,6 @@
 """Fixture-only integration regressions for HEAD -> HMAC -> durable replay."""
 from dataclasses import replace
+import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import sqlite3
 from threading import Thread
@@ -18,6 +19,7 @@ from cloudforge.observation_evidence import verify_observation_evidence
 from cloudforge.observation_fixture_intake import collect_and_accept_loopback_fixture_evidence
 from cloudforge.observation_http import LoopbackHTTPProbeTarget
 from cloudforge.observation_plan import ObservationProbe, prepare_observation_plan
+from cloudforge.observation_source_pin import ObservationSourcePin
 from cloudforge.planner import derive_requirements
 
 _KEY = bytes(range(32))
@@ -239,3 +241,71 @@ def test_unexpected_cleanup_exception_never_persists_evidence(monkeypatch, tmp_p
     with pytest.raises(RuntimeError, match="unexpected fixture failure"):
         _collect(_context(), _targets(12345), ledger)
     assert not ledger.exists()
+
+
+def _source_pin(context, key=_KEY):
+    return ObservationSourcePin(
+        "fixture-collector",
+        hashlib.sha256(context[-1].to_json().encode("ascii")).hexdigest(),
+        hashlib.sha256(key).hexdigest(),
+        _NOW - 20, _NOW + 20,
+    )
+
+
+def test_pinned_source_collects_with_exact_plan_and_key(fixture_server, tmp_path):
+    context = _context()
+    ledger = tmp_path / "pinned.db"
+    evidence = _collect(
+        context, _targets(fixture_server), ledger, source_pin=_source_pin(context),
+    )
+    assert evidence.source_id == "fixture-collector"
+    assert len(Handler.calls) == 2
+    assert ledger.exists()
+
+
+@pytest.mark.parametrize("change,settings", [
+    (lambda p: replace(p, source_id="other-source"), {}),
+    (lambda p: replace(p, plan_sha256="0" * 64), {}),
+    (lambda p: replace(p, key_sha256="0" * 64), {}),
+    (lambda p: replace(p, key_sha256="G" * 64), {}),
+    (lambda p: replace(p, valid_from_unix=True), {}),
+    (lambda p: replace(p, valid_until_unix=_NOW - 1), {}),
+    (lambda p: replace(p, valid_until_unix=_NOW + 86_401), {}),
+    (lambda p: replace(p, valid_from_unix=_NOW + 1), {}),
+    (lambda p: p, {"source_key": bytes(range(1, 33))}),
+    (lambda p: p, {"observed_at_unix": _NOW - 21}),
+    (lambda p: p, {"now_unix": _NOW + 21}),
+    (lambda p: "untrusted", {}),
+])
+def test_invalid_source_pin_rejected_before_network_or_ledger(
+    monkeypatch, tmp_path, change, settings,
+):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(
+        http_module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("network before source pin verification"),
+    )
+    context = _context()
+    ledger = tmp_path / "pinned.db"
+    with pytest.raises(ValueError):
+        _collect(
+            context, _targets(12345), ledger,
+            source_pin=change(_source_pin(context)), **settings,
+        )
+    assert not ledger.exists()
+
+
+def test_pinned_source_key_rotation_requires_new_operator_pin(fixture_server, tmp_path):
+    context = _context()
+    targets = _targets(fixture_server)
+    ledger = tmp_path / "rotation.db"
+    old_pin = _source_pin(context)
+    assert _collect(context, targets, ledger, source_pin=old_pin).sequence == 1
+    new_key = bytes(range(1, 33))
+    with pytest.raises(ValueError, match="pin mismatch"):
+        _collect(context, targets, ledger, source_pin=old_pin,
+                 source_key=new_key, sequence=2)
+    assert _collect(context, targets, ledger, source_pin=_source_pin(context, new_key),
+                    source_key=new_key, sequence=2).sequence == 2
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (2,)
