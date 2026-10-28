@@ -58,6 +58,19 @@ def _verify_replay_schema(db: sqlite3.Connection) -> None:
         raise ValueError("durable replay ledger schema mismatch")
 
 
+def _verify_replay_ledger_path(ledger_path: str) -> None:
+    """Reject unsafe ledger path aliases without opening SQLite.
+
+    This is best-effort metadata preflight, not an atomic no-follow open.
+    Call only after authorization/MAC validation when used by a collector.
+    """
+    if (type(ledger_path) is not str or not ledger_path
+            or not os.path.isabs(ledger_path) or "\\x00" in ledger_path):
+        raise ValueError("replay ledger requires an absolute local file path")
+    _verify_replay_ledger_path(ledger_path)
+
+
+
 def accept_observation_evidence_durably(
     handoff: DeploymentHandoff,
     artifact: bytes,
