@@ -98,6 +98,43 @@ def test_unknown_or_pass_breaks_proven_failure_streak(outcomes, streak):
     assert result[0].threshold_reached is False
 
 
+def test_rejects_accelerated_or_equal_timestamp_failure_windows():
+    ctx = context()
+    for second_time in (1_800_000_010, 1_800_000_019):
+        window = (
+            signed(ctx, ("fail", "pass"), seq=1, at=1_800_000_010),
+            signed(ctx, ("fail", "pass"), seq=2, at=second_time),
+        )
+        with pytest.raises(ValueError, match="faster than proposed probe interval"):
+            evaluate(ctx, window)
+
+
+def test_exact_interval_failure_window_remains_valid():
+    ctx = context()
+    window = (
+        signed(ctx, ("fail", "pass"), seq=1, at=1_800_000_010),
+        signed(ctx, ("fail", "pass"), seq=2, at=1_800_000_020),
+        signed(ctx, ("fail", "pass"), seq=3, at=1_800_000_030),
+    )
+    assert evaluate(ctx, window)[0].threshold_reached is True
+
+
+def test_mixed_probe_intervals_require_longest_interval():
+    ctx = context()
+    slower_plan = prepare_observation_plan(
+        *ctx[:4],
+        (ObservationProbe("readiness", 5, 2, 3),
+         ObservationProbe("liveness", 20, 2, 5)),
+    )
+    ctx = (*ctx[:4], slower_plan)
+    first = signed(ctx, ("fail", "pass"), seq=1, at=1_800_000_010)
+    too_fast = signed(ctx, ("fail", "pass"), seq=2, at=1_800_000_029)
+    on_time = signed(ctx, ("fail", "pass"), seq=2, at=1_800_000_030)
+    with pytest.raises(ValueError, match="faster than proposed probe interval"):
+        evaluate(ctx, (first, too_fast))
+    assert evaluate(ctx, (first, on_time))[0].consecutive_failures == 2
+
+
 def test_window_is_bounded_and_does_not_infer_missing_history():
     ctx = context()
     single = signed(ctx, ("fail", "fail"), seq=8, at=1_800_000_030)
