@@ -563,3 +563,28 @@ rollback-resistant storage, authenticated collectors, trusted key/clock
 provisioning, production monitoring, deployment and recovery remain outside
 this acceptance. No physical Mac tests or real infrastructure mutation.
 See `docs/OBSERVATION_REPLAY.md` for threat model and limitations.
+
+
+## Observation replay ledger hard-link safeguard — accepted fixture-only (2026-10-28)
+
+PR [#27](https://github.com/antonypaul98/cloudforge/pull/27) extends the
+existing `os.lstat` final-component check to reject existing SQLite replay
+ledger files with a hard-link count other than one. Both original and alias
+paths are rejected when the inode has multiple names; two new parametrized
+tests confirm no replay counter advancement. Reused Python 3.11 standard
+library; no third-party dependencies or provider calls.
+
+Source head `275d1693730ec6117e284204adc15036d5075753` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40630392569)
+and [exact-head PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40630422561).
+Guarded squash merge `15ff562ad9b52ac6876228aa7a497df2e8e0c03f`
+passed [merged-main CI](https://github.com/antonypaul98/cloudforge/actions/runs/40630475417):
+**755 pytest passed**, infrastructure 18 passed and 1 skipped on Python
+3.11.17. Local POSIX hard-link smoke check passed separately; no full local
+product suite or physical Mac testing was performed.
+
+This remains best-effort pre-open file hygiene, not atomic race prevention,
+authenticated collector identity, trusted keys or clocks, production
+monitoring, deployment or recovery. No real infrastructure was modified.
+External worktree ownership is unverified. Next: bounded collector/source-key
+provenance safeguard with independent verification.
