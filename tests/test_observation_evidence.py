@@ -21,6 +21,7 @@ from cloudforge.observation_evidence import (
     verify_observation_evidence,
 )
 from cloudforge.planner import derive_requirements
+from cloudforge.observation_rollup import classify_verified_observation_samples
 
 
 _KEY = bytes(range(32))
@@ -217,3 +218,79 @@ def test_in_memory_evidence_intake_has_no_network_shell_or_clock_io(monkeypatch)
         evidence = _evidence(context[-1])
         assert _verify(context, evidence)
     assert isinstance(evidence, ObservationEvidence)
+
+
+# Deterministic read-only sample rollup; never a service-health assertion.
+
+
+def _rollup(context, evidence, **overrides):
+    settings = dict(
+        expected_source_id="collector-1", source_key=_KEY,
+        now_unix=1_800_000_015, max_age_seconds=30, last_sequence=0,
+    )
+    settings.update(overrides)
+    return classify_verified_observation_samples(
+        *context, evidence, **settings,
+    )
+
+
+@pytest.mark.parametrize("outcomes,expected", [
+    (("pass", "pass"), "pass"),
+    (("pass", "unknown"), "unknown"),
+    (("unknown", "pass"), "unknown"),
+    (("unknown", "unknown"), "unknown"),
+    (("fail", "pass"), "fail"),
+    (("unknown", "fail"), "fail"),
+    (("fail", "unknown"), "fail"),
+])
+def test_verified_sample_rollup_is_deterministic_and_conservative(outcomes, expected):
+    context = _context()
+    samples = tuple(
+        ObservationSample(kind, outcome, 12)
+        for kind, outcome in zip(("readiness", "liveness"), outcomes)
+    )
+    evidence = _evidence(context[-1], samples=samples)
+    assert _rollup(context, evidence) == expected
+    assert _rollup(context, evidence) == expected
+
+
+@pytest.mark.parametrize("change", [
+    {"mac_sha256": "0" * 64},
+    {"samples": (ObservationSample("readiness", "fail", 1),
+                 ObservationSample("liveness", "pass", 1))},
+])
+def test_rollup_never_classifies_tampered_evidence(change):
+    context = _context()
+    with pytest.raises(ValueError):
+        _rollup(context, replace(_evidence(context[-1]), **change))
+
+
+def test_rollup_rejects_stale_replayed_or_wrong_key_evidence():
+    context = _context()
+    evidence = _evidence(context[-1])
+    for settings in (
+        {"now_unix": 1_800_000_100},
+        {"last_sequence": 1},
+        {"source_key": _OTHER_KEY},
+    ):
+        with pytest.raises(ValueError):
+            _rollup(context, evidence, **settings)
+
+
+def test_rollup_rejects_changed_artifact_without_io(monkeypatch):
+    import socket
+    import subprocess
+    import time
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("sample rollup must remain pure")
+
+    context = _context()
+    evidence = _evidence(context[-1])
+    with monkeypatch.context() as guard:
+        guard.setattr(socket, "socket", forbidden)
+        guard.setattr(subprocess, "Popen", forbidden)
+        guard.setattr(time, "time", forbidden)
+        assert _rollup(context, evidence) == "unknown"
+        with pytest.raises(ValueError):
+            _rollup((context[0], b"changed-artifact", *context[2:]), evidence)
