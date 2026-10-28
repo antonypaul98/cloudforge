@@ -871,3 +871,30 @@ exclusivity remains unverified. No Work/Astra invocation.
 key provisioning, exact approved read-only targets and measured runtime
 clock/sequence evidence before contacting a real service. Do not interpret
 fixture success as service health or authorize infrastructure mutation.
+
+## Separately keyed operator permit for loopback HEAD fixture — 2026-10-28
+
+A new **opt-in**, short-lived (at most 300 seconds) HMAC permit binds the
+exact observation plan, ordered numeric-loopback HEAD targets, collector alias,
+source-key fingerprint, and an explicit HEAD-only operation domain. A distinct
+operator key verifies the permit before the existing fixture HTTP and SQLite
+path. Existing callers remain compatible; this is not a universal mandatory
+authorization mechanism. The operator and collector keys must be provisioned
+independently, and caller-supplied time is not a trusted clock.
+
+Feature [PR #49](https://github.com/antonypaul98/cloudforge/pull/49)
+source head `ed358f42e19a7cfe956b5021c9437d4f0821149f` passed
+[push CI](https://github.com/antonypaul98/cloudforge/actions/runs/40712699027)
+and [exact-head PR CI](https://github.com/antonypaul98/cloudforge/actions/runs/40712762871).
+Guarded merge `ec3b6ab1bef914ee78d31d301fb1433ca4a9c832` passed
+[merged-main CI](https://github.com/antonypaul98/cloudforge/actions/runs/40712944688):
+**869 pytest passed** (22 new synthetic regressions), infrastructure guards
+19 run (18 passed, 1 skipped), Python 3.11.17. See
+`docs/OBSERVATION_OPERATOR_PERMIT.md` for reuse-first provenance, scope and
+limitations. No new dependency or third-party code was added.
+
+This is **fixture-only software acceptance**. A valid MAC proves possession
+of a configured operator key, not a human decision or authenticated collector.
+No live service, real infrastructure, production deployment, recovery, trusted
+clock/key distribution, or physical Mac was tested or accepted. External
+worktree exclusivity remains unverified. No Work/Astra invoked.
