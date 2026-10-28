@@ -324,3 +324,21 @@ def test_head_deadline_close_discards_pending_response():
     assert conn._request_sent is False
     with pytest.raises(ValueError, match="pending request"):
         conn.getresponse()
+
+
+def test_head_deadline_rejects_late_response_even_if_base_closes(monkeypatch):
+    import http.client
+    ticks = _clock(monkeypatch)
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    def closing_response(self):
+        ticks[0] = 103.0
+        self.close()  # http.client does this for Connection: close
+        return Mock(status=204)
+    monkeypatch.setattr(http.client.HTTPSConnection, "getresponse", closing_response)
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.getresponse()
+    fake.close.assert_called()
+    assert conn._deadline is None
