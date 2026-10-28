@@ -588,3 +588,30 @@ authenticated collector identity, trusted keys or clocks, production
 monitoring, deployment or recovery. No real infrastructure was modified.
 External worktree ownership is unverified. Next: bounded collector/source-key
 provenance safeguard with independent verification.
+
+## Observation replay parent-path hygiene — accepted fixture-only (2026-10-28)
+
+[PR #29](https://github.com/antonypaul98/cloudforge/pull/29) rejects
+noncanonical absolute SQLite replay ledger paths and parent-directory
+symlinks (including dangling aliases) before opening the database. All
+parent components must already be real directories. Five new fixture
+regressions cover existing/dangling parent symlinks, dot traversal,
+missing parents and nested real directories. Existing exact-authorization,
+HMAC and SQLite sequence semantics are unchanged. Python 3.11 standard
+library reused; no external code, dependencies, credentials or provider calls.
+
+Exact feature head `dd59607f93346310b9f12503119116753b293f09` passed
+[source push CI 40635120990](https://github.com/antonypaul98/cloudforge/actions/runs/40635120990)
+and [PR CI 40635136624](https://github.com/antonypaul98/cloudforge/actions/runs/40635136624).
+SHA-guarded squash merge `b4c5666c919dc07b534845c29cc034bb2dfbbecd`
+passed [merged-main CI 40635206290](https://github.com/antonypaul98/cloudforge/actions/runs/40635206290).
+All three ran Python 3.11.17: **760 pytest passed**, 19 infrastructure
+regressions run (18 passed, 1 skipped). Isolated Python 3.13 helper smoke
+passed five cases separately; this was not a full local repository suite.
+
+**Acceptance is fixture-only best-effort path hygiene.** A concurrent
+attacker may still replace paths after inspection. Ledger rollback, trusted
+source identity, key provisioning, clocks, real service monitoring,
+deployment, recovery and physical Mac/device acceptance remain unproven.
+No real infrastructure was modified; external worktree ownership unverified.
+Next: bounded collector/source-key provenance with independent verification.
