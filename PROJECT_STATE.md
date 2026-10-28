@@ -837,3 +837,37 @@ physical Mac validation. External worktree writer exclusivity is unverified.
 Next: an independently authenticated, explicitly operator-authorized read-only
 collector boundary with trustworthy key/clock provisioning. No live endpoint
 access or infrastructure mutation is authorized by this checkpoint.
+
+## Post-hoc loopback HEAD elapsed-budget safeguard — 2026-10-28
+
+Feature [PR #47](https://github.com/antonypaul98/cloudforge/pull/47)
+merged as `559b67c7b6f60c4f416c3788abd39857246544f8`. Its exact head
+`c5e3da62c71b35e90dc201a5e1f56157ab0abc93` passed
+[push CI #40701886612](https://github.com/antonypaul98/cloudforge/actions/runs/40701886612)
+and [PR CI #40701927545](https://github.com/antonypaul98/cloudforge/actions/runs/40701927545).
+[Feature merged-main CI #40702109730](https://github.com/antonypaul98/cloudforge/actions/runs/40702109730)
+passed on Python 3.11.17: **847 pytest passed** (five additional
+regressions), 19 infrastructure checks (18 passed, 1 skipped).
+An isolated five-case boundary smoke also passed, but no separate local
+full-repository suite or physical Mac validation was performed.
+
+The existing numeric-loopback HEAD collector now treats an otherwise
+passing/failing response as `unknown` if total monotonic duration including
+cleanup exceeds the configured probe timeout. A negative duration fails
+closed; an exact-boundary duration remains accepted. The signed and durable
+fixture intake also preserves the `unknown` result. Existing standard-library
+`http.client` and `time.monotonic` plus CloudForge's sample/HMAC/SQLite
+contracts were reused. No third-party code, new dependencies, cloud
+credentials, provider access, infrastructure mutation or additional costs.
+
+**Scope limit:** This is post-hoc classification, not an enforced wall-clock
+deadline, authenticated collector, trusted timestamp, live service monitoring,
+deployment or recovery. A slow socket operation may still block beyond its
+timeout budget. The operator-approved, independently authenticated runtime
+collector and key/clock lifecycle are still missing. External worktree
+exclusivity remains unverified. No Work/Astra invocation.
+
+**Next acceptance boundary:** Define independently trusted collector identity,
+key provisioning, exact approved read-only targets and measured runtime
+clock/sequence evidence before contacting a real service. Do not interpret
+fixture success as service health or authorize infrastructure mutation.
