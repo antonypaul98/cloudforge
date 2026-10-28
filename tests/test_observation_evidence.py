@@ -1,5 +1,6 @@
 """Synthetic, credential-free tests for read-only observation evidence intake."""
 from dataclasses import replace
+import hashlib
 import json
 
 import pytest
@@ -22,6 +23,7 @@ from cloudforge.observation_evidence import (
 )
 from cloudforge.planner import derive_requirements
 from cloudforge.observation_rollup import classify_verified_observation_samples
+from cloudforge.observation_source_pin import ObservationSourcePin
 
 
 _KEY = bytes(range(32))
@@ -294,3 +296,117 @@ def test_rollup_rejects_changed_artifact_without_io(monkeypatch):
         assert _rollup(context, evidence) == "unknown"
         with pytest.raises(ValueError):
             _rollup((context[0], b"changed-artifact", *context[2:]), evidence)
+
+# The pure rollup must honor the same opt-in caller trust policy as intake.
+
+def _rollup_pin(context, key=_KEY):
+    return ObservationSourcePin(
+        "collector-1",
+        hashlib.sha256(context[-1].to_json().encode("ascii")).hexdigest(),
+        hashlib.sha256(key).hexdigest(),
+        1_799_999_990, 1_800_000_030,
+    )
+
+
+@pytest.mark.parametrize("outcomes,expected", [
+    (("pass", "pass"), "pass"),
+    (("fail", "unknown"), "fail"),
+    (("pass", "unknown"), "unknown"),
+])
+def test_rollup_accepts_valid_strict_source_pin(outcomes, expected):
+    context = _context()
+    samples = tuple(ObservationSample(kind, outcome, 1) for kind, outcome
+                    in zip(("readiness", "liveness"), outcomes))
+    evidence = _evidence(context[-1], samples=samples)
+    assert _rollup(
+        context, evidence, source_pin=_rollup_pin(context),
+        require_source_pin=True, revoked_key_sha256=("0" * 64,),
+    ) == expected
+
+
+@pytest.mark.parametrize("settings", [
+    {"require_source_pin": True},
+    {"revoked_key_sha256": (hashlib.sha256(_KEY).hexdigest(),)},
+])
+def test_rollup_strict_policy_rejects_missing_pin(settings):
+    context = _context()
+    with pytest.raises(ValueError, match="pin required"):
+        _rollup(context, _evidence(context[-1]), **settings)
+
+
+def test_rollup_rejects_revoked_key_even_with_valid_mac_and_pin():
+    context = _context()
+    with pytest.raises(ValueError, match="key is revoked"):
+        _rollup(
+            context, _evidence(context[-1]),
+            source_pin=_rollup_pin(context), require_source_pin=True,
+            revoked_key_sha256=(hashlib.sha256(_KEY).hexdigest(),),
+        )
+
+
+@pytest.mark.parametrize("change", [
+    {"source_id": "collector-2"},
+    {"plan_sha256": "0" * 64},
+    {"key_sha256": "0" * 64},
+    {"valid_from_unix": 1_800_000_001},
+    {"valid_until_unix": 1_800_000_014},
+])
+def test_rollup_rejects_mismatched_trusted_source_pin(change):
+    context = _context()
+    with pytest.raises(ValueError):
+        _rollup(
+            context, _evidence(context[-1]),
+            source_pin=replace(_rollup_pin(context), **change),
+            require_source_pin=True,
+        )
+
+
+@pytest.mark.parametrize("settings", [
+    {"require_source_pin": 1},
+    {"revoked_key_sha256": ["0" * 64]},
+    {"revoked_key_sha256": ("G" * 64,)},
+    {"revoked_key_sha256": ("0" * 64,) * 2},
+])
+def test_rollup_rejects_malformed_trust_policy(settings):
+    context = _context()
+    with pytest.raises(ValueError, match="invalid observation source trust policy"):
+        _rollup(
+            context, _evidence(context[-1]),
+            source_pin=_rollup_pin(context), **settings,
+        )
+
+
+def test_rollup_key_rotation_requires_new_pin_and_valid_mac():
+    context = _context()
+    new_key = bytes(range(1, 33))
+    evidence = _evidence(context[-1], key=new_key)
+    with pytest.raises(ValueError, match="pin mismatch"):
+        _rollup(context, evidence, source_key=new_key,
+                source_pin=_rollup_pin(context), require_source_pin=True)
+    assert _rollup(
+        context, evidence, source_key=new_key,
+        source_pin=_rollup_pin(context, key=new_key), require_source_pin=True,
+        revoked_key_sha256=(hashlib.sha256(_KEY).hexdigest(),),
+    ) == "unknown"
+
+
+def test_rollup_strict_policy_remains_pure(monkeypatch):
+    import socket
+    import subprocess
+    import time
+    import os
+
+    context = _context()
+    evidence = _evidence(context[-1])
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("rollup trust check must not use external I/O")
+
+    with monkeypatch.context() as guard:
+        guard.setattr(socket, "socket", forbidden)
+        guard.setattr(subprocess, "Popen", forbidden)
+        guard.setattr(os, "system", forbidden)
+        guard.setattr(time, "time", forbidden)
+        assert _rollup(
+            context, evidence, source_pin=_rollup_pin(context),
+            require_source_pin=True,
+        ) == "unknown"
