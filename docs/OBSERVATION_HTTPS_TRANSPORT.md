@@ -60,3 +60,25 @@ cloud infrastructure was exercised. This is a **synthetic, unwired guard only**,
 not authenticated approval, a complete runtime collector, a network sandbox,
 a transaction deadline, or live service health. Revert the feature merge to
 roll back; no persistent schema, dependencies or infrastructure changes.
+
+## Inherited low-level API guard (2026-10-28)
+
+The unwired private connection now rejects ordinary direct calls to inherited
+`putrequest`, `putheader`, `endheaders`, `send`, `_send_request` and
+`_send_output` unless the validated exact HEAD request is in progress. The
+guard resets even if a send fails. This reduces accidental misuse of Python's
+stepwise HTTP API, while retaining the same canonical HEAD wire format.
+
+**Not a security boundary against arbitrary Python code in the same process:**
+explicit base-class method invocation, monkeypatching, mutable attributes and
+direct socket access can bypass this convention. An authenticated collector
+must independently constrain execution, endpoint/IP authorization, request
+budgets and evidence before any live monitoring. No real endpoint contacted.
+
+Reuse-first review: existing CloudForge subclass and Python 3.11 standard
+library `http.client` stepwise request methods; no external code copied,
+new dependency, schema or license. API contract:
+https://docs.python.org/3.11/library/http.client.html.
+Local Python 3.13 isolated stub smoke covered six blocked methods and preserved
+HEAD bytes; authoritative Python 3.11 full CI is required for acceptance.
+Rollback by reverting the feature merge; no infrastructure state exists.

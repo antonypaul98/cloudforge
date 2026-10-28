@@ -159,3 +159,41 @@ def test_head_guard_explicit_empty_headers_still_canonical():
     conn.request("HEAD", "/ready", headers={})
     payload = b"".join(call.args[0] for call in fake.sendall.call_args_list)
     assert payload.count(b"Host: ") == 1
+
+
+@pytest.mark.parametrize("method,args", [
+    ("putrequest", ("POST", "/admin")),
+    ("putheader", ("Authorization", "secret")),
+    ("endheaders", ()),
+    ("send", (b"POST /admin HTTP/1.1\\r\\n\\r\\n",)),
+    ("_send_request", ("POST", "/admin", None, {}, False)),
+    ("_send_output", ()),
+])
+def test_low_level_inherited_methods_rejected_before_network(method, args):
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    with pytest.raises(ValueError, match="low-level HTTP request APIs"):
+        getattr(conn, method)(*args)
+    fake.sendall.assert_not_called()
+
+
+def test_low_level_guard_resets_after_successful_head():
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    assert fake.sendall.called
+    with pytest.raises(ValueError, match="low-level HTTP request APIs"):
+        conn.putrequest("POST", "/admin")
+
+
+def test_low_level_guard_resets_after_failed_head_send():
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    fake.sendall.side_effect = OSError("synthetic send failure")
+    conn.sock = fake
+    with pytest.raises(OSError, match="synthetic send failure"):
+        conn.request("HEAD", "/ready")
+    with pytest.raises(ValueError, match="low-level HTTP request APIs"):
+        conn.send(b"POST /admin HTTP/1.1\\r\\n\\r\\n")
