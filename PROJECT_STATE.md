@@ -813,3 +813,27 @@ observation, deployment, rollback and recovery. External worktree
 exclusivity remains unverified. Next: design a small independently
 verifiable, explicitly authorized read-only runtime observation boundary,
 without accessing real services before approval. No Work/Astra invocation.
+
+## Signed observation window cadence safeguard — 2026-10-28
+
+Feature [PR #45](https://github.com/antonypaul98/cloudforge/pull/45) is merged
+at `05931222a1df886d43befca43821eee160b2464f`. Exact feature PR head
+`044e3d2adb77128963ccd75a777575a5e9eb327e` passed
+[PR CI #40693213476](https://github.com/antonypaul98/cloudforge/actions/runs/40693213476),
+and [merged-main CI #40693332293](https://github.com/antonypaul98/cloudforge/actions/runs/40693332293)
+passed on Python 3.11.17: **842 pytest passed**, 19 infrastructure checks
+(18 passed, 1 skipped). Three new regression tests cover equal/too-short
+claimed timestamp gaps, exact-interval acceptance and mixed intervals.
+
+The pure failure-streak evaluator now rejects consecutive signed envelopes
+whose caller-provided timestamps are closer than the **longest** interval
+in the exact observation proposal. Existing plan, MAC, source-key policy,
+freshness and replay checks remain in force. This is fixture-only software
+acceptance, not verified real scheduling, trusted clocks, authenticated
+collectors, production monitoring, alerting, deployment or recovery. No
+external source code, new dependencies, real infrastructure actions or
+physical Mac validation. External worktree writer exclusivity is unverified.
+
+Next: an independently authenticated, explicitly operator-authorized read-only
+collector boundary with trustworthy key/clock provisioning. No live endpoint
+access or infrastructure mutation is authorized by this checkpoint.
