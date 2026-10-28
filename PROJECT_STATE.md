@@ -492,3 +492,29 @@ authenticate collector identity, provision source keys, trust caller clocks,
 prove service health, deploy infrastructure, schedule production monitoring,
 recover or roll back resources, or validate physical hardware.
 No real infrastructure was modified.
+
+## Observation source-key and clock lifecycle regression accepted — 2026-10-27 ET
+
+[PR #21](https://github.com/antonypaul98/cloudforge/pull/21)
+adds three fixture-only tests: rotating the configured HMAC key under the same
+source alias does not reset the durable SQLite sequence, stale/future or
+backwards-clock evidence cannot advance that ledger, and a maximum 63-bit
+sequence cannot overflow or restart. The
+[reuse and limitations record](docs/OBSERVATION_KEY_CLOCK_LIFECYCLE.md)
+documents existing CloudForge/Python/SQLite reuse and the absent trusted
+collector, key manager, clock and backup-rollback guarantees.
+
+Exact feature head `17fd69c733cfac9672e570d82a894ecc5bf28898` passed
+[source push CI 40612629011](https://github.com/antonypaul98/cloudforge/actions/runs/40612629011)
+and [PR CI 40612645312](https://github.com/antonypaul98/cloudforge/actions/runs/40612645312).
+Guarded squash merge `2050a1a515e30b1ed62ddb8a56f46a7315cf839a` passed
+[merged-main CI 40612705992](https://github.com/antonypaul98/cloudforge/actions/runs/40612705992).
+All reported Python 3.11.17, **745 pytest passed** (3 new cases), and
+19 infrastructure tests run (18 passed, 1 skipped). The source branch
+is preserved; external worktree ownership is unverified.
+
+**Acceptance is regression-only and fixture-only.** The tests do not rotate
+or revoke real keys, authenticate collectors, establish trusted time, prevent
+ledger-backup rollback, monitor services, deploy infrastructure, recover or
+roll back resources, or validate physical Mac/device behavior.
+No real infrastructure was modified.
