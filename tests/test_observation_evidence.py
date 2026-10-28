@@ -21,6 +21,7 @@ from cloudforge.observation_evidence import (
     verify_observation_evidence,
 )
 from cloudforge.planner import derive_requirements
+from cloudforge.observation_rollup import classify_verified_observation_samples
 
 
 _KEY = bytes(range(32))
@@ -220,7 +221,6 @@ def test_in_memory_evidence_intake_has_no_network_shell_or_clock_io(monkeypatch)
 
 
 # Deterministic read-only sample rollup; never a service-health assertion.
-from cloudforge.observation_rollup import classify_verified_observation_samples
 
 
 def _rollup(context, evidence, **overrides):
