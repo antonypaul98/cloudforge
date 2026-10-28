@@ -100,7 +100,7 @@ def test_unknown_or_pass_breaks_proven_failure_streak(outcomes, streak):
 
 def test_window_is_bounded_and_does_not_infer_missing_history():
     ctx = context()
-    single = signed(ctx, ("fail", "fail"), seq=8)
+    single = signed(ctx, ("fail", "fail"), seq=8, at=1_800_000_030)
     result = evaluate(ctx, (single,), last_sequence=7)
     assert [r.consecutive_failures for r in result] == [1, 1]
     for invalid in ([], [single], (), (single,) * 11):
