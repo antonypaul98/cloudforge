@@ -71,3 +71,28 @@ https://docs.python.org/3.11/library/sqlite3.html
 This is local corruption/tamper detection, not authenticated database ownership.
 A privileged attacker can still replace or roll back a ledger backup. Collector
 identity, trusted clocks, deployment, live monitoring and recovery are unproven.
+
+## Existing ledger file-type guard (2026-10-27)
+
+Before SQLite opens a ledger, the durable verifier now checks an existing
+final path component with Python standard-library `os.lstat` and `stat`.
+It rejects symlinks (including dangling symlinks), directories and special
+files, rather than following an alias or treating a non-file as a ledger.
+The HMAC, exact authorization and freshness checks still run before this
+filesystem metadata access. A missing file may be created in the caller's
+pre-existing trusted directory. Tests verify rejection without modifying
+a real ledger, dangling-link target creation, and pre-MAC I/O avoidance.
+
+This is **best-effort path hygiene**, not a race-free file-open primitive.
+Another process with write access to the ledger directory could replace
+a path between `lstat` and `sqlite3.connect`. Parent-directory symlinks
+are not resolved or prohibited. Operators must still own and protect the
+entire directory and avoid untrusted concurrent writers. No claim is made
+about tamper-proof storage, backup rollback prevention, authenticated
+collector identity or live monitoring.
+
+Reuse review: existing SQLite transactional verifier remains authoritative;
+Python 3.11 `os.lstat` and `stat.S_ISREG` are sufficient for this narrow
+pre-open guard. No third-party code or dependency was added.
+References: https://docs.python.org/3.11/library/os.html#os.lstat and
+https://docs.python.org/3.11/library/stat.html#stat.S_ISREG .

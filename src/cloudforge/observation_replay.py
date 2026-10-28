@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 import sqlite3
+import stat
 from contextlib import closing
 
 from .deployment import DeploymentHandoff
@@ -93,6 +94,19 @@ def accept_observation_evidence_durably(
         max_age_seconds=max_age_seconds,
         last_sequence=0,
     )
+
+    # SQLite follows symlinks. Reject existing aliases and special files before
+    # opening a ledger; this does not replace trusted directory ownership or
+    # provide an atomic no-follow guarantee against concurrent path replacement.
+    try:
+        ledger_mode = os.lstat(ledger_path).st_mode
+    except FileNotFoundError:
+        pass  # SQLite may create a new file in the trusted existing directory.
+    except OSError as exc:
+        raise ValueError("durable replay ledger unavailable") from exc
+    else:
+        if not stat.S_ISREG(ledger_mode):
+            raise ValueError("durable replay ledger must be a regular file")
 
     try:
         with closing(sqlite3.connect(ledger_path, timeout=5, uri=False)) as db:
