@@ -466,3 +466,29 @@ process is not authenticated collector identity or trustworthy service health.
 No production service, independent key/clock provisioning, cloud provider,
 real deployment, monitoring scheduler, alerting, recovery, rollback or physical
 Mac/device acceptance is established. No real infrastructure was modified.
+
+## Bounded loopback HEAD cleanup safeguard accepted — 2026-10-27 ET
+
+[PR #19](https://github.com/antonypaul98/cloudforge/pull/19)
+preserves fail-closed raw observation semantics if Python's
+`HTTPConnection.close()` raises an OSError or HTTPException. Even if the
+earlier HEAD status was 2xx, the sample becomes `unknown`, not `pass`.
+Unexpected cleanup exceptions abort collection before HMAC signing and SQLite
+replay acceptance. The [existing transport contract](docs/OBSERVATION_HTTP.md)
+now records this behavior. No new external dependencies, model, API, schema,
+permissions, network targets or third-party source code were added.
+
+Exact feature head `799931178dda487f2e44486aab14bf4d618fa3b3` passed
+[source push CI 40605637354](https://github.com/antonypaul98/cloudforge/actions/runs/40605637354)
+and [PR CI 40605683663](https://github.com/antonypaul98/cloudforge/actions/runs/40605683663).
+Guarded squash merge `d79d7c13860ad5b3d5e903f0b860a1af25a671a4` passed
+[merged-main CI 40605764040](https://github.com/antonypaul98/cloudforge/actions/runs/40605764040).
+Python 3.11.17 reported **742 pytest passed** (5 new test cases)
+and 19 infrastructure guards run (18 passed, 1 skipped).
+The source branch remains preserved; external worktree ownership is unverified.
+
+**Acceptance is a fixture-only transport failure safeguard.** It does not
+authenticate collector identity, provision source keys, trust caller clocks,
+prove service health, deploy infrastructure, schedule production monitoring,
+recover or roll back resources, or validate physical hardware.
+No real infrastructure was modified.
