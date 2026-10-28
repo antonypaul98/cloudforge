@@ -1146,3 +1146,43 @@ was the writer; external worktree exclusivity unverified. No Work/Astra used.
 **Next:** Independently authenticated and operator-approved exact-endpoint/IP
 HEAD-only collector with full elapsed deadline, evidence and rollback
 boundaries; synthetic testing first. No live endpoint before explicit approval.
+
+
+## Unwired HTTPS monotonic transaction deadline — 2026-10-28
+
+Feature [PR #65](https://github.com/antonypaul98/cloudforge/pull/65)
+merged as `c7872c4be9dff8f270db167baad55b9bb7f6703d`.
+Exact source head `6052772248bdd918ac5bd3a3abdc41ba7500237a`
+passed [push CI #40784965631](https://github.com/antonypaul98/cloudforge/actions/runs/40784965631)
+and [PR CI #40784972134](https://github.com/antonypaul98/cloudforge/actions/runs/40784972134).
+[Feature merged-main CI #40785104824](https://github.com/antonypaul98/cloudforge/actions/runs/40785104824)
+passed on Python 3.11.17: **1068 pytest passed** (9 new synthetic
+regressions), 19 infrastructure checks (18 passed, 1 skipped).
+Container GitHub DNS prevented a separate local full-suite run; the
+GitHub exact-head and merged-main runs are the full-suite evidence.
+
+The private, still-unwired `_PinnedHTTPSConnection` now applies one
+monotonic elapsed-time budget to the exact bodyless HEAD transaction:
+numeric-IP connect, original-host TLS, send and response header retrieval.
+It sets remaining per-operation socket timeouts, rejects late responses,
+closes failed connections and prevents a second request while the first
+response is pending. A regression specifically covers `http.client`
+automatically closing the socket before the final deadline check.
+Existing CloudForge transport and Python 3.11 standard library were reused,
+with no third-party code, dependencies, licenses, provider permissions,
+service costs, credentials or infrastructure mutation. See
+[scope, provenance, limitations and rollback](docs/OBSERVATION_HTTPS_DEADLINE.md).
+
+**Software-only acceptance:** Per-operation socket timeouts plus elapsed
+postchecks do not forcibly cancel a single blocking call that overruns
+the global budget; cleanup may also block. This is not a security sandbox,
+authenticated collector, trusted DNS/allowlist/clock/key service, exact
+operator approval, signed runtime evidence, actual service monitoring,
+deployment or recovery. No real endpoint, physical Mac or device was
+tested. Connected GitHub integration was the writer; external worktree
+exclusivity remains unverified. Work/Astra were not invoked.
+
+**Next:** Implement independently authenticated and explicitly authorized
+read-only HTTPS HEAD collection with exact approved endpoint/IP, trusted
+provenance and signed runtime evidence. No real service access or
+infrastructure mutation without exact artifacts/plans and human approval.
