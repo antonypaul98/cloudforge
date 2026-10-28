@@ -1077,3 +1077,38 @@ remains unverified. Work/Astra were not invoked.
 HEAD-only collector that uses this primitive with full timeout, Host,
 redirection and evidence protections. No real endpoint access until
 explicit human authorization.
+
+## Unwired HTTPS HEAD request guard — 2026-10-28
+
+Feature [PR #61](https://github.com/antonypaul98/cloudforge/pull/61)
+merged as `04c595088bf4551843f9ea3d1d047a9259311b1d`. Exact source head `5406eef4f3b0e086dd9cf00ec490c128f8f6036d`
+passed [push CI #40768144064](https://github.com/antonypaul98/cloudforge/actions/runs/40768144064)
+and [PR CI #40768168374](https://github.com/antonypaul98/cloudforge/actions/runs/40768168374).
+[Feature merged-main CI #40768333484](https://github.com/antonypaul98/cloudforge/actions/runs/40768333484)
+passed on Python 3.11.17: **1051 pytest passed** (18 new fake-socket
+regressions), 19 infrastructure checks (18 passed, 1 skipped).
+An isolated Python 3.13 stubbed-module smoke passed 18 cases but was
+not the full repository suite. Documentation acceptance PR must pass
+its own exact-head and final merged-main CI before canonical acceptance.
+
+The unwired `_PinnedHTTPSConnection.request()` now accepts only exact,
+bodyless HEAD for the validated path and supplies the original hostname
+in `Host`, including a nondefault port, plus `Connection: close`.
+It rejects alternate methods, paths, request bodies, caller headers and
+chunking before sending bytes. This reuses the existing CloudForge
+transport and Python 3.11 `http.client`; official request documentation
+was compared. No third-party code, dependencies or new provider costs.
+See [contract, provenance and rollback](docs/OBSERVATION_HTTPS_TRANSPORT.md).
+
+**Only the intended request API is guarded.** Inherited lower-level
+methods remain callable; this is not a security sandbox or an approved
+collector. No independently authenticated operator/collector, trusted
+DNS/allowlist/key/clock, exact live approval, full transaction deadline,
+signed runtime evidence, service monitoring, deployment, recovery or
+physical Mac acceptance is claimed. No real network or infrastructure
+was accessed. Connected GitHub integration was the writer; external
+worktree exclusivity unverified. No Work/Astra invoked.
+
+**Next:** Build the independently authenticated, exact-endpoint/IP-
+approved HEAD-only collector with a complete deadline and evidence
+boundary. No live endpoint access before explicit human approval.
