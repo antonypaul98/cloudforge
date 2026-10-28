@@ -18,7 +18,7 @@ from .observation_http import (
 )
 from .observation_plan import ObservationPlan
 from .observation_replay import (
-    _verify_replay_ledger_path, accept_observation_evidence_durably,
+    _preflight_replay_sequence, accept_observation_evidence_durably,
 )
 from .observation_source_pin import ObservationSourcePin, verify_observation_source_pin
 from .observation_source_policy import verify_observation_source_policy
@@ -48,8 +48,8 @@ def collect_and_accept_loopback_fixture_evidence(
 
     Validate supplied trust context before sending any HEAD request. A temporary
     all-unknown envelope is used solely to reuse the public source/MAC/freshness
-    verifier for preflight; it is never exported or persisted. A duplicate
-    sequence can still trigger HEAD requests before SQLite rejects its replay.
+    verifier for preflight; it is never exported or persisted. A read-only preflight rejects known duplicates before HEAD; the later SQLite
+    transaction remains authoritative against concurrent replay races.
     """
     if (type(ledger_path) is not str or not ledger_path
             or not os.path.isabs(ledger_path) or "\x00" in ledger_path):
@@ -76,7 +76,7 @@ def collect_and_accept_loopback_fixture_evidence(
     )
     # Reject unsafe ledger aliases before issuing even read-only HEAD requests.
     # Revalidate inside the durable writer because metadata can change meanwhile.
-    _verify_replay_ledger_path(ledger_path)
+    _preflight_replay_sequence(ledger_path, preflight)
     samples = collect_loopback_http_samples(
         handoff, artifact, approval, receipt, plan, targets,
         allowed_targets=allowed_targets,

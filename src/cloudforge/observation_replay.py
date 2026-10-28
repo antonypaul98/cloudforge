@@ -10,6 +10,7 @@ import os
 import sqlite3
 import stat
 from contextlib import closing
+from urllib.parse import quote
 
 from .deployment import DeploymentHandoff
 from .local_adapter import LocalExecutionApproval, LocalExecutionReceipt
@@ -103,6 +104,47 @@ def _verify_replay_ledger_path(ledger_path: str) -> None:
         if ledger_info.st_nlink != 1:
             raise ValueError("durable replay ledger must have exactly one hard link")
 
+
+
+def _preflight_replay_sequence(ledger_path: str, evidence: ObservationEvidence) -> None:
+    """Best-effort read-only duplicate check before local fixture HEAD probes.
+
+    The later BEGIN IMMEDIATE transaction remains authoritative: another
+    process may advance the sequence after this check. This is not a lock,
+    reservation, atomic no-follow open or exactly-once probe guarantee.
+    """
+    _verify_replay_ledger_path(ledger_path)
+    try:
+        os.lstat(ledger_path)
+    except FileNotFoundError:
+        return  # The durable writer can initialize a new ledger after probing.
+    except OSError as exc:
+        raise ValueError("durable replay ledger unavailable") from exc
+
+    # Escape URI-reserved characters in otherwise valid local filenames.
+    uri = "file:" + quote(ledger_path, safe="/") + "?mode=ro"
+    try:
+        with closing(sqlite3.connect(uri, timeout=5, uri=True)) as db:
+            table = db.execute(
+                "SELECT 1 FROM sqlite_master "
+                "WHERE type = 'table' AND name = 'observation_replay'"
+            ).fetchone()
+            if table is None:
+                return  # Existing empty SQLite files remain initializable.
+            _verify_replay_schema(db)
+            row = db.execute(
+                "SELECT last_sequence FROM observation_replay "
+                "WHERE plan_sha256 = ? AND source_id = ?",
+                (evidence.plan_sha256, evidence.source_id),
+            ).fetchone()
+            if row is not None:
+                last = row[0]
+                if type(last) is not int or not 1 <= last <= (1 << 63) - 1:
+                    raise ValueError("durable replay ledger counter invalid")
+                if evidence.sequence <= last:
+                    raise ValueError("observation sequence already accepted")
+    except sqlite3.Error as exc:
+        raise ValueError("durable replay ledger unavailable") from exc
 
 
 def accept_observation_evidence_durably(

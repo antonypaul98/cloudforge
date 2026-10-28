@@ -122,15 +122,16 @@ def test_head_samples_are_signed_and_durably_accepted(fixture_server, tmp_path):
     assert "healthy" not in exported
 
 
-def test_duplicate_sequence_fails_closed_after_head(fixture_server, tmp_path):
+def test_duplicate_sequence_fails_closed_before_head(fixture_server, tmp_path):
     context = _context()
     targets = _targets(fixture_server)
     path = tmp_path / "replay.sqlite3"
     _collect(context, targets, path)
     with pytest.raises(ValueError, match="already accepted"):
         _collect(context, targets, path)
-    assert len(Handler.calls) == 4  # preflight does not reserve a sequence
+    assert len(Handler.calls) == 2  # Known duplicate skips HTTP.
     assert _collect(context, targets, path, sequence=2).sequence == 2
+    assert len(Handler.calls) == 4  # New sequence still probes.
     with sqlite3.connect(path) as db:
         assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (2,)
 
@@ -451,3 +452,62 @@ def test_unsafe_ledger_rejected_before_head_or_sqlite(
                  ledger_path=str(ledger))
     assert target.read_bytes() == b"sentinel-not-a-database"
     assert not (tmp_path / "unused.db").exists()
+
+def test_corrupt_existing_ledger_rejected_before_head(monkeypatch, tmp_path):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(http_module.http.client, "HTTPConnection",
+                        lambda *_a, **_kw: pytest.fail("HEAD before corrupt DB check"))
+    ledger = tmp_path / "corrupt.db"
+    ledger.write_bytes(b"not-a-sqlite-database")
+    with pytest.raises(ValueError, match="durable replay ledger unavailable"):
+        _collect(_context(), _targets(12345), ledger)
+    assert ledger.read_bytes() == b"not-a-sqlite-database"
+
+
+def test_corrupt_counter_rejected_before_head(monkeypatch, fixture_server, tmp_path):
+    context, ledger = _context(), tmp_path / "counter.db"
+    targets = _targets(fixture_server)
+    _collect(context, targets, ledger)
+    with sqlite3.connect(ledger) as db:
+        db.execute("PRAGMA ignore_check_constraints = ON")
+        db.execute("UPDATE observation_replay SET last_sequence = 'bad-counter'")
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(http_module.http.client, "HTTPConnection",
+                        lambda *_a, **_kw: pytest.fail("HEAD before counter check"))
+    with pytest.raises(ValueError, match="counter invalid"):
+        _collect(context, targets, ledger, sequence=2)
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == ("bad-counter",)
+
+
+def test_altered_schema_rejected_before_head(monkeypatch, tmp_path):
+    import cloudforge.observation_http as http_module
+    monkeypatch.setattr(http_module.http.client, "HTTPConnection",
+                        lambda *_a, **_kw: pytest.fail("HEAD before schema check"))
+    ledger = tmp_path / "wrong-schema.db"
+    with sqlite3.connect(ledger) as db:
+        db.execute("CREATE TABLE observation_replay (last_sequence TEXT)")
+    with pytest.raises(ValueError, match="schema mismatch"):
+        _collect(_context(), _targets(12345), ledger)
+
+
+def test_existing_empty_sqlite_ledger_initializes(fixture_server, tmp_path):
+    ledger = tmp_path / "empty.db"
+    with sqlite3.connect(ledger):
+        pass
+    assert _collect(_context(), _targets(fixture_server), ledger).sequence == 1
+    assert len(Handler.calls) == 2
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (1,)
+
+
+def test_uri_reserved_characters_in_ledger_filename(fixture_server, tmp_path):
+    ledger = tmp_path / "replay ?#%.sqlite3"
+    context, targets = _context(), _targets(fixture_server)
+    assert _collect(context, targets, ledger).sequence == 1
+    with pytest.raises(ValueError, match="already accepted"):
+        _collect(context, targets, ledger)
+    assert len(Handler.calls) == 2
+    assert _collect(context, targets, ledger, sequence=2).sequence == 2
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (2,)
