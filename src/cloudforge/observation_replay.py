@@ -99,14 +99,18 @@ def accept_observation_evidence_durably(
     # opening a ledger; this does not replace trusted directory ownership or
     # provide an atomic no-follow guarantee against concurrent path replacement.
     try:
-        ledger_mode = os.lstat(ledger_path).st_mode
+        ledger_info = os.lstat(ledger_path)
     except FileNotFoundError:
         pass  # SQLite may create a new file in the trusted existing directory.
     except OSError as exc:
         raise ValueError("durable replay ledger unavailable") from exc
     else:
-        if not stat.S_ISREG(ledger_mode):
+        if not stat.S_ISREG(ledger_info.st_mode):
             raise ValueError("durable replay ledger must be a regular file")
+        # Hard links can alias a different ledger without a symlink. Fail closed
+        # when the existing inode has more than one name (or count is unknown).
+        if ledger_info.st_nlink != 1:
+            raise ValueError("durable replay ledger must have exactly one hard link")
 
     try:
         with closing(sqlite3.connect(ledger_path, timeout=5, uri=False)) as db:
