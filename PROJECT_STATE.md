@@ -998,3 +998,45 @@ unverified. No Work/Astra was invoked.
 **Next:** Implement a separately approved, independently authenticated
 read-only HTTPS collector with complete DNS/IP and connection-time TLS pinning.
 No real endpoint may be contacted before exact human authorization.
+
+
+## Runtime A/AAAA pinset preflight — 2026-10-28
+
+Feature [PR #57](https://github.com/antonypaul98/cloudforge/pull/57)
+merged as `8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1`. Exact
+source head `3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11` passed
+[push CI #40750357903](https://github.com/antonypaul98/cloudforge/actions/runs/40750357903)
+and [exact-head PR CI #40750368321](https://github.com/antonypaul98/cloudforge/actions/runs/40750368321).
+[Feature merged-main CI #40750561795](https://github.com/antonypaul98/cloudforge/actions/runs/40750561795)
+also passed: **1005 pytest passed** (40 additional regression cases),
+19 infrastructure checks (18 passed, 1 skipped), Python 3.11.17.
+Two earlier CI attempts failed because tests incorrectly classified valid
+IPv6 input/order as invalid; the test fixtures were corrected and the
+final exact head passed. An isolated Python 3.13 stubbed-module smoke
+covered valid/verify/redaction and 13 negative IPv6 cases, but is not a
+full repository acceptance run.
+
+The optional `RuntimeDNSPinset` revalidates the existing exact
+observation proposal and compares both caller-supplied A and AAAA sets
+with separately supplied exact allowlists. It permits IPv4-only,
+IPv6-only and mixed targets while rejecting unsafe/noncanonical,
+duplicate, unsorted and altered addresses. It exports only digests and
+pending-independent-approval status. See
+[trust boundary, reuse provenance and rollback](docs/OBSERVATION_RUNTIME_DNS_PIN.md).
+Existing CloudForge IPv4 validation and Python 3.11 standard library
+were reused; no external code, dependencies, provider permissions,
+network calls or infrastructure mutations were introduced.
+
+**Not accepted:** Independent DNS resolution or proof of complete
+A/AAAA answers; authenticated operator/collector, trusted keys/clocks,
+connection-time IP pinning and TLS/SNI verification, live monitoring,
+deployment, recovery or physical Mac/device evidence. The caller can
+forge both answer and allowlist sets. The connected GitHub integration
+was the writer; external worktree exclusivity remains unverified.
+Work/Astra were not invoked.
+
+**Next:** Independently authenticated and explicitly approved
+read-only HTTPS transport with trusted DNS/allowlist provenance,
+connection-time pinned destination IP, original hostname TLS/SNI/Host
+verification, bounded retries and no unchecked redirects or DNS.
+Do not contact real services before exact human approval.
