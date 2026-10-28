@@ -110,11 +110,15 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
         """Reject late headers; never interpret an overdue HEAD as success."""
         if not self._request_sent or self._deadline is None:
             raise ValueError("HTTPS HEAD response requires a pending request")
+        deadline = self._deadline
         try:
             if self.sock is not None:
                 self.sock.settimeout(self._remaining())
             response = super().getresponse()
-            self._remaining()
+            # http.client may call self.close() for Connection: close.
+            # Check the captured deadline, not self._deadline, which close clears.
+            if time.monotonic() >= deadline:
+                raise TimeoutError("HTTPS HEAD transaction deadline exceeded")
             return response
         except BaseException:
             self.close()
