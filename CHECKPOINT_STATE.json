@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "read-only runtime IPv4 pinset preflight (planning-only)",
+  "current_checkpoint": "read-only HTTPS A/AAAA pinset preflight (planning-only)",
   "active_branch": "main",
-  "main_sha_at_start": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
-  "current_branch_sha": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
+  "main_sha_at_start": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
+  "current_branch_sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #55 exact head c66dff25a31d626cf2ca32659333ec2788e93e74 merged at 3b9c68865cb1d8caba24b036c12ceb0c48a73813; external worktree exclusivity unverified.",
-  "local_test_status": "Isolated Python 3.13 module smoke: 9 checks (not repository acceptance). No separate local full suite. Exact-head and merged-main Python 3.11.17 CI: 965 pytest passed, 19 infrastructure checks (18 passed, 1 skipped). No real-service or physical Mac validation.",
-  "pr_number": 55,
-  "ci_status": "Push 40741131775, exact-head PR 40741170910, merged-main 40741305989 all SUCCESS at their recorded SHAs; 965 pytest passed.",
-  "merge_status": "MERGED: PR #55 guarded expected-head squash merge 3b9c68865cb1d8caba24b036c12ceb0c48a73813; merged-main CI succeeded.",
+  "branch_remote_status": "PR #57 exact source head 3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11 merged as 8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1; external worktree exclusivity unverified.",
+  "local_test_status": "Isolated Python 3.13 stubbed-module smoke: valid dual-stack, verify, redaction and 13 negative IPv6 checks (not full repository acceptance). No separate local full suite. Exact-head and merged-main Python 3.11.17 CI: 1005 pytest passed, 19 infrastructure checks (18 passed, 1 skipped). No real-service or physical Mac validation.",
+  "pr_number": 57,
+  "ci_status": "Exact-head push 40750357903, PR 40750368321 and merged-main 40750561795 all SUCCESS at their recorded SHAs; 1005 pytest passed.",
+  "merge_status": "MERGED: PR #57 guarded expected-head squash merge 8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1; merged-main CI succeeded.",
   "external_acceptance_required": [],
-  "known_blocker": "IPv4-only pinset is caller-supplied planning evidence, not authenticated DNS or connection-time enforcement. Operator/collector identity, trusted key/clock, full A/AAAA validation, TLS/SNI, real monitoring, deployment and recovery unfinished; external worktree exclusivity unverified.",
-  "next_action": "Design separately approved authenticated read-only HTTPS adapter: trusted DNS/allowlist source, complete A/AAAA verification, connection-time IP pinning, TLS hostname/SNI verification and no unchecked DNS re-resolution. Do not contact real endpoints without exact human authorization.",
+  "known_blocker": "Both A/AAAA resolution and allowlists are caller-supplied; not authenticated DNS or proof of completeness. Independently authenticated operator/collector, trusted keys/clocks, connection-time pinning, TLS/SNI, actual monitoring, deployment and recovery unfinished; external worktree exclusivity unverified.",
+  "next_action": "Design and test a separately authorized, read-only HTTPS connection adapter using trusted resolver/allowlist and independently authenticated identities. Enforce pinned IP at socket connection, original hostname TLS/SNI/Host verification, no redirects or unchecked DNS. No real endpoints without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-28T18:01:59Z",
-  "observed_branch_sha": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
-  "observed_feature_sha": "c66dff25a31d626cf2ca32659333ec2788e93e74",
+  "observed_at_utc": "2026-10-28T19:03:08.765Z",
+  "observed_branch_sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
+  "observed_feature_sha": "3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,39 +27,39 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #55 exact head c66dff25a31d626cf2ca32659333ec2788e93e74 integrated as 3b9c68865cb1d8caba24b036c12ceb0c48a73813",
+  "pr_state": "closed, merged; PR #57 exact head 3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11 integrated as 8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
   "ci_state": {
     "push_run": {
-      "id": 40741131775,
-      "source_head_sha": "c66dff25a31d626cf2ca32659333ec2788e93e74",
+      "id": 40750357903,
+      "source_head_sha": "3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40741131775"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40750357903"
     },
     "pr_run": {
-      "id": 40741170910,
-      "source_head_sha": "c66dff25a31d626cf2ca32659333ec2788e93e74",
+      "id": 40750368321,
+      "source_head_sha": "3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40741170910"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40750368321"
     },
     "merged_main_run": {
-      "id": 40741305989,
-      "sha": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
+      "id": 40750561795,
+      "sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40741305989"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40750561795"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Container shell cannot resolve github.com; connected GitHub integration published and merged after exact-head CI.",
-    "BLOCKER": "Real runtime collector still requires independently authenticated operator/collector, trusted DNS/allowlist and keys/clocks, complete A/AAAA checks, connection-time IP/TLS pinning and explicit endpoint authorization; external worktree exclusivity unverified.",
-    "SAFE_WORK_COMPLETED": "PR #55 exact-head and merged-main CI succeeded: 965 pytest; infrastructure 18 passed/1 skipped. IPv4 pinset preflight is no-network, planning-only; no real infrastructure mutation.",
-    "REMOTE_SHA": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
+    "BLOCKER": "Real runtime HTTPS monitoring requires independently authenticated operator/collector, trusted DNS/allowlist, key/clock custody, connection-time IP/TLS pinning and explicit endpoint authorization; external worktree exclusivity unverified.",
+    "SAFE_WORK_COMPLETED": "PR #57 exact-head and merged-main CI succeeded: 1005 pytest; infrastructure 18 passed/1 skipped. A/AAAA pinset preflight remains planning-only; no real infrastructure mutation.",
+    "REMOTE_SHA": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
     "NEXT_ACTION": "Implement separately approved authenticated read-only HTTPS runtime path; no real service access until operator authorization."
   },
   "infrastructure_validation": {
@@ -67,13 +67,13 @@
     "passed": 18,
     "skipped": 1,
     "skip_reason": "Memory-only source-layout regression not applicable",
-    "product_tests": "965 pytest passed on exact feature head and merged main",
+    "product_tests": "1005 pytest passed on exact feature head and merged main",
     "physical_camera": "not_run",
     "new_head_CI": "successful"
   },
   "checkpoint_status": "COMPLETE_PLANNING_ONLY",
   "shell_transport_limitation": "Shell GitHub DNS unavailable; authorized connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/runtime-ipv4-pinset-20261028",
+  "checkpoint_branch": "build/runtime-dualstack-pinset-20261028",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
@@ -81,9 +81,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
-  "merge_commit_sha": "3b9c68865cb1d8caba24b036c12ceb0c48a73813",
-  "final_pr_head": "c66dff25a31d626cf2ca32659333ec2788e93e74",
+  "verified_main_sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
+  "merge_commit_sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
+  "final_pr_head": "3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -115,7 +115,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "No user-only action required for no-network source, synthetic tests, GitHub CI and guarded merge.",
+    "reason": "No user-only action required for no-network source, synthetic CI and guarded merge.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -879,5 +879,50 @@
     "physical_mac_accepted": false,
     "external_worktree_exclusive": "unverified",
     "work_astra_invoked": false
-  }
+  },
+  "accepted_runtime_observation_dns_pin": {
+    "checkpoint": "exact caller-supplied A and AAAA pinset comparison for HTTPS observation proposals",
+    "status": "COMPLETE_PLANNING_ONLY",
+    "feature_pr": 57,
+    "source_head_sha": "3c308f8a36cc4fa83c898aacef0e69b0fc1f7d11",
+    "merge_commit_sha": "8cd19fe7c069e9bc8f69922f7a50d1ab12f1eee1",
+    "source_push_ci_run": 40750357903,
+    "exact_head_pr_ci_run": 40750368321,
+    "merged_main_ci_run": 40750561795,
+    "python": "3.11.17",
+    "pytest_passed": 1005,
+    "new_tests": 40,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "local_isolated_smoke": "Python 3.13 stubbed module, valid/verify/redaction and 13 negative IPv6 cases; not full repository acceptance",
+    "scope": "Pure no-network A/AAAA exact comparison; reuses IPv4 validation, rejects unsafe/noncanonical IPv6, redacted digest-only output.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "real_service_contacted": false,
+    "infrastructure_mutated": false,
+    "authenticated_operator": false,
+    "authenticated_collector": false,
+    "trusted_dns": false,
+    "connection_time_pinning": false,
+    "real_monitoring_accepted": false,
+    "deployment_accepted": false,
+    "recovery_accepted": false,
+    "physical_mac_accepted": false,
+    "external_worktree_exclusive": "unverified",
+    "work_astra_invoked": false
+  },
+  "dualstack_intermediate_failed_ci": [
+    {
+      "head_sha": "f4f9b305ecd41276dc764cf0b7ff4cd4024ba597",
+      "push_run": 40749978068,
+      "pr_run": 40750013774,
+      "reason": "Test incorrectly treated a valid IPv6 address ending in :443 as malformed; corrected."
+    },
+    {
+      "head_sha": "1ee80ed43684337fa189625c36088d2bb73cf18b",
+      "push_run": 40750202969,
+      "pr_run": 40750210799,
+      "reason": "Test incorrectly treated ascending IPv6 address ordering as invalid; corrected."
+    }
+  ]
 }
