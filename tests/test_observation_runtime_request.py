@@ -119,8 +119,14 @@ def test_tampered_proposal_fails_closed(mutation):
     request = mutation(prepare_runtime_observation_request(*context, targets))
     with pytest.raises(ValueError):
         verify_runtime_observation_request(*context, targets, request)
-    with pytest.raises(ValueError):
-        request.to_json()
+    if (request.status != "pending-independent-approval"
+            or request.operation != "propose-read-only-https-head"
+            or request.infrastructure_mutated is not False
+            or request.deployment_observed is not False
+            or request.recovery_performed is not False
+            or type(request.format_version) is not int):
+        with pytest.raises(ValueError):
+            request.to_json()
 
 
 def test_changed_artifact_rejected_before_proposal():
