@@ -214,3 +214,51 @@ def test_corrupted_replay_counter_type_fails_closed(tmp_path):
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == ("corrupt",)
+
+def test_symlink_to_existing_ledger_cannot_advance_sequence(tmp_path):
+    context = _context()
+    actual = tmp_path / "actual.db"
+    alias = tmp_path / "alias.db"
+    assert _accept(context, _evidence(context, seq=1), actual)
+    alias.symlink_to(actual)
+    with pytest.raises(ValueError, match="regular file"):
+        _accept(context, _evidence(context, seq=2), alias)
+    with sqlite3.connect(actual) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (1,)
+
+
+def test_dangling_symlink_cannot_create_ledger_target(tmp_path):
+    context = _context()
+    target = tmp_path / "missing.db"
+    alias = tmp_path / "alias.db"
+    alias.symlink_to(target)
+    with pytest.raises(ValueError, match="regular file"):
+        _accept(context, _evidence(context), alias)
+    assert alias.is_symlink()
+    assert not target.exists()
+
+
+def test_directory_is_not_accepted_as_ledger_file(tmp_path):
+    context = _context()
+    directory = tmp_path / "not-a-file"
+    directory.mkdir()
+    with pytest.raises(ValueError, match="regular file"):
+        _accept(context, _evidence(context), directory)
+
+
+def test_invalid_mac_rejected_before_ledger_path_inspection(tmp_path, monkeypatch):
+    import cloudforge.observation_replay as replay_module
+
+    context = _context()
+    evidence = replace(_evidence(context), mac_sha256="0" * 64)
+    path = tmp_path / "unused.db"
+    with monkeypatch.context() as patch:
+        patch.setattr(
+            replay_module.os, "lstat",
+            lambda *_args, **_kwargs: pytest.fail("ledger inspected before MAC"),
+        )
+        with pytest.raises(ValueError, match="MAC is invalid"):
+            _accept(context, evidence, path)
+    assert not path.exists()
