@@ -57,9 +57,27 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
         super().__init__(target.host, target.port, timeout=timeout_seconds,
                          context=ssl.create_default_context())
         self._pinned_address = address
+        self._target_path = target.path
 
     def set_tunnel(self, *args, **kwargs) -> None:
         raise ValueError("HTTP CONNECT tunneling is forbidden")
+
+    def request(self, method, url, body=None, headers=None, *,
+                encode_chunked=False) -> None:
+        """Allow only the exact HEAD path with a canonical original-host header.
+
+        This constrains the intended request API, not low-level inherited APIs
+        or independent authorization. The connection remains unwired.
+        """
+        if (type(method) is not str or method != "HEAD"
+                or type(url) is not str or url != self._target_path
+                or body is not None
+                or (headers is not None and (type(headers) is not dict or headers))
+                or encode_chunked is not False):
+            raise ValueError("only exact bodyless HTTPS HEAD requests are supported")
+        host = self.host if self.port == 443 else f"{self.host}:{self.port}"
+        super().request("HEAD", self._target_path,
+                        headers={"Host": host, "Connection": "close"})
 
     def connect(self) -> None:
         family = (socket.AF_INET if type(self._pinned_address) is ipaddress.IPv4Address
