@@ -511,3 +511,33 @@ def test_uri_reserved_characters_in_ledger_filename(fixture_server, tmp_path):
     assert _collect(context, targets, ledger, sequence=2).sequence == 2
     with sqlite3.connect(ledger) as db:
         assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (2,)
+
+
+def test_over_budget_head_is_signed_as_unknown_not_pass(monkeypatch, tmp_path):
+    """The integrated HMAC/SQLite path must not preserve an overdue 204 pass."""
+    import cloudforge.observation_http as module
+
+    class Slow204:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, method, path, headers):
+            assert method == "HEAD" and path == "/ok"
+        def getresponse(self):
+            return type("Response", (), {"status": 204})()
+        def close(self):
+            pass
+
+    context = _context()
+    ledger = tmp_path / "slow-head.db"
+    times = iter((100.0, 103.0, 200.0, 203.0))
+    with monkeypatch.context() as patch:
+        patch.setattr(module.http.client, "HTTPConnection", Slow204)
+        patch.setattr(module.time, "monotonic", lambda: next(times))
+        evidence = _collect(context, _targets(12345), ledger)
+    assert [sample.outcome for sample in evidence.samples] == ["unknown", "unknown"]
+    assert verify_observation_evidence(
+        *context, evidence, expected_source_id="fixture-collector",
+        source_key=_KEY, now_unix=_NOW, max_age_seconds=30, last_sequence=0,
+    )
+    with sqlite3.connect(ledger) as db:
+        assert db.execute("SELECT last_sequence FROM observation_replay").fetchone() == (1,)

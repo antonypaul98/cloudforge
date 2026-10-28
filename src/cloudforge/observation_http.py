@@ -88,6 +88,12 @@ def collect_loopback_http_samples(
                 except (OSError, http.client.HTTPException):
                     # Failed cleanup invalidates even a successful HEAD status.
                     outcome = "unknown"
-        elapsed_ms = min(300_000, max(0, int((time.monotonic() - started) * 1000)))
+        # Socket timeouts bound individual blocking operations, not necessarily
+        # the complete HEAD transaction and cleanup. Never count a response
+        # that exceeded the configured probe budget as a verified pass/fail.
+        elapsed_seconds = time.monotonic() - started
+        if not 0 <= elapsed_seconds <= probe.timeout_seconds:
+            outcome = "unknown"
+        elapsed_ms = min(300_000, max(0, int(elapsed_seconds * 1000)))
         samples.append(ObservationSample(probe.kind, outcome, elapsed_ms))
     return tuple(samples)
