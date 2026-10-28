@@ -40,3 +40,28 @@ role-key separation and no network or ledger I/O before rejection. Require
 exact-head full Python 3.11 and infrastructure CI, guarded merge and merged-main
 CI before software acceptance. Rollback is reverting the feature merge;
 there is no persistent schema migration.
+
+
+## Optional ledger/sequence-scoped operator permit (v2)
+
+Pass `ledger_path` (normalized absolute path) and `sequence` (positive 63-bit
+integer) to `issue_loopback_operator_permit` to issue v2. Then use
+`collect_and_accept_operator_permitted_loopback_fixture_evidence` with
+`require_one_shot_permit=True`. Before HEAD or SQLite I/O, v2 verifies the
+SHA-256 digest of the exact ledger path and the exact sequence under a
+domain-separated HMAC. The path itself is not included in the permit.
+Original v1 remains compatible when strict scope is not requested; strict
+mode rejects v1. Altering v2 to v1 invalidates the permit.
+
+This is **not** globally single-use: durable SQLite sequence acceptance is
+authoritative, but ledger rollback/copying is not prevented. Path checks are
+best-effort and race-prone. No trusted operator identity, collector identity,
+clock, live service monitoring, deployment or recovery is claimed.
+
+Reuse-first: existing CloudForge verification and Python 3.11 standard-library
+`hashlib`, `hmac`, `os.path`; no new dependencies or copied external code.
+Compared with JWT/OAuth and external secret managers, which would require
+additional key-custody/runtime scope. Official references:
+https://docs.python.org/3.11/library/hmac.html and
+https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html.
+Rollback: revert the feature merge; no persistent schema migration.

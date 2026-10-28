@@ -114,6 +114,7 @@ def collect_and_accept_operator_permitted_loopback_fixture_evidence(
     source_pin: ObservationSourcePin | None = None,
     require_source_pin: bool = False,
     revoked_key_sha256: tuple[str, ...] = (),
+    require_one_shot_permit: bool = False,
 ) -> ObservationEvidence:
     """Require a distinct operator-key MAC before fixture HEAD or SQLite I/O.
 
@@ -128,6 +129,8 @@ def collect_and_accept_operator_permitted_loopback_fixture_evidence(
         plan, targets, operator_permit, source_id=source_id,
         source_key=source_key, operator_key=operator_key,
         observed_at_unix=observed_at_unix, now_unix=now_unix,
+        ledger_path=ledger_path, sequence=sequence,
+        require_one_shot=require_one_shot_permit,
     )
     return collect_and_accept_loopback_fixture_evidence(
         handoff, artifact, approval, receipt, plan, targets,
