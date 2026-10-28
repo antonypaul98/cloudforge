@@ -197,3 +197,130 @@ def test_low_level_guard_resets_after_failed_head_send():
         conn.request("HEAD", "/ready")
     with pytest.raises(ValueError, match="low-level HTTP request APIs"):
         conn.send(b"POST /admin HTTP/1.1\\r\\n\\r\\n")
+
+
+def _clock(monkeypatch):
+    """Deterministic synthetic clock, never a real endpoint."""
+    import cloudforge.observation_https_transport as transport
+    ticks = [100.0]
+    monkeypatch.setattr(transport.time, "monotonic", lambda: ticks[0])
+    return ticks
+
+
+def test_head_deadline_valid_response_resets_budget(monkeypatch):
+    import http.client
+    ticks = _clock(monkeypatch)
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    response = Mock(status=204)
+    monkeypatch.setattr(http.client.HTTPSConnection, "getresponse",
+                        lambda self: response)
+    ticks[0] += 1.5
+    assert conn.getresponse() is response
+    assert conn._deadline is None
+    assert conn._request_sent is False
+    assert fake.settimeout.called
+    with pytest.raises(ValueError, match="pending request"):
+        conn.getresponse()
+
+
+def test_head_deadline_rejects_overdue_send_and_closes(monkeypatch):
+    ticks = _clock(monkeypatch)
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    fake.sendall.side_effect = lambda *_: ticks.__setitem__(0, 103.0)
+    conn.sock = fake
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.request("HEAD", "/ready")
+    fake.close.assert_called_once()
+    assert conn._deadline is None
+    assert conn._request_sent is False
+
+
+def test_head_deadline_rejects_overdue_response_and_closes(monkeypatch):
+    import http.client
+    ticks = _clock(monkeypatch)
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    def slow_response(_self):
+        ticks[0] = 103.0
+        return Mock(status=204)
+    monkeypatch.setattr(http.client.HTTPSConnection, "getresponse", slow_response)
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.getresponse()
+    fake.close.assert_called_once()
+    assert conn._deadline is None
+
+
+def test_head_deadline_expired_before_response_never_reads(monkeypatch):
+    import http.client
+    ticks = _clock(monkeypatch)
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    read = Mock()
+    monkeypatch.setattr(http.client.HTTPSConnection, "getresponse", read)
+    ticks[0] = 102.0
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.getresponse()
+    read.assert_not_called()
+    fake.close.assert_called_once()
+
+
+def test_head_deadline_rejects_second_request_while_response_pending():
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    count = fake.sendall.call_count
+    with pytest.raises(ValueError, match="previous HTTPS HEAD"):
+        conn.request("HEAD", "/ready")
+    assert fake.sendall.call_count == count
+
+
+def test_head_deadline_expires_during_connect_before_tls(monkeypatch):
+    ticks = _clock(monkeypatch)
+    raw, context = Mock(), Mock()
+    raw.connect.side_effect = lambda *_: ticks.__setitem__(0, 103.0)
+    monkeypatch.setattr(socket, "socket", Mock(return_value=raw))
+    monkeypatch.setattr(ssl, "create_default_context", Mock(return_value=context))
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.request("HEAD", "/ready")
+    context.wrap_socket.assert_not_called()
+    raw.close.assert_called()
+    assert conn.sock is None
+
+
+def test_head_deadline_expires_during_tls_and_closes_both(monkeypatch):
+    ticks = _clock(monkeypatch)
+    raw, tls, context = Mock(), Mock(), Mock()
+    def handshake(*_args, **_kwargs):
+        ticks[0] = 103.0
+        return tls
+    context.wrap_socket.side_effect = handshake
+    monkeypatch.setattr(socket, "socket", Mock(return_value=raw))
+    monkeypatch.setattr(ssl, "create_default_context", Mock(return_value=context))
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    with pytest.raises(TimeoutError, match="transaction deadline"):
+        conn.request("HEAD", "/ready")
+    tls.close.assert_called()
+    raw.close.assert_called()
+    assert conn.sock is None
+
+
+def test_head_deadline_close_discards_pending_response():
+    conn = _PinnedHTTPSConnection(_target(), "1.1.1.1", 2)
+    fake = Mock()
+    conn.sock = fake
+    conn.request("HEAD", "/ready")
+    conn.close()
+    assert conn._deadline is None
+    assert conn._request_sent is False
+    with pytest.raises(ValueError, match="pending request"):
+        conn.getresponse()
