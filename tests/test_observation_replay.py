@@ -262,3 +262,24 @@ def test_invalid_mac_rejected_before_ledger_path_inspection(tmp_path, monkeypatc
         with pytest.raises(ValueError, match="MAC is invalid"):
             _accept(context, evidence, path)
     assert not path.exists()
+
+
+@pytest.mark.parametrize("selected", ["original", "alias"])
+def test_hardlinked_ledger_is_rejected_without_counter_change(tmp_path, selected):
+    import os
+
+    context = _context()
+    original = tmp_path / "original.db"
+    alias = tmp_path / "alias.db"
+    assert _accept(context, _evidence(context, seq=1), original)
+    os.link(original, alias)
+    assert os.lstat(original).st_nlink == 2
+
+    selected_path = original if selected == "original" else alias
+    with pytest.raises(ValueError, match="exactly one hard link"):
+        _accept(context, _evidence(context, seq=2), selected_path)
+    with sqlite3.connect(original) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (1,)
+    assert os.path.samefile(original, alias)
