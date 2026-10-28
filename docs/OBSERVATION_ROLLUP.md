@@ -38,3 +38,32 @@ outcomes all equal `pass`. The HMAC proves configured key possession, not
 real probe execution, trusted time, independently authenticated collector
 identity, actual service health, deployment or recovery. There is no live
 service monitoring or physical device validation in this checkpoint.
+
+## Optional source-key trust enforcement for rollup (2026-10-28)
+
+The read-only classifier accepts the same optional caller-provided
+`source_pin`, `require_source_pin` and `revoked_key_sha256` parameters as
+the existing loopback fixture intake. After verifying the exact evidence MAC,
+plan, source, freshness and caller-held sequence, it reuses
+`verify_observation_source_policy` and `verify_observation_source_pin`
+before returning any classification. A valid HMAC under an explicitly revoked
+key cannot be classified as `pass`; strict mode rejects missing pins.
+Default unpinned behavior is unchanged for existing synthetic callers.
+
+**Reuse-first review:** The existing in-repository source pin, key-revocation
+policy, evidence verifier and Python 3.11 standard library are sufficient.
+A separate key registry, cloud KMS, SPIFFE/SPIRE, OpenTelemetry exporter or
+new monitoring SDK would introduce credentials, operational cost and unverified
+trust assumptions without authenticating this fixture. No third-party code,
+algorithm, translation, dependency or license was added. This is a bounded
+composition of existing contracts, not a new source of truth.
+
+Regressions cover all three outcomes with strict pins, missing pins, revoked
+keys, wrong source/plan/key/time, malformed trust policy, key rotation and
+forbidden external I/O. CI must validate the exact PR head and merged main.
+
+**Trust limitation:** The policy and pin are caller-supplied and optional.
+This does not authenticate the configuration channel or collector, protect
+against a caller deliberately disabling the policy, atomically persist replay
+state, establish a trusted clock or attest live service health. Real runtime
+monitoring, deployment and recovery are still outside acceptance.
