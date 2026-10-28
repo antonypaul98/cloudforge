@@ -1040,3 +1040,40 @@ read-only HTTPS transport with trusted DNS/allowlist provenance,
 connection-time pinned destination IP, original hostname TLS/SNI/Host
 verification, bounded retries and no unchecked redirects or DNS.
 Do not contact real services before exact human approval.
+
+## Pinned HTTPS socket primitive — 2026-10-28
+
+Feature [PR #59](https://github.com/antonypaul98/cloudforge/pull/59)
+merged as `3f88f36f7e82894aac82e8383aac46d936669de4`.
+Exact source head `0b46b348526d5c7a6f926f01b200a21d12b83a4b`
+passed [push CI #40759914358](https://github.com/antonypaul98/cloudforge/actions/runs/40759914358)
+and [PR CI #40759948764](https://github.com/antonypaul98/cloudforge/actions/runs/40759948764).
+[Feature merged-main CI #40760050324](https://github.com/antonypaul98/cloudforge/actions/runs/40760050324)
+passed on Python 3.11.17: **1033 pytest passed** (28 new synthetic cases),
+19 infrastructure tests (18 passed, 1 skipped). An isolated Python 3.13
+stubbed-module smoke passed the same 28 cases but does not substitute for
+repository CI. No physical Mac validation or real network probe occurred.
+
+The internal `_PinnedHTTPSConnection` reuses existing CloudForge
+target and A/AAAA address validators, opens only a numeric IP socket,
+and preserves the original DNS hostname for verified TLS SNI/certificate
+checks. It rejects HTTP CONNECT tunneling and closes raw sockets on
+failed TCP/TLS connections. See
+[implementation boundaries and rollback](docs/OBSERVATION_HTTPS_TRANSPORT.md).
+Python standard-library primitives were reused; no third-party code,
+new dependencies, credentials or infrastructure mutation.
+
+**Software slice accepted only:** This class is deliberately not wired
+to a collector or independent approval flow. It does not issue HEAD
+requests, prove authenticated operator/collector identity, independently
+validate DNS/allowlists, enforce overall transaction deadlines, produce
+runtime evidence or monitor/deploy/recover real services. Exact approval,
+Host header binding, trusted keys/clocks, safe retries and independently
+verified runtime behavior remain mandatory before any real endpoint access.
+Connected GitHub integration was the writer; external worktree exclusivity
+remains unverified. Work/Astra were not invoked.
+
+**Next:** Add an independently authenticated, exact-endpoint/IP-authorized
+HEAD-only collector that uses this primitive with full timeout, Host,
+redirection and evidence protections. No real endpoint access until
+explicit human authorization.
