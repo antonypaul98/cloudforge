@@ -17,7 +17,7 @@
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-28T04:07:38.574Z",
+  "observed_at_utc": "2026-10-28T04:58:45Z",
   "observed_branch_sha": "b4c5666c919dc07b534845c29cc034bb2dfbbecd",
   "observed_feature_sha": "dd59607f93346310b9f12503119116753b293f09",
   "current_repository_sha": null,
