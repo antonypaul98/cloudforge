@@ -117,11 +117,11 @@ def test_head_guard_canonical_host_and_bodyless_wire_bytes(port, host):
     conn.sock = fake
     conn.request("HEAD", "/ready")
     payload = b"".join(call.args[0] for call in fake.sendall.call_args_list)
-    assert payload.startswith(b"HEAD /ready HTTP/1.1\\r\\n")
+    assert payload.startswith(b"HEAD /ready HTTP/1.1\r\n")
     assert payload.count(b"Host: ") == 1
-    assert ("Host: " + host + "\\r\\n").encode() in payload
-    assert b"Connection: close\\r\\n" in payload
-    assert b"Accept-Encoding: identity\\r\\n" in payload
+    assert ("Host: " + host + "\r\n").encode() in payload
+    assert b"Connection: close\r\n" in payload
+    assert b"Accept-Encoding: identity\r\n" in payload
     assert b"Content-Length:" not in payload
     assert b"Transfer-Encoding:" not in payload
 
