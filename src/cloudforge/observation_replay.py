@@ -95,6 +95,25 @@ def accept_observation_evidence_durably(
         last_sequence=0,
     )
 
+    # Refuse noncanonical path traversal and symlinked parent components.
+    # This is only pre-open hygiene; sqlite3.connect(path) is not race-free.
+    if os.path.normpath(ledger_path) != ledger_path:
+        raise ValueError("replay ledger requires a normalized absolute path")
+    parent = os.path.dirname(ledger_path)
+    while True:
+        try:
+            parent_info = os.lstat(parent)
+        except OSError as exc:
+            raise ValueError("durable replay ledger parent unavailable") from exc
+        if not stat.S_ISDIR(parent_info.st_mode):
+            raise ValueError(
+                "durable replay ledger parent must be a directory without symlinks"
+            )
+        next_parent = os.path.dirname(parent)
+        if next_parent == parent:
+            break
+        parent = next_parent
+
     # SQLite follows symlinks. Reject existing aliases and special files before
     # opening a ledger; this does not replace trusted directory ownership or
     # provide an atomic no-follow guarantee against concurrent path replacement.

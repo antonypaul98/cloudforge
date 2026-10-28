@@ -120,3 +120,34 @@ network permissions or infrastructure changes. Compared with platform-specific
 openat/O_NOFOLLOW and external stores, neither solves the existing
 `sqlite3.connect(path)` race within this narrow change. Official reference:
 https://docs.python.org/3.11/library/os.html#os.stat_result
+
+
+## Ledger parent-path hygiene (fixture-only, 2026-10-28)
+
+Before opening SQLite, the replay verifier now rejects noncanonical absolute
+paths containing dot/parent traversal or repeated separators, and checks every
+parent component with Python 3.11 standard-library `os.lstat`/`stat.S_ISDIR`.
+Every parent must already be a real directory, not a symlink. A symlink to an
+existing ledger directory and a dangling parent symlink both fail closed before
+opening the ledger. An absent parent is not created automatically. The exact
+authorization and evidence MAC are verified before filesystem inspection.
+
+This reuses the existing file-type guard and Python standard library; no
+third-party implementation, translated code, new dependency, credential,
+network endpoint or infrastructure action is introduced. Compared with
+`pathlib.resolve` (which follows links) and platform-specific `openat`
+strategies (which cannot make the current `sqlite3.connect(path)` atomic),
+`lstat` is a small, compatible best-effort guard.
+
+This does **not** prevent a concurrent attacker from replacing parent paths
+after the check, inode substitution, SQLite journal-file attacks, ledger
+backup rollback, or a privileged writer changing the database. Trusted
+operator-owned directories and external key/clock/collector provisioning
+remain mandatory. Some operating systems use symlinked standard temporary
+directories; such paths now intentionally fail closed until a real canonical
+directory path is supplied. No Mac, live service, deployment, recovery or
+production-monitoring acceptance is claimed.
+
+References: https://docs.python.org/3.11/library/os.html#os.lstat ;
+https://docs.python.org/3.11/library/os.path.html#os.path.normpath ;
+https://docs.python.org/3.11/library/stat.html#stat.S_ISDIR .

@@ -283,3 +283,56 @@ def test_hardlinked_ledger_is_rejected_without_counter_change(tmp_path, selected
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (1,)
     assert os.path.samefile(original, alias)
+
+
+@pytest.mark.parametrize("alias_kind", ["existing", "dangling"])
+def test_symlinked_parent_rejected_before_ledger_access(tmp_path, alias_kind):
+    context = _context()
+    real_dir = tmp_path / "real"
+    real_dir.mkdir()
+    real_path = real_dir / "replay.db"
+    assert _accept(context, _evidence(context, seq=1), real_path)
+    alias = tmp_path / "alias"
+    if alias_kind == "existing":
+        alias.symlink_to(real_dir, target_is_directory=True)
+    else:
+        alias.symlink_to(tmp_path / "missing", target_is_directory=True)
+    with pytest.raises(ValueError, match="parent must be a directory"):
+        _accept(context, _evidence(context, seq=2), alias / "replay.db")
+    with sqlite3.connect(real_path) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (1,)
+    assert not (tmp_path / "missing").exists()
+
+
+def test_noncanonical_parent_traversal_rejected_before_open(tmp_path):
+    context = _context()
+    real_dir = tmp_path / "real"
+    real_dir.mkdir()
+    ledger = real_dir / "replay.db"
+    assert _accept(context, _evidence(context), ledger)
+    traversed = real_dir / ".." / "real" / "replay.db"
+    with pytest.raises(ValueError, match="normalized absolute path"):
+        _accept(context, _evidence(context, seq=2), traversed)
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (1,)
+
+
+def test_missing_parent_fails_without_creating_directories(tmp_path):
+    context = _context()
+    missing = tmp_path / "missing" / "replay.db"
+    with pytest.raises(ValueError, match="parent unavailable"):
+        _accept(context, _evidence(context), missing)
+    assert not missing.parent.exists()
+
+
+def test_existing_nested_regular_parent_directories_remain_usable(tmp_path):
+    context = _context()
+    directory = tmp_path / "trusted" / "nested"
+    directory.mkdir(parents=True)
+    ledger = directory / "replay.db"
+    assert _accept(context, _evidence(context), ledger)
+    assert _accept(context, _evidence(context, seq=2), ledger)
