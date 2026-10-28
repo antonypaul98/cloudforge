@@ -235,3 +235,34 @@ def test_cleanup_failure_does_not_mask_transport_refusal(monkeypatch):
     assert [sample.outcome for sample in _collect(_context(), _targets(12345))] == [
         "unknown", "unknown",
     ]
+
+
+@pytest.mark.parametrize("elapsed_seconds,expected", [
+    (1.999, "pass"),
+    (2.0, "pass"),
+    (2.001, "unknown"),
+    (-0.1, "unknown"),
+])
+def test_head_total_elapsed_budget_fails_closed(monkeypatch, elapsed_seconds, expected):
+    """Even an HTTP 204 is unknown when the total HEAD/close budget is exceeded."""
+    import cloudforge.observation_http as module
+
+    class Instant204:
+        def __init__(self, *_args, **_kwargs):
+            pass
+        def request(self, method, path, headers):
+            assert method == "HEAD" and path == "/health"
+        def getresponse(self):
+            return type("Response", (), {"status": 204})()
+        def close(self):
+            pass
+
+    context = _context()
+    times = iter((100.0, 100.0 + elapsed_seconds,
+                  200.0, 200.0 + elapsed_seconds))
+    with monkeypatch.context() as patch:
+        patch.setattr(module.http.client, "HTTPConnection", Instant204)
+        patch.setattr(module.time, "monotonic", lambda: next(times))
+        samples = _collect(context, _targets(12345))
+    assert [sample.outcome for sample in samples] == [expected, expected]
+    assert all(sample.elapsed_ms >= 0 for sample in samples)

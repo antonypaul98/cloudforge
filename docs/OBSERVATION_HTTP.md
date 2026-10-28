@@ -81,3 +81,29 @@ handling without addressing trusted collector provenance.
 Reference: https://docs.python.org/3.11/library/http.client.html
 This is fixture failure handling, not collector authentication, trusted
 time, service-health proof, production monitoring or infrastructure recovery.
+
+
+## Total HEAD elapsed-budget classification (2026-10-28)
+
+A configured 1–10 second socket timeout bounds individual blocking operations
+in Python 3.11 `http.client`, not necessarily the entire request plus connection
+cleanup. CloudForge now checks elapsed `time.monotonic()` duration after cleanup:
+if the full transaction exceeded the probe's `timeout_seconds`, an otherwise
+successful 2xx or explicit non-2xx result becomes `unknown` before signing.
+Exact-boundary responses remain classified normally. An impossible negative
+elapsed duration also becomes `unknown`.
+
+This is **post-hoc classification**, not a hard execution deadline, cancellation
+mechanism, authenticated clock, collector identity or production health proof.
+It cannot prevent a slow or blocked HTTP operation from taking longer than the
+configured duration. CI exercises only fake connections and loopback fixtures.
+
+Reuse-first review: the existing collector already measures monotonic elapsed
+time and uses the standard-library `http.client` socket timeout. We reused
+those values and the existing `ObservationSample` outcome contract; no new
+package, copied algorithm, license, permission, credential or cloud cost.
+References: https://docs.python.org/3.11/library/http.client.html and
+https://docs.python.org/3.11/library/time.html#time.monotonic .
+Four elapsed-boundary regressions plus one signed/SQLite integration regression
+must pass alongside the full Python 3.11 suite and infrastructure guards at the
+exact PR head and merged main before acceptance.
