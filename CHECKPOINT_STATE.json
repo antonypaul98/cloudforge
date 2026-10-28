@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "opt-in source trust policy: strict pin and revoked key preflight (fixture-only)",
+  "current_checkpoint": "unsafe replay ledger path preflight before local HEAD (fixture-only)",
   "active_branch": "main",
-  "main_sha_at_start": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
-  "current_branch_sha": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
+  "main_sha_at_start": "7fb2080e8310bec1f43168eb716300e4de220abb",
+  "current_branch_sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #33 source head 7c28694ea44ec6ead2ae4a1f953317a07c2abb63 merged as a16bfe9c894324a294cc61622fa9f242918ae0d0; external worktree exclusivity unverified.",
-  "local_test_status": "Isolated Python 3.13 policy-only smoke 21 passed and compile passed (stub type, not full suite). Python 3.11.17 exact-head push/PR and merged-main CI: 787 pytest passed; 19 infrastructure tests (18 passed, 1 skipped). No physical Mac or real-service validation.",
-  "pr_number": 33,
-  "ci_status": "Source push 40647718177, exact-head PR 40647741775, merged-main push 40647818226 all SUCCESS at source head 7c28694ea44ec6ead2ae4a1f953317a07c2abb63 and merged head a16bfe9c894324a294cc61622fa9f242918ae0d0; 787 pytest passed; infrastructure 18 passed/1 skipped.",
-  "merge_status": "MERGED: PR #33 SHA-guarded squash a16bfe9c894324a294cc61622fa9f242918ae0d0; merged-main CI successful.",
+  "branch_remote_status": "PR #35 source head 0333edb9bcb31e7837cb5939c6b3849f10f7afb2 merged as 7fb2080e8310bec1f43168eb716300e4de220abb; external worktree exclusivity unverified.",
+  "local_test_status": "No local full-suite run (shell GitHub DNS unavailable). Python 3.11.17 exact-head push/PR and merged-main CI: 792 pytest passed; 19 infrastructure tests (18 passed, 1 skipped). No physical Mac or real-service validation.",
+  "pr_number": 35,
+  "ci_status": "Source push 40654232366, exact-head PR 40654276119, merged-main push 40654407144 all SUCCESS; 792 pytest passed, infrastructure 18 passed/1 skipped.",
+  "merge_status": "MERGED: PR #35 SHA-guarded squash 7fb2080e8310bec1f43168eb716300e4de220abb; merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "Strict pin and revoked-key denylist remain optional and caller-provisioned. No independently authenticated collector or revocation distribution, trusted clock, rollback-resistant ledger, real service monitoring, deployment or recovery. External worktree ownership unverified.",
-  "next_action": "Plan bounded authenticated collector provenance and real read-only monitoring trust boundary; no provider or infrastructure mutation without explicit human approval.",
+  "known_blocker": "Pre-open ledger metadata checks are not race-free; duplicate sequences can still issue HEAD before SQLite rejection. Authenticated collector identity, key distribution, trusted clocks, rollback-resistant ledger, actual service monitoring, deployment and recovery remain unaccepted. External worktree exclusivity unverified.",
+  "next_action": "Resume bounded authenticated collector provenance and read-only runtime observation design; require separate approval before any real infrastructure action.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-28T07:05:18Z",
-  "observed_branch_sha": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
-  "observed_feature_sha": "7c28694ea44ec6ead2ae4a1f953317a07c2abb63",
+  "observed_at_utc": "2026-10-28T08:06:34Z",
+  "observed_branch_sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
+  "observed_feature_sha": "0333edb9bcb31e7837cb5939c6b3849f10f7afb2",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,40 +27,40 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #33 source head 7c28694ea44ec6ead2ae4a1f953317a07c2abb63 integrated as a16bfe9c894324a294cc61622fa9f242918ae0d0",
+  "pr_state": "closed, merged; PR #35 source head 0333edb9bcb31e7837cb5939c6b3849f10f7afb2 integrated as 7fb2080e8310bec1f43168eb716300e4de220abb",
   "ci_state": {
     "push_run": {
-      "id": 40647718177,
-      "sha": "7c28694ea44ec6ead2ae4a1f953317a07c2abb63",
+      "id": 40654232366,
+      "sha": "0333edb9bcb31e7837cb5939c6b3849f10f7afb2",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40647718177"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40654232366"
     },
     "pr_run": {
-      "id": 40647741775,
-      "source_head_sha": "7c28694ea44ec6ead2ae4a1f953317a07c2abb63",
+      "id": 40654276119,
+      "source_head_sha": "0333edb9bcb31e7837cb5939c6b3849f10f7afb2",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40647741775"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40654276119"
     },
     "merged_main_run": {
-      "id": 40647818226,
-      "sha": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
+      "id": 40654407144,
+      "sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40647818226"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40654407144"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "None for fixture-only source policy; shell GitHub DNS unavailable",
-    "BLOCKER": "Production source identity, trusted policy distribution, key revocation, trusted clocks, real monitoring/deployment/recovery unaccepted; external worktree exclusivity unverified",
-    "SAFE_WORK_COMPLETED": "PR #33 merged; exact-head push/PR and merged-main CI passed 787 pytest, infrastructure 18 passed/1 skipped; no real infrastructure modified.",
-    "REMOTE_SHA": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
-    "NEXT_ACTION": "Resume bounded trusted collector provenance and read-only runtime observation design; no real deployment."
+    "BLOCKED_LAYER": "Shell GitHub DNS unavailable; connected GitHub integration succeeded",
+    "BLOCKER": "Trusted collector/key/clock provenance, real runtime monitoring, deployment and recovery not accepted; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #35 merged after exact-head push/PR and merged-main CI: 792 pytest passed; infrastructure 18 passed/1 skipped. No real infrastructure modified.",
+    "REMOTE_SHA": "7fb2080e8310bec1f43168eb716300e4de220abb",
+    "NEXT_ACTION": "Bounded trusted collector provenance and real read-only runtime observation design; no real deployment."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.12.14 (available audit runtime; not a full pinned-CI environment run)",
@@ -74,7 +74,7 @@
   },
   "checkpoint_status": "COMPLETE_FIXTURE_ONLY",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/observation-revocation-policy-20261028",
+  "checkpoint_branch": "build/observation-ledger-preflight-20261028",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
@@ -82,9 +82,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
-  "merge_commit_sha": "a16bfe9c894324a294cc61622fa9f242918ae0d0",
-  "final_pr_head": "7c28694ea44ec6ead2ae4a1f953317a07c2abb63",
+  "verified_main_sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
+  "merge_commit_sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
+  "final_pr_head": "0333edb9bcb31e7837cb5939c6b3849f10f7afb2",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -116,7 +116,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Fixture-only strict pin/revocation preflight merged and exact-head/merged-main CI passed; no user-only action required.",
+    "reason": "Fixture-only ledger preflight merged and exact-head/merged-main CI passed; no user-only action required.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -586,6 +586,28 @@
     "local_isolated_smoke": "Python 3.13 helper-only with stub pin type: 21 passed, compile passed; not the repository suite",
     "scope": "Optional caller-provided strict pin and revoked-key fingerprint preflight; no authenticated collector, revocation distribution, live monitoring, provider deployment, recovery, or physical Mac evidence.",
     "infrastructure_mutated": false,
+    "work_astra_invoked": false,
+    "external_worktree_exclusive": "unverified"
+  },
+  "accepted_observation_ledger_preflight": {
+    "checkpoint": "reject unsafe replay ledger paths before local HEAD (fixture-only)",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "feature_pr": 35,
+    "source_head_sha": "0333edb9bcb31e7837cb5939c6b3849f10f7afb2",
+    "merge_commit_sha": "7fb2080e8310bec1f43168eb716300e4de220abb",
+    "source_push_ci": 40654232366,
+    "exact_head_pr_ci": 40654276119,
+    "merged_main_ci": 40654407144,
+    "python": "3.11.17",
+    "pytest_passed": 792,
+    "new_pytest_cases": 5,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "Shared best-effort ledger path validation after source/MAC authorization and before HEAD; revalidated before SQLite; no real collector.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "real_infrastructure_modified": false,
+    "physical_mac_validated": false,
     "work_astra_invoked": false,
     "external_worktree_exclusive": "unverified"
   }
