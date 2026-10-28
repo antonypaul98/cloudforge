@@ -698,3 +698,31 @@ HEAD requests. Authenticated collector provenance, secure key distribution,
 trusted clocks, real runtime monitoring, deployment and recovery remain
 unaccepted. External worktree ownership is unverified. Work/Astra was not
 invoked and no real infrastructure was modified.
+
+
+## Verified observation sample rollup — accepted fixture-only (2026-10-28 ET)
+
+[PR #37](https://github.com/antonypaul98/cloudforge/pull/37) adds a pure
+read-only decision over already verified observation samples. It reuses the
+existing exact-plan/source/HMAC/freshness/replay verifier, then returns
+`fail` when any sample failed, `unknown` when none failed but at least one
+is unknown, and `pass` only when all verified samples passed. The outcome
+is a **raw sample rollup**, not independently authenticated service health.
+No third-party source, algorithm, SDK, dependency or provider permission was
+introduced; see [reuse and limits](docs/OBSERVATION_ROLLUP.md).
+
+Exact feature head `30d9446edbe2f57213cd778698b40b81a49a1d30` passed
+[push CI 40661067939](https://github.com/antonypaul98/cloudforge/actions/runs/40661067939)
+and [PR CI 40661089542](https://github.com/antonypaul98/cloudforge/actions/runs/40661089542).
+The guarded squash merge `14d127004d26c8d0f156f0018b8f3ca91836ea43`
+passed [merged-main CI 40661187846](https://github.com/antonypaul98/cloudforge/actions/runs/40661187846).
+All three ran on Python 3.11.17: **803 pytest passed** (11 new
+parameterized cases) and 19 infrastructure tests (18 passed, 1 skipped).
+The shell container could not resolve github.com, so no separate local full
+suite was run. GitHub exact-head CI is the full-suite evidence.
+
+**Not accepted:** authenticated collector identity, trusted key/clock
+provisioning, durable sequence acceptance within this pure rollup, actual
+service monitoring, deployment, recovery or physical Mac validation. No
+real infrastructure was modified; external worktree exclusivity unverified.
+No Work/Astra invocation.
