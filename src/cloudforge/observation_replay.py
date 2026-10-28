@@ -30,8 +30,31 @@ INSERT INTO observation_replay (plan_sha256, source_id, last_sequence)
 VALUES (?, ?, ?)
 ON CONFLICT (plan_sha256, source_id) DO UPDATE
 SET last_sequence = excluded.last_sequence
-WHERE excluded.last_sequence > observation_replay.last_sequence
+WHERE typeof(observation_replay.last_sequence) = 'integer'
+  AND observation_replay.last_sequence BETWEEN 1 AND 9223372036854775807
+  AND excluded.last_sequence > observation_replay.last_sequence
 """
+
+# SQLite normalizes CREATE TABLE IF NOT EXISTS to CREATE TABLE in sqlite_master.
+# A modified ledger schema is rejected rather than automatically migrated.
+_CANONICAL_SCHEMA_SQL = _SCHEMA.strip().replace(
+    "CREATE TABLE IF NOT EXISTS ", "CREATE TABLE ", 1,
+)
+
+
+def _verify_replay_schema(db: sqlite3.Connection) -> None:
+    row = db.execute(
+        "SELECT sql FROM sqlite_master "
+        "WHERE type = 'table' AND name = 'observation_replay'"
+    ).fetchone()
+    if (row is None or type(row[0]) is not str
+            or row[0].strip() != _CANONICAL_SCHEMA_SQL):
+        raise ValueError("durable replay ledger schema mismatch")
+    if db.execute(
+        "SELECT 1 FROM sqlite_master "
+        "WHERE type = 'trigger' AND tbl_name = 'observation_replay' LIMIT 1"
+    ).fetchone() is not None:
+        raise ValueError("durable replay ledger schema mismatch")
 
 
 def accept_observation_evidence_durably(
@@ -76,6 +99,7 @@ def accept_observation_evidence_durably(
             with db:
                 db.execute("BEGIN IMMEDIATE")
                 db.execute(_SCHEMA)
+                _verify_replay_schema(db)
                 changed = db.execute(
                     _ADVANCE,
                     (evidence.plan_sha256, evidence.source_id, evidence.sequence),
