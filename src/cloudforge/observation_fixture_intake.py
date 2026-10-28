@@ -17,7 +17,9 @@ from .observation_http import (
     LoopbackHTTPProbeTarget, _validate_targets, collect_loopback_http_samples,
 )
 from .observation_plan import ObservationPlan
-from .observation_replay import accept_observation_evidence_durably
+from .observation_replay import (
+    _verify_replay_ledger_path, accept_observation_evidence_durably,
+)
 from .observation_source_pin import ObservationSourcePin, verify_observation_source_pin
 from .observation_source_policy import verify_observation_source_policy
 
@@ -72,6 +74,9 @@ def collect_and_accept_loopback_fixture_evidence(
         expected_source_id=source_id, source_key=source_key,
         now_unix=now_unix, max_age_seconds=max_age_seconds, last_sequence=0,
     )
+    # Reject unsafe ledger aliases before issuing even read-only HEAD requests.
+    # Revalidate inside the durable writer because metadata can change meanwhile.
+    _verify_replay_ledger_path(ledger_path)
     samples = collect_loopback_http_samples(
         handoff, artifact, approval, receipt, plan, targets,
         allowed_targets=allowed_targets,

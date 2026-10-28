@@ -151,3 +151,27 @@ production-monitoring acceptance is claimed.
 References: https://docs.python.org/3.11/library/os.html#os.lstat ;
 https://docs.python.org/3.11/library/os.path.html#os.path.normpath ;
 https://docs.python.org/3.11/library/stat.html#stat.S_ISDIR .
+
+
+## Reject unsafe ledger paths before fixture HEAD requests (2026-10-28)
+
+The composed local fixture collector now reuses the durable replay ledger's
+existing path checks **after exact authorization, source policy, source pin and
+MAC/freshness preflight but before any HTTP HEAD request**. Known symlinked
+files or parent directories, hard-linked ledger aliases, noncanonical paths
+and missing parents fail closed without probing. The durable replay writer
+repeats the same checks immediately before opening SQLite; this is deliberate
+defense in depth, not a new trust boundary.
+
+The standalone durable verifier retains its prior authorization-before-I/O
+behavior. The existing unpinned synthetic fixture API and valid ledger paths
+remain compatible. The change uses only existing CloudForge logic and Python
+3.11 standard-library os/stat; no third-party code, package, cloud permission,
+new network destination, real infrastructure or hardware is involved.
+
+A metadata check cannot guarantee the path stays unchanged between preflight
+and SQLite open. A duplicate sequence can still cause HEAD requests before
+SQLite rejects the replay. Authenticated collectors, trusted clock/key
+distribution, durable backup rollback prevention, real deployment and
+recovery remain unimplemented. Full exact-head CI and merged-main CI are
+required before acceptance.

@@ -412,3 +412,42 @@ def test_revoked_old_key_rotation_preserves_sequence(fixture_server, tmp_path):
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (2,)
+
+
+@pytest.mark.parametrize("unsafe_kind", [
+    "file_symlink", "parent_symlink", "hardlink", "noncanonical", "missing_parent",
+])
+def test_unsafe_ledger_rejected_before_head_or_sqlite(
+    monkeypatch, tmp_path, unsafe_kind,
+):
+    """Known unsafe ledger paths must not trigger a probe request."""
+    import os
+    import cloudforge.observation_http as http_module
+
+    monkeypatch.setattr(
+        http_module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("HEAD attempted before ledger path preflight"),
+    )
+    target = tmp_path / "original.db"
+    target.write_bytes(b"sentinel-not-a-database")
+    if unsafe_kind == "file_symlink":
+        ledger = tmp_path / "alias.db"
+        ledger.symlink_to(target)
+    elif unsafe_kind == "parent_symlink":
+        real_parent = tmp_path / "real-parent"
+        real_parent.mkdir()
+        alias_parent = tmp_path / "alias-parent"
+        alias_parent.symlink_to(real_parent, target_is_directory=True)
+        ledger = alias_parent / "ledger.db"
+    elif unsafe_kind == "hardlink":
+        ledger = tmp_path / "hardlink.db"
+        os.link(target, ledger)
+    elif unsafe_kind == "noncanonical":
+        ledger = str(tmp_path / "unused" / ".." / "ledger.db")
+    else:
+        ledger = tmp_path / "missing-parent" / "ledger.db"
+    with pytest.raises(ValueError, match="replay ledger"):
+        _collect(_context(), _targets(12345), tmp_path / "unused.db",
+                 ledger_path=str(ledger))
+    assert target.read_bytes() == b"sentinel-not-a-database"
+    assert not (tmp_path / "unused.db").exists()
