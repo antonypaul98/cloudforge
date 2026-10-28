@@ -685,3 +685,136 @@ def test_operator_permit_issuance_rejects_same_role_key():
             source_key=_KEY, operator_key=_KEY,
             valid_from_unix=_NOW - 30, valid_until_unix=_NOW + 30,
         )
+
+
+# V2 permits are opt-in, scoped to one ledger path and sequence.
+def _one_shot_permit(context, targets, ledger, sequence=1):
+    return issue_loopback_operator_permit(
+        context[-1], targets, source_id="fixture-collector",
+        source_key=_KEY, operator_key=_OPERATOR_KEY,
+        valid_from_unix=_NOW - 30, valid_until_unix=_NOW + 30,
+        ledger_path=str(ledger), sequence=sequence,
+    )
+
+
+def test_scoped_operator_permit_exact_fixture(fixture_server, tmp_path):
+    context, targets = _context(), _targets(fixture_server)
+    ledger = tmp_path / "one-shot.db"
+    permit = _one_shot_permit(context, targets, ledger)
+    assert permit.format_version == 2
+    assert permit.ledger_path_sha256 == hashlib.sha256(str(ledger).encode()).hexdigest()
+    assert permit.sequence == 1
+    evidence = _permitted_collect(
+        context, targets, ledger, permit, require_one_shot_permit=True,
+    )
+    assert evidence.sequence == 1
+    assert len(Handler.calls) == 2
+    assert str(ledger) not in str(permit)
+    assert _OPERATOR_KEY.hex() not in evidence.to_json()
+    with pytest.raises(ValueError, match="already accepted"):
+        _permitted_collect(
+            context, targets, ledger, permit, require_one_shot_permit=True,
+        )
+    assert len(Handler.calls) == 2
+
+
+@pytest.mark.parametrize("change", [
+    {"sequence": 2},
+    {"ledger_path": "different"},
+    {"sequence": True},
+])
+def test_scoped_permit_rejects_changed_scope_before_io(monkeypatch, tmp_path, change):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("HEAD before scope verification"),
+    )
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "original.db"
+    permit = _one_shot_permit(context, targets, ledger)
+    if change.get("ledger_path") == "different":
+        change = {"ledger_path": str(tmp_path / "different.db")}
+    with pytest.raises(ValueError):
+        _permitted_collect(
+            context, targets, ledger, permit,
+            require_one_shot_permit=True, **change,
+        )
+    assert not ledger.exists()
+    assert not (tmp_path / "different.db").exists()
+
+
+@pytest.mark.parametrize("change", [
+    {"ledger_path_sha256": "0" * 64},
+    {"sequence": 2},
+    {"sequence": True},
+    {"format_version": 1},
+    {"ledger_path_sha256": None},
+])
+def test_scoped_permit_rejects_tampering_before_io(monkeypatch, tmp_path, change):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("HEAD before scoped MAC verification"),
+    )
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "tampered.db"
+    permit = replace(_one_shot_permit(context, targets, ledger), **change)
+    with pytest.raises(ValueError):
+        _permitted_collect(
+            context, targets, ledger, permit, require_one_shot_permit=True,
+        )
+    assert not ledger.exists()
+
+
+def test_strict_scope_rejects_legacy_v1_before_io(monkeypatch, tmp_path):
+    import cloudforge.observation_http as module
+    monkeypatch.setattr(
+        module.http.client, "HTTPConnection",
+        lambda *_a, **_kw: pytest.fail("HEAD before strict scope"),
+    )
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "legacy.db"
+    with pytest.raises(ValueError, match="scoped operator permit required"):
+        _permitted_collect(
+            context, targets, ledger, _operator_permit(context, targets),
+            require_one_shot_permit=True,
+        )
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("ledger,seq", [
+    ("relative.db", 1),
+    ("/tmp/../tmp/ledger.db", 1),
+    ("/tmp/ledger.db", 0),
+    ("/tmp/ledger.db", True),
+    ("/tmp/ledger.db", (1 << 63)),
+    ("/tmp/ledger.db", None),
+    (None, 1),
+    ("/" + "a" * 4097, 1),
+])
+def test_scoped_issuance_rejects_invalid_scope(ledger, seq):
+    context, targets = _context(), _targets(12345)
+    with pytest.raises(ValueError, match="scoped operator permit"):
+        issue_loopback_operator_permit(
+            context[-1], targets, source_id="fixture-collector",
+            source_key=_KEY, operator_key=_OPERATOR_KEY,
+            valid_from_unix=_NOW - 30, valid_until_unix=_NOW + 30,
+            ledger_path=ledger, sequence=seq,
+        )
+
+
+def test_scoped_verification_requires_expected_scope(tmp_path):
+    context, targets = _context(), _targets(12345)
+    ledger = tmp_path / "verify.db"
+    permit = _one_shot_permit(context, targets, ledger)
+    kwargs = dict(
+        source_id="fixture-collector", source_key=_KEY,
+        operator_key=_OPERATOR_KEY, observed_at_unix=1_800_000_000,
+        now_unix=_NOW,
+    )
+    with pytest.raises(ValueError, match="scoped operator permit"):
+        verify_loopback_operator_permit(context[-1], targets, permit, **kwargs)
+    assert verify_loopback_operator_permit(
+        context[-1], targets, permit, ledger_path=str(ledger),
+        sequence=1, require_one_shot=True, **kwargs,
+    )
