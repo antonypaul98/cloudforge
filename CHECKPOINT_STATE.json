@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "verified observation sample rollup (fixture-only)",
+  "current_checkpoint": "verified sample rollup source-key trust policy (fixture-only)",
   "active_branch": "main",
-  "main_sha_at_start": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
-  "current_branch_sha": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
+  "main_sha_at_start": "e92ae9134af35b12440f43808a0e30bb53588d61",
+  "current_branch_sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #37 source head 30d9446edbe2f57213cd778698b40b81a49a1d30 merged as 14d127004d26c8d0f156f0018b8f3ca91836ea43; external worktree exclusivity unverified.",
-  "local_test_status": "No local full suite (shell github.com DNS unavailable). Python 3.11.17 exact-head push/PR and merged-main CI: 803 pytest passed; 19 infrastructure tests (18 passed, 1 skipped). No physical Mac or real-service validation.",
-  "pr_number": 37,
-  "ci_status": "Source push 40661067939, exact-head PR 40661089542, merged-main push 40661187846 all SUCCESS; 803 pytest passed, infrastructure 18 passed/1 skipped.",
-  "merge_status": "MERGED: PR #37 SHA-guarded squash 14d127004d26c8d0f156f0018b8f3ca91836ea43; merged-main CI successful.",
+  "branch_remote_status": "PR #39 feature 13fb3d3a50c3d326f3671a51250560fe27d1ece9 SHA-guarded squash merged as e92ae9134af35b12440f43808a0e30bb53588d61; external worktree exclusivity unverified.",
+  "local_test_status": "No separate local full suite (shell github.com DNS unavailable). Exact-head Python 3.11.17 push/PR and merged-main CI: 820 pytest passed; 19 infrastructure guards (18 passed, 1 skipped). No physical Mac or real-service validation.",
+  "pr_number": 39,
+  "ci_status": "Feature push 40668633675, exact-head PR 40668659085, merged-main 40668776480 all SUCCESS; 820 pytest passed; infrastructure 18 passed/1 skipped.",
+  "merge_status": "MERGED: PR #39 expected-head SHA-guarded squash e92ae9134af35b12440f43808a0e30bb53588d61; merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "This is a raw synthetic sample rollup, not independently authenticated collector evidence. Trusted key/clock provisioning, real runtime monitoring, deployment and recovery remain unaccepted. External worktree exclusivity unverified.",
-  "next_action": "Resume bounded independently authenticated collector provenance and read-only runtime monitoring design; no real infrastructure action without separate exact approval.",
+  "known_blocker": "Caller-provisioned optional source pin/revocation does not authenticate collector, keys, clocks or live probes. Real monitoring, deployment, recovery and external worktree exclusivity remain unverified.",
+  "next_action": "Design bounded independently authenticated collector provenance and read-only runtime observation; no real infrastructure action without separate exact approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-28T09:02:55Z",
-  "observed_branch_sha": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
-  "observed_feature_sha": "30d9446edbe2f57213cd778698b40b81a49a1d30",
+  "observed_at_utc": "2026-10-28T10:01:51Z",
+  "observed_branch_sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
+  "observed_feature_sha": "13fb3d3a50c3d326f3671a51250560fe27d1ece9",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,39 +27,39 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #37 source head 30d9446edbe2f57213cd778698b40b81a49a1d30 integrated as 14d127004d26c8d0f156f0018b8f3ca91836ea43",
+  "pr_state": "closed, merged; PR #39 source 13fb3d3a50c3d326f3671a51250560fe27d1ece9 integrated as e92ae9134af35b12440f43808a0e30bb53588d61",
   "ci_state": {
     "push_run": {
-      "id": 40661067939,
-      "sha": "30d9446edbe2f57213cd778698b40b81a49a1d30",
+      "id": 40668633675,
+      "sha": "13fb3d3a50c3d326f3671a51250560fe27d1ece9",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40661067939"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40668633675"
     },
     "pr_run": {
-      "id": 40661089542,
-      "source_head_sha": "30d9446edbe2f57213cd778698b40b81a49a1d30",
+      "id": 40668659085,
+      "source_head_sha": "13fb3d3a50c3d326f3671a51250560fe27d1ece9",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40661089542"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40668659085"
     },
     "merged_main_run": {
-      "id": 40661187846,
-      "sha": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
+      "id": 40668776480,
+      "sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40661187846"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40668776480"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Shell github.com DNS unavailable; connected GitHub integration published and merged safely",
-    "BLOCKER": "Trusted collector/key/clock provenance, real runtime monitoring, deployment and recovery not accepted; external worktree ownership unverified",
-    "SAFE_WORK_COMPLETED": "PR #37 merged after exact-head push/PR and merged-main CI: 803 pytest passed; infrastructure 18 passed/1 skipped. No real infrastructure modified.",
-    "REMOTE_SHA": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
+    "BLOCKER": "Authenticated collector identity, trusted key/clock provenance, real runtime monitoring, deployment and recovery not accepted; external worktree ownership unverified",
+    "SAFE_WORK_COMPLETED": "PR #39 merged after exact-head push/PR and merged-main CI: 820 pytest passed; infrastructure 18 passed/1 skipped. No real infrastructure modified.",
+    "REMOTE_SHA": "e92ae9134af35b12440f43808a0e30bb53588d61",
     "NEXT_ACTION": "Bounded trusted collector provenance and read-only runtime observation design; no real deployment."
   },
   "infrastructure_validation": {
@@ -67,13 +67,13 @@
     "passed": 18,
     "skipped": 1,
     "skip_reason": "Memory-only source-layout regression not applicable",
-    "product_tests": "803 pytest passed on exact feature head and merged main",
+    "product_tests": "820 pytest passed on exact feature head and merged main",
     "physical_camera": "not_run",
     "new_head_CI": "successful"
   },
   "checkpoint_status": "COMPLETE_FIXTURE_ONLY",
   "shell_transport_limitation": "Shell Git push unavailable; authorized connected GitHub publication in use.",
-  "checkpoint_branch": "build/observation-rollup-20261028",
+  "checkpoint_branch": "build/observation-rollup-source-policy-20261028",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
@@ -81,9 +81,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
-  "merge_commit_sha": "14d127004d26c8d0f156f0018b8f3ca91836ea43",
-  "final_pr_head": "30d9446edbe2f57213cd778698b40b81a49a1d30",
+  "verified_main_sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
+  "merge_commit_sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
+  "final_pr_head": "13fb3d3a50c3d326f3671a51250560fe27d1ece9",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -115,7 +115,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Fixture-only verified sample rollup merged with exact-head and merged-main CI; no user-only action required.",
+    "reason": "Synthetic verified sample rollup policy merged and validated by exact-head and merged-main CI; no user-only action required.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -631,5 +631,30 @@
     "physical_mac_validated": false,
     "work_astra_invoked": false,
     "external_worktree_exclusive": "unverified"
+  },
+  "accepted_observation_rollup_source_policy": {
+    "checkpoint": "optional source-pin and key revocation enforcement on pure verified sample rollup",
+    "status": "COMPLETE_FIXTURE_ONLY",
+    "feature_pr": 39,
+    "source_head_sha": "13fb3d3a50c3d326f3671a51250560fe27d1ece9",
+    "merge_commit_sha": "e92ae9134af35b12440f43808a0e30bb53588d61",
+    "source_push_ci": 40668633675,
+    "exact_head_pr_ci": 40668659085,
+    "merged_main_ci": 40668776480,
+    "python": "3.11.17",
+    "pytest_passed": 820,
+    "new_pytest_cases": 17,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "Reuses existing caller-managed optional source pin/revocation checks after exact evidence verification and before deterministic sample classification; no external I/O or live service health attestation.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "real_infrastructure_modified": false,
+    "physical_mac_validated": false,
+    "work_astra_invoked": false,
+    "external_worktree_exclusive": "unverified",
+    "authenticated_collector": false,
+    "trusted_clock": false,
+    "durable_replay_in_rollup": false
   }
 }

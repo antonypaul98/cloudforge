@@ -726,3 +726,30 @@ provisioning, durable sequence acceptance within this pure rollup, actual
 service monitoring, deployment, recovery or physical Mac validation. No
 real infrastructure was modified; external worktree exclusivity unverified.
 No Work/Astra invocation.
+
+## Verified sample rollup source-key trust enforcement — accepted fixture-only (2026-10-28 ET)
+
+[PR #39](https://github.com/antonypaul98/cloudforge/pull/39) composes the
+existing opt-in caller-provided source pin and revoked-key policy with the
+pure verified sample rollup. A valid MAC under a caller-revoked key cannot
+produce a classification; strict mode rejects missing pins. The original
+unpinned synthetic API remains compatible. This is read-only policy
+enforcement, not a new key registry or authenticated collector.
+
+Feature head `13fb3d3a50c3d326f3671a51250560fe27d1ece9` passed
+[push CI 40668633675](https://github.com/antonypaul98/cloudforge/actions/runs/40668633675)
+and [exact-head PR CI 40668659085](https://github.com/antonypaul98/cloudforge/actions/runs/40668659085).
+Expected-head SHA-guarded squash merge `e92ae9134af35b12440f43808a0e30bb53588d61` passed
+[merged-main CI 40668776480](https://github.com/antonypaul98/cloudforge/actions/runs/40668776480).
+All three ran Python 3.11.17: **820 pytest passed** (17 new parameterized
+cases) and 19 infrastructure tests (18 passed, 1 skipped). No separate local
+full suite was run because the shell environment cannot resolve github.com.
+No new dependency, third-party code, provider permission or service cost.
+Reuse review and trust limitations are in
+[docs/OBSERVATION_ROLLUP.md](OBSERVATION_ROLLUP.md).
+
+**Not accepted:** authenticated collector, independently trusted pin/revocation
+distribution, secure key lifecycle, trusted clock, atomic replay within pure
+rollup, actual service monitoring, deployment, recovery or physical Mac
+validation. No real infrastructure was modified. External worktree ownership
+remains unverified. Work/Astra was not invoked.
