@@ -1,18 +1,18 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "opt-in durable synthetic HTTPS HEAD permit sequence gate",
+  "current_checkpoint": "synthetic permit-gated HTTPS HEAD signed evidence and dual durable replay",
   "active_branch": "main",
-  "main_sha_at_start": "2c2631034a16b06d194533e45505ff1915d923ce",
-  "current_branch_sha": "f25ebfcac2f4788695c6036cecfcee8dbcc81e0a",
+  "main_sha_at_start": "6289b96276a16771836236f4b444617725bc0c79",
+  "current_branch_sha": "6f56078f8d1798c60df8cf7c126d3f2437be874a",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "PR #75 exact feature head a73243ac24664745f92057cac383dea0ebd28ac3 merged as f25ebfcac2f4788695c6036cecfcee8dbcc81e0a; external worktree exclusivity unverified.",
-  "local_test_status": "Shell container GitHub DNS unavailable; no local full-suite execution. Exact-head push/PR and feature merged-main CI Python 3.11.17: 1144 pytest passed; infrastructure 18 passed/1 skipped. Five synthetic regressions; no real network or physical Mac.",
-  "pr_number": 75,
-  "ci_status": "Push CI #40815363923, exact-head PR CI #40815380768, feature merged-main CI #40815444322 SUCCESS: 1155 pytest passed; infrastructure 18 passed/1 skipped on Python 3.11.17.",
-  "merge_status": "MERGED: PR #75 guarded squash merge f25ebfcac2f4788695c6036cecfcee8dbcc81e0a; merged-main CI passed.",
+  "branch_remote_status": "Feature PR #77 exact head daaca840b0e716ebc7d2a70e661450775ce5ffea guarded squash merged as 6f56078f8d1798c60df8cf7c126d3f2437be874a; external worktree exclusivity unverified.",
+  "local_test_status": "Container shell GitHub DNS unavailable; no local full-suite run. Exact-head push/PR and merged-main Python 3.11.17 CI: 1166 pytest passed; infrastructure 18 passed/1 skipped. Eleven synthetic cases; no live endpoint or physical Mac.",
+  "pr_number": 77,
+  "ci_status": "Push CI #40821005868, exact-head PR CI #40821029491, feature merged-main CI #40821108824 SUCCESS: 1166 pytest passed; infrastructure 18 passed/1 skipped on Python 3.11.17.",
+  "merge_status": "MERGED: PR #77 guarded squash merge 6f56078f8d1798c60df8cf7c126d3f2437be874a; feature merged-main CI passed.",
   "external_acceptance_required": [],
-  "known_blocker": "Optional caller-selected local SQLite ledger is not a trusted privileged execution boundary; alternate ledgers/aliases or rollback bypass admission. Operator/collector identity, trusted DNS/keys/clock, exact real-endpoint approval, signed runtime evidence, live monitoring, deployment and recovery remain unfinished. External worktree exclusivity unverified.",
-  "next_action": "Establish independently authenticated operator/collector identity and trusted key/clock/endpoint policy; enforce a single protected replay ledger at a privileged runtime boundary, then explicitly approved read-only HEAD collection with signed evidence. No real endpoint without human approval.",
+  "known_blocker": "Fixture caller still controls operator/source keys, alias, clock, DNS/allowlist, fake connection factory and local SQLite path. Two counters in one file are not a privileged atomic production boundary. Independent identities, trusted endpoint/key/clock, real approved monitoring, signed runtime provenance, deployment and recovery remain unfinished. External worktree exclusivity unverified.",
+  "next_action": "Implement independently authenticated operator and collector identity and trusted key/clock/endpoint policy in a protected execution boundary. Require explicit human-approved exact read-only endpoint before real I/O; no deployment or recovery without separate approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -56,11 +56,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Production operator/collector identity, protected replay ledger, trusted clock/keys/endpoint not established.",
-    "BLOCKER": "Caller-controlled SQLite ledger and keys do not establish independent one-shot authorization or real monitoring.",
-    "SAFE_WORK_COMPLETED": "PR #75 exact-head push/PR and merged-main CI passed: 1155 pytest; infrastructure 18 passed/1 skipped; 11 synthetic tests. No live network, infrastructure or hardware change.",
-    "REMOTE_SHA": "f25ebfcac2f4788695c6036cecfcee8dbcc81e0a",
-    "NEXT_ACTION": "Authenticate operator/collector and enforce one trusted ledger/endpoint policy before explicitly approved real read-only monitoring."
+    "BLOCKED_LAYER": "Production trust/identity/endpoint boundary absent; synthetic signed intake accepted.",
+    "BLOCKER": "Caller-controlled keys/clock/DNS/ledger/factory; no authenticated live collector or real runtime evidence.",
+    "SAFE_WORK_COMPLETED": "PR #77 exact-head push/PR and merged-main CI succeeded: 1166 pytest; infrastructure 18 passed/1 skipped; 11 new synthetic cases. No real network, infrastructure, physical Mac, Work or Astra.",
+    "REMOTE_SHA": "6f56078f8d1798c60df8cf7c126d3f2437be874a",
+    "NEXT_ACTION": "Establish trusted independent operator/collector identity and exact approved endpoint, then build read-only collector with signed runtime evidence."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -71,7 +71,7 @@
     "physical_camera": "not_run",
     "new_head_CI": "successful"
   },
-  "checkpoint_status": "COMPLETE_SYNTHETIC_PERMIT_REPLAY_ONLY",
+  "checkpoint_status": "COMPLETE_SYNTHETIC_SIGNED_HTTPS_INTAKE_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/observation-permit-one-shot-20261029",
   "previous_completed_checkpoint": {
@@ -81,7 +81,7 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "f25ebfcac2f4788695c6036cecfcee8dbcc81e0a",
+  "verified_main_sha": "6f56078f8d1798c60df8cf7c126d3f2437be874a",
   "merge_commit_sha": "f25ebfcac2f4788695c6036cecfcee8dbcc81e0a",
   "final_pr_head": "a73243ac24664745f92057cac383dea0ebd28ac3",
   "later_checkpoint_requirements": [
@@ -965,7 +965,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration wrote feature/acceptance; external worktree exclusivity unverified.",
+  "writer_status": "Connected GitHub integration wrote PR #77; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1091,5 +1091,30 @@
     "writer": "Connected GitHub integration; external worktree exclusivity unverified",
     "rollback": "Revert feature merge; no migration of existing ledgers or real infrastructure",
     "next_gate": "Independent authenticated identities, trusted endpoint/key/clock and single protected ledger, then human-approved real read-only HEAD with signed evidence."
+  },
+  "accepted_permitted_https_signed_intake": {
+    "checkpoint": "synthetic permit-gated pinned HTTPS HEAD -> HMAC evidence -> durable replay",
+    "status": "COMPLETE_SYNTHETIC_ONLY (canonical documentation PR CI pending)",
+    "feature_pr": 77,
+    "feature_head_sha": "daaca840b0e716ebc7d2a70e661450775ce5ffea",
+    "merge_commit_sha": "6f56078f8d1798c60df8cf7c126d3f2437be874a",
+    "source_push_ci_run": 40821005868,
+    "exact_head_pr_ci_run": 40821029491,
+    "merged_main_ci_run": 40821108824,
+    "python": "3.11.17",
+    "pytest_passed": 1166,
+    "new_synthetic_tests": 11,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "One caller-selected SQLite file holds separate permit-consumption and evidence-replay counters around injected fake pinned HTTPS HEAD probes. HMAC signs synthetic samples; no authenticated live runtime.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "real_endpoint_contacted": false,
+    "infrastructure_mutated": false,
+    "physical_mac_accepted": false,
+    "work_astra_invoked": false,
+    "writer": "Connected GitHub integration; external worktree exclusivity unverified",
+    "rollback": "Revert feature merge; no existing schema migration or real infrastructure",
+    "next_gate": "Independent authenticated operator/collector, trusted endpoint/key/clock and protected ledger, then human-approved real read-only HEAD with signed runtime provenance."
   }
 }
