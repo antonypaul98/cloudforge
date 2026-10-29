@@ -1,25 +1,25 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "strict optional source pin and key revocation on signed synthetic HTTPS intake",
+  "current_checkpoint": "reject invalid synthetic HTTPS connection factories before consuming one-shot replay permits",
   "active_branch": "main",
-  "main_sha_at_start": "c4de76809fdee8968dc59c1d748956218c60e652",
-  "current_branch_sha": "326569fe47c51cdd13250ea4ddacdc3b93892961",
+  "main_sha_at_start": "d6c3b8c88c1155d7d3412a32ece8b8dae6ab25c2",
+  "current_branch_sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #83 exact head e57dd6f8b8205b7d884d4502b0bccb831c995fa0 guarded squash merged as 326569fe47c51cdd13250ea4ddacdc3b93892961; canonical documentation acceptance PR pending; external worktree exclusivity unverified.",
-  "local_test_status": "No independent local full suite: container GitHub DNS unavailable. Exact-head push/PR and merged-main Python 3.11.17 CI: 1198 pytest passed; infrastructure 18 passed/1 skipped. 14 new synthetic cases. No live endpoint or physical Mac.",
-  "pr_number": 83,
-  "ci_status": "Push CI #40840265770, exact-head PR CI #40840400974, feature merged-main CI #40840599008 SUCCESS: 1198 pytest passed; infrastructure 18 passed/1 skipped on Python 3.11.17.",
-  "merge_status": "MERGED: PR #83 guarded squash merge 326569fe47c51cdd13250ea4ddacdc3b93892961; merged-main CI #40840599008 passed. Canonical docs PR exact-head and final merged-main CI pending.",
+  "branch_remote_status": "Feature PR #85 exact head 2795421670f29124dfd8c38bfa296de733f783d7 guarded squash merged as 40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5; canonical documentation acceptance PR pending. External worktree exclusivity unverified.",
+  "local_test_status": "No independent local full suite: shell GitHub DNS unavailable and local Python 3.11 absent. Exact-head push/PR and merged-main Python 3.11.17 CI: 1204 pytest passed; infrastructure 18 passed/1 skipped. Six new synthetic cases. No real endpoint, infrastructure or physical Mac.",
+  "pr_number": 85,
+  "ci_status": "Push CI #40846726793, exact-head PR CI #40846772456 and feature merged-main CI #40846895046 SUCCESS at recorded SHAs: 1204 pytest passed; infrastructure 18 passed/1 skipped on Python 3.11.17.",
+  "merge_status": "MERGED: PR #85 guarded squash merge 40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5; merged-main CI #40846895046 passed. Canonical docs PR exact-head and final merged-main CI pending.",
   "external_acceptance_required": [],
-  "known_blocker": "Optional caller-supplied source pin/revocation cannot independently authenticate an operator/collector or protect key, clock, DNS, ledger or factory. Lower-level and unpinned callers can bypass policy. Real monitoring, deployment and recovery remain unfinished; external worktree exclusivity unverified.",
-  "next_action": "Establish independently authenticated operator/collector identity, protected key/clock/endpoint and replay boundary. Require exact human approval before any real read-only endpoint or infrastructure mutation.",
+  "known_blocker": "Only rejects missing/noncallable synthetic connection factories before SQLite access; a callable factory may still use network. No independently authenticated operator/collector, trusted key/clock/DNS/endpoint policy, protected replay store, live monitoring, deployment or recovery. External worktree exclusivity unverified.",
+  "next_action": "Establish independently authenticated operator/collector identity and protected execution boundary, trusted key/clock/endpoint policy and replay ledger. Require explicit human approval before any real endpoint or infrastructure mutation.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-29T08:14:03Z",
-  "observed_branch_sha": "326569fe47c51cdd13250ea4ddacdc3b93892961",
-  "observed_feature_sha": "e57dd6f8b8205b7d884d4502b0bccb831c995fa0",
+  "observed_at_utc": "2026-10-29T09:05:46Z",
+  "observed_branch_sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
+  "observed_feature_sha": "2795421670f29124dfd8c38bfa296de733f783d7",
   "current_repository_sha": null,
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
@@ -27,40 +27,40 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; PR #83 source head e57dd6f8b8205b7d884d4502b0bccb831c995fa0 integrated as 326569fe47c51cdd13250ea4ddacdc3b93892961",
+  "pr_state": "closed, merged; PR #85 source head 2795421670f29124dfd8c38bfa296de733f783d7 integrated as 40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
   "ci_state": {
     "push_run": {
-      "id": 40840265770,
-      "source_head_sha": "e57dd6f8b8205b7d884d4502b0bccb831c995fa0",
+      "id": 40846726793,
+      "source_head_sha": "2795421670f29124dfd8c38bfa296de733f783d7",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40840265770"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40846726793"
     },
     "pr_run": {
-      "id": 40840400974,
-      "source_head_sha": "e57dd6f8b8205b7d884d4502b0bccb831c995fa0",
+      "id": 40846772456,
+      "source_head_sha": "2795421670f29124dfd8c38bfa296de733f783d7",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40840400974"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40846772456"
     },
     "merged_main_run": {
-      "id": 40840599008,
-      "sha": "326569fe47c51cdd13250ea4ddacdc3b93892961",
+      "id": 40846895046,
+      "sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40840599008"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40846895046"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent production operator/collector identity and protected execution trust roots not established; synthetic source-policy checkpoint accepted.",
-    "BLOCKER": "Caller-held source pin/revocation and keys/clock/DNS/ledger are not independently trusted; lower-level bypass remains possible.",
-    "SAFE_WORK_COMPLETED": "PR #83 exact-head push/PR and merged-main CI succeeded: 1198 pytest; infrastructure 18 passed/1 skipped; 14 new synthetic policy/rotation regressions. No live network, infrastructure, physical Mac, Work or Astra.",
-    "REMOTE_SHA": "326569fe47c51cdd13250ea4ddacdc3b93892961",
-    "NEXT_ACTION": "Establish independently authenticated operator/collector identity, protected key/clock/endpoint and replay boundary. Require exact human approval before any real read-only endpoint or infrastructure mutation."
+    "BLOCKED_LAYER": "Independent operator/collector authentication and protected production execution trust roots not established; synthetic factory preflight accepted.",
+    "BLOCKER": "Caller-provided callable factory and keys/clock/DNS/ledger remain untrusted; no live collector or production approval.",
+    "SAFE_WORK_COMPLETED": "PR #85 exact-head push/PR and feature merged-main CI succeeded: 1204 pytest; infrastructure 18 passed/1 skipped; six new synthetic factory regressions. No live network, infrastructure, physical Mac, Work or Astra.",
+    "REMOTE_SHA": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
+    "NEXT_ACTION": "Establish independently authenticated operator/collector identity and protected execution boundary, trusted key/clock/endpoint policy and replay ledger. Require explicit human approval before any real endpoint or infrastructure mutation."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -71,7 +71,7 @@
     "physical_camera": "not_run",
     "new_head_CI": "successful"
   },
-  "checkpoint_status": "COMPLETE_SYNTHETIC_READONLY_REPLAY_GAP_SNAPSHOT_ONLY",
+  "checkpoint_status": "COMPLETE_SYNTHETIC_FACTORY_PREFLIGHT_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/observation-gap-snapshot-20261029",
   "previous_completed_checkpoint": {
@@ -81,9 +81,9 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "326569fe47c51cdd13250ea4ddacdc3b93892961",
-  "merge_commit_sha": "326569fe47c51cdd13250ea4ddacdc3b93892961",
-  "final_pr_head": "fc0d7a3265d98364ed0f93b18415a9288cdcf1c5",
+  "verified_main_sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
+  "merge_commit_sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
+  "final_pr_head": "2795421670f29124dfd8c38bfa296de733f783d7",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -115,7 +115,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "No user-only action needed for synthetic read-only SQLite snapshot or CI; real endpoint and infrastructure approval remain future gates.",
+    "reason": "No user-only action needed for this synthetic-only guard and CI. Real endpoint/infrastructure approval remains a future gate.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -965,7 +965,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration wrote feature PR #83; external worktree exclusivity unverified.",
+  "writer_status": "Connected GitHub integration wrote feature PR #85 and canonical documentation branch; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1191,5 +1191,29 @@
     "writer": "Connected GitHub integration; external worktree exclusivity unverified",
     "rollback": "Revert feature PR #83 merge; no schema or infrastructure migration",
     "next_gate": "Establish independently authenticated operator/collector identity, protected key/clock/endpoint and replay boundary. Require exact human approval before any real read-only endpoint or infrastructure mutation."
+  },
+  "accepted_https_factory_preflight": {
+    "checkpoint": "reject invalid synthetic connection factory before replay-ledger read or permit consumption",
+    "status": "COMPLETE_SYNTHETIC_ONLY (canonical documentation PR CI pending)",
+    "feature_pr": 85,
+    "feature_head_sha": "2795421670f29124dfd8c38bfa296de733f783d7",
+    "merge_commit_sha": "40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5",
+    "source_push_ci_run": 40846726793,
+    "exact_head_pr_ci_run": 40846772456,
+    "merged_main_ci_run": 40846895046,
+    "python": "3.11.17",
+    "pytest_passed": 1204,
+    "new_synthetic_tests": 6,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "Invalid noncallable or missing synthetic connection factory rejected before permit burn; signed intake rejects before evidence replay read; same valid permit remains usable with proper fake factory.",
+    "reuse": "Existing CloudForge lower-level callable validation and Python built-in; no copied third-party code, translation or new dependencies.",
+    "real_endpoint_contacted": false,
+    "infrastructure_mutated": false,
+    "physical_mac_accepted": false,
+    "work_astra_invoked": false,
+    "writer": "Connected GitHub integration; external worktree exclusivity unverified",
+    "rollback": "Revert feature PR #85 merge; no schema or infrastructure migration",
+    "next_gate": "Establish independently authenticated operator/collector identity and protected execution boundary, trusted key/clock/endpoint policy and replay ledger. Require explicit human approval before any real endpoint or infrastructure mutation."
   }
 }
