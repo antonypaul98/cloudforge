@@ -1317,3 +1317,40 @@ own exact-head and final merged-main CI gates.
 
 Next: independent operator/collector trust and endpoint policy, durable atomic
 one-time replay enforcement, then explicitly approved read-only monitoring.
+
+
+## Optional SQLite permit replay admission — accepted synthetic checkpoint (2026-10-29 ET)
+
+Feature [PR #75](https://github.com/antonypaul98/cloudforge/pull/75) exact head
+`a73243ac24664745f92057cac383dea0ebd28ac3` passed [push CI #40815363923](https://github.com/antonypaul98/cloudforge/actions/runs/40815363923)
+and [PR CI #40815380768](https://github.com/antonypaul98/cloudforge/actions/runs/40815380768).
+Guarded squash merge `f25ebfcac2f4788695c6036cecfcee8dbcc81e0a` passed
+[merged-main CI #40815444322](https://github.com/antonypaul98/cloudforge/actions/runs/40815444322)
+on Python 3.11.17: **1,155 pytest passed** (11 new synthetic cases);
+infrastructure 18 passed, 1 skipped.
+
+An opt-in SQLite `BEGIN IMMEDIATE` ledger now rejects duplicate or lower
+operator-key permit sequences per source alias/runtime request **before any
+injected fake HEAD connection**. It reuses CloudForge's existing hardened local
+ledger path preflight and SQLite conditional UPSERT pattern, plus Python 3.11
+stdlib; no third-party code, new dependencies or external services. Tests
+exercise persistence, concurrent duplicate attempts, source-key rotation,
+invalid MAC before ledger creation, unsafe paths, altered schema, and
+failed-probe consumption. See
+[scope, provenance and rollback](docs/OBSERVATION_PERMITTED_HTTPS_FIXTURE.md).
+
+**Synthetic-only acceptance:** The caller still controls ledger path, source
+alias, keys, clock, DNS/pinset, factory and policy. The optional ledger is
+not a privileged, trusted, single-writer execution boundary; backup rollback,
+alternate ledgers/aliases or ungated callers bypass it. This is at-most-once
+admission within one local ledger, not exactly-once execution, authenticated
+operator/collector identity, live monitoring, signed runtime evidence,
+deployment or recovery. No real endpoint, infrastructure, physical Mac, Work
+or Astra was used. Connected GitHub integration wrote the checkpoint;
+external worktree exclusivity remains unverified. Rollback is a feature-merge
+revert; no existing schema migration.
+
+**Next:** Independently authenticate operator and collector; establish trusted
+key/clock/endpoint policy and one protected ledger before explicitly approved
+read-only HEAD collection and signed runtime evidence. Canonical documentation
+acceptance requires its own exact-head and final merged-main CI.
