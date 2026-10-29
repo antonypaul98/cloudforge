@@ -153,7 +153,7 @@ def test_no_network_or_process_execution_in_pure_review(monkeypatch):
 def test_source_binding_changes_on_same_requirements_with_changed_source_bytes():
     before = review_application_manifests("sample-api", PYTHON, "review-staging")
     after = review_application_manifests(
-        "sample-api", {"requirements.txt": PYTHON["requirements.txt"] + "# edited comment\\n"},
+        "sample-api", {"requirements.txt": PYTHON["requirements.txt"] + "# edited comment\n"},
         "review-staging",
     )
     # The inferred resources and legacy deployment request are unchanged.
@@ -182,7 +182,7 @@ def test_source_binding_is_recomputable_without_secret_or_approval():
 
 
 def test_source_binding_is_independent_of_manifest_insertion_order():
-    one = {"requirements.txt": "redis>=5\\n", "pyproject.toml": "[project]\\ndependencies = []\\n"}
+    one = {"requirements.txt": "redis>=5\n", "pyproject.toml": "[project]\ndependencies = []\n"}
     two = dict(reversed(list(one.items())))
     first = review_application_manifests("app", one, "review-target")
     second = review_application_manifests("app", two, "review-target")
