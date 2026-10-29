@@ -1574,3 +1574,41 @@ and final merged-main CI.
 **Next:** Establish independent operator/collector identity and protected
 execution trust roots, trusted clock/key/endpoint policy and durable replay
 boundary before explicitly human-approved read-only monitoring.
+
+
+## Synthetic HTTPS monotonic-clock failure guard — accepted feature (2026-10-29 ET)
+
+Feature [PR #89](https://github.com/antonypaul98/cloudforge/pull/89)
+source head `49857e1e2366425cc6eee3aa88c19a626c12ecb0` passed
+[push CI #40862665715](https://github.com/antonypaul98/cloudforge/actions/runs/40862665715)
+and [exact-head PR CI #40862702829](https://github.com/antonypaul98/cloudforge/actions/runs/40862702829).
+Guarded squash merge `e095b0be95fa965ba117cad48a6b647f4e80cb2e` passed
+[merged-main CI #40862819512](https://github.com/antonypaul98/cloudforge/actions/runs/40862819512):
+**1,214 pytest passed** (six new no-network regression cases), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. The isolated Python 3.13
+arithmetic prototype was not a full repository test; shell GitHub DNS
+and Python 3.11 were unavailable locally.
+
+The injected synthetic HTTPS HEAD fixture now maps monotonic start/finish
+read failures and nonfinite elapsed deltas to `unknown` with zero
+elapsed milliseconds, without forging a successful sample or leaking
+a conversion exception. It skips the fake connection if the start clock
+fails and closes the connection before handling a finish clock failure.
+Huge finite elapsed values are clamped before integer conversion.
+Normal elapsed behavior and timeout checks are preserved.
+Reused the existing fixture and Python 3.11 standard-library
+`math.isfinite`; no copied third-party code, dependencies, real DNS,
+endpoint, provider, credentials, infrastructure change, physical Mac,
+Work or Astra. See [provenance and rollback](docs/OBSERVATION_HTTPS_FIXTURE.md).
+
+**Synthetic-only acceptance:** The clock, keys, DNS, ledger and injected
+factory remain caller-controlled. This does not establish trusted time,
+operator/collector identity, a secure runtime boundary, actual monitoring,
+deployment or recovery. Connected GitHub integration wrote the feature;
+exclusive external worktree ownership is unverified. Revert feature merge
+for rollback; no migration. Canonical documentation PR requires its own
+exact-head and final merged-main CI.
+
+**Next:** Establish independent operator/collector identity, protected
+clock/key/endpoint policy and durable replay execution boundary before
+explicitly approved read-only service monitoring.
