@@ -138,3 +138,49 @@ database migration. The next gate is exact-source-bound, independently
 authorized **user application** execution inside an OS-isolated sandbox with
 signed evidence and controlled rollback. Demo readiness remains partial;
 full product completion remains unverified.
+
+
+## Exact selected application source review (read-only, 2026-10-29)
+
+A real caller-selected **single source file** can now be fingerprinted and
+bound to the already-reviewed manifest, application, opaque target, and handoff
+request. Supported roots are `app.py` with Python manifests and `server.js`
+with Node `package.json`. This is a necessary input-provenance step toward
+the original real-app sandbox demo, not a substitute for execution.
+
+```sh
+python -m cloudforge.demo_selected_artifact --name my-api --target sandbox-review --manifest ./requirements.txt --source ./app.py
+```
+
+The source is read at most 131,072 bytes using Python 3.11 standard-library
+`os.open` with `O_NOFOLLOW`, bounded reads and `fstat` regular-file and
+single-hardlink checks. If no-follow is unavailable, this tool fails closed.
+It rejects invalid UTF-8, NUL, empty or oversized files, and mismatched
+runtime/entrypoint. It prints only a versioned canonical SHA-256 binding,
+source length, opaque identifiers and explicit non-execution flags; never
+prints source or manifest text. Changed source, manifest or target invalidates
+the binding. The review itself still uses the existing manifest inspector,
+planner and handoff.
+
+**Not a security sandbox:** Symlinked parent directories, filesystem races,
+hardlink replacement, concurrent file writes, and untrusted privileged path
+selection are not fully solved. A hash is not an authenticated signature,
+immutable stored artifact, or execution permission. This step **does not**
+execute the user's application, start a container, install dependencies,
+contact an endpoint, mutate infrastructure, prove deployment, sign monitoring
+evidence, or perform recovery. Do not pass the selected file to the existing
+subprocess reference-app demo.
+
+**Reuse/provenance:** Existing CloudForge `review_application_manifests`,
+Python 3.11 `hashlib`, `json`, `os.open`, `os.fstat`, and `stat.S_ISREG`;
+official semantics: https://docs.python.org/3.11/library/os.html.
+No third-party code copied or translated, no new dependency, license, cloud
+account, API cost, or provider permission. Compared adding an arbitrary-code
+subprocess runner (unsafe without isolation) versus binding selected bytes
+before execution; chose the fail-closed read-only bridge. Revert the feature
+merge to roll back; no schema or external resource change.
+
+**Next:** Materialize an immutable exact-source artifact and independently
+authorize its use in a genuinely OS-isolated sandbox. Verify the selected
+application's own health and controlled rollback with signed evidence. The
+demo remains **partial**; full-product completion and dates remain unverified.
