@@ -211,3 +211,37 @@ def test_monotonic_exception_does_not_forge_success(monkeypatch, failure_phase):
     ]
     assert factory.call_count == (0 if failure_phase == "start" else 2)
     assert connection.close.call_count == (0 if failure_phase == "start" else 2)
+
+
+@pytest.mark.parametrize("invalid_start", [
+    float("nan"), float("inf"), float("-inf"), True, None,
+    "not-a-clock", 10 ** 400,
+])
+def test_invalid_start_clock_never_invokes_fixture_factory(monkeypatch, invalid_start):
+    import cloudforge.observation_https_fixture as module
+    factory = Mock(side_effect=AssertionError("invalid clock started a fixture"))
+    monkeypatch.setattr(module.time, "monotonic", Mock(return_value=invalid_start))
+    samples = _run(factory)
+    assert [(s.outcome, s.elapsed_ms) for s in samples] == [
+        ("unknown", 0), ("unknown", 0),
+    ]
+    factory.assert_not_called()
+
+
+@pytest.mark.parametrize("invalid_finish", [
+    float("nan"), float("inf"), "not-a-clock",
+])
+def test_invalid_finish_clock_closes_fixture_and_fails_closed(monkeypatch, invalid_finish):
+    import cloudforge.observation_https_fixture as module
+    connection = _fake(204)
+    factory = Mock(return_value=connection)
+    monkeypatch.setattr(
+        module.time, "monotonic",
+        Mock(side_effect=[100.0, invalid_finish, 200.0, invalid_finish]),
+    )
+    samples = _run(factory)
+    assert [(s.outcome, s.elapsed_ms) for s in samples] == [
+        ("unknown", 0), ("unknown", 0),
+    ]
+    assert factory.call_count == 2
+    assert connection.close.call_count == 2

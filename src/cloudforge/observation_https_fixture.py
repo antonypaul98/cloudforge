@@ -57,6 +57,9 @@ def collect_pinned_https_fixture_samples(
         pinned_ip = a[0] if a else aaaa[0]
         try:
             started = time.monotonic()
+            # Reject malformed/nonfinite start clocks before a fixture call.
+            if type(started) not in (int, float) or not math.isfinite(started):
+                raise ValueError("invalid synthetic monotonic start clock")
         except Exception:
             # An unavailable clock cannot establish a trustworthy duration.
             # Do not start even a fake connection for this probe.

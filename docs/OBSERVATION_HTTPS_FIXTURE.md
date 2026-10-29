@@ -58,3 +58,26 @@ No real endpoint, credential, infrastructure, device or provider was accessed.
 This is still an untrusted caller-controlled synthetic fixture, not live
 monitoring, authentication, hard cancellation, deployment or recovery.
 Rollback: revert the feature merge; no schema migration.
+
+
+## Malformed monotonic start clock (2026-10-29)
+
+The synthetic pinned HEAD fixture now rejects nonfinite, nonnumeric,
+boolean and unrepresentably huge monotonic start values before invoking
+any injected connection factory. Previously NaN/infinite start values
+could still trigger a fake probe and fail only at the elapsed check.
+The finish-clock path still closes an acquired connection before
+reporting unknown. Ten parameterized regression cases cover these boundaries.
+
+Reuse-first: inspected existing fixture, tests and Python 3.11
+math.isfinite behavior (https://docs.python.org/3.11/library/math.html#math.isfinite).
+Reused the existing standard-library check; no copied external code,
+dependencies, license, new credentials or cost. Existing signatures and
+valid-clock behavior remain unchanged. Full exact-head Python 3.11 CI,
+infrastructure tests, guarded merge and merged-main CI are required.
+Rollback: revert feature merge; no schema or infrastructure mutation.
+
+This remains synthetic only, not a trusted clock, authenticated collector,
+sandbox, real monitoring, deployment or recovery. Caller-controlled
+clocks and injected factories remain untrusted. Real endpoints require
+independent authorization and explicit human approval.
