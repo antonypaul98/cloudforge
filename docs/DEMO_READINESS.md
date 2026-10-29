@@ -64,3 +64,41 @@ before any real execution. Do not treat this digest as permission to deploy.
 No third-party code was copied; reused in-repo review contracts and Python 3.11
 `hashlib`/`json`. No new dependency, network, credentials, provider costs or
 infrastructure changes. Rollback: revert feature merge; no migration.
+
+## Opt-in actual loopback HTTP fixture observation (2026-10-29)
+
+A separate credential-free demo exercises the already-reviewed real Python/Node
+manifest pipeline and the existing local-only handoff/observation contracts
+against an **owned, ephemeral HTTP fixture**, not the reviewed application:
+
+```sh
+python -m cloudforge.demo_loopback_observation --name my-api --target fixture-target --manifest ./requirements.txt --allow-loopback-fixture
+```
+
+The opt-in flag is mandatory. The module binds only `127.0.0.1` on an OS-assigned
+ephemeral port and runs actual `HEAD /health` requests. It observes a controlled
+fixture response sequence: HTTP 204 (readiness/liveness pass), HTTP 503 (both
+fail), HTTP 204 (both pass after fixture restoration). The fixture is shut down
+and its thread joined before returning. Output omits the port, elapsed timing,
+raw manifest text and reviewer names; it includes the review's exact-source
+binding and handoff request digests, and explicit false claims for authenticated
+review, application execution, deployment, infrastructure mutation and recovery.
+
+This is **measured fixture behavior**, not an authenticated operator, executed
+user application, sandbox deployment, live service monitoring or controlled
+production recovery. The demo synthesizes in-process reviewer approvals with
+a plainly labeled fixture identity; those approvals are **not** independent
+authorization. The source-bound artifact is a canonical fingerprint packet,
+not runnable application bytes. Never use this demo's synthetic approvals to
+authorize a real endpoint or infrastructure action.
+
+**Reuse-first:** existing `review_application_manifests`, inspector/planner/IaC,
+deployment handoff, local receipt, observation plan, and loopback HTTP collector;
+Python 3.11 standard-library `http.server` and `threading`. No third-party
+code/model copied or translated, new dependency, provider API, credential or
+cloud cost. Compared existing fixture HTTP tests with a dedicated demo module:
+the gap was an observable, reproducible composition starting from real selected
+manifest bytes, not another HTTP transport implementation. Real app deployment
+still needs an independently authorized isolated runtime with exact-source
+revalidation, signed evidence and controlled rollback. Roll back this demo by
+reverting its feature merge; it creates no persistent infrastructure or schema.
