@@ -1186,3 +1186,38 @@ exclusivity remains unverified. Work/Astra were not invoked.
 read-only HTTPS HEAD collection with exact approved endpoint/IP, trusted
 provenance and signed runtime evidence. No real service access or
 infrastructure mutation without exact artifacts/plans and human approval.
+
+
+## Synthetic pinned HTTPS HEAD fixture orchestration — 2026-10-28 ET
+
+Feature [PR #67](https://github.com/antonypaul98/cloudforge/pull/67) merged
+as `1052baa4298f2151c14f421fa98b5c65fd1d3fd6` after exact source head
+`b330bab5781da5a7b41fd713681d7fdc5f958ddd` passed
+[push CI #40791581678](https://github.com/antonypaul98/cloudforge/actions/runs/40791581678)
+and [PR CI #40791605159](https://github.com/antonypaul98/cloudforge/actions/runs/40791605159).
+[Merged-main CI #40791681944](https://github.com/antonypaul98/cloudforge/actions/runs/40791681944)
+also passed: **1096 pytest passed** (28 new synthetic cases), 19
+infrastructure checks (18 passed, 1 skipped), Python 3.11.17.
+Container shell could not resolve GitHub, so no independent local full suite
+was run; CI receipts are the actual complete-suite evidence.
+
+The new `collect_pinned_https_fixture_samples` requires exact local receipt,
+observation plan, runtime target request and full A/AAAA pinset revalidation
+before any injected fake connection. It selects the first policy-matched numeric
+IP, issues exact HEAD, classifies 2xx/3xx–5xx/invalid statuses and fails closed
+on transport errors, cleanup failures and elapsed-budget overruns. The factory
+is mandatory and has no network-capable default. This is **synthetic only**;
+unsigned samples are not authenticated observations or service-health evidence.
+See [contract, provenance and rollback](docs/OBSERVATION_HTTPS_FIXTURE.md).
+
+Reused existing CloudForge validators, sample type and Python standard library.
+No third-party code, new dependencies, credentials, cloud costs, provider calls,
+real endpoint access, infrastructure mutation or physical Mac testing. Connected
+GitHub integration was the writer; external worktree exclusivity unverified.
+No Work/Astra invoked. Caller-supplied DNS/allowlists remain untrusted and
+an injected factory is not a security boundary.
+
+**Next:** Independently authenticated and explicitly approved read-only HTTPS
+collector with trusted exact endpoint/IP, source key and clock, signed evidence,
+separate operator authorization and rollback boundary. Do not access a real
+service without explicit human approval.
