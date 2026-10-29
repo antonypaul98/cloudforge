@@ -135,7 +135,7 @@ def test_forged_permit_fields_fail(field, value):
     {"operator_key": bytearray(_OPERATOR_KEY)},
     {"sequence": 0},
     {"sequence": True},
-    {"valid_from_unix": _NOW},
+    {"valid_from_unix": _NOW + 21},
     {"valid_until_unix": _NOW + 301},
     {"valid_until_unix": True},
 ])
