@@ -1884,3 +1884,36 @@ Rollback is revert feature merge; no schema migration or external state.
 execution inside an OS-isolated sandbox, with signed real health evidence and
 controlled rollback. No arbitrary user code execution in the current demo;
 real infrastructure/external endpoint access remains explicitly approval-gated.
+
+## Selected real application source-to-manifest review binding — accepted (2026-10-29 ET)
+
+Feature [PR #107](https://github.com/antonypaul98/cloudforge/pull/107)
+at exact source head `2e89b800cf7368242a193c53214f1030988c6273`
+passed [push CI #40962192531](https://github.com/antonypaul98/cloudforge/actions/runs/40962192531)
+and [PR CI #40962214417](https://github.com/antonypaul98/cloudforge/actions/runs/40962214417).
+Guarded squash merge `5cde368c0442bdaf891bb8a46953e6a2194a546e`
+passed [merged-main CI #40962359674](https://github.com/antonypaul98/cloudforge/actions/runs/40962359674)
+on Python 3.11.17: **1,364 pytest passed** (13 new tests),
+infrastructure **18 passed/1 skipped**. A local syntax check passed; no
+independent local full-suite run (container GitHub DNS unavailable).
+
+`cloudforge.demo_selected_artifact` now reads one caller-selected root
+`app.py` or `server.js` without executing it, hashes bounded exact bytes,
+and binds the source hash to the existing real-manifest review, target and
+handoff digest. Tests cover reproducibility, changed source/manifest/target,
+runtime mismatch, invalid bytes, symlinks/hardlinks, oversized files,
+redacted CLI and no network/process in the review function. Reused Python 3.11
+standard library and CloudForge contracts; no external code, new dependency,
+provider call, credential, infrastructure mutation, or physical Mac test.
+Connected GitHub integration wrote the changes; external worktree exclusivity
+remains unverified. Work/Astra not invoked. Rollback is reverting the feature
+merge; no schema or infrastructure changes.
+
+**Demo readiness: Partial.** Selected application bytes are review-bound but
+not stored immutably, executed, or observed. No authenticated operator,
+OS-isolated selected-app sandbox, signed runtime evidence, real deployment,
+infrastructure rollback or recovery. **Full-product completion: Unverified.**
+No supported percentage or delivery date. Next is an independently approved
+isolated selected-app execution/observation/rollback path, with explicit
+approval before any real infrastructure action. Canonical acceptance
+documentation requires its own exact-head PR and final merged-main CI.
