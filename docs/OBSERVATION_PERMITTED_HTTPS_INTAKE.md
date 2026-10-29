@@ -90,3 +90,32 @@ no migration or infrastructure change. Next production gate remains
 independently authenticated operator/collector identities and protected
 key/clock/endpoint/replay execution boundary, followed by separately approved
 read-only service monitoring.
+
+
+## Invalid synthetic connection factory preflight (2026-10-29)
+
+A missing or noncallable injected connection factory is now rejected *before*
+the permitted HEAD fixture consumes its one-shot SQLite permit. The signed
+HTTPS intake also rejects it before its read-only evidence replay preflight.
+Previously, the lower-level fixture rejected such a factory only after permit
+consumption, unnecessarily burning a valid sequence and leaving a possible
+replay-gap diagnostic. These are configuration errors, not attempted probes.
+
+The gate reuses the existing lower-level `callable(connection_factory)`
+contract; no external code, dependencies, key service, provider, network
+access, infrastructure change or migration. Six parameterized synthetic
+regressions cover missing and noncallable factories in both entry points,
+verify that invalid input never reaches permit consumption or ledger read,
+and demonstrate that the same valid permit can subsequently be used with
+a proper fake factory. Existing valid HEAD behavior is unchanged.
+
+This does not guarantee that a callable factory is safe, honest, network-free
+or successful. Once a callable factory passes the preflight, the permit is
+still intentionally consumed before any fake probe, including when that probe
+fails. The two SQLite transactions remain separate and not exactly-once.
+Production requires independently authenticated operators/collectors,
+protected keys, clock, endpoint/DNS policy and replay ledger, explicit
+approval of any real endpoint, and runtime evidence. Revert the feature
+merge to roll back; no data migration or real deployment is involved.
+Acceptance requires exact-head PR CI, complete Python 3.11 and infrastructure
+suites, guarded merge, merged-main CI and canonical checkpoint update.
