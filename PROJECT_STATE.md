@@ -1839,3 +1839,48 @@ feature merge; no schema or infrastructure migration.
 application artifact, exact-source revalidation, actual service observation,
 and controlled rollback with measurable evidence. No real infrastructure or
 external endpoint access without explicit artifact-scoped human approval.
+
+
+## Owned reference application process observation and restart — accepted feature (2026-10-29 ET)
+
+Feature [PR #105](https://github.com/antonypaul98/cloudforge/pull/105)
+exact source head `e63c45fe2e08544c2f933e9a441721e5740c4080` passed
+[push CI #40954872163](https://github.com/antonypaul98/cloudforge/actions/runs/40954872163)
+and [PR CI #40954897010](https://github.com/antonypaul98/cloudforge/actions/runs/40954897010).
+Guarded squash merge `d23ccbcabd74e724c29cd8515f2e115e9b8d9a72`
+passed [merged-main CI #40955021757](https://github.com/antonypaul98/cloudforge/actions/runs/40955021757):
+**1,351 pytest passed** (11 new tests), infrastructure **18 passed/1 skipped**,
+Python 3.11.17. No independent local full-suite run; GitHub CI is the full-suite
+evidence. Canonical acceptance docs PR has its own exact-head and final-main
+CI gates before final acceptance.
+
+An explicit opt-in command starts a **fixed first-party Python reference app**
+in a subprocess with minimal environment, temporary working directory and
+127.0.0.1-only ephemeral HTTP listener. It reuses the selected real Python/Node
+manifest review, source digest, provider-neutral proposal, exact-target handoff,
+synthetic local-only receipt and HEAD observation contracts. Actual measured
+HEAD results: **pass while running -> unknown after process stop -> pass after
+process restart**. Both child processes are stopped and their pipes closed.
+A SHA-256 of the fixed reference service module is rechecked before/after
+execution; this is not atomic runtime attestation. The output is redacted and
+deterministic, excluding ports and source comments.
+
+**DEMO READINESS: PARTIAL, IMPROVED.** This runs a real reference app process,
+**not the reviewed user's application**. A subprocess is not OS/container
+isolation and must not run untrusted code. Synthetic approvals are not
+authenticated human approval. Process restart is not a real infrastructure
+rollback. **FULL PRODUCT COMPLETION: UNVERIFIED**; no defensible percentage
+or delivery date. No external endpoint, cloud provider, credentials, Docker,
+infrastructure mutation, physical Mac, Work or Astra. Connected GitHub
+integration was the writer; external worktree exclusivity unverified.
+
+**Reuse-first:** existing first-party review, handoff, local receipt,
+observation plan/collector and Python 3.11 stdlib. No third-party code,
+new dependencies, provider API cost or license change. See
+[demo readiness](docs/DEMO_READINESS.md) for scope, provenance and rollback.
+Rollback is revert feature merge; no schema migration or external state.
+
+**Next:** independently authorized, exact-source-bound user application
+execution inside an OS-isolated sandbox, with signed real health evidence and
+controlled rollback. No arbitrary user code execution in the current demo;
+real infrastructure/external endpoint access remains explicitly approval-gated.
