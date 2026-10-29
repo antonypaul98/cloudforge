@@ -1720,3 +1720,36 @@ and final merged-main CI before final canonical acceptance.
 collector workloads, protect runtime key/clock/endpoint/replay boundaries,
 then obtain exact human approval for any real read-only endpoint. Do not
 replace this milestone with additional optional fixture pins.
+
+
+## Unwired explicit-root collector mTLS client context — accepted synthetic software (2026-10-29 ET)
+
+Feature [PR #97](https://github.com/antonypaul98/cloudforge/pull/97) exact head
+`9c10ba43bec93659ddebf97be8fdd86a5daebce0` passed [push CI #40907336514](https://github.com/antonypaul98/cloudforge/actions/runs/40907336514)
+and [PR CI #40907371409](https://github.com/antonypaul98/cloudforge/actions/runs/40907371409).
+Guarded squash merge `d03d8a3628321b4680f330172b6fe4c2f95cac8f` passed
+[merged-main CI #40907511050](https://github.com/antonypaul98/cloudforge/actions/runs/40907511050):
+**1,302 pytest passed**, infrastructure **18 passed/1 skipped**, Python 3.11.17.
+The new isolated offline regressions contributed 44 cases; an isolated Python
+3.13 smoke also passed 44, but is not independent full-suite acceptance.
+
+The new `build_collector_mtls_client_context` constructs a strict TLS client
+context with an explicit CA trust bundle and client certificate/private key,
+peer certificate and hostname verification, TLS 1.2 minimum, no default CA
+fallback and noninteractive private-key loading. It reuses Python 3.11 `ssl`
+without new dependencies, copied third-party code or credentials. It is **not
+wired** to the existing HTTPS transport and performs no network I/O.
+See [trust boundary, reuse and rollback](docs/OBSERVATION_MTLS_BOUNDARY.md).
+
+**Not production identity acceptance:** No independently provisioned root or
+short-lived workload certificate exists in CloudForge; no authenticated operator,
+server-side client identity authorization, protected key/clock/DNS/endpoint/replay
+execution, SPIFFE URI SAN validation, live collector, deployment or recovery.
+No real TLS handshake, provider, infrastructure, physical Mac, Work or Astra.
+Connected GitHub integration was the writer; external worktree exclusivity
+remains unverified. Rollback: revert feature merge, no migration or deployed
+state. Canonical documentation PR requires its own exact-head and final
+merged-main CI before final acceptance.
+
+**Next:** Establish independent operator/collector workload identity and
+protected runtime enforcement before any explicitly approved live monitoring.

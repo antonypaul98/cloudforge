@@ -2,6 +2,8 @@
 
 Provider-neutral infrastructure planning, reviewable deployment handoffs, and local-only authorization safeguards. **This repository does not yet deploy cloud infrastructure, observe deployed services, or perform recovery.**
 
+An [unwired explicit-root mTLS client context](docs/OBSERVATION_MTLS_BOUNDARY.md) prepares a certificate-verification building block; it does not authenticate an operator, connect to any endpoint or authorize monitoring.
+
 A separate [read-only observation proposal](docs/OBSERVATION_PLAN.md) can now describe bounded startup/readiness/liveness checks tied to an exact local authorization receipt. It does not run probes or verify health. A separate [in-memory observation evidence intake](docs/OBSERVATION_EVIDENCE.md) can verify keyed, exact-plan-bound synthetic sample envelopes, but cannot authenticate a live collector or establish service health. An opt-in [local SQLite replay ledger](docs/OBSERVATION_REPLAY.md) now rejects repeated sequences across local processes, but does not run probes or establish collector identity.
 
 ## Try the credential-free synthetic demo
