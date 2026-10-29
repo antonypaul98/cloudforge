@@ -73,7 +73,7 @@
   },
   "checkpoint_status": "COMPLETE_SYNTHETIC_PERMIT_TIMESTAMP_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/observation-gap-snapshot-20261029",
+  "checkpoint_branch": "build/https-evidence-permit-time-20261029",
   "previous_completed_checkpoint": {
     "name": "deployment handoff foundation",
     "merge_commit_sha": "79abcd9782ecfc3c235072886666940d1319824c",
