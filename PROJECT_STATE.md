@@ -1258,3 +1258,37 @@ trusted key/clock/DNS/allowlist provenance, atomically enforce one-shot
 sequence, and only then wire an explicitly approved exact-endpoint/IP
 HEAD-only runtime collector with signed evidence. No real service access
 without explicit human approval.
+
+
+## Permit-gated synthetic pinned HTTPS HEAD fixture — 2026-10-28 ET
+
+Feature [PR #71](https://github.com/antonypaul98/cloudforge/pull/71)
+merged as `326adb18fd47534576701136531b823db83c8c50` after exact
+source head `65418194ba9e22500705f8fef8935ce4ef0e13a1` passed
+[push CI #40804321853](https://github.com/antonypaul98/cloudforge/actions/runs/40804321853)
+and [PR CI #40804341077](https://github.com/antonypaul98/cloudforge/actions/runs/40804341077).
+[Feature merged-main CI #40804438339](https://github.com/antonypaul98/cloudforge/actions/runs/40804438339)
+passed: **1139 pytest passed** (11 new synthetic cases), 19
+infrastructure checks (18 passed, 1 skipped), Python 3.11.17.
+No independent local full-suite run because the container cannot resolve
+GitHub; CI receipts are the actual complete-suite evidence.
+
+The new opt-in `collect_permitted_pinned_https_fixture_samples` verifies
+the existing short-lived operator-key MAC and exact receipt/plan/target/A/AAAA
+pinset chain **before** invoking any injected fake connection. Regressions
+check correct HEAD-only IPv4/IPv6 ordering and fail-closed invalid policy
+without factory invocation. Existing fixture APIs are unchanged. See
+[reuse, limits and rollback](docs/OBSERVATION_PERMITTED_HTTPS_FIXTURE.md).
+
+**Synthetic-only acceptance:** Caller-supplied operator/source keys, clock,
+DNS, allowlists and injected factory are not independently authenticated
+or isolated. This is not a security sandbox, signed runtime observation,
+real monitoring, deployment or recovery. No third-party code, new
+dependencies, credentials, real endpoints, infrastructure mutation or
+physical Mac tests. Connected GitHub integration was the writer; external
+worktree exclusivity unverified. Work/Astra not invoked.
+
+**Next:** Independently authenticate operator/collector and trust roots,
+atomically enforce one-shot sequence, then authorize exact live endpoint
+read-only HEAD with signed runtime evidence. Explicit human approval
+remains required before any real service access.
