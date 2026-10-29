@@ -33,3 +33,28 @@ suite and infrastructure guards must pass on exact PR head and merged main.
 Rollback: revert the feature merge. No migrations, provider actions or external
 resources are involved. This is synthetic software acceptance only; no physical
 Mac/device or real-service validation.
+
+## Monotonic-clock failure and nonfinite elapsed regression (2026-10-29)
+
+The synthetic HEAD fixture now returns an `unknown` sample with zero
+elapsed milliseconds if reading the monotonic clock fails or the elapsed
+value is NaN/infinite. A start-clock failure prevents invoking the injected
+connection factory for that probe. A finish-clock failure still closes the
+connection before returning `unknown`. Extremely large but finite elapsed
+values are clamped *before* conversion to integer milliseconds, so overflow
+cannot escape the fixture. Existing normal, negative and over-budget elapsed
+behavior remains fail-closed; this does not establish a trusted clock.
+
+Reuse-first: inspected existing fixture/permit/intake contracts and tests;
+reused Python 3.11 standard-library `math.isfinite` rather than introducing
+a new dependency or external algorithm. Reference:
+https://docs.python.org/3.11/library/math.html#math.isfinite .
+Six parameterized no-network regression cases cover NaN, both infinities,
+a huge finite duration and start/finish clock exceptions. Python 3.13
+isolated arithmetic prototype is not full repository validation; exact-head
+Python 3.11 PR CI, infrastructure checks and merged-main CI are required.
+
+No real endpoint, credential, infrastructure, device or provider was accessed.
+This is still an untrusted caller-controlled synthetic fixture, not live
+monitoring, authentication, hard cancellation, deployment or recovery.
+Rollback: revert the feature merge; no schema migration.
