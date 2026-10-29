@@ -1428,3 +1428,36 @@ and merged-main CI.
 keys/clock/endpoint policy and replay boundary, then explicitly approved
 read-only monitoring with signed runtime provenance. Never reset consumed
 permits automatically.
+
+## Consistent read-only HTTPS replay-gap snapshot — 2026-10-29 ET
+
+Feature [PR #81](https://github.com/antonypaul98/cloudforge/pull/81) exact
+source head fc0d7a3265d98364ed0f93b18415a9288cdcf1c5 passed
+[push CI #40833371802](https://github.com/antonypaul98/cloudforge/actions/runs/40833371802)
+and [exact-head PR CI #40833400206](https://github.com/antonypaul98/cloudforge/actions/runs/40833400206).
+Guarded squash merge 96b3ac6459295f7d3ab4dba968bedd3bdecade90
+passed [merged-main CI #40833512821](https://github.com/antonypaul98/cloudforge/actions/runs/40833512821):
+**1,184 pytest passed** (two new synthetic regressions), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. The SQLite Python 3.13 isolated
+prototype demonstrated inconsistent counter reads without an explicit
+transaction and a stable snapshot with one; it was not the full suite.
+
+The diagnostic now starts one explicit query-only SQLite read transaction
+so schema inventory and both replay counters reflect one consistent database
+snapshot. Two deterministic WAL-mode tests inject concurrent counter advancement
+and table creation between reads, then verify that a later inspection sees
+the committed changes. This reuses existing CloudForge contracts and SQLite
+standard-library behavior, with no external code, new dependencies, schema
+migration or provider cost. See
+[provenance, limits and rollback](docs/OBSERVATION_REPLAY_DIAGNOSTICS.md).
+
+**Synthetic-only acceptance:** This does not authenticate an operator or
+collector, trust keys/clocks/DNS, prevent ledger replacement/rollback, prove
+a specific probe executed, or enable real monitoring, deployment or recovery.
+No live endpoints, physical Mac, infrastructure mutation, Work or Astra.
+Connected GitHub integration was the writer; external worktree exclusivity
+remains unverified. Rollback is revert of the feature merge.
+
+**Next:** Establish independent operator/collector identity, protected trust
+roots and execution boundary, and exact human-approved endpoint policy before
+live read-only monitoring with signed runtime evidence.
