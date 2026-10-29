@@ -1767,3 +1767,40 @@ Reuse-first comparison: [Backstage templates](https://backstage.io/docs/features
 **DEMO READINESS: PARTIAL.** Real-input review-only chain is repeatable; full original product demo is **NOT READY**. **FULL PRODUCT COMPLETION: UNVERIFIED**, with no justified percentage or date. The JSON is not executable IaC. No authenticated operator/collector, independent key/clock/DNS, actual sandbox deployment, signed real monitoring, chaos, rollback or recovery has been verified. Canonical documentation PR requires its own exact-head and final merged-main CI before final acceptance.
 
 **Next:** Define and test an exact-artifact-approved, isolated sandbox execution/observe/recover path with independent trust and measurable outputs; no real endpoint or infrastructure action without explicit human approval. Do not divert into optional fixture safeguards before demonstrating the original product journey.
+
+
+## Source-bound real-manifest review packet — accepted feature (2026-10-29 ET)
+
+Feature [PR #101](https://github.com/antonypaul98/cloudforge/pull/101)
+source head `d523899beddd0dd88e5f4bc7c0d0689a5b31849a` passed
+[exact-head push CI #40936531440](https://github.com/antonypaul98/cloudforge/actions/runs/40936531440)
+and [PR CI #40936598962](https://github.com/antonypaul98/cloudforge/actions/runs/40936598962).
+Guarded squash merge `370e6756e350de67d4ea552bda605db020f52af6`
+passed [merged-main CI #40936748938](https://github.com/antonypaul98/cloudforge/actions/runs/40936748938):
+**1,329 pytest passed** (5 new regressions), infrastructure **18 passed/1 skipped**,
+Python 3.11.17. No independent local full suite: container GitHub DNS unavailable;
+only an isolated Python 3.13 digest smoke was run locally.
+
+The existing real-manifest demo can infer identical resources and deployment
+handoff digests from distinct manifest bytes. A separate versioned canonical
+`source_review_binding` now hashes exact selected manifest-byte fingerprints,
+application, opaque target and original handoff request digest. Tests cover
+changed source with unchanged inferred plan, independent digest recomputation,
+manifest insertion order, changed target and no raw comment disclosure.
+Reuses existing CloudForge review contracts and Python standard-library
+`hashlib`/`json`; no copied external code, dependencies, API cost or provider
+permission. See [scope and rollback](docs/DEMO_READINESS.md).
+
+**DEMO READINESS: PARTIAL.** This is only read-only real-input review provenance,
+not a real deployment/observe/recover demo. **FULL PRODUCT COMPLETION: UNVERIFIED**;
+no justified percentage or date. The unkeyed digest is not a signature,
+independent approval or downstream execution enforcement. No real endpoint,
+application execution, infrastructure mutation, physical Mac, Work or Astra.
+Connected GitHub integration was writer; external worktree exclusivity unverified.
+Rollback is revert feature merge; no migration. Canonical documentation PR
+requires its own exact-head and final merged-main CI before final acceptance.
+
+**Next:** Independently authenticated, explicitly human-approved isolated sandbox
+execution bound to exact source/artifact/target, with real observed service
+behavior and controlled rollback. Do not substitute more optional synthetic
+safeguards for the original end-to-end demo.

@@ -1,18 +1,18 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "real application manifest -> provider-neutral review proposal -> exact-target handoff request (read-only demo)",
+  "current_checkpoint": "source-byte-bound real-manifest review packet (demo-first, read-only)",
   "active_branch": "main",
-  "main_sha_at_start": "c14d5bca6cc5dbbf425fee621426760e60b1eade",
-  "current_branch_sha": "3f4334b706c5061faed037865251684313ac84dc",
+  "main_sha_at_start": "8dfec3c72e5307d2f9295e308fa52be8ccc1c393",
+  "current_branch_sha": "370e6756e350de67d4ea552bda605db020f52af6",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #99 exact-head push/PR CI passed; guarded squash merged to main 3f4334b706c5061faed037865251684313ac84dc; merged-main CI #40927135195 passed. Canonical acceptance docs PR CI and final merged-main CI pending. External worktree exclusivity unverified.",
+  "branch_remote_status": "Feature PR #101 guarded squash merge 370e6756e350de67d4ea552bda605db020f52af6, exact-head push/PR and merged-main CI passed; canonical acceptance docs PR pending.",
   "local_test_status": "No independent local full suite: container GitHub DNS unavailable. GitHub Python 3.11.17 exact-head push/PR and merged-main CI: 1324 pytest passed (22 new real-manifest tests), infrastructure 18 passed/1 skipped. No provider, real endpoint, infrastructure or physical Mac.",
-  "pr_number": 99,
-  "ci_status": "Exact-head push CI #40926942716 and PR CI #40926994207 SUCCESS at 091247e6d4e329920b27de48ec875c43e8817c4d; merged-main CI #40927135195 SUCCESS at 3f4334b706c5061faed037865251684313ac84dc: 1324 pytest passed, infrastructure 18 passed/1 skipped, Python 3.11.17.",
-  "merge_status": "MERGED: feature PR #99 guarded squash merge 3f4334b706c5061faed037865251684313ac84dc; merged-main CI #40927135195 passed. Canonical documentation PR CI and final merged-main CI pending.",
+  "pr_number": 101,
+  "ci_status": "Exact-head push CI #40936531440 and PR CI #40936598962 SUCCESS at d523899beddd0dd88e5f4bc7c0d0689a5b31849a; merged-main CI #40936748938 SUCCESS at 370e6756e350de67d4ea552bda605db020f52af6: 1329 pytest passed, infrastructure 18 passed/1 skipped, Python 3.11.17.",
+  "merge_status": "MERGED: PR #101 guarded squash merge 370e6756e350de67d4ea552bda605db020f52af6; merged-main CI passed.",
   "external_acceptance_required": [],
-  "known_blocker": "Demo is only real-manifest inspection -> review-only provider-neutral JSON -> exact-target handoff request. No executable IaC, authenticated approval, independent operator/collector identity, trusted key/clock/endpoint, real sandbox deployment, observed health, chaos/recovery or full end-to-end primary product demo. External worktree exclusivity unverified.",
-  "next_action": "Demo-first: extend real-input review into a separately approved, isolated local sandbox execution with actual observed output and controlled rollback; establish independently authenticated operator/collector and exact artifact/endpoint approvals before any real runtime action. Reuse proven OpenTofu/Pulumi/Backstage components where licensed and compatible; do not claim full demo yet.",
+  "known_blocker": "Source review binding is unkeyed and not enforced by downstream execution; no independent operator/collector trust, executable sandbox IaC, real deployment, signed live observation, chaos/recovery or full end-to-end demo. External worktree exclusivity unverified.",
+  "next_action": "Demo-first: build an isolated, exact-source-bound and separately approved sandbox deploy/observe/rollback path with real observable output. Revalidate source bytes at execution, establish independent trust and explicit human authorization before any real infrastructure or endpoint. No optional fixture expansion.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -27,7 +27,7 @@
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "closed, merged; feature PR #99 source head 091247e6d4e329920b27de48ec875c43e8817c4d integrated as 3f4334b706c5061faed037865251684313ac84dc; canonical acceptance PR pending",
+  "pr_state": "MERGED: feature PR #101; canonical acceptance documentation PR pending.",
   "ci_state": {
     "push_run": {
       "id": 40926942716,
@@ -56,11 +56,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Full original CloudForge demo requires approved sandbox execution and independent runtime trust, not yet established.",
-    "BLOCKER": "No executable provider IaC, authenticated operator/collector, real service observation or controlled recovery; read-only real-input review only.",
-    "SAFE_WORK_COMPLETED": "PR #99 exact-head push #40926942716, PR #40926994207, merged-main #40927135195 passed at recorded SHAs: 1324 pytest, infrastructure 18 passed/1 skipped; 22 new tests. No real endpoint, infrastructure, physical Mac, Work or Astra.",
-    "REMOTE_SHA": "3f4334b706c5061faed037865251684313ac84dc",
-    "NEXT_ACTION": "Complete separately approved isolated sandbox execution/observe/recovery demo with independently trusted identity and measurable evidence; do not mutate real infrastructure without exact artifacts and human approval."
+    "BLOCKED_LAYER": "Full original CloudForge demo requires independently authorized real sandbox execution/observation/recovery.",
+    "BLOCKER": "Review binding is unkeyed, not enforced by runtime; no independently authenticated operator/collector, executable IaC, real service monitoring or recovery.",
+    "SAFE_WORK_COMPLETED": "PR #101 exact-head push #40936531440, PR #40936598962 and merged-main #40936748938 succeeded at recorded SHAs: 1329 pytest, infrastructure 18 passed/1 skipped; five new source-byte provenance regressions. No real endpoints, infrastructure, physical Mac or Work/Astra.",
+    "REMOTE_SHA": "370e6756e350de67d4ea552bda605db020f52af6",
+    "NEXT_ACTION": "Demo-first: build an isolated, exact-source-bound and separately approved sandbox deploy/observe/rollback path with real observable output. Revalidate source bytes at execution, establish independent trust and explicit human authorization before any real infrastructure or endpoint. No optional fixture expansion."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -71,7 +71,7 @@
     "physical_mac": "not_run",
     "new_head_CI": "successful"
   },
-  "checkpoint_status": "COMPLETE_REVIEW_ONLY_REAL_MANIFEST_DEMO (canonical docs PR CI pending)",
+  "checkpoint_status": "COMPLETE_SOURCE_BOUND_REVIEW_ONLY (feature CI accepted; canonical docs PR CI pending)",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/real-manifest-review-demo-20261029",
   "previous_completed_checkpoint": {
@@ -81,8 +81,8 @@
     "completion_main_sha": "e4d9db3ed852ec50d17d640ebc2f0a398b9fb4a7",
     "completion_main_ci": 37216883981
   },
-  "verified_main_sha": "3f4334b706c5061faed037865251684313ac84dc",
-  "merge_commit_sha": "3f4334b706c5061faed037865251684313ac84dc",
+  "verified_main_sha": "370e6756e350de67d4ea552bda605db020f52af6",
+  "merge_commit_sha": "370e6756e350de67d4ea552bda605db020f52af6",
   "final_pr_head": "091247e6d4e329920b27de48ec875c43e8817c4d",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
@@ -965,7 +965,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration wrote feature PR #99 and canonical acceptance branch; exclusive external worktree ownership unverified.",
+  "writer_status": "Connected GitHub integration wrote feature PR #101; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1369,11 +1369,11 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL: repeatable real manifest -> inspection -> deterministic provider-neutral JSON -> target-bound handoff request; no executable deployment/observation/recovery.",
+  "demo_readiness": "PARTIAL: repeatable real Python/Node manifest -> provider-neutral review JSON -> target handoff request plus exact-source-byte review binding; no authenticated approval, sandbox execution, monitoring or recovery.",
   "full_product_completion": "UNVERIFIED: no validated full-product milestone percentage or delivery date.",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
-    "status": "COMPLETE_REVIEW_ONLY (canonical documentation CI pending)",
+    "status": "COMPLETE_REVIEW_ONLY; acceptance PR #100 merged and final-main CI #40927486835 passed",
     "feature_pr": 99,
     "source_head_sha": "091247e6d4e329920b27de48ec875c43e8817c4d",
     "merge_commit_sha": "3f4334b706c5061faed037865251684313ac84dc",
@@ -1395,6 +1395,33 @@
     "work_astra_invoked": false,
     "writer": "Connected GitHub integration; external worktree exclusivity unverified",
     "rollback": "Revert feature merge; no schema migration or external state",
-    "next_gate": "Prove real isolated sandbox deployment, observation and controlled recovery with exact artifact-scoped human approval and independent trust."
+    "next_gate": "Prove real isolated sandbox deployment, observation and controlled recovery with exact artifact-scoped human approval and independent trust.",
+    "canonical_acceptance_pr": 100,
+    "final_merged_main_ci_run": 40927486835
+  },
+  "accepted_source_review_binding": {
+    "checkpoint": "exact manifest-byte source binding for real-input review demo",
+    "status": "COMPLETE_REVIEW_ONLY (canonical docs PR CI pending)",
+    "feature_pr": 101,
+    "source_head_sha": "d523899beddd0dd88e5f4bc7c0d0689a5b31849a",
+    "merge_commit_sha": "370e6756e350de67d4ea552bda605db020f52af6",
+    "source_push_ci_run": 40936531440,
+    "exact_head_pr_ci_run": 40936598962,
+    "merged_main_ci_run": 40936748938,
+    "python": "3.11.17",
+    "pytest_passed": 1329,
+    "new_tests": 5,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "scope": "Versioned SHA-256 binds selected manifest byte fingerprints, application, opaque target and existing deployment handoff digest. Changed source with unchanged inferred resources yields new review binding.",
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "real_endpoint_contacted": false,
+    "infrastructure_mutated": false,
+    "physical_mac_accepted": false,
+    "work_astra_invoked": false,
+    "writer": "Connected GitHub integration; external worktree exclusivity unverified",
+    "rollback": "Revert feature merge; no schema migration or external state",
+    "next_gate": "Independently authenticated, source-bound sandbox execution with human-approved exact artifact, real observation and controlled rollback; source digest alone is not authorization."
   }
 }
