@@ -1612,3 +1612,37 @@ exact-head and final merged-main CI.
 **Next:** Establish independent operator/collector identity, protected
 clock/key/endpoint policy and durable replay execution boundary before
 explicitly approved read-only service monitoring.
+
+
+## Synthetic HTTPS monotonic start-clock preflight — accepted feature (2026-10-29 ET)
+
+Feature [PR #91](https://github.com/antonypaul98/cloudforge/pull/91)
+source head `0d0becdb986a9b924b96e050f7569384de644b7f` passed
+[push CI #40869852648](https://github.com/antonypaul98/cloudforge/actions/runs/40869852648)
+and [exact-head PR CI #40869883510](https://github.com/antonypaul98/cloudforge/actions/runs/40869883510).
+Guarded squash merge `c950a6b2ceb71624471d6464b32c3243b9f88462` passed
+[merged-main CI #40870007469](https://github.com/antonypaul98/cloudforge/actions/runs/40870007469):
+**1,224 pytest passed** (ten new no-network regression cases), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. No independent local full suite:
+container shell GitHub DNS unavailable and Python 3.11 absent.
+
+Synthetic HTTPS HEAD fixture now rejects nonfinite, malformed, boolean and
+unrepresentably huge monotonic **start** values before invoking any injected
+fake connection. Invalid finish clocks still close the connection and yield
+unknown samples. Existing valid-clock behavior and public signature unchanged.
+Reused Python 3.11 standard-library math.isfinite and existing fixture code;
+no third-party code, dependencies, provider, credentials, real endpoint,
+infrastructure mutation, physical Mac, Work or Astra. See
+[reuse, tests, limitations and rollback](docs/OBSERVATION_HTTPS_FIXTURE.md).
+
+**Synthetic-only acceptance:** The clock, keys, DNS, ledger and injected
+factory remain caller-controlled. No independent operator/collector identity,
+trusted runtime execution, real monitoring, deployment or recovery.
+Connected GitHub integration was the writer; external worktree exclusivity
+unverified. Rollback: revert feature merge; no schema or infrastructure
+change. Canonical documentation PR requires its own exact-head and final
+merged-main CI before final canonical acceptance.
+
+**Next:** Establish independent operator/collector authentication, protected
+key/clock/endpoint/replay execution boundary, then explicitly approved
+read-only monitoring.
