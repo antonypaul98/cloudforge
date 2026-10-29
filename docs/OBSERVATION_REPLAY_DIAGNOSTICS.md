@@ -46,3 +46,23 @@ independently authorized operator should decide whether a new, higher sequence
 is appropriate in a future trusted collector. No real endpoint, Mac/device,
 provider or infrastructure is accessed. Rollback is reverting the feature
 merge; no migration or production files are involved.
+
+
+## Concurrent writer snapshot safeguard
+
+The read-only diagnostic explicitly starts one deferred SQLite read transaction
+after enabling query-only mode, so the table inventory, schema checks and both
+counter reads share the same database snapshot. Without this, separate implicit
+SELECT transactions could mix a permit value from before a concurrent commit
+with evidence from after it, masking or manufacturing a gap. This reuses SQLite's
+documented transaction/snapshot behavior; no external code or dependency is
+introduced. Official sources: https://www.sqlite.org/isolation.html and
+https://www.sqlite.org/lang_transaction.html .
+
+Two deterministic WAL-mode regressions inject a concurrent evidence counter
+advance and a new evidence-table creation between the permit and evidence
+reads. The first diagnostic sees the earlier consistent snapshot, while a new
+inspection sees the committed change. This does not make the caller-selected
+ledger authentic, protect it against replacement/rollback, or prove a probe
+ran. The diagnostic remains read-only and does not retry or recover permits.
+Rollback: revert this feature commit; no schema or deployment migration.

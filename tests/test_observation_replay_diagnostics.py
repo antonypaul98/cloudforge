@@ -128,3 +128,65 @@ def test_no_network_access_during_diagnosis(tmp_path, monkeypatch):
     _ledger(path, permit=7)
     monkeypatch.setattr(socket, "socket", lambda *_a, **_kw: pytest.fail("network used"))
     assert _inspect(path).permit_ahead
+
+
+def test_gap_counters_use_one_snapshot_during_concurrent_wal_commit(
+    tmp_path, monkeypatch,
+):
+    import cloudforge.observation_replay_diagnostics as diagnostic_module
+
+    path = tmp_path / "ledger.db"
+    _ledger(path, permit=7, evidence=6)
+    with sqlite3.connect(path) as db:
+        assert db.execute("PRAGMA journal_mode=WAL").fetchone() == ("wal",)
+
+    original = diagnostic_module._counter
+
+    def advance_evidence_between_reads(db, table, keys):
+        sequence = original(db, table, keys)
+        if table == "runtime_permit_use":
+            # WAL permits a concurrent writer while this read snapshot is open.
+            with sqlite3.connect(path, timeout=2) as writer:
+                writer.execute(
+                    "UPDATE observation_replay SET last_sequence = 8 "
+                    "WHERE plan_sha256 = ? AND source_id = ?",
+                    (_PLAN, _SOURCE),
+                )
+        return sequence
+
+    with monkeypatch.context() as patch:
+        patch.setattr(diagnostic_module, "_counter", advance_evidence_between_reads)
+        first = _inspect(path)
+    assert first == diagnostic_module.SyntheticReplayGap(7, 6, True)
+    # A new inspection must see the committed evidence counter.
+    assert _inspect(path) == diagnostic_module.SyntheticReplayGap(7, 8, False)
+
+
+def test_gap_table_presence_uses_same_snapshot_during_wal_ddl(
+    tmp_path, monkeypatch,
+):
+    import cloudforge.observation_replay_diagnostics as diagnostic_module
+
+    path = tmp_path / "ledger.db"
+    _ledger(path, permit=7, evidence_table=False)
+    with sqlite3.connect(path) as db:
+        assert db.execute("PRAGMA journal_mode=WAL").fetchone() == ("wal",)
+
+    original = diagnostic_module._counter
+
+    def create_evidence_table_between_reads(db, table, keys):
+        sequence = original(db, table, keys)
+        if table == "runtime_permit_use":
+            with sqlite3.connect(path, timeout=2) as writer:
+                writer.execute(EVIDENCE_SCHEMA)
+                writer.execute(
+                    "INSERT INTO observation_replay VALUES (?, ?, ?)",
+                    (_PLAN, _SOURCE, 7),
+                )
+        return sequence
+
+    with monkeypatch.context() as patch:
+        patch.setattr(diagnostic_module, "_counter", create_evidence_table_between_reads)
+        first = _inspect(path)
+    assert first == diagnostic_module.SyntheticReplayGap(7, 0, True)
+    assert _inspect(path) == diagnostic_module.SyntheticReplayGap(7, 7, False)

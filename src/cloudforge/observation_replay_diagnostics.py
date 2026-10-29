@@ -75,6 +75,9 @@ def inspect_synthetic_https_replay_gap(
     try:
         with closing(sqlite3.connect(uri, timeout=5, uri=True)) as db:
             db.execute("PRAGMA query_only = ON")
+            # Pin both counter reads and schema checks to one consistent snapshot.
+            # Separate implicit SELECT transactions can observe different commits.
+            db.execute("BEGIN")
             tables = db.execute(
                 "SELECT name FROM sqlite_master WHERE name IN "
                 "('runtime_permit_use', 'observation_replay')"
