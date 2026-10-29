@@ -12,6 +12,7 @@ from .local_adapter import LocalExecutionApproval, LocalExecutionReceipt
 from .observation_evidence import ObservationSample
 from .observation_https_fixture import collect_pinned_https_fixture_samples
 from .observation_plan import ObservationPlan
+from .observation_permit_replay import _consume_verified_permit
 from .observation_runtime_dns import RuntimeDNSPinset
 from .observation_runtime_permit import RuntimeHEADPermit, verify_runtime_head_permit
 from .observation_runtime_request import RuntimeObservationRequest, RuntimeObservationTarget
@@ -38,6 +39,7 @@ def collect_permitted_pinned_https_fixture_samples(
     sequence: int,
     now_unix: int,
     connection_factory: Callable,
+    permit_ledger_path: str | None = None,
 ) -> tuple[ObservationSample, ...]:
     """Reject a mismatched caller-held permit before invoking any fake connection.
 
@@ -57,6 +59,10 @@ def collect_permitted_pinned_https_fixture_samples(
     # conservative caller-clock budget, not a hard runtime cancellation.
     if sum(probe.timeout_seconds for probe in plan.probes) > permit.valid_until_unix - now_unix:
         raise ValueError("runtime HEAD permit expires before synthetic probe budget")
+    # Opt-in at-most-once local guard. Consume before any injected connection;
+    # failures still burn the sequence. No claim of real-world authorization.
+    if permit_ledger_path is not None:
+        _consume_verified_permit(permit, permit_ledger_path)
     return collect_pinned_https_fixture_samples(
         handoff, artifact, approval, receipt, plan, targets, request,
         resolved_ipv4, resolved_ipv6, pinset,
