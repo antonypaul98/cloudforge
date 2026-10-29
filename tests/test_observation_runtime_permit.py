@@ -773,3 +773,80 @@ def test_signed_https_observation_cannot_predate_permit_or_burn_sequence(
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (permit.sequence,)
+
+
+# Operator pin is an optional configuration-integrity check, not identity auth.
+from cloudforge.observation_operator_policy import verify_observation_operator_key_pin
+
+
+def test_signed_https_operator_and_source_pins_compose_before_fixture(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "both-pins.db"
+    operator_pin = hashlib.sha256(kwargs["operator_key"]).hexdigest()
+    evidence = _signed_https_fixture(
+        args, kwargs, permit, ledger,
+        source_pin=_https_source_pin(args, kwargs), require_source_pin=True,
+        operator_key_sha256=operator_pin, require_operator_pin=True,
+    )
+    assert evidence.sequence == 7
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (7,)
+
+
+@pytest.mark.parametrize("case", [
+    "missing", "mismatch", "uppercase", "short", "bool_pin",
+    "bytes_pin", "bad_required_type", "rotated_operator",
+])
+def test_signed_https_operator_pin_rejects_before_ledger_and_head(tmp_path, case):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "operator-denied.db"
+    fingerprint = hashlib.sha256(kwargs["operator_key"]).hexdigest()
+    changes = {"operator_key_sha256": fingerprint, "require_operator_pin": True}
+    if case == "missing":
+        changes["operator_key_sha256"] = None
+    elif case == "mismatch":
+        changes["operator_key_sha256"] = "0" * 64
+    elif case == "uppercase":
+        changes["operator_key_sha256"] = fingerprint.upper()
+    elif case == "short":
+        changes["operator_key_sha256"] = fingerprint[:-1]
+    elif case == "bool_pin":
+        changes["operator_key_sha256"] = True
+    elif case == "bytes_pin":
+        changes["operator_key_sha256"] = fingerprint.encode("ascii")
+    elif case == "bad_required_type":
+        changes["require_operator_pin"] = 1
+    elif case == "rotated_operator":
+        changes["operator_key"] = bytes(range(64, 96))
+    denied = Mock(side_effect=AssertionError("invalid operator pin reached HEAD"))
+    with pytest.raises(ValueError):
+        _signed_https_fixture(args, kwargs, permit, ledger, denied, **changes)
+    denied.assert_not_called()
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("key,pin,required", [
+    (b"short", None, False),
+    (bytearray(bytes(range(32, 64))), None, False),
+    (bytes(range(32, 64)), None, True),
+    (bytes(range(32, 64)), False, False),
+    (bytes(range(32, 64)), "0" * 64, False),
+    (bytes(range(32, 64)), "x" * 64, False),
+    (bytes(range(32, 64)), None, 1),
+])
+def test_operator_pin_helper_rejects_invalid_policy(key, pin, required):
+    with pytest.raises(ValueError):
+        verify_observation_operator_key_pin(
+            key, operator_key_sha256=pin, require_operator_pin=required,
+        )
+
+
+def test_operator_pin_helper_preserves_legacy_opt_out():
+    key = bytes(range(32, 64))
+    assert verify_observation_operator_key_pin(key)
+    assert verify_observation_operator_key_pin(
+        key, operator_key_sha256=hashlib.sha256(key).hexdigest(),
+        require_operator_pin=True,
+    )
