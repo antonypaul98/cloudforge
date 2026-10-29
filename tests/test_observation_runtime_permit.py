@@ -177,3 +177,79 @@ def test_permit_is_pure_no_network_shell_or_clock(monkeypatch):
         guard.setattr(time, "time", forbidden)
         permit = issue_runtime_head_permit(*args, **kwargs)
         assert _verify(args, kwargs, permit)
+
+
+# Opt-in synthetic fixture seam: permit preflight must precede any factory call.
+from unittest.mock import Mock
+
+from cloudforge.observation_permitted_https_fixture import (
+    collect_permitted_pinned_https_fixture_samples,
+)
+
+
+def _permitted_fixture(args, kwargs, permit, factory, **changes):
+    policy = {key: kwargs[key] for key in (
+        "allowed_ipv4", "allowed_ipv6", "source_id", "source_key",
+        "operator_key", "sequence",
+    )}
+    policy.update(now_unix=_NOW, connection_factory=factory)
+    policy.update(changes)
+    return collect_permitted_pinned_https_fixture_samples(
+        *args, permit, **policy,
+    )
+
+
+def test_permitted_synthetic_head_uses_exact_targets_after_mac_preflight(monkeypatch):
+    args, kwargs, permit = _issued()
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("unexpected real socket in permitted fixture")
+    monkeypatch.setattr(socket, "socket", forbidden)
+    connection = Mock()
+    connection.getresponse.return_value.status = 204
+    factory = Mock(return_value=connection)
+
+    samples = _permitted_fixture(args, kwargs, permit, factory)
+    assert [(sample.kind, sample.outcome) for sample in samples] == [
+        ("readiness", "pass"), ("liveness", "pass"),
+    ]
+    assert factory.call_count == 2
+    assert [call.args[1] for call in factory.call_args_list] == [
+        "1.1.1.1", "2606:4700:4700::1111",
+    ]
+    assert [call.args for call in connection.request.call_args_list] == [
+        ("HEAD", "/ready"), ("HEAD", "/live"),
+    ]
+
+
+@pytest.mark.parametrize("mutation", [
+    "mac", "expired", "early", "source", "operator_key",
+    "sequence", "artifact", "target", "pinset", "allowlist",
+])
+def test_permitted_fixture_rejects_invalid_policy_before_factory(mutation):
+    args, kwargs, permit = _issued()
+    args = list(args)
+    changes = {}
+    if mutation == "mac":
+        permit = replace(permit, mac_sha256="0" * 64)
+    elif mutation == "expired":
+        changes["now_unix"] = _NOW + 21
+    elif mutation == "early":
+        changes["now_unix"] = _NOW - 11
+    elif mutation == "source":
+        changes["source_id"] = "collector-other"
+    elif mutation == "operator_key":
+        changes["operator_key"] = bytes(range(64, 96))
+    elif mutation == "sequence":
+        changes["sequence"] = 8
+    elif mutation == "artifact":
+        args[1] = b"changed"
+    elif mutation == "target":
+        args[5] = (replace(args[5][0], path="/other"), args[5][1])
+    elif mutation == "pinset":
+        args[9] = replace(args[9], ordered_address_sets_sha256="0" * 64)
+    else:
+        changes["allowed_ipv4"] = (("8.8.8.8",), ())
+    factory = Mock(side_effect=AssertionError("factory invoked before permit check"))
+    with pytest.raises((ValueError, PermissionError)):
+        _permitted_fixture(tuple(args), kwargs, permit, factory, **changes)
+    factory.assert_not_called()
