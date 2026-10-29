@@ -59,6 +59,11 @@ def collect_permitted_pinned_https_fixture_samples(
     # conservative caller-clock budget, not a hard runtime cancellation.
     if sum(probe.timeout_seconds for probe in plan.probes) > permit.valid_until_unix - now_unix:
         raise ValueError("runtime HEAD permit expires before synthetic probe budget")
+    # A missing or noncallable fixture is a caller configuration error, not
+    # an attempted HEAD. Reject it before irrevocably burning a permit.
+    # The lower-level fixture repeats this validation before any fake I/O.
+    if not callable(connection_factory):
+        raise ValueError("synthetic HTTPS connection factory is required")
     # Opt-in at-most-once local guard. Consume before any injected connection;
     # failures still burn the sequence. No claim of real-world authorization.
     if permit_ledger_path is not None:
