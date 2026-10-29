@@ -73,6 +73,21 @@ def review_application_manifests(
     plan = derive_requirements(inspected.profile)
     proposal = render_iac_proposal(plan)
     request = prepare_deployment_request(plan, proposal, target_id)
+    # The canonical handoff binds inferred requirements, not every source byte.
+    # Keep this separate, review-only digest so a dependency-preserving source
+    # change cannot silently reuse the same demo provenance packet.
+    source_binding = {
+        "format_version": 1,
+        "operation": "bind-manifests-to-review",
+        "application": name,
+        "target_id": target_id,
+        "manifest_sha256": fingerprints,
+        "handoff_request_digest": request.digest,
+    }
+    binding_digest = hashlib.sha256(json.dumps(
+        source_binding, sort_keys=True, separators=(",", ":"),
+        ensure_ascii=True, allow_nan=False,
+    ).encode("utf-8")).hexdigest()
     return {
         "demo_only": True,
         "inspection": {
@@ -88,6 +103,11 @@ def review_application_manifests(
             "target_id": request.target_id,
             "request_digest": request.digest,
             "status": "approval-required",
+        },
+        "source_review_binding": {
+            **source_binding,
+            "digest": binding_digest,
+            "status": "review-only-not-approved",
         },
         "authenticated_review": False,
         "infrastructure_mutated": False,

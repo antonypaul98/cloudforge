@@ -148,3 +148,56 @@ def test_no_network_or_process_execution_in_pure_review(monkeypatch):
         guard.setattr(os, "system", forbidden)
         payload = review_application_manifests("app", PYTHON, "review-target")
     assert payload["infrastructure_mutated"] is False
+
+
+def test_source_binding_changes_on_same_requirements_with_changed_source_bytes():
+    before = review_application_manifests("sample-api", PYTHON, "review-staging")
+    after = review_application_manifests(
+        "sample-api", {"requirements.txt": PYTHON["requirements.txt"] + "# edited comment\n"},
+        "review-staging",
+    )
+    # The inferred resources and legacy deployment request are unchanged.
+    assert before["plan_digest"] == after["plan_digest"]
+    assert before["handoff_request"]["request_digest"] == after["handoff_request"]["request_digest"]
+    # The new provenance packet binds the exact manifest bytes, including comments.
+    assert before["source_review_binding"]["digest"] != after["source_review_binding"]["digest"]
+    assert before["inspection"]["manifest_sha256"] != after["inspection"]["manifest_sha256"]
+
+
+def test_source_binding_is_recomputable_without_secret_or_approval():
+    result = review_application_manifests("sample-api", PYTHON, "review-staging")
+    binding = result["source_review_binding"]
+    import hashlib
+    payload = {key: value for key, value in binding.items() if key not in {"digest", "status"}}
+    expected = hashlib.sha256(json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True,
+        allow_nan=False,
+    ).encode("utf-8")).hexdigest()
+    assert binding["digest"] == expected
+    assert binding["status"] == "review-only-not-approved"
+    assert binding["manifest_sha256"] == result["inspection"]["manifest_sha256"]
+    assert binding["handoff_request_digest"] == result["handoff_request"]["request_digest"]
+    assert result["authenticated_review"] is False
+    assert result["infrastructure_mutated"] is False
+
+
+def test_source_binding_is_independent_of_manifest_insertion_order():
+    one = {"requirements.txt": "redis>=5\n", "pyproject.toml": "[project]\ndependencies = []\n"}
+    two = dict(reversed(list(one.items())))
+    first = review_application_manifests("app", one, "review-target")
+    second = review_application_manifests("app", two, "review-target")
+    assert first == second
+    assert first["source_review_binding"]["digest"] == second["source_review_binding"]["digest"]
+
+
+def test_source_binding_changes_with_target_even_when_manifest_is_unchanged():
+    first = review_application_manifests("app", PYTHON, "review-a")
+    second = review_application_manifests("app", PYTHON, "review-b")
+    assert first["source_review_binding"]["digest"] != second["source_review_binding"]["digest"]
+    assert first["inspection"]["manifest_sha256"] == second["inspection"]["manifest_sha256"]
+
+
+def test_source_binding_does_not_expose_manifest_comment_text():
+    result = review_application_manifests("app", PYTHON, "review-target")
+    assert "do-not-leak" not in json.dumps(result["source_review_binding"])
+    assert set(result["source_review_binding"]["manifest_sha256"]) == {"requirements.txt"}
