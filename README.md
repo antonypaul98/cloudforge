@@ -6,6 +6,15 @@ An [unwired explicit-root mTLS client context](docs/OBSERVATION_MTLS_BOUNDARY.md
 
 A separate [read-only observation proposal](docs/OBSERVATION_PLAN.md) can now describe bounded startup/readiness/liveness checks tied to an exact local authorization receipt. It does not run probes or verify health. A separate [in-memory observation evidence intake](docs/OBSERVATION_EVIDENCE.md) can verify keyed, exact-plan-bound synthetic sample envelopes, but cannot authenticate a live collector or establish service health. An opt-in [local SQLite replay ledger](docs/OBSERVATION_REPLAY.md) now rejects repeated sequences across local processes, but does not run probes or establish collector identity.
 
+## Review a real application manifest (read-only demo)
+
+CloudForge can now inspect a **caller-selected real Python or Node manifest** and produce deterministic, provider-neutral proposed resources plus an exact-target deployment handoff request, without credentials or executing the application:
+
+```sh
+python -m cloudforge.application_demo --name my-api --target review-staging --manifest ./requirements.txt
+```
+
+See [demo readiness, limitations, and competitive comparison](docs/DEMO_READINESS.md). This is a **review-only first milestone**, not executable Terraform/OpenTofu/Pulumi IaC, authenticated approval, real deployment, monitoring, or recovery.
 ## Try the credential-free synthetic demo
 
 The demonstration was integrated into `main` through [PR #6](https://github.com/antonypaul98/cloudforge/pull/6) after exact-head CI and merged-main CI passed. It uses in-memory synthetic reviewers, a synthetic target and fixed artifact bytes. It does not require AWS credentials, a cloud account or physical hardware.
