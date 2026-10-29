@@ -72,3 +72,40 @@ endpoint authorization remain mandatory for production. No live network,
 infrastructure mutation, deployment, recovery or physical Mac validation.
 
 Rollback: revert the feature merge; no migration or external resources.
+
+
+## Optional durable synthetic permit consumption (2026-10-29)
+
+The injected fake HEAD collector accepts an optional `permit_ledger_path`.
+After the existing exact-MAC/policy and remaining-window checks, but **before**
+invoking the injected connection factory, it uses a local SQLite `BEGIN IMMEDIATE`
+transaction to advance a monotonic sequence per (source alias, runtime request
+digest). The same or older sequence is rejected across calls and processes;
+changing the source key under the same alias does not reset the counter. A
+failed fake probe still consumes the sequence: this is **at-most-once admission**,
+not exactly-once probe execution. The legacy fixture without a ledger is
+unchanged and has no replay enforcement.
+
+Reuse-first review: used the existing CloudForge replay ledger path preflight,
+SQLite conditional UPSERT and canonical schema/trigger integrity approach, with
+Python 3.11 standard-library `sqlite3` and `contextlib.closing`. Compared
+with an in-memory set (not durable), Redis/Postgres (unnecessary external
+services) and duplicating path checks (rejected). No third-party code copied,
+new dependencies, schema migration of existing tables, service fees or provider
+permissions. Reference: https://docs.python.org/3.11/library/sqlite3.html .
+
+**Not a production authorization boundary.** The caller supplies the ledger
+path, operator/source keys, clock, identity, DNS/pin policy and fake connection
+factory. SQLite path validation is best-effort and not an atomic no-follow
+open. Different ledgers, rollback of a backup, dishonest caller, alternate
+source alias or direct use of the ungated fixture can bypass this local
+admission guard. A real collector must enforce one trusted ledger/identity
+policy in a privileged boundary and obtain exact human-approved endpoint
+authorization. This does not sign runtime samples, prove health, deploy or
+recover infrastructure. No real endpoint or physical device was contacted.
+
+Tests cover reopen, repeat and lower sequences, source-key rotation, bad MAC
+before I/O, unsafe paths, tampered schema, concurrent same-sequence acceptance,
+and failure consumption. Require exact-head PR CI and merged-main CI before
+acceptance. Rollback: revert the feature merge; new local test ledger files
+are disposable only in the synthetic fixture environment.

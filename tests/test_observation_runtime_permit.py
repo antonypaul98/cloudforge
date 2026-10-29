@@ -284,3 +284,132 @@ def test_synthetic_fixture_rechecks_remaining_window_at_call_time():
     with pytest.raises(ValueError, match="expires before synthetic probe budget"):
         _permitted_fixture(args, kwargs, permit, factory, now_unix=_NOW + 18)
     factory.assert_not_called()
+
+
+# Opt-in durable synthetic permit sequence gate: no production trust claims.
+import sqlite3
+from concurrent.futures import ThreadPoolExecutor
+
+
+def _consume_fixture(args, kwargs, permit, ledger_path, factory=None):
+    connection = Mock()
+    connection.getresponse.return_value.status = 204
+    if factory is None:
+        factory = Mock(return_value=connection)
+    samples = _permitted_fixture(
+        args, kwargs, permit, factory, permit_ledger_path=str(ledger_path),
+    )
+    return samples, factory
+
+
+def test_permit_ledger_rejects_repeat_before_any_factory(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    samples, factory = _consume_fixture(args, kwargs, permit, ledger)
+    assert len(samples) == 2
+    assert factory.call_count == 2
+    denied = Mock(side_effect=AssertionError("replayed permit reached factory"))
+    with pytest.raises(ValueError, match="already consumed"):
+        _consume_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+
+
+def test_permit_ledger_survives_reopen_and_requires_increasing_sequence(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    _consume_fixture(args, kwargs, permit, ledger)
+    permit8 = issue_runtime_head_permit(*args, **dict(kwargs, sequence=8))
+    _consume_fixture(args, dict(kwargs, sequence=8), permit8, ledger)
+    denied = Mock(side_effect=AssertionError("old permit reached factory"))
+    with pytest.raises(ValueError, match="already consumed"):
+        _consume_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+
+
+def test_rotating_source_key_does_not_reset_permit_sequence(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    _consume_fixture(args, kwargs, permit, ledger)
+    rotated = dict(kwargs, source_key=bytes(range(33, 65)))
+    rotated7 = issue_runtime_head_permit(*args, **rotated)
+    denied = Mock(side_effect=AssertionError("rotated duplicate reached factory"))
+    with pytest.raises(ValueError, match="already consumed"):
+        _consume_fixture(args, rotated, rotated7, ledger, denied)
+    denied.assert_not_called()
+    rotated8 = issue_runtime_head_permit(*args, **dict(rotated, sequence=8))
+    _consume_fixture(args, dict(rotated, sequence=8), rotated8, ledger)
+
+
+def test_invalid_mac_rejected_before_ledger_creation(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "new.db"
+    denied = Mock(side_effect=AssertionError("invalid MAC reached factory"))
+    with pytest.raises(ValueError):
+        _consume_fixture(args, kwargs, replace(permit, mac_sha256="0" * 64),
+                         ledger, denied)
+    denied.assert_not_called()
+    assert not ledger.exists()
+
+
+@pytest.mark.parametrize("bad_path", ["relative.db", "", None])
+def test_invalid_permit_ledger_path_fails_before_factory(tmp_path, bad_path):
+    args, kwargs, permit = _issued()
+    if bad_path is None:
+        bad_path = str(tmp_path)  # existing directory, not a regular ledger
+    denied = Mock(side_effect=AssertionError("bad path reached factory"))
+    with pytest.raises(ValueError):
+        _consume_fixture(args, kwargs, permit, bad_path, denied)
+    denied.assert_not_called()
+
+
+def test_permit_ledger_rejects_modified_schema_and_triggers(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    with sqlite3.connect(ledger) as db:
+        db.execute(
+            "CREATE TABLE runtime_permit_use "
+            "(source_id TEXT, runtime_request_sha256 TEXT, last_sequence TEXT)"
+        )
+    denied = Mock(side_effect=AssertionError("bad schema reached factory"))
+    with pytest.raises(ValueError, match="schema mismatch"):
+        _consume_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+
+
+def test_two_concurrent_consumers_accept_at_most_one(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    def attempt():
+        try:
+            _consume_fixture(args, kwargs, permit, ledger)
+            return True
+        except ValueError as exc:
+            assert "already consumed" in str(exc)
+            return False
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(lambda _: attempt(), range(2)))
+    assert sorted(results) == [False, True]
+
+
+def test_failed_fake_probe_still_consumes_permit(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "permit.db"
+    failing = Mock(side_effect=OSError("synthetic fixture unavailable"))
+    samples, _ = _consume_fixture(args, kwargs, permit, ledger, failing)
+    assert [s.outcome for s in samples] == ["unknown", "unknown"]
+    denied = Mock(side_effect=AssertionError("reused failed permit"))
+    with pytest.raises(ValueError, match="already consumed"):
+        _consume_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+
+
+def test_permit_ledger_rejects_symlink_without_touching_target(tmp_path):
+    args, kwargs, permit = _issued()
+    target = tmp_path / "target.db"
+    link = tmp_path / "alias.db"
+    link.symlink_to(target)
+    denied = Mock(side_effect=AssertionError("alias reached factory"))
+    with pytest.raises(ValueError):
+        _consume_fixture(args, kwargs, permit, link, denied)
+    denied.assert_not_called()
+    assert not target.exists()
