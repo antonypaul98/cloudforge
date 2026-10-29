@@ -1499,3 +1499,43 @@ ownership remains unverified. Rollback is revert of feature merge; no migration.
 **Next:** Independent operator/collector authentication, protected
 key/clock/endpoint policy and durable execution boundary before exact
 human-approved real read-only service monitoring with signed runtime evidence.
+
+
+## Synthetic HTTPS factory preflight — accepted feature (2026-10-29 ET)
+
+Feature [PR #85](https://github.com/antonypaul98/cloudforge/pull/85)
+exact source head `2795421670f29124dfd8c38bfa296de733f783d7` passed
+[push CI #40846726793](https://github.com/antonypaul98/cloudforge/actions/runs/40846726793)
+and [exact-head PR CI #40846772456](https://github.com/antonypaul98/cloudforge/actions/runs/40846772456).
+Guarded squash merge `40fdc215c3ccd6a8bd6eeecddd68629f5f8d1af5`
+passed [merged-main CI #40846895046](https://github.com/antonypaul98/cloudforge/actions/runs/40846895046):
+**1,204 pytest passed** (six new synthetic cases), infrastructure **18
+passed/1 skipped**, Python 3.11.17. No independent local full-suite run:
+shell GitHub DNS was unavailable and local Python 3.11 was absent.
+
+Both the permitted synthetic HEAD fixture and signed evidence intake now
+reject missing/noncallable injected connection factories before consuming
+the one-shot permit; the signed path also rejects before read-only evidence
+replay preflight. Previously a caller configuration error could burn a valid
+permit without running any HEAD fixture. Tests cover three invalid factory
+values at both entry points, no premature ledger use and successful reuse
+of the same permit with a proper fake factory. Existing CloudForge validation
+and Python's built-in `callable` were reused; no third-party code, new
+dependency, provider operation, credential, infrastructure mutation, real
+endpoint or physical Mac test. See
+[scope, provenance and rollback](docs/OBSERVATION_PERMITTED_HTTPS_INTAKE.md).
+
+**Synthetic-only acceptance:** A callable factory can still perform real
+network I/O if supplied by an unsafe caller. No independently authenticated
+operator/collector, trusted key/clock/DNS/endpoint policy, protected replay
+boundary, signed *runtime* service evidence, production deployment or
+recovery is established. Connected GitHub integration wrote the feature;
+exclusive external worktree ownership remains unverified. Work/Astra were
+not invoked. Revert the feature merge for rollback; no migration.
+Canonical documentation acceptance requires its own exact-head and final
+merged-main CI.
+
+**Next:** Establish independent operator/collector identity and protected
+execution trust roots. Only then consider an explicitly human-approved,
+read-only endpoint collector with signed runtime evidence; no real endpoint
+or infrastructure mutation without exact plans and human approval.
