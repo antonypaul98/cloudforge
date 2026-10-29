@@ -54,3 +54,39 @@ infrastructure mutation was performed.
 
 Rollback is revert of the feature merge. New synthetic SQLite files are
 disposable test artifacts only; do not remove production or unknown files.
+
+
+## Optional source-key pin and revocation preflight (2026-10-29)
+
+The signed synthetic HTTPS intake now reuses the existing loopback-fixture
+`verify_observation_source_policy` and `verify_observation_source_pin`
+contracts. Optional `source_pin`, `require_source_pin` and
+`revoked_key_sha256` arguments bind the exact observation plan, source alias,
+source-key fingerprint, caller-provided observation/current time window, and
+an explicit revoked-key set. The policy is checked after exact HEAD permit
+validation but **before** SQLite replay preflight, permit consumption or any
+injected connection factory. Missing strict pins, revoked keys, malformed
+policy, changed source/plan/key and expired/future pin windows fail closed.
+
+This is an opt-in compatibility-preserving addition to the signed intake;
+the lower-level permitted fixture and old unpinned callers still exist. A
+caller can omit the policy, change its trust inputs or bypass the intake.
+Nothing here authenticates the operator or collector, securely distributes
+keys, trusts DNS/clock/ledger, authorizes a real endpoint, or creates an
+isolated network sandbox. The new regression cases cover valid strict mode,
+12 invalid/malformed/boundary policies rejected before any factory or ledger
+creation, and key rotation requiring a new pin without resetting counters.
+
+Reuse/provenance: audited the existing loopback intake, source policy, pin
+verifier, HTTPS permit/intake and their tests. Reused existing CloudForge
+Python 3.11 code and standard-library SHA-256, HMAC and dataclasses; no
+external code, translation, package, provider, credentials or cost. Compared
+reusing the existing strict policy with inventing a new HTTPS-only trust
+schema; reused the former to avoid divergent semantics. Relevant existing
+reference: [source-pin contract](OBSERVATION_SOURCE_PIN.md).
+Validation requires exact-head Python 3.11 complete suite, infrastructure
+guards, guarded merge and merged-main CI. Rollback: revert the feature merge;
+no migration or infrastructure change. Next production gate remains
+independently authenticated operator/collector identities and protected
+key/clock/endpoint/replay execution boundary, followed by separately approved
+read-only service monitoring.
