@@ -1683,3 +1683,40 @@ its own exact-head and final merged-main CI before final acceptance.
 **Next:** Independently authenticate operator/collector identities and
 establish protected key/clock/endpoint/replay execution boundaries,
 then explicitly approve and validate read-only live monitoring.
+
+
+## Optional operator-key fingerprint preflight — accepted synthetic feature (2026-10-29 ET)
+
+Feature [PR #95](https://github.com/antonypaul98/cloudforge/pull/95)
+source head `2486872a89e38f0235f590655ca402e084658a53` passed
+[push CI #40898441429](https://github.com/antonypaul98/cloudforge/actions/runs/40898441429)
+and [exact-head PR CI #40898503679](https://github.com/antonypaul98/cloudforge/actions/runs/40898503679).
+Guarded squash merge `8e3c3bb7136fd0565bab1e7149f1a43dbd354091` passed
+[merged-main CI #40898630758](https://github.com/antonypaul98/cloudforge/actions/runs/40898630758):
+**1,258 pytest passed** (17 new offline cases), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. Local Python 3.13 checked only
+six standalone helper assertions; it was not the repository suite.
+
+Signed synthetic HTTPS intake now optionally validates a separately
+supplied lowercase SHA-256 operator-key fingerprint, including strict
+requirement mode, before SQLite replay reads or fake HEAD calls. It composes
+with the existing source pin and operator/source distinct-key permit checks.
+Malformed, missing or mismatched pins fail closed; old unpinned callers
+remain compatible. Existing CloudForge contracts and Python standard-library
+hashlib/hmac were reused without copied third-party code, dependency, API,
+provider, credentials, infrastructure, real network, physical Mac, Work or
+Astra. See [provenance and rollback](docs/OBSERVATION_PERMITTED_HTTPS_INTAKE.md).
+
+**Synthetic-only limitation:** The caller still controls both the key and
+expected digest. This is configuration consistency, **not independently
+authenticated operator or collector identity**. No protected key/clock/DNS/
+endpoint/replay execution, real monitoring, deployment or recovery is
+established. Connected GitHub integration wrote the feature; external
+worktree exclusivity is unverified. Revert feature merge for rollback;
+no schema migration. Canonical documentation PR must pass its own exact-head
+and final merged-main CI before final canonical acceptance.
+
+**Next:** Provision an independent trust root and authenticate operator/
+collector workloads, protect runtime key/clock/endpoint/replay boundaries,
+then obtain exact human approval for any real read-only endpoint. Do not
+replace this milestone with additional optional fixture pins.
