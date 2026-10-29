@@ -24,6 +24,8 @@ from .observation_replay import (
 from .observation_runtime_dns import RuntimeDNSPinset
 from .observation_runtime_permit import RuntimeHEADPermit, verify_runtime_head_permit
 from .observation_runtime_request import RuntimeObservationRequest, RuntimeObservationTarget
+from .observation_source_pin import ObservationSourcePin, verify_observation_source_pin
+from .observation_source_policy import verify_observation_source_policy
 
 
 def collect_and_accept_permitted_pinned_https_fixture_evidence(
@@ -50,6 +52,9 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
     max_age_seconds: int,
     ledger_path: str,
     connection_factory: Callable,
+    source_pin: ObservationSourcePin | None = None,
+    require_source_pin: bool = False,
+    revoked_key_sha256: tuple[str, ...] = (),
 ) -> ObservationEvidence:
     """Accept signed synthetic samples only after two SQLite replay checks.
 
@@ -70,6 +75,19 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
     )
     if sum(p.timeout_seconds for p in plan.probes) > permit.valid_until_unix - now_unix:
         raise ValueError("runtime HEAD permit expires before synthetic probe budget")
+
+    # Reuse the existing optional source-key pin/revocation policy before any
+    # ledger access or injected HEAD factory. These caller-provided settings
+    # do not establish independent collector identity or trusted key custody.
+    verify_observation_source_policy(
+        source_key, source_pin, require_source_pin=require_source_pin,
+        revoked_key_sha256=revoked_key_sha256,
+    )
+    if source_pin is not None:
+        verify_observation_source_pin(
+            plan, source_pin, source_id=source_id, source_key=source_key,
+            observed_at_unix=observed_at_unix, now_unix=now_unix,
+        )
 
     # Validate evidence freshness/MAC context and reject known evidence replay
     # before any fake HEAD. The final SQLite transaction is authoritative for
