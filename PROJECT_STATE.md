@@ -1221,3 +1221,40 @@ an injected factory is not a security boundary.
 collector with trusted exact endpoint/IP, source key and clock, signed evidence,
 separate operator authorization and rollback boundary. Do not access a real
 service without explicit human approval.
+
+
+## Proposed HTTPS HEAD operator-key permit — 2026-10-28 ET
+
+Feature [PR #69](https://github.com/antonypaul98/cloudforge/pull/69)
+merged as `a7ba9322ac29316d21f5ba56a874f160e234811f` after
+exact source head `8f8eeb7634acf9bc2ac8ebb1d27252c992ae98e7` passed
+[push CI #40798438798](https://github.com/antonypaul98/cloudforge/actions/runs/40798438798)
+and [PR CI #40798444277](https://github.com/antonypaul98/cloudforge/actions/runs/40798444277).
+[Feature merged-main CI #40798558609](https://github.com/antonypaul98/cloudforge/actions/runs/40798558609)
+passed: **1128 pytest passed** (32 new synthetic tests), 19 infrastructure
+checks (18 passed, 1 skipped), Python 3.11.17. The initial CI attempt failed
+because a test incorrectly treated `valid_from == now` as invalid; the
+expectation was corrected and the new exact head passed before merge.
+No separate local full-suite run: container shell GitHub DNS unavailable.
+
+`issue_runtime_head_permit` and `verify_runtime_head_permit` bind the
+exact proposed HTTPS HEAD request, caller-supplied dual-stack pinset, source
+alias/key fingerprint, one sequence and a maximum five-minute validity window
+using a distinct operator-key HMAC. Both revalidate the existing exact
+handoff/receipt/plan/target/pinset chain before acceptance. This is a
+**no-I/O software-only permit**; it neither authenticates a human/collector
+nor grants permission to contact a real endpoint. See
+[scope, reuse and rollback](docs/OBSERVATION_RUNTIME_PERMIT.md).
+
+Reused existing CloudForge validators and Python 3.11 standard-library
+HMAC; no third-party code, new dependencies, service costs or provider
+permissions. No live DNS/network, real infrastructure mutation, signed
+runtime evidence, deployment, recovery or physical Mac validation.
+Connected GitHub integration was the writer; external worktree exclusivity
+remains unverified. Work/Astra were not invoked.
+
+**Next:** Independently authenticate operator and collector, establish
+trusted key/clock/DNS/allowlist provenance, atomically enforce one-shot
+sequence, and only then wire an explicitly approved exact-endpoint/IP
+HEAD-only runtime collector with signed evidence. No real service access
+without explicit human approval.
