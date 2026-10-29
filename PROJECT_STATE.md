@@ -1391,3 +1391,40 @@ unverified. No Work/Astra invoked. Rollback is feature-merge revert.
 trusted key/clock/DNS/endpoint policy and protected replay boundary, then
 explicitly approve an exact read-only endpoint before real monitoring.
 Canonical acceptance documentation has its own exact-head and merged-main CI.
+
+
+## Read-only synthetic HTTPS replay-gap diagnostic — accepted (2026-10-29 ET)
+
+Feature [PR #79](https://github.com/antonypaul98/cloudforge/pull/79) exact
+head `07dc3428c12003690fff981f6844165b18c83efe` passed
+[push CI #40827337800](https://github.com/antonypaul98/cloudforge/actions/runs/40827337800)
+and [PR CI #40827358657](https://github.com/antonypaul98/cloudforge/actions/runs/40827358657).
+Guarded squash merge `0bb46f13f1f0744235af0787c00b4ab2fdc3cf08`
+passed [merged-main CI #40827444731](https://github.com/antonypaul98/cloudforge/actions/runs/40827444731)
+on Python 3.11.17: **1,182 pytest passed** (16 new synthetic tests);
+infrastructure **18 passed, 1 skipped**. Separate isolated Python 3.13
+stubbed smoke passed 16 cases; it is not full-repository evidence.
+
+New read-only `inspect_synthetic_https_replay_gap` compares a consumed
+permit sequence and accepted evidence sequence from one caller-selected
+SQLite ledger, detecting a *possible* interrupted two-transaction intake
+without changing either counter, reissuing permits or probing services.
+It reuses CloudForge schema/path/source validation and Python standard-library
+SQLite read-only mode. No third-party code, new dependencies, cloud cost,
+credentials, real endpoint, provider, infrastructure or physical Mac changes.
+See [scope, provenance and rollback](docs/OBSERVATION_REPLAY_DIAGNOSTICS.md).
+
+**Synthetic-only acceptance:** Different counter key scopes mean a gap is
+only a signal, and equal counters do not prove an individual request ran
+or produced signed evidence. Caller-held ledger, keys, identity, clock, DNS
+and fake factory are not independently trusted. No production monitoring,
+automatic recovery, deployment or real runtime evidence. Work/Astra were
+not invoked; connected GitHub integration wrote the checkpoint, and external
+worktree exclusivity remains unverified. Revert feature merge for rollback;
+no migration. Canonical acceptance documentation requires its own exact-head
+and merged-main CI.
+
+**Next:** Prioritize independent operator/collector authentication, protected
+keys/clock/endpoint policy and replay boundary, then explicitly approved
+read-only monitoring with signed runtime provenance. Never reset consumed
+permits automatically.
