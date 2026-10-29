@@ -1646,3 +1646,40 @@ merged-main CI before final canonical acceptance.
 **Next:** Establish independent operator/collector authentication, protected
 key/clock/endpoint/replay execution boundary, then explicitly approved
 read-only monitoring.
+
+
+## Deterministic recovery review proposal — accepted synthetic feature (2026-10-29 ET)
+
+Feature [PR #93](https://github.com/antonypaul98/cloudforge/pull/93)
+source head c87c75601d5aa00bdc795003f217581d8f498f7f passed
+[push CI #40879159606](https://github.com/antonypaul98/cloudforge/actions/runs/40879159606)
+and [exact-head PR CI #40879184437](https://github.com/antonypaul98/cloudforge/actions/runs/40879184437).
+Guarded squash merge 052bf4cffc768fb5be44b14bea9205ec869c4347 passed
+[merged-main CI #40879404105](https://github.com/antonypaul98/cloudforge/actions/runs/40879404105):
+**1,241 pytest passed** (17 new synthetic cases), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. Full suite was verified in
+GitHub CI; no independent local full suite because shell GitHub DNS
+and Python 3.11 were unavailable.
+
+The new pure provider-neutral recovery review proposal reuses the
+existing exact artifact/approval/HMAC/source-policy, contiguous sequence,
+claimed cadence and failure-threshold verification. It emits a canonical
+non-executing manual-investigation proposal only when a threshold is
+reached; unknown is insufficient evidence, and no trigger in a bounded
+window does not prove health. Plan and evidence-window SHA-256 digests
+bind the review without exporting raw source identities, artifact bytes
+or reviewer names. No provider calls, new dependencies, credentials,
+real network, infrastructure, physical Mac, Work or Astra. See
+[scope, reuse, tests and rollback](docs/RECOVERY_REVIEW.md).
+
+**Synthetic-only acceptance:** The source key, clock, samples and
+replay context remain caller-controlled. This is not a trusted collector,
+service-health proof, actual alert, automatic rollback, deployment or
+recovery. Connected GitHub integration was the writer; external worktree
+exclusivity remains unverified. Revert feature merge for rollback; no
+schema or infrastructure change. Canonical documentation PR must pass
+its own exact-head and final merged-main CI before final acceptance.
+
+**Next:** Independently authenticate operator/collector identities and
+establish protected key/clock/endpoint/replay execution boundaries,
+then explicitly approve and validate read-only live monitoring.
