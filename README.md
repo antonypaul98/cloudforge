@@ -57,3 +57,15 @@ observes real HEAD success, process stop, and restart. This is **not** the
 selected application's execution, an OS-isolated sandbox, authenticated
 approval, infrastructure deployment or recovery. See
 [demo readiness](docs/DEMO_READINESS.md).
+
+## Bind a selected real application source file (read-only)
+
+```sh
+python -m cloudforge.demo_selected_artifact --name my-api --target sandbox-review --manifest ./requirements.txt --source ./app.py
+```
+
+Supports a single root `app.py` or `server.js` matching the manifest runtime.
+Prints a deterministic source/manifest/target review binding, without printing
+source code or running the selected application. **Not** an immutable artifact,
+authenticated approval, OS sandbox, deployment, monitoring, or rollback.
+See [demo readiness](docs/DEMO_READINESS.md).
