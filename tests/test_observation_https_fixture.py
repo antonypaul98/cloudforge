@@ -170,3 +170,44 @@ def test_total_head_and_cleanup_elapsed_budget(monkeypatch, elapsed, expected):
     ticks = iter((100.0, 100.0 + elapsed, 200.0, 200.0 + elapsed))
     monkeypatch.setattr(module.time, "monotonic", lambda: next(ticks))
     assert [s.outcome for s in _run(lambda *_: _fake(204))] == [expected, expected]
+
+@pytest.mark.parametrize("elapsed,expected_ms", [
+    (float("nan"), 0), (float("inf"), 0), (float("-inf"), 0),
+    (1e308, 300_000),
+])
+def test_nonfinite_or_huge_monotonic_delta_fails_closed(monkeypatch, elapsed, expected_ms):
+    import cloudforge.observation_https_fixture as module
+    ticks = iter((100.0, 100.0 + elapsed, 200.0, 200.0 + elapsed))
+    monkeypatch.setattr(module.time, "monotonic", lambda: next(ticks))
+    samples = _run(lambda *_: _fake(204))
+    assert [(s.outcome, s.elapsed_ms) for s in samples] == [
+        ("unknown", expected_ms), ("unknown", expected_ms),
+    ]
+
+
+@pytest.mark.parametrize("failure_phase", ["start", "finish"])
+def test_monotonic_exception_does_not_forge_success(monkeypatch, failure_phase):
+    import cloudforge.observation_https_fixture as module
+    connection = _fake(204)
+    factory = Mock(return_value=connection)
+    if failure_phase == "start":
+        monkeypatch.setattr(
+            module.time, "monotonic", Mock(side_effect=OSError("clock unavailable")),
+        )
+    else:
+        ticks = iter((100.0, OSError("clock unavailable"),
+                      200.0, OSError("clock unavailable")))
+
+        def clock():
+            tick = next(ticks)
+            if isinstance(tick, Exception):
+                raise tick
+            return tick
+
+        monkeypatch.setattr(module.time, "monotonic", clock)
+    samples = _run(factory)
+    assert [(s.outcome, s.elapsed_ms) for s in samples] == [
+        ("unknown", 0), ("unknown", 0),
+    ]
+    assert factory.call_count == (0 if failure_phase == "start" else 2)
+    assert connection.close.call_count == (0 if failure_phase == "start" else 2)

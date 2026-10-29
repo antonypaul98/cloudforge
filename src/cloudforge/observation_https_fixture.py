@@ -7,6 +7,7 @@ network connection, source key, DNS resolver or execution permission.
 from __future__ import annotations
 
 import http.client
+import math
 import time
 from typing import Callable
 
@@ -54,7 +55,13 @@ def collect_pinned_https_fixture_samples(
     ):
         # Pinset verification requires nonempty, canonical, policy-equal sets.
         pinned_ip = a[0] if a else aaaa[0]
-        started = time.monotonic()
+        try:
+            started = time.monotonic()
+        except Exception:
+            # An unavailable clock cannot establish a trustworthy duration.
+            # Do not start even a fake connection for this probe.
+            samples.append(ObservationSample(probe.kind, "unknown", 0))
+            continue
         connection = None
         outcome = "unknown"
         try:
@@ -77,10 +84,19 @@ def collect_pinned_https_fixture_samples(
                     connection.close()
                 except Exception:
                     outcome = "unknown"
-        elapsed = time.monotonic() - started
-        if not 0 <= elapsed <= probe.timeout_seconds:
+        try:
+            elapsed = time.monotonic() - started
+        except Exception:
+            elapsed = float("nan")
+        if not math.isfinite(elapsed):
+            # NaN/infinity cannot be serialized as an integer sample duration.
             outcome = "unknown"
-        samples.append(ObservationSample(
-            probe.kind, outcome, min(300_000, max(0, int(elapsed * 1000))),
-        ))
+            elapsed_ms = 0
+        else:
+            if not 0 <= elapsed <= probe.timeout_seconds:
+                outcome = "unknown"
+            # Clamp before int conversion: a huge finite delta can overflow
+            # to infinity when multiplied by 1000.
+            elapsed_ms = int(min(300_000, max(0.0, elapsed * 1000)))
+        samples.append(ObservationSample(probe.kind, outcome, elapsed_ms))
     return tuple(samples)
