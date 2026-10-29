@@ -1804,3 +1804,38 @@ requires its own exact-head and final merged-main CI before final acceptance.
 execution bound to exact source/artifact/target, with real observed service
 behavior and controlled rollback. Do not substitute more optional synthetic
 safeguards for the original end-to-end demo.
+
+## Owned-loopback real HEAD observation demo — accepted feature (2026-10-29 ET)
+
+Feature [PR #103](https://github.com/antonypaul98/cloudforge/pull/103)
+source head `beadd8e41c4e49c6a4135a199eb4c58cc53f9fcd` passed
+[exact-head push CI #40946159741](https://github.com/antonypaul98/cloudforge/actions/runs/40946159741)
+and [PR CI #40946213686](https://github.com/antonypaul98/cloudforge/actions/runs/40946213686).
+Guarded squash merge `08a719671adaaee3c9459eca0d134206fa7b2d8e` passed
+[merged-main CI #40946378094](https://github.com/antonypaul98/cloudforge/actions/runs/40946378094):
+**1,340 pytest passed** (11 new integration/negative tests), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. No independent local full suite;
+container GitHub DNS unavailable. Canonical acceptance docs PR has separate
+exact-head and merged-main CI gates.
+
+An explicit opt-in CLI now composes real selected Python/Node manifest review,
+source-bound handoff request, in-process synthetic local authorization and
+existing HEAD-only loopback collector with a temporary owned 127.0.0.1 HTTP
+fixture. Actual observed fixture HEAD responses transition 204 -> 503 -> 204
+(readiness/liveness pass -> fail -> pass); server cleanup is checked. The
+output is repeatable and redacted. No arbitrary endpoint, provider, credentials,
+user application execution, real infrastructure, physical Mac, Work or Astra.
+Reused existing code and Python stdlib; no third-party code or dependencies.
+See [demo scope, provenance and rollback](docs/DEMO_READINESS.md).
+
+**DEMO READINESS: PARTIAL.** This is real HTTP observation of an **owned test
+fixture**, not the reviewed app or a real deployment/recovery demonstration.
+The synthetic reviewer names do not authenticate operators or approve external
+actions. **FULL PRODUCT COMPLETION: UNVERIFIED**, with no defensible percentage
+or date. External worktree exclusivity remains unverified. Rollback: revert
+feature merge; no schema or infrastructure migration.
+
+**Next:** Independently authorized, isolated execution of a real selected
+application artifact, exact-source revalidation, actual service observation,
+and controlled rollback with measurable evidence. No real infrastructure or
+external endpoint access without explicit artifact-scoped human approval.
