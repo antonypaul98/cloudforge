@@ -15,6 +15,17 @@ python -m cloudforge.application_demo --name my-api --target review-staging --ma
 ```
 
 The output also includes a separate, reproducible `source_review_binding` digest: even a manifest edit that leaves inferred resources unchanged gets a different review provenance packet. It is **not** a signature or execution approval. See [demo readiness, limitations, and competitive comparison](docs/DEMO_READINESS.md). This remains a **review-only first milestone**, not executable Terraform/OpenTofu/Pulumi IaC, authenticated approval, real deployment, monitoring, or recovery.
+## Observe actual loopback fixture HEAD results (opt-in)
+
+```sh
+python -m cloudforge.demo_loopback_observation --name my-api --target fixture-target --manifest ./requirements.txt --allow-loopback-fixture
+```
+
+This starts a temporary local-only HTTP fixture and measures real HEAD results
+through pass, simulated failure and restored fixture responses. It **does not**
+execute the selected application, authenticate reviewers, deploy infrastructure
+or perform real recovery. See [demo readiness](docs/DEMO_READINESS.md).
+
 ## Try the credential-free synthetic demo
 
 The demonstration was integrated into `main` through [PR #6](https://github.com/antonypaul98/cloudforge/pull/6) after exact-head CI and merged-main CI passed. It uses in-memory synthetic reviewers, a synthetic target and fixed artifact bytes. It does not require AWS credentials, a cloud account or physical hardware.
