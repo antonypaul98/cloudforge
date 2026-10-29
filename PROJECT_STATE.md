@@ -1917,3 +1917,48 @@ No supported percentage or delivery date. Next is an independently approved
 isolated selected-app execution/observation/rollback path, with explicit
 approval before any real infrastructure action. Canonical acceptance
 documentation requires its own exact-head PR and final merged-main CI.
+
+
+## Exact-byte selected-source review package — accepted feature (2026-10-29 ET)
+
+Feature [PR #109](https://github.com/antonypaul98/cloudforge/pull/109)
+at exact source head `8e81a00ccf482ad14b5d7ecb514ba2904ca059d2`
+passed [push CI #40970278328](https://github.com/antonypaul98/cloudforge/actions/runs/40970278328)
+and [PR CI #40970316656](https://github.com/antonypaul98/cloudforge/actions/runs/40970316656).
+Guarded squash merge `81f2f3a5203c03f40557168be7764173bb77654b`
+passed [merged-main CI #40970410417](https://github.com/antonypaul98/cloudforge/actions/runs/40970410417):
+Python 3.11.17, **1,380 pytest passed** (16 new package tests),
+infrastructure **18 passed, 1 skipped**. An isolated local prototype passed
+16 tests with stubbed review dependencies; this is not independent full-suite
+evidence. Exact-head GitHub CI is the full-suite evidence. The canonical
+documentation PR requires its own exact-head and final merged-main CI.
+
+`demo_source_package` now produces a canonical, bounded in-memory snapshot
+containing exact caller-selected Python/Node entrypoint and manifest bytes.
+It verifies package SHA-256, source-review binding and exact target; malformed,
+noncanonical, changed, rehashed or stale packages are rejected. The returned
+frozen value retains the bytes for a future independently approved sandbox,
+but no selected source is executed, installed, persisted or deployed.
+**The package itself contains raw source and manifest bytes and may contain
+secrets; do not print, commit or upload it.**
+
+**DEMO READINESS: PARTIAL, IMPROVED REVIEW HANDOFF ONLY.** This is not a
+durable immutable artifact, signature, independent approval, OS-isolated
+selected-app runtime, signed health observation, real deployment or recovery.
+A caller can replace bytes and recompute unkeyed hashes. The fixed first-party
+reference-process demo remains separate. **FULL PRODUCT COMPLETION:
+UNVERIFIED**; no evidence-backed percentage or delivery date. No external
+network, real infrastructure, physical Mac, Work or Astra was used. Connected
+GitHub integration was the writer; external worktree exclusivity unverified.
+
+**Reuse-first:** inspected current selected-source review, manifest inspector,
+handoff, reference process, demo contracts and official Python 3.11 stdlib
+interfaces. Reused in-repo contracts and standard-library JSON/base64/hashlib;
+no third-party code copied, dependency, provider API, credential or cloud cost.
+See [source-package contract and rollback](docs/DEMO_SOURCE_PACKAGE.md).
+Rollback: revert feature merge; no schema or infrastructure migration.
+
+**Next:** independently authenticate an exact package/target approval, execute
+only in a properly OS-isolated selected-app sandbox, collect actual signed
+health evidence and demonstrate controlled rollback. No real infrastructure
+or external endpoint without explicit human approval.
