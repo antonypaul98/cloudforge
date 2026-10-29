@@ -1753,3 +1753,17 @@ merged-main CI before final acceptance.
 
 **Next:** Establish independent operator/collector workload identity and
 protected runtime enforcement before any explicitly approved live monitoring.
+
+## Real-manifest review-only demo — accepted feature (2026-10-29 ET)
+
+Demo-first transition followed successful mTLS acceptance [PR #98](https://github.com/antonypaul98/cloudforge/pull/98), final merged-main CI [#40907986885](https://github.com/antonypaul98/cloudforge/actions/runs/40907986885). No unfinished PR was abandoned.
+
+Feature [PR #99](https://github.com/antonypaul98/cloudforge/pull/99) source head `091247e6d4e329920b27de48ec875c43e8817c4d` passed [exact-head push CI #40926942716](https://github.com/antonypaul98/cloudforge/actions/runs/40926942716) and [PR CI #40926994207](https://github.com/antonypaul98/cloudforge/actions/runs/40926994207). Guarded squash merge `3f4334b706c5061faed037865251684313ac84dc` passed [merged-main CI #40927135195](https://github.com/antonypaul98/cloudforge/actions/runs/40927135195) on Python 3.11.17: **1,324 pytest passed** (22 new cases), infrastructure **18 passed/1 skipped**. No independent local full suite was run because the container cannot resolve GitHub.
+
+The CLI `python -m cloudforge.application_demo --name my-api --target review-staging --manifest ./requirements.txt` reads only explicitly selected, bounded manifest text and composes existing non-executing inspection, provider-neutral planning, deterministic JSON proposal, and exact-target handoff-request digest. It outputs source SHA-256 fingerprints, limited manifest evidence and `approval-required` status. Tests cover repeatability, changed-target/changed-dependency binding, malformed/oversized/ambiguous inputs, symlinks, UTF-8, redaction, no network/process, and CLI operation. No external source code was copied or translated, no new dependency, credentials, API costs, provider call, real endpoint, infrastructure mutation, physical Mac or Work/Astra. Connected GitHub integration was writer; exclusive external worktree ownership unverified. Revert merge to roll back; no schema migration.
+
+Reuse-first comparison: [Backstage templates](https://backstage.io/docs/features/software-templates/) already scaffold applications; [OpenTofu plan](https://opentofu.org/docs/v1.9/cli/commands/plan/) already previews real infrastructure; [Pulumi policies](https://www.pulumi.com/docs/discovery-governance/concepts/policy-as-code/) already enforce policy gates. CloudForge's intended gap is verified provenance across real input, approval, sandbox deployment, observation and controlled recovery, not a novel scaffold/plan/policy. See [demo readiness](docs/DEMO_READINESS.md).
+
+**DEMO READINESS: PARTIAL.** Real-input review-only chain is repeatable; full original product demo is **NOT READY**. **FULL PRODUCT COMPLETION: UNVERIFIED**, with no justified percentage or date. The JSON is not executable IaC. No authenticated operator/collector, independent key/clock/DNS, actual sandbox deployment, signed real monitoring, chaos, rollback or recovery has been verified. Canonical documentation PR requires its own exact-head and final merged-main CI before final acceptance.
+
+**Next:** Define and test an exact-artifact-approved, isolated sandbox execution/observe/recover path with independent trust and measurable outputs; no real endpoint or infrastructure action without explicit human approval. Do not divert into optional fixture safeguards before demonstrating the original product journey.
