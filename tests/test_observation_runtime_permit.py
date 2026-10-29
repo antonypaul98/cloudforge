@@ -253,3 +253,34 @@ def test_permitted_fixture_rejects_invalid_policy_before_factory(mutation):
     with pytest.raises((ValueError, PermissionError)):
         _permitted_fixture(tuple(args), kwargs, permit, factory, **changes)
     factory.assert_not_called()
+
+
+@pytest.mark.parametrize("remaining,accepted", [
+    (0, False), (3, False), (4, True), (5, True),
+])
+def test_synthetic_fixture_requires_permit_window_for_all_probe_timeouts(
+    remaining, accepted,
+):
+    args, kwargs = _context()
+    permit = issue_runtime_head_permit(
+        *args, **dict(kwargs, valid_until_unix=_NOW + remaining),
+    )
+    connection = Mock()
+    connection.getresponse.return_value.status = 204
+    factory = Mock(return_value=connection)
+    if accepted:
+        samples = _permitted_fixture(args, kwargs, permit, factory)
+        assert len(samples) == 2
+        assert factory.call_count == 2
+    else:
+        with pytest.raises(ValueError, match="expires before synthetic probe budget"):
+            _permitted_fixture(args, kwargs, permit, factory)
+        factory.assert_not_called()
+
+
+def test_synthetic_fixture_rechecks_remaining_window_at_call_time():
+    args, kwargs, permit = _issued()
+    factory = Mock(side_effect=AssertionError("expired permit budget reached factory"))
+    with pytest.raises(ValueError, match="expires before synthetic probe budget"):
+        _permitted_fixture(args, kwargs, permit, factory, now_unix=_NOW + 18)
+    factory.assert_not_called()
