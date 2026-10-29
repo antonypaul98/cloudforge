@@ -413,3 +413,154 @@ def test_permit_ledger_rejects_symlink_without_touching_target(tmp_path):
         _consume_fixture(args, kwargs, permit, link, denied)
     denied.assert_not_called()
     assert not target.exists()
+
+
+# Synthetic permitted HTTPS HEAD -> signed HMAC -> durable evidence replay.
+from cloudforge.observation_evidence import verify_observation_evidence
+from cloudforge.observation_permitted_https_intake import (
+    collect_and_accept_permitted_pinned_https_fixture_evidence,
+)
+
+
+def _signed_https_fixture(args, kwargs, permit, ledger, factory=None, **changes):
+    if factory is None:
+        conn = Mock()
+        conn.getresponse.return_value.status = 204
+        factory = Mock(return_value=conn)
+    policy = {key: kwargs[key] for key in (
+        "allowed_ipv4", "allowed_ipv6", "source_id", "source_key",
+        "operator_key", "sequence",
+    )}
+    policy.update(
+        observed_at_unix=_NOW, now_unix=_NOW, max_age_seconds=30,
+        ledger_path=str(ledger), connection_factory=factory,
+    )
+    policy.update(changes)
+    return collect_and_accept_permitted_pinned_https_fixture_evidence(
+        *args, permit, **policy,
+    )
+
+
+def test_signed_https_fixture_persists_permit_and_evidence_in_one_ledger(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    evidence = _signed_https_fixture(args, kwargs, permit, ledger)
+    assert [(s.kind, s.outcome) for s in evidence.samples] == [
+        ("readiness", "pass"), ("liveness", "pass"),
+    ]
+    assert verify_observation_evidence(
+        *args[:5], evidence, expected_source_id=kwargs["source_id"],
+        source_key=kwargs["source_key"], now_unix=_NOW,
+        max_age_seconds=30, last_sequence=0,
+    )
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (7,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (7,)
+    exported = evidence.to_json()
+    assert str(ledger) not in exported
+    assert "synthetic-runtime-permit" not in exported
+    assert kwargs["source_key"].hex() not in exported
+
+
+def test_signed_https_duplicate_rejected_before_any_fake_head(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    _signed_https_fixture(args, kwargs, permit, ledger)
+    denied = Mock(side_effect=AssertionError("replayed HEAD reached factory"))
+    with pytest.raises(ValueError, match="already accepted"):
+        _signed_https_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+
+
+@pytest.mark.parametrize("mutation", ["mac", "stale", "future", "budget", "path"])
+def test_signed_https_invalid_context_rejected_before_ledger_or_head(
+    tmp_path, mutation,
+):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    changes = {}
+    if mutation == "mac":
+        permit = replace(permit, mac_sha256="0" * 64)
+    elif mutation == "stale":
+        changes["observed_at_unix"] = _NOW - 31
+    elif mutation == "future":
+        changes["observed_at_unix"] = _NOW + 1
+    elif mutation == "budget":
+        changes["now_unix"] = _NOW + 18
+    else:
+        changes["ledger_path"] = "relative.db"
+    denied = Mock(side_effect=AssertionError("invalid context reached factory"))
+    with pytest.raises(ValueError):
+        _signed_https_fixture(args, kwargs, permit, ledger, denied, **changes)
+    denied.assert_not_called()
+    assert not ledger.exists()
+
+
+def test_signed_https_unknown_probe_is_not_forged_as_pass(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    failed = Mock(side_effect=OSError("fixture transport failure"))
+    evidence = _signed_https_fixture(args, kwargs, permit, ledger, failed)
+    assert [s.outcome for s in evidence.samples] == ["unknown", "unknown"]
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (7,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (7,)
+
+
+def test_signed_https_rejects_corrupt_evidence_schema_before_head(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    with sqlite3.connect(ledger) as db:
+        db.execute("CREATE TABLE observation_replay (last_sequence TEXT)")
+    denied = Mock(side_effect=AssertionError("corrupt ledger reached factory"))
+    with pytest.raises(ValueError, match="schema mismatch"):
+        _signed_https_fixture(args, kwargs, permit, ledger, denied)
+    denied.assert_not_called()
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT 1 FROM sqlite_master WHERE name='runtime_permit_use'"
+        ).fetchone() is None
+
+
+def test_signed_https_concurrent_duplicate_admits_one_fixture(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    conn = Mock()
+    conn.getresponse.return_value.status = 204
+    factory = Mock(return_value=conn)
+    def attempt():
+        try:
+            _signed_https_fixture(args, kwargs, permit, ledger, factory)
+            return True
+        except ValueError as exc:
+            assert "already consumed" in str(exc) or "already accepted" in str(exc)
+            return False
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(lambda _: attempt(), range(2)))
+    assert sorted(results) == [False, True]
+    assert factory.call_count == 2
+
+
+def test_signed_https_next_sequence_reuses_same_ledger(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "shared.db"
+    _signed_https_fixture(args, kwargs, permit, ledger)
+    next_kwargs = dict(kwargs, sequence=8)
+    next_permit = issue_runtime_head_permit(*args, **next_kwargs)
+    evidence = _signed_https_fixture(args, next_kwargs, next_permit, ledger)
+    assert evidence.sequence == 8
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (8,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (8,)
