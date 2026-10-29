@@ -89,6 +89,11 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
             observed_at_unix=observed_at_unix, now_unix=now_unix,
         )
 
+    # The signed intake must not even inspect the ledger for a fixture that
+    # cannot execute. The delegated permit gate also checks before consumption.
+    if not callable(connection_factory):
+        raise ValueError("synthetic HTTPS connection factory is required")
+
     # Validate evidence freshness/MAC context and reject known evidence replay
     # before any fake HEAD. The final SQLite transaction is authoritative for
     # races; the preflight is deliberately not claimed to be an atomic lock.
