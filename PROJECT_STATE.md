@@ -1461,3 +1461,41 @@ remains unverified. Rollback is revert of the feature merge.
 **Next:** Establish independent operator/collector identity, protected trust
 roots and execution boundary, and exact human-approved endpoint policy before
 live read-only monitoring with signed runtime evidence.
+
+
+## Strict optional signed HTTPS source policy — accepted feature (2026-10-29 ET)
+
+Feature [PR #83](https://github.com/antonypaul98/cloudforge/pull/83)
+source head `e57dd6f8b8205b7d884d4502b0bccb831c995fa0` passed
+[push CI #40840265770](https://github.com/antonypaul98/cloudforge/actions/runs/40840265770)
+and [exact-head PR CI #40840400974](https://github.com/antonypaul98/cloudforge/actions/runs/40840400974).
+Guarded squash merge `326569fe47c51cdd13250ea4ddacdc3b93892961`
+passed [merged-main CI #40840599008](https://github.com/antonypaul98/cloudforge/actions/runs/40840599008):
+**1,198 pytest passed** (14 new synthetic regression cases), infrastructure
+**18 passed, 1 skipped**, Python 3.11.17. The container could not resolve
+GitHub for an independent local full-suite run; GitHub CI is the full-suite
+evidence. Canonical documentation PR requires its own exact-head and
+final merged-main CI.
+
+The signed synthetic pinned HTTPS intake now optionally checks the existing
+exact observation-plan/source/key/time pin, strict pin requirement and
+revoked-key fingerprints before SQLite replay access or any injected fake
+HEAD factory. Tests cover valid strict mode, 12 invalid/malformed/boundary
+cases rejected before factory and ledger creation, and key rotation requiring
+a new pin without resetting the replay counters. Existing unpinned behavior
+remains supported. The code reuses CloudForge's loopback source-policy and
+source-pin verifier plus Python standard-library SHA-256/HMAC; no copied
+third-party code, dependencies, schema changes or provider costs. See
+[provenance, limitations and rollback](docs/OBSERVATION_PERMITTED_HTTPS_INTAKE.md).
+
+**Synthetic-only acceptance:** Caller-supplied source policy, keys, clock,
+DNS, ledger and fake connection factory are not independently trusted.
+Ungated and unpinned callers can bypass this opt-in safeguard. No real
+endpoint, physical Mac, infrastructure mutation, authenticated collector,
+production deployment or recovery was used. Work/Astra not invoked.
+Connected GitHub integration was the writer; exclusive external worktree
+ownership remains unverified. Rollback is revert of feature merge; no migration.
+
+**Next:** Independent operator/collector authentication, protected
+key/clock/endpoint policy and durable execution boundary before exact
+human-approved real read-only service monitoring with signed runtime evidence.
