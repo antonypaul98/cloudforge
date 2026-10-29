@@ -564,3 +564,115 @@ def test_signed_https_next_sequence_reuses_same_ledger(tmp_path):
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (8,)
+
+
+# Optional source pin/revocation policy shared with loopback fixture intake.
+# All checks run before SQLite writes or injected HEAD factory calls.
+from cloudforge.observation_source_pin import ObservationSourcePin
+
+
+def _https_source_pin(args, kwargs):
+    return ObservationSourcePin(
+        kwargs["source_id"],
+        hashlib.sha256(args[4].to_json().encode("ascii")).hexdigest(),
+        hashlib.sha256(kwargs["source_key"]).hexdigest(),
+        _NOW - 10, _NOW + 15,
+    )
+
+
+def test_signed_https_strict_source_policy_accepts_pinned_key(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "strict.db"
+    evidence = _signed_https_fixture(
+        args, kwargs, permit, ledger,
+        source_pin=_https_source_pin(args, kwargs),
+        require_source_pin=True,
+        revoked_key_sha256=("0" * 64,),
+    )
+    assert evidence.sequence == 7
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (7,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (7,)
+
+
+@pytest.mark.parametrize("case", [
+    "missing", "revoked", "source", "plan", "key", "expired",
+    "future", "wrong_type", "policy_bool", "revoked_format",
+    "revoked_duplicate", "observation_before_pin",
+])
+def test_signed_https_source_policy_fails_before_ledger_and_factory(
+    tmp_path, case,
+):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "denied.db"
+    pin = _https_source_pin(args, kwargs)
+    changes = {"source_pin": pin, "require_source_pin": True}
+    if case == "missing":
+        changes["source_pin"] = None
+    elif case == "revoked":
+        changes["revoked_key_sha256"] = (
+            hashlib.sha256(kwargs["source_key"]).hexdigest(),
+        )
+    elif case == "source":
+        changes["source_pin"] = replace(pin, source_id="another-collector")
+    elif case == "plan":
+        changes["source_pin"] = replace(pin, plan_sha256="0" * 64)
+    elif case == "key":
+        changes["source_pin"] = replace(pin, key_sha256="0" * 64)
+    elif case == "expired":
+        changes["source_pin"] = replace(pin, valid_until_unix=_NOW - 1)
+    elif case == "future":
+        changes["source_pin"] = replace(pin, valid_from_unix=_NOW + 1)
+    elif case == "wrong_type":
+        changes["source_pin"] = {"source_id": kwargs["source_id"]}
+    elif case == "policy_bool":
+        changes["require_source_pin"] = 1
+    elif case == "revoked_format":
+        changes["revoked_key_sha256"] = ("G" * 64,)
+    elif case == "revoked_duplicate":
+        changes["revoked_key_sha256"] = ("0" * 64,) * 2
+    else:
+        changes["observed_at_unix"] = _NOW - 20
+    denied = Mock(side_effect=AssertionError("invalid source policy reached HEAD"))
+    with pytest.raises(ValueError):
+        _signed_https_fixture(
+            args, kwargs, permit, ledger, denied, **changes,
+        )
+    denied.assert_not_called()
+    assert not ledger.exists()
+
+
+def test_signed_https_source_key_rotation_requires_new_pin_without_reset(tmp_path):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "rotation.db"
+    old_pin = _https_source_pin(args, kwargs)
+    assert _signed_https_fixture(
+        args, kwargs, permit, ledger,
+        source_pin=old_pin, require_source_pin=True,
+    ).sequence == 7
+    rotated = dict(kwargs, source_key=bytes(range(33, 65)), sequence=8)
+    new_permit = issue_runtime_head_permit(*args, **rotated)
+    denied = Mock(side_effect=AssertionError("stale pin reached HEAD"))
+    with pytest.raises(ValueError, match="pin mismatch"):
+        _signed_https_fixture(
+            args, rotated, new_permit, ledger, denied,
+            source_pin=old_pin, require_source_pin=True,
+        )
+    denied.assert_not_called()
+    new_pin = _https_source_pin(args, rotated)
+    assert _signed_https_fixture(
+        args, rotated, new_permit, ledger,
+        source_pin=new_pin, require_source_pin=True,
+        revoked_key_sha256=(hashlib.sha256(kwargs["source_key"]).hexdigest(),),
+    ).sequence == 8
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (8,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (8,)
