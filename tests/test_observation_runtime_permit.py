@@ -676,3 +676,70 @@ def test_signed_https_source_key_rotation_requires_new_pin_without_reset(tmp_pat
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (8,)
+
+
+# A malformed fixture must not burn an otherwise valid one-shot permit.
+@pytest.mark.parametrize("invalid_factory", [None, 0, object()])
+def test_invalid_synthetic_factory_does_not_consume_permit(
+    tmp_path, monkeypatch, invalid_factory,
+):
+    import cloudforge.observation_permitted_https_fixture as permitted
+
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "unused-permit.db"
+    with monkeypatch.context() as guard:
+        guard.setattr(
+            permitted, "_consume_verified_permit",
+            Mock(side_effect=AssertionError("invalid factory consumed permit")),
+        )
+        with pytest.raises(ValueError, match="factory"):
+            _permitted_fixture(
+                args, kwargs, permit, invalid_factory,
+                permit_ledger_path=str(ledger),
+            )
+    assert not ledger.exists()
+    connection = Mock()
+    connection.getresponse.return_value.status = 204
+    factory = Mock(return_value=connection)
+    samples = _permitted_fixture(
+        args, kwargs, permit, factory, permit_ledger_path=str(ledger),
+    )
+    assert len(samples) == 2
+    assert factory.call_count == 2
+
+
+@pytest.mark.parametrize("invalid_factory", [None, 0, object()])
+def test_invalid_signed_factory_precedes_replay_read_and_permit_use(
+    tmp_path, monkeypatch, invalid_factory,
+):
+    import cloudforge.observation_permitted_https_intake as intake
+
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "unused-signed.db"
+    policy = {key: kwargs[key] for key in (
+        "allowed_ipv4", "allowed_ipv6", "source_id", "source_key",
+        "operator_key", "sequence",
+    )}
+    policy.update(
+        observed_at_unix=_NOW, now_unix=_NOW, max_age_seconds=30,
+        ledger_path=str(ledger), connection_factory=invalid_factory,
+    )
+    with monkeypatch.context() as guard:
+        guard.setattr(
+            intake, "_preflight_replay_sequence",
+            Mock(side_effect=AssertionError("invalid factory read ledger")),
+        )
+        with pytest.raises(ValueError, match="factory"):
+            collect_and_accept_permitted_pinned_https_fixture_evidence(
+                *args, permit, **policy,
+            )
+    assert not ledger.exists()
+    evidence = _signed_https_fixture(args, kwargs, permit, ledger)
+    assert evidence.sequence == permit.sequence
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (permit.sequence,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (permit.sequence,)
