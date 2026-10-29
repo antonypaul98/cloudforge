@@ -52,6 +52,11 @@ def collect_permitted_pinned_https_fixture_samples(
         source_id=source_id, source_key=source_key, operator_key=operator_key,
         sequence=sequence, now_unix=now_unix,
     )
+    # A permit valid only at preflight time must not start a sequence whose
+    # configured maximum probe durations extend past its expiry. This is a
+    # conservative caller-clock budget, not a hard runtime cancellation.
+    if sum(probe.timeout_seconds for probe in plan.probes) > permit.valid_until_unix - now_unix:
+        raise ValueError("runtime HEAD permit expires before synthetic probe budget")
     return collect_pinned_https_fixture_samples(
         handoff, artifact, approval, receipt, plan, targets, request,
         resolved_ipv4, resolved_ipv6, pinset,
