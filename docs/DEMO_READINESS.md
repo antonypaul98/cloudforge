@@ -102,3 +102,39 @@ manifest bytes, not another HTTP transport implementation. Real app deployment
 still needs an independently authorized isolated runtime with exact-source
 revalidation, signed evidence and controlled rollback. Roll back this demo by
 reverting its feature merge; it creates no persistent infrastructure or schema.
+
+## Owned first-party application process demo (opt-in; not a sandbox)
+
+The next demo-first step runs an **actual, fixed CloudForge-owned Python
+application process** on an ephemeral 127.0.0.1 port. It reuses the real
+manifest inspection -> provider-neutral review -> exact-target handoff and
+local-only observation contracts. It measures real HEAD pass -> stopped
+process/unknown -> restarted process/pass, then cleans up both child processes.
+
+Run with a supported manifest from a Python 3.11 checkout:
+
+`python -m cloudforge.demo_owned_reference_process --name my-api --target local-demo --manifest ./requirements.txt --allow-owned-reference-app`
+
+This **does not execute the caller's application**. It starts only the fixed
+first-party reference service, with a minimal child environment and temporary
+working directory. A subprocess is **not an OS/container sandbox**; do not
+pass untrusted code. The module source is SHA-256 checked across the demo,
+but this is not an authenticated or atomic runtime attestation. The selected
+manifest's source-review digest is preserved in the output. The local reviewer
+identities are synthetic, not authenticated human approval.
+
+Process termination/restart demonstrates actual observed failure and process
+restoration, **not** deployment, infrastructure rollback, signed monitoring,
+independently approved execution, or recovery of the user's application.
+No external endpoint, cloud provider, credentials, infrastructure mutation,
+Docker, or physical Mac is involved. This is a bounded stepping stone to
+the independently approved isolated real-application sandbox demo.
+
+**Reuse-first:** existing manifest review, planner, handoff, local receipt,
+observation plan, loopback HTTP collector and Python 3.11 standard library.
+No third-party code, dependencies, new license, provider cost or API key.
+Rollback is reverting the feature merge; no persistent infrastructure or
+database migration. The next gate is exact-source-bound, independently
+authorized **user application** execution inside an OS-isolated sandbox with
+signed evidence and controlled rollback. Demo readiness remains partial;
+full product completion remains unverified.

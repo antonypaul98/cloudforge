@@ -45,3 +45,15 @@ python -m pytest -q
 The demo prints deterministic JSON with a redacted audit event and fourteen synthetic rejection checks, including stale approvals after changed artifact, plan, target or claimed handoff reviewer, plus forged receipts, audit evidence and cross-target authorization. Look for `"demo_only": true`, `"infrastructure_mutated": false`, `"deployment_observed": false`, `"recovery_performed": false` and `"authenticated_review": false`. A passing demonstration proves only the synthetic authorization path, **not** a real deployment or authenticated human approval.
 
 For implementation boundaries, see [the local adapter specification](docs/LOCAL_DEPLOYMENT_ADAPTER.md) and [checkpoint state](CHECKPOINT_STATE.json). Real deployment and recovery require separate runtime implementation, independent validation and explicit authorization.
+
+## Observe an owned reference application process (opt-in)
+
+```sh
+python -m cloudforge.demo_owned_reference_process --name my-api --target local-demo --manifest ./requirements.txt --allow-owned-reference-app
+```
+
+Runs a fixed first-party Python reference service in a child process and
+observes real HEAD success, process stop, and restart. This is **not** the
+selected application's execution, an OS-isolated sandbox, authenticated
+approval, infrastructure deployment or recovery. See
+[demo readiness](docs/DEMO_READINESS.md).
