@@ -1539,3 +1539,38 @@ merged-main CI.
 execution trust roots. Only then consider an explicitly human-approved,
 read-only endpoint collector with signed runtime evidence; no real endpoint
 or infrastructure mutation without exact plans and human approval.
+
+
+## Signed synthetic HTTPS observation timestamp within permit window — accepted feature (2026-10-29 ET)
+
+Feature [PR #87](https://github.com/antonypaul98/cloudforge/pull/87)
+source head `aa80e4f5c6832fcd46cff60599e008fc77bc3b98` passed
+[push CI #40853840983](https://github.com/antonypaul98/cloudforge/actions/runs/40853840983)
+and [exact-head PR CI #40853864706](https://github.com/antonypaul98/cloudforge/actions/runs/40853864706).
+Guarded squash merge `32edfec76da9145c0d91d6e2a8532726f9a0c307` passed
+[merged-main CI #40853948547](https://github.com/antonypaul98/cloudforge/actions/runs/40853948547):
+**1,208 pytest passed** (four new parameterized no-network cases), infrastructure
+**18 passed/1 skipped**, Python 3.11.17. The separate local Python 3.13
+prototype checked only the integer/window predicate; it was not the full suite.
+
+The signed synthetic pinned HTTPS intake now requires the claimed observation
+time to fall within the verified HEAD permit's validity interval, rejecting a
+pre-permit timestamp even when it meets ordinary evidence freshness. Non-integer
+and boolean values also fail before replay ledger access or any injected factory.
+The lower permit boundary remains inclusive; a rejected attempt does not burn
+the one-shot permit. This reuses the existing CloudForge loopback permit rule
+and Python built-ins, without third-party code, new dependencies, credentials,
+real endpoint access, physical Mac, infrastructure mutation or Work/Astra.
+See [contract, provenance, limits and rollback](docs/OBSERVATION_PERMITTED_HTTPS_INTAKE.md).
+
+**Synthetic-only acceptance:** The timestamp, clock, keys, DNS, ledger and
+connection factory remain caller-controlled. This does not authenticate an
+operator or collector, prove actual probe timing, provide trusted monitoring,
+deploy or recover infrastructure. Connected GitHub integration wrote the feature;
+exclusive external worktree ownership is unverified. Revert feature merge for
+rollback; no migration. Canonical documentation PR requires its own exact-head
+and final merged-main CI.
+
+**Next:** Establish independent operator/collector identity and protected
+execution trust roots, trusted clock/key/endpoint policy and durable replay
+boundary before explicitly human-approved read-only monitoring.
