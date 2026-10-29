@@ -1292,3 +1292,28 @@ worktree exclusivity unverified. Work/Astra not invoked.
 atomically enforce one-shot sequence, then authorize exact live endpoint
 read-only HEAD with signed runtime evidence. Explicit human approval
 remains required before any real service access.
+
+
+## Synthetic HTTPS permit remaining-window guard — accepted (2026-10-28 ET)
+
+Feature [PR #73](https://github.com/antonypaul98/cloudforge/pull/73)
+exact source head `8f08a5656acd85938cae42858b261e92cff71039`
+passed [push CI #40810075232](https://github.com/antonypaul98/cloudforge/actions/runs/40810075232)
+and [PR CI #40810091541](https://github.com/antonypaul98/cloudforge/actions/runs/40810091541).
+Guarded squash merge `8f452518ae0dea27a00bc2eb5fc66ce8c2c03ab4`
+passed [merged-main CI #40810194926](https://github.com/antonypaul98/cloudforge/actions/runs/40810194926):
+**1,144 pytest passed**, infrastructure **18 passed/1 skipped** on Python 3.11.17.
+Five new synthetic regressions check exact and insufficient permit-window
+boundaries and rechecking caller-supplied time before any injected factory.
+
+Reused existing runtime permit verifier, validated plan timeout fields and
+synthetic HEAD seam. No third-party code, new dependency, provider operation,
+live endpoint, DNS, real infrastructure change, physical Mac or Work/Astra.
+The budget is not an enforceable hard deadline, trusted clock, authenticated
+operator/collector, durable replay guard, signed runtime observation, deployment
+or recovery. External worktree exclusivity remains unverified. Rollback is a
+feature-merge revert; no migration. Canonical documentation acceptance has its
+own exact-head and final merged-main CI gates.
+
+Next: independent operator/collector trust and endpoint policy, durable atomic
+one-time replay enforcement, then explicitly approved read-only monitoring.
