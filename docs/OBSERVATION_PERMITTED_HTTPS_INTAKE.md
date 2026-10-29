@@ -146,3 +146,45 @@ This is **caller-supplied synthetic timestamp consistency only**, not a
 trusted clock, independently authenticated operator or collector, verified
 probe timestamp, live monitoring, deployment or recovery. Roll back by
 reverting the feature merge; no migration or infrastructure mutation.
+
+
+## Optional operator-key fingerprint preflight (2026-10-29)
+
+The signed synthetic HTTPS intake accepts optional `operator_key_sha256`
+and `require_operator_pin` arguments. The new pure verifier checks that the
+operator HMAC key matches a strict lowercase SHA-256 fingerprint, and rejects
+missing mandatory pins, invalid types, malformed digests and mismatches
+before reading or creating the SQLite replay ledger or invoking an injected
+HEAD factory. Existing calls without an operator pin remain compatible.
+The existing runtime permit already rejects an operator key equal to the
+collector/source key. Strict source and operator pins can now be composed.
+
+**This is not independent operator authentication.** Both key and expected
+fingerprint are still caller-supplied. A caller controlling both can forge
+the check, omit the optional pin, invoke lower-level fixtures, or provide a
+network-capable factory. A production trust root must provision the expected
+operator fingerprint independently, authenticate operator and collector
+workloads, protect key custody and clocks, enforce one protected replay
+store, restrict egress to explicitly approved endpoints, and sign runtime
+provenance. This checkpoint makes no production readiness claim.
+
+Reuse-first: audited the existing runtime HEAD permit's distinct-key check,
+the source-key pin/revocation policy, signed HTTPS intake and tests. Reused
+Python 3.11 standard-library `hashlib.sha256` and `hmac.compare_digest`,
+without copying external code or introducing a package, API, credential,
+provider dependency, license obligation or service cost. Compared SPIFFE
+workload X.509-SVID/mTLS identity and OpenID Connect issuer/audience/signature
+verification as future independently rooted options; neither was imported
+or configured because no authenticated runtime or trusted issuer is currently
+provisioned. References:
+https://spiffe.io/docs/latest/deploying/svids/ and
+https://openid.net/specs/openid-connect-core-1_0.html .
+
+Offline regression coverage includes valid combined operator/source pins,
+malformed and mismatched pins, changed operator keys, direct helper invalid
+inputs, and backwards-compatible opt-out. Require exact-head full Python
+3.11 pytest plus infrastructure guards, guarded merge and merged-main CI
+before acceptance. Rollback: revert the feature merge; no schema migration
+or infrastructure mutation. Next milestone is an **independently provisioned
+and authenticated** operator/collector runtime boundary, not more optional
+fixture policy.
