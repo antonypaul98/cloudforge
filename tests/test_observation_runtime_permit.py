@@ -743,3 +743,33 @@ def test_invalid_signed_factory_precedes_replay_read_and_permit_use(
         assert db.execute(
             "SELECT last_sequence FROM observation_replay"
         ).fetchone() == (permit.sequence,)
+
+
+@pytest.mark.parametrize("observed_at", [_NOW - 11, _NOW - 30, True, None])
+def test_signed_https_observation_cannot_predate_permit_or_burn_sequence(
+    tmp_path, observed_at,
+):
+    args, kwargs, permit = _issued()
+    ledger = tmp_path / "observation-time.db"
+    denied = Mock(side_effect=AssertionError("invalid timestamp reached HEAD"))
+    with pytest.raises(ValueError, match="observation timestamp outside permit window"):
+        _signed_https_fixture(
+            args, kwargs, permit, ledger, denied, observed_at_unix=observed_at,
+        )
+    denied.assert_not_called()
+    assert not ledger.exists()
+
+    # Inclusive lower boundary is valid; the rejected attempt did not burn
+    # the permit or create a replay ledger.
+    evidence = _signed_https_fixture(
+        args, kwargs, permit, ledger,
+        observed_at_unix=permit.valid_from_unix,
+    )
+    assert evidence.observed_at_unix == permit.valid_from_unix
+    with sqlite3.connect(ledger) as db:
+        assert db.execute(
+            "SELECT last_sequence FROM runtime_permit_use"
+        ).fetchone() == (permit.sequence,)
+        assert db.execute(
+            "SELECT last_sequence FROM observation_replay"
+        ).fetchone() == (permit.sequence,)

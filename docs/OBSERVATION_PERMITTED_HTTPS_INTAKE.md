@@ -119,3 +119,30 @@ approval of any real endpoint, and runtime evidence. Revert the feature
 merge to roll back; no data migration or real deployment is involved.
 Acceptance requires exact-head PR CI, complete Python 3.11 and infrastructure
 suites, guarded merge, merged-main CI and canonical checkpoint update.
+
+
+## Exact permit-window timestamp for signed synthetic HTTPS samples
+
+The signed HTTPS intake now rejects an `observed_at_unix` that predates
+the MAC-verified runtime permit's `valid_from_unix`, even when the timestamp
+would pass the ordinary evidence freshness limit. A non-integer timestamp
+(including `bool`) is also rejected before SQLite preflight, permit
+consumption or injected HEAD execution. The lower permit boundary is inclusive.
+The runtime permit verifier already constrains caller-supplied `now_unix`
+to the permit's upper bound; existing evidence verification still enforces
+sample freshness and non-future timestamps.
+
+Reuse-first: the existing `verify_loopback_operator_permit` already
+applies the same inclusive timestamp relationship. The HTTPS composition
+reuses that in-repository rule and Python's built-in integer checks; no
+third-party code, language translation, dependency, provider API, license,
+credentials or service cost is introduced. Four parameterized no-network
+regressions verify pre-permit and malformed timestamps are rejected before
+factory/ledger access, and the same permit succeeds at its valid lower
+boundary. Require exact-head CI, guarded merge and merged-main CI before
+acceptance.
+
+This is **caller-supplied synthetic timestamp consistency only**, not a
+trusted clock, independently authenticated operator or collector, verified
+probe timestamp, live monitoring, deployment or recovery. Roll back by
+reverting the feature merge; no migration or infrastructure mutation.

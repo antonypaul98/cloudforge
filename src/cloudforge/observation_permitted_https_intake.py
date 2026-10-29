@@ -76,6 +76,13 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
     if sum(p.timeout_seconds for p in plan.probes) > permit.valid_until_unix - now_unix:
         raise ValueError("runtime HEAD permit expires before synthetic probe budget")
 
+    # Match the existing loopback permit's time semantics: freshness alone
+    # must not allow evidence dated before the exact HEAD permit became valid.
+    # The permit verifier above already bounds now_unix by valid_until_unix.
+    if (type(observed_at_unix) is not int
+            or not permit.valid_from_unix <= observed_at_unix <= now_unix):
+        raise ValueError("synthetic HTTPS observation timestamp outside permit window")
+
     # Reuse the existing optional source-key pin/revocation policy before any
     # ledger access or injected HEAD factory. These caller-provided settings
     # do not establish independent collector identity or trusted key custody.
