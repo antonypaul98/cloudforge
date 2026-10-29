@@ -1354,3 +1354,40 @@ revert; no existing schema migration.
 key/clock/endpoint policy and one protected ledger before explicitly approved
 read-only HEAD collection and signed runtime evidence. Canonical documentation
 acceptance requires its own exact-head and final merged-main CI.
+
+
+## Synthetic permitted HTTPS signed intake — accepted (2026-10-29 ET)
+
+Feature [PR #77](https://github.com/antonypaul98/cloudforge/pull/77) exact
+head `daaca840b0e716ebc7d2a70e661450775ce5ffea` passed
+[push CI #40821005868](https://github.com/antonypaul98/cloudforge/actions/runs/40821005868)
+and [PR CI #40821029491](https://github.com/antonypaul98/cloudforge/actions/runs/40821029491).
+Guarded squash merge `6f56078f8d1798c60df8cf7c126d3f2437be874a` passed
+[merged-main CI #40821108824](https://github.com/antonypaul98/cloudforge/actions/runs/40821108824)
+on Python 3.11.17: **1,166 pytest passed** (11 new synthetic cases);
+infrastructure **18 passed, 1 skipped**. GitHub CI is the full-suite
+evidence; the container could not resolve GitHub for a separate local suite.
+
+The new opt-in `collect_and_accept_permitted_pinned_https_fixture_evidence`
+composes exact permit/pinset and freshness checks, read-only replay preflight,
+atomic permit consumption, injected fake HEAD, HMAC signing and durable evidence
+acceptance. Both independent SQLite tables live in the same explicit local
+file. Tests cover valid signed samples, duplicate and corrupt ledger rejection,
+MAC/freshness/budget/path failures before I/O, unknown-on-probe-failure,
+concurrent duplicates and increasing sequence. See
+[reuse, limitations and rollback](docs/OBSERVATION_PERMITTED_HTTPS_INTAKE.md).
+
+**Synthetic-only acceptance:** Caller-provided identity, keys, clock, DNS,
+allowlists, ledger and factory remain untrusted. The two SQLite transactions
+are not one atomic transaction and a crash after permit consumption may leave
+no evidence. No real endpoint, independently authenticated operator/collector,
+protected runtime policy, live monitoring, deployment, recovery, physical Mac
+or infrastructure mutation. Existing CloudForge logic and Python standard
+library were reused, without third-party code or new dependencies. Connected
+GitHub integration wrote the checkpoint; external worktree exclusivity remains
+unverified. No Work/Astra invoked. Rollback is feature-merge revert.
+
+**Next:** Establish independently authenticated operator/collector identity,
+trusted key/clock/DNS/endpoint policy and protected replay boundary, then
+explicitly approve an exact read-only endpoint before real monitoring.
+Canonical acceptance documentation has its own exact-head and merged-main CI.
