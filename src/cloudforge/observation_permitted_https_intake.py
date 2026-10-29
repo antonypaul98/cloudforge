@@ -24,6 +24,7 @@ from .observation_replay import (
 from .observation_runtime_dns import RuntimeDNSPinset
 from .observation_runtime_permit import RuntimeHEADPermit, verify_runtime_head_permit
 from .observation_runtime_request import RuntimeObservationRequest, RuntimeObservationTarget
+from .observation_operator_policy import verify_observation_operator_key_pin
 from .observation_source_pin import ObservationSourcePin, verify_observation_source_pin
 from .observation_source_policy import verify_observation_source_policy
 
@@ -55,6 +56,8 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
     source_pin: ObservationSourcePin | None = None,
     require_source_pin: bool = False,
     revoked_key_sha256: tuple[str, ...] = (),
+    operator_key_sha256: str | None = None,
+    require_operator_pin: bool = False,
 ) -> ObservationEvidence:
     """Accept signed synthetic samples only after two SQLite replay checks.
 
@@ -95,6 +98,14 @@ def collect_and_accept_permitted_pinned_https_fixture_evidence(
             plan, source_pin, source_id=source_id, source_key=source_key,
             observed_at_unix=observed_at_unix, now_unix=now_unix,
         )
+
+    # Optional operator key fingerprint check. This detects inconsistent
+    # caller configuration; it does not authenticate the operator or provide
+    # independent trust distribution. Reject before ledger or fake HEAD.
+    verify_observation_operator_key_pin(
+        operator_key, operator_key_sha256=operator_key_sha256,
+        require_operator_pin=require_operator_pin,
+    )
 
     # The signed intake must not even inspect the ledger for a fixture that
     # cannot execute. The delegated permit gate also checks before consumption.
