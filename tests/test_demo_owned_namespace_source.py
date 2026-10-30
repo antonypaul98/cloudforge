@@ -6,7 +6,6 @@ No caller-selected source or external endpoint is ever executed.
 """
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
