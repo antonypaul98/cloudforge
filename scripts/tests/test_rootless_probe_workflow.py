@@ -58,11 +58,11 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
 
     def test_crash_recovery_is_ordered_and_observed(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        graceful = source.index('podman --remote=false stop -t 2')
+        initial_stop = source.index('podman --remote=false stop -t 2')
         crash = source.index('podman --remote=false kill --signal KILL')
         exit_code = source.index("'{{.State.ExitCode}}'")
         cleanup = source.rindex('          podman --remote=false rm -f "$container" >/dev/null\n')
-        self.assertLess(graceful, crash)
+        self.assertLess(initial_stop, crash)
         self.assertLess(crash, exit_code)
         self.assertLess(exit_code, cleanup)
         self.assertEqual(source.count('          check_health\n'), 3)
