@@ -2090,3 +2090,30 @@ image trial with measured health and cleanup, then separately authenticated
 exact-artifact approval for selected-app execution and controlled rollback.
 Reuse-first and limitations: [runtime preflight contract](docs/DEMO_ROOTLESS_RUNTIME_PREFLIGHT.md).
 Rollback: revert feature PR #122 merge; no external infrastructure or migration.
+
+## Disposable rootless OCI owned health fixture — 2026-10-30
+
+[Feature PR #126](https://github.com/antonypaul98/cloudforge/pull/126)
+merged at `ad23ae3968e7290ca9d13e593ae3fb9636e1034c`.
+Final feature head `f964a26e9cdaa6db2e8cbe611865d2820a702623`
+passed exact-head push/PR product CI (#41023793483/#41023799423)
+and actual rootless owned-fixture push/PR (#41023793564/#41023799320,
+PR retry attempt 2 after transient Podman preflight timeout).
+Feature merged-main CI #41024050384 succeeded: **1,474 pytest passed,
+2 existing namespace tests skipped; infrastructure 22 passed, 1 skipped**.
+
+A disposable Linux runner built and executed a fixed static HTTP health
+fixture from signed distro BusyBox and first-party content, using local
+rootless Podman, no registry pull, non-root read-only container, disabled
+container network and restricted privileges. Actual in-container health
+passed, then stop, restart, health passed and container cleanup passed.
+This is **not selected application execution** or independently signed
+health evidence. Independent artifact-specific human authorization,
+hardened selected-source sandbox, real infrastructure deployment and
+controlled infrastructure rollback remain unverified. No production
+infrastructure, Mac, Work or Astra used.
+
+**Demo readiness: Partial, improved. Full-product completion: Unverified.**
+Next: controlled selected application execution with independent approval,
+trusted source-pinned isolation, external measured health and rollback.
+See `docs/DEMO_READINESS.md` and `CHECKPOINT_STATE.json` for exact evidence.
