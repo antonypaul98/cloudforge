@@ -73,3 +73,27 @@ and transient probe failure remain part of the evidence, not hidden successes.
 rootless OCI execution -> separate-container HTTP health -> stop/restart ->
 health -> cleanup. No caller-selected code, independent human authorization,
 signed external observation, infrastructure deployment or rollback accepted.
+
+
+## Bounded Python crash-recovery extension (pending exact-head CI)
+
+The disposable first-party Python OCI workflow now attempts an explicit
+`podman --remote=false kill --signal KILL` after its verified stop/restart
+cycle, checks `State.Running=false` and `State.ExitCode=137`, starts the
+same container again, measures HTTP health through the separate restricted
+observer container, and verifies cleanup. Static regression guards require
+the kill, exit-code check, recovery order and third health measurement.
+The existing non-root, no-network, read-only, no-new-privileges, capability
+and resource restrictions remain in place. No new runtime dependency,
+third-party code, external selected source, infrastructure or secrets are
+introduced; this reuses the checked-in fixture and Podman workflow.
+
+**Acceptance is pending:** passing static guards alone cannot prove the
+real runtime crash/restart sequence. Require exact feature-head push and PR
+product CI **and** real rootless OCI CI, guarded merge, merged-main CI, and
+canonical acceptance before claiming completion. A normal `podman stop`
+may escalate to SIGKILL and is not evidence of graceful shutdown. Even
+after success, this remains first-party fixture recovery, not an externally
+selected application, independent human authorization, trusted health
+attestation, production deployment or infrastructure rollback. Revert
+the feature merge to roll back the workflow; no persistent migration.
