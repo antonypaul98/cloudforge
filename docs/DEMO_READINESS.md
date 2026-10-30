@@ -354,3 +354,53 @@ verified rootless environment, with actual HTTP health and cleanup. User-selecte
 source execution still needs separate artifact-specific human authorization
 and a hardened execution boundary. Roll back this CI-only probe by reverting
 PR #124. **Demo readiness: Partial. Full-product completion: Unverified.**
+
+## Fixed owned HTTP fixture executed in rootless OCI (2026-10-30)
+
+[Feature PR #126](https://github.com/antonypaul98/cloudforge/pull/126)
+merged at `ad23ae3968e7290ca9d13e593ae3fb9636e1034c`.
+Its final feature head `f964a26e9cdaa6db2e8cbe611865d2820a702623`
+passed [push product CI #41023793483](https://github.com/antonypaul98/cloudforge/actions/runs/41023793483),
+[PR product CI #41023799423](https://github.com/antonypaul98/cloudforge/actions/runs/41023799423),
+[real fixture push #41023793564](https://github.com/antonypaul98/cloudforge/actions/runs/41023793564)
+and [real fixture PR #41023799320, attempt 2](https://github.com/antonypaul98/cloudforge/actions/runs/41023799320).
+The [feature merged-main CI #41024050384](https://github.com/antonypaul98/cloudforge/actions/runs/41024050384)
+succeeded at `ad23ae3968e7290ca9d13e593ae3fb9636e1034c`:
+**1,474 pytest passed, 2 existing namespace tests skipped;
+infrastructure 22 passed, 1 skipped**, Python 3.11.17.
+Four isolated workflow guard tests passed before publication.
+
+A real disposable GitHub-hosted Linux runner built a registry-free
+`FROM scratch` OCI image using signed Ubuntu distro `busybox-static`
+(1:1.36.1-6ubuntu3.1) and a fixed first-party health file. The workflow
+recorded the BusyBox, health-file and Containerfile SHA-256 hashes, then
+ran the content-addressed image using local rootless Podman, no container
+network, read-only root filesystem, dropped capabilities, no-new-privileges,
+non-root UID/GID and resource limits. **Actual in-container HTTP health
+passed, the container was stopped, restarted, health passed again, and
+the container was removed.** The runner logged SIGTERM escalation to
+SIGKILL during stop; it did not prevent the verified stop/restart result.
+The initial feature-head attempt failed because the image ID was returned
+as bare 64-character hex rather than `sha256:`-prefixed; the corrected
+head was retested. One PR run initially timed out during Podman preflight
+while the corresponding push run passed; rerunning the same PR job
+succeeded without changing the code or weakening restrictions.
+
+**Trust limits:** This serves only a fixed first-party static health file
+using distro BusyBox, **not** a selected Python/Node application. The
+health request is issued from inside the same container, not an independent
+authenticated/signed observer. The image ID is pinned for that run, not
+a cross-host reproducible digest or independently attested supply chain.
+No independent human approval, hardened multi-tenant isolation, selected
+application execution, production deployment or infrastructure rollback
+has been established. No real provider infrastructure, Mac, Work or Astra
+was accessed. Distro packages and temporary OCI artifacts were used only
+inside disposable GitHub runners. Roll back by reverting PR #126; there
+is no persistent CloudForge schema or infrastructure migration.
+
+**DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
+Next: connect a deliberately controlled selected application package to
+artifact-specific independent authorization, then run it inside a hardened
+source-pinned sandbox, independently observe its actual health and prove
+controlled rollback. No real infrastructure mutation without explicit
+human approval.
