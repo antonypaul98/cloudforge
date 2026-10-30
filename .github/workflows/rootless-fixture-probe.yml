@@ -2,7 +2,7 @@ name: Rootless OCI owned fixture on disposable runner
 
 on:
   push:
-    branches: ["build/demo-rootless-oci-runner-proof-20261030", "build/demo-owned-oci-fixture-20261030"]
+    branches: ["build/demo-rootless-oci-runner-proof-20261030", "build/demo-owned-oci-fixture-20261030", "build/demo-owned-oci-crash-recovery-20261030"]
   pull_request:
     branches: [main]
     paths:
@@ -85,7 +85,13 @@ jobs:
           [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
           podman --remote=false start "$container" >/dev/null
           check_health
+          # Prove crash recovery separately from the earlier stop/restart.
+          podman --remote=false kill --signal KILL "$container" >/dev/null
+          [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
+          [[ "$(podman --remote=false inspect --format '{{.State.ExitCode}}' "$container")" == "137" ]]
+          podman --remote=false start "$container" >/dev/null
+          check_health
           podman --remote=false rm -f "$container" >/dev/null
           ! podman --remote=false container exists "$container"
-          echo "OWNED_FIXTURE_RESULT: running_health=pass stopped=confirmed restarted_health=pass cleanup=pass"
-          echo "OWNED_FIXTURE_LIMITS: first_party_static_content_only no_selected_app no_human_approval no_real_infrastructure no_signed_observation no_rollback"
+          echo "OWNED_FIXTURE_RESULT: running_health=pass stopped=confirmed restarted_health=pass crashed=confirmed crash_exit=137 crash_restarted_health=pass cleanup=pass"
+          echo "OWNED_FIXTURE_LIMITS: first_party_static_content_only no_selected_app no_human_approval no_real_infrastructure no_signed_observation no_rollback stop_may_force_kill"

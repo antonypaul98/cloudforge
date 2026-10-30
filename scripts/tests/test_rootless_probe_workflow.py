@@ -20,6 +20,9 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
             "--cap-drop=all --security-opt=no-new-privileges",
             "--pids-limit=64 --memory=64m --user=65534:65534",
             "podman --remote=false stop", "podman --remote=false start",
+            "podman --remote=false kill --signal KILL",
+            "'{{.State.ExitCode}}'", '== "137"',
+            "crashed=confirmed crash_exit=137 crash_restarted_health=pass",
             "podman --remote=false rm -f", "trap cleanup EXIT",
             "OWNED_FIXTURE_RESULT:", "no_selected_app",
         )
@@ -40,7 +43,9 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
         for marker in ("--pull=never", "--network=none", "--read-only",
                        "--cap-drop=all", "--security-opt=no-new-privileges",
                        "--pids-limit=64", "--memory=64m", "trap cleanup EXIT",
-                       "podman --remote=false stop", "podman --remote=false rm -f"):
+                       "podman --remote=false stop", "podman --remote=false rm -f",
+                       "podman --remote=false kill --signal KILL",
+                       "'{{.State.ExitCode}}'", '== "137"'):
             with self.subTest(marker=marker):
                 self.assertFalse(self.guarded(original.replace(marker, "")))
 
@@ -50,6 +55,22 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
                         "\nFROM docker.io/library/alpine", "\npull_request_target:"):
             with self.subTest(variant=variant):
                 self.assertFalse(self.guarded(original + variant))
+
+    def test_crash_recovery_is_ordered_and_observed(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        initial_stop = source.index('podman --remote=false stop -t 2')
+        crash = source.index('podman --remote=false kill --signal KILL')
+        exit_code = source.index("'{{.State.ExitCode}}'")
+        cleanup = source.rindex('          podman --remote=false rm -f "$container" >/dev/null\n')
+        self.assertLess(initial_stop, crash)
+        self.assertLess(crash, exit_code)
+        self.assertLess(exit_code, cleanup)
+        self.assertEqual(source.count('          check_health\n'), 3)
+
+    def test_reject_missing_crash_exit_confirmation(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertFalse(self.guarded(source.replace("'{{.State.ExitCode}}'", "")))
+        self.assertFalse(self.guarded(source.replace('== "137"', '== "0"')))
 
     def test_never_executes_selected_application(self):
         source = WORKFLOW.read_text(encoding="utf-8")
