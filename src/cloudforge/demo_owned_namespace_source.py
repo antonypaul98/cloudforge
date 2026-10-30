@@ -53,6 +53,7 @@ def run_owned_namespace_source_demo(
     root = Path(__file__).resolve().parents[2]
     source = _owned_file(Path(__file__).with_name("demo_owned_app_service.py"))
     observer = _owned_file(Path(__file__).with_name("demo_namespace_observer.py"))
+    observer_sha = hashlib.sha256(observer).hexdigest()
     script = root / "scripts" / "owned_namespace_fixture.sh"
     _owned_file(script, limit=16_384)
 
@@ -89,6 +90,7 @@ def run_owned_namespace_source_demo(
                     "/usr/bin/unshare", "--user", "--map-root-user",
                     "--net", "--mount", "--pid", "--fork", "--kill-child",
                     "/bin/sh", str(script), str(mount_root), str(stage),
+                    hashlib.sha256(verified.source_bytes).hexdigest(), observer_sha,
                 ],
                 cwd=base,
                 env={"PATH": "/usr/sbin:/usr/bin:/sbin:/bin"},
