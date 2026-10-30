@@ -45,3 +45,31 @@ is unavailable, report the CI failure rather than weakening isolation.
 milestone is independently authenticated, artifact-specific authorization for
 controlled external selected-source execution, then independently trusted
 health evidence and real rollback acceptance.
+
+## Verified bounded acceptance, 2026-10-30
+
+Feature PR [#134](https://github.com/antonypaul98/cloudforge/pull/134)
+merged at `cf8771cedba53fdcb0283163214b8ca8e33a21f2` after final
+exact-head `b6d082f23ca32340f56274e3f7e661c9150dbce0` checks:
+
+- Python 3.11 full pytest: 1,482 passed, 2 existing namespace skips;
+  infrastructure guard suite: 30 passed, 1 existing skip.
+- Product push [#41077911336](https://github.com/antonypaul98/cloudforge/actions/runs/41077911336)
+  and PR [#41077923048](https://github.com/antonypaul98/cloudforge/actions/runs/41077923048): success.
+- Real rootless selected-Python fixture PR
+  [#41077923250](https://github.com/antonypaul98/cloudforge/actions/runs/41077923250):
+  success. Push [#41077911331](https://github.com/antonypaul98/cloudforge/actions/runs/41077911331):
+  success on attempt 2 after a transient rootless prerequisite probe failure.
+- Merged-main [#41078273066](https://github.com/antonypaul98/cloudforge/actions/runs/41078273066):
+  success on the feature merge SHA.
+
+The first runtime attempt failed because the private staged source retained mode
+`0600` when copied into an image whose process runs as non-root. The corrected
+Containerfile uses `COPY --chmod=0444`, preserving private staging and making
+the fixed application source readable inside the image. The initial failed runs
+and transient probe failure remain part of the evidence, not hidden successes.
+
+**Accepted only:** fixed first-party Python package -> verified staging -> actual
+rootless OCI execution -> separate-container HTTP health -> stop/restart ->
+health -> cleanup. No caller-selected code, independent human authorization,
+signed external observation, infrastructure deployment or rollback accepted.
