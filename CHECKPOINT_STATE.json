@@ -1,83 +1,83 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "selected-source operator-key sandbox permit preflight (demo-first; non-executing)",
+  "current_checkpoint": "selected-source durable local permit replay admission (demo-first; non-executing)",
   "active_branch": "main",
-  "main_sha_at_start": "2bad632a31fc078d5c01eba75339932ddc674efe",
-  "current_branch_sha": "f037c11771714df80743af7b31407c92b9026006",
+  "main_sha_at_start": "a2f5ec4cfb7de6a641809fcc7eb58bdd4a004648",
+  "current_branch_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #117 and acceptance PR #118 merged after exact-head push/PR CI; acceptance merged-main CI #41000856589 succeeded.",
-  "local_test_status": "No local full suite run: shell GitHub DNS unavailable. GitHub Python 3.11.17 exact-head push/PR and merged-main suites passed 1450 tests with 2 Linux namespace skips; infrastructure guards 18 passed/1 skipped.",
-  "pr_number": 117,
-  "ci_status": "Feature head a197893df36c2d71171640b73a243bab587e9d64: push #41000502656 SUCCESS; PR #41000524529 SUCCESS. Merged main 5bc82ab7d3d84a1d59932c374c81684eb5673ca8: push #41000640475 SUCCESS. Each: 1450 pytest passed/2 namespace skipped; infrastructure 18 passed/1 skipped. Acceptance head 449e85ead16dd34c2cbcebea82137eb57fa5e024: push #41000757102 SUCCESS; PR #41000765952 SUCCESS. Acceptance merged main f037c11771714df80743af7b31407c92b9026006: push #41000856589 SUCCESS (1450 pytest passed/2 skipped; infrastructure 18 passed/1 skipped).",
-  "merge_status": "MERGED: feature PR #117 at 5bc82ab7d3d84a1d59932c374c81684eb5673ca8; acceptance PR #118 at f037c11771714df80743af7b31407c92b9026006; both merged-main CI passed.",
+  "branch_remote_status": "Feature PR #120 merged with exact-head push/PR CI and successful merged-main CI; acceptance evidence prepared separately.",
+  "local_test_status": "Local full suite not run: shell GitHub DNS unavailable. Exact feature head and merged main on GitHub Python 3.11.17: 1460 pytest passed/2 Linux namespace skipped; infrastructure 18 passed/1 skipped.",
+  "pr_number": 120,
+  "ci_status": "Feature head d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e: push #41006238311 SUCCESS and PR #41006253028 SUCCESS; merged main 9863cb51792f8c75db821a510ad923f5ad8ec1b0: push #41006364781 SUCCESS. Each: 1460 pytest passed/2 namespace skipped; infrastructure 18 passed/1 skipped.",
+  "merge_status": "MERGED: feature PR #120 at 9863cb51792f8c75db821a510ad923f5ad8ec1b0; merged-main CI successful.",
   "external_acceptance_required": [],
-  "known_blocker": "Keyed policy verifies caller-held key possession only; no authenticated human, independently protected key custody, durable one-time sequence ledger, trusted OCI image, actual rootless selected-app execution, isolation attestation, signed runtime health, deployment or rollback. Existing two Linux namespace integration tests skipped on GitHub CI. External worktree exclusivity unverified.",
-  "next_action": "Bind independently authenticated artifact-specific approval to a durable one-time permit ledger and verified isolated selected-app runtime; observe signed health and controlled rollback. No real infrastructure mutation without explicit approval.",
+  "known_blocker": "Durable SQLite gate is local and opt-in; caller-controlled key, clock and ledger, symlink/path races and ledger rollback remain untrusted. No authenticated human approval, trusted OCI image, hardened selected-app runtime, isolation attestation, signed real health, deployment or rollback. Existing Linux namespace integration tests skipped in CI; external worktree exclusivity unverified.",
+  "next_action": "Independently authenticated, artifact-scoped operator approval and verified isolated execution of a selected application; measure actual health and controlled rollback. No real infrastructure mutation without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-30T04:05:24Z",
-  "observed_branch_sha": "f037c11771714df80743af7b31407c92b9026006",
-  "observed_feature_sha": "a197893df36c2d71171640b73a243bab587e9d64",
-  "current_repository_sha": "f037c11771714df80743af7b31407c92b9026006",
+  "observed_at_utc": "2026-10-30T05:04:59Z",
+  "observed_branch_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
+  "observed_feature_sha": "d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e",
+  "current_repository_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "MERGED: feature PR #117 and canonical acceptance PR #118; final merged-main CI successful",
+  "pr_state": "Feature PR #120 merged; exact-head push/PR and merged-main CI passed. Canonical acceptance evidence is tracked by this follow-up change.",
   "ci_state": {
     "push_run": {
-      "id": 41000502656,
-      "source_head_sha": "a197893df36c2d71171640b73a243bab587e9d64",
+      "id": 41006238311,
+      "source_head_sha": "d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41000502656"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41006238311"
     },
     "pr_run": {
-      "id": 41000524529,
-      "source_head_sha": "a197893df36c2d71171640b73a243bab587e9d64",
+      "id": 41006253028,
+      "source_head_sha": "d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41000524529"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41006253028"
     },
     "merged_main_run": {
-      "id": 41000640475,
-      "source_head_sha": "5bc82ab7d3d84a1d59932c374c81684eb5673ca8",
+      "id": 41006364781,
+      "source_head_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41000640475"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41006364781"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independently authenticated authorization and actual hardened rootless selected-application runtime not yet established",
-    "BLOCKER": "Current permit is non-executing, stateless and keyed only; it is not an authenticated approval or one-time execution gate.",
-    "SAFE_WORK_COMPLETED": "Feature PR #117 and acceptance PR #118 merged after exact-head push/PR CI and merged-main CI; final #41000856589: 1450 pytest passed/2 skipped, infrastructure 18 passed/1 skipped. No external infrastructure or Mac hardware accessed.",
-    "REMOTE_SHA": "f037c11771714df80743af7b31407c92b9026006",
-    "NEXT_ACTION": "Bind independently authenticated artifact-specific approval to a durable one-time permit ledger and verified isolated selected-app runtime; observe signed health and controlled rollback. No real infrastructure mutation without explicit approval."
+    "BLOCKED_LAYER": "Independently authenticated operator approval and hardened selected-app execution are not established",
+    "BLOCKER": "The SQLite gate is caller-controlled and non-executing; no verified selected-app runtime, signed health or rollback.",
+    "SAFE_WORK_COMPLETED": "Feature PR #120 merged with exact-head push/PR and merged-main CI success. 1460 pytest passed/2 namespace skips; infrastructure 18 passed/1 skipped. No real infrastructure or Mac hardware accessed.",
+    "REMOTE_SHA": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
+    "NEXT_ACTION": "Independently authenticated, artifact-scoped operator approval and verified isolated execution of a selected application; measure actual health and controlled rollback. No real infrastructure mutation without explicit approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
     "passed": 18,
     "skipped": 1,
     "skip_reason": "Existing memory-only source-layout infrastructure regression not applicable",
-    "product_tests": "1450 pytest passed, 2 Linux namespace runtime tests skipped on exact feature head and merged main",
+    "product_tests": "1460 pytest passed, 2 Linux namespace runtime tests skipped on exact feature head and merged main",
     "physical_mac": "not_run",
     "new_head_CI": "successful"
   },
-  "checkpoint_status": "COMPLETE_NONEXECUTING_SELECTED_SANDBOX_KEYED_PERMIT",
+  "checkpoint_status": "COMPLETE_NONEXECUTING_SELECTED_PERMIT_DURABLE_ADMISSION",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-selected-permit-20261029",
-  "previous_completed_checkpoint": "selected-source rootless OCI sandbox review proposal (non-executing)",
-  "verified_main_sha": "f037c11771714df80743af7b31407c92b9026006",
-  "merge_commit_sha": "5bc82ab7d3d84a1d59932c374c81684eb5673ca8",
-  "final_pr_head": "a197893df36c2d71171640b73a243bab587e9d64",
+  "checkpoint_branch": "build/demo-selected-permit-ledger-20261030",
+  "previous_completed_checkpoint": "selected-source operator-key sandbox permit preflight (non-executing)",
+  "verified_main_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
+  "merge_commit_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
+  "final_pr_head": "d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -109,7 +109,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Immediate remote software work requires no user-only action; real infrastructure or consequential external execution requires exact-artifact approval.",
+    "reason": "Immediate remote software development requires no user-only action; consequential real execution needs independently authenticated exact-artifact approval.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -1617,5 +1617,30 @@
     "merged_main_sha": "f037c11771714df80743af7b31407c92b9026006",
     "merged_main_run": 41000856589,
     "conclusion": "success"
+  },
+  "accepted_selected_permit_replay": {
+    "checkpoint": "local durable one-time admission for exact selected-source sandbox policy permit",
+    "status": "COMPLETE — non-executing synthetic local software acceptance",
+    "pr": 120,
+    "feature_head_sha": "d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e",
+    "merge_commit_sha": "9863cb51792f8c75db821a510ad923f5ad8ec1b0",
+    "push_ci_run": 41006238311,
+    "pr_ci_run": 41006253028,
+    "merged_main_ci_run": 41006364781,
+    "python": "3.11.17",
+    "pytest_passed": 1460,
+    "pytest_skipped": 2,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "new_regression_tests": 10,
+    "external_code_copied": false,
+    "new_dependencies": false,
+    "authenticated_human_review": false,
+    "selected_app_executed": false,
+    "real_infrastructure_mutated": false,
+    "signed_runtime_health": false,
+    "controlled_rollback": false,
+    "external_worktree_exclusivity": "unverified",
+    "rollback": "Revert feature merge; never reset a ledger while accepting permits"
   }
 }
