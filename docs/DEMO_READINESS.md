@@ -305,3 +305,21 @@ The next acceptance target is independently authenticated, artifact-specific
 authorization plus real selected-app execution in a hardened sandbox, measured
 health and controlled rollback. No consequential infrastructure action without
 explicit approval. No physical Mac or Work/Astra was used.
+
+
+## Local rootless OCI candidate preflight (2026-10-30)
+
+[PR #122](https://github.com/antonypaul98/cloudforge/pull/122) adds a
+non-executing local Linux Podman candidate diagnostic. Exact-head push/PR and
+merged-main CI passed on Python 3.11.17: 1,474 pytest passed, 2 existing
+Linux namespace integration skips, infrastructure 18 passed/1 skipped.
+The probe requires reported rootless/seccomp/cgroups v2 and explicit local-only
+mode, but **does not run a container or attest isolation**. No Podman executable
+was available in the current workspace; all new tests use synthetic process
+results. A positive candidate is not independently authenticated approval,
+trusted image provenance, selected-app execution, signed health or rollback.
+See [preflight limitations](DEMO_ROOTLESS_RUNTIME_PREFLIGHT.md).
+
+**Demo readiness: Partial. Full-product completion: Unverified.** Next:
+verified first-party rootless OCI fixture execution with observed health and
+cleanup, followed by separately approved exact-source selected-app execution.

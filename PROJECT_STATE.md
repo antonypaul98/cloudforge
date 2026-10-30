@@ -2060,3 +2060,33 @@ this paragraph supersedes them for the accepted demo milestone.
 Next work: independently authorized, actual isolated selected-app execution,
 signed measured health and controlled rollback; no consequential external
 actions without explicit approval. No Work/Astra or physical Mac testing.
+
+
+## Local rootless OCI candidate preflight — feature accepted (2026-10-30 ET)
+
+[Feature PR #122](https://github.com/antonypaul98/cloudforge/pull/122) at exact
+head `71a17a1beeac100c3fbd27cdc2596f1a7a0271bf` passed [push CI #41011314148](https://github.com/antonypaul98/cloudforge/actions/runs/41011314148)
+and [PR CI #41011325166](https://github.com/antonypaul98/cloudforge/actions/runs/41011325166).
+Guarded squash merge `0ce704c2c3611cb9d06dcbb5e0e852396155dad2` passed
+[merged-main CI #41011397378](https://github.com/antonypaul98/cloudforge/actions/runs/41011397378):
+Python 3.11.17, **1,474 pytest passed, 2 Linux namespace tests skipped**,
+infrastructure **18 passed, 1 skipped**. Fourteen new synthetic preflight
+regressions exercise local rootless candidate detection, remote-environment
+suppression, malformed/false prerequisites, missing binary, root/non-Linux,
+nonzero exit and timeout. No independent local full-suite run.
+
+The new non-executing diagnostic probes only local non-root Linux Podman with
+explicit `--remote=false` and requires reported rootless, seccomp and cgroups
+v2 before labeling it a candidate for a future fixed first-party fixture trial.
+This does **not** prove a hardened runtime, authenticate an operator, execute a
+selected app, deploy, sign health or perform rollback. No Podman executable was
+available in the automation workspace; no actual OCI trial occurred. Existing
+Linux namespace integration tests remain skipped in CI. No Work/Astra, Mac or
+real infrastructure was accessed. External worktree exclusivity unverified.
+
+**DEMO READINESS: PARTIAL. FULL PRODUCT COMPLETION: UNVERIFIED.** No evidence-backed
+percentage or ETA. Next is a verified rootless runtime and pinned first-party
+image trial with measured health and cleanup, then separately authenticated
+exact-artifact approval for selected-app execution and controlled rollback.
+Reuse-first and limitations: [runtime preflight contract](docs/DEMO_ROOTLESS_RUNTIME_PREFLIGHT.md).
+Rollback: revert feature PR #122 merge; no external infrastructure or migration.
