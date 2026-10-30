@@ -252,3 +252,31 @@ product completion remains **UNVERIFIED**. Next: independently authenticated
 artifact-specific approval, actual rootless sandbox execution of a controlled
 selected app, signed measured health and controlled rollback. No real
 infrastructure change without explicit approval.
+
+## Selected-source keyed sandbox permit preflight (2026-10-29, non-executing)
+
+Feature [PR #117](https://github.com/antonypaul98/cloudforge/pull/117)
+merged at `5bc82ab7d3d84a1d59932c374c81684eb5673ca8`.
+Its exact feature head `a197893df36c2d71171640b73a243bab587e9d64`
+passed [push CI #41000502656](https://github.com/antonypaul98/cloudforge/actions/runs/41000502656)
+and [PR CI #41000524529](https://github.com/antonypaul98/cloudforge/actions/runs/41000524529).
+[Feature merged-main CI #41000640475](https://github.com/antonypaul98/cloudforge/actions/runs/41000640475)
+also passed: **1,450 Python tests passed, 2 existing Linux namespace tests skipped**;
+infrastructure **18 passed, 1 skipped**, Python 3.11.17.
+
+The new short-lived, operator-key HMAC policy envelope is bound to the
+reverified exact selected Python/Node source package, manifest, target, image
+and sequence. A separately provisioned key fingerprint is mandatory.
+Tests cover source/manifest/target/image changes, key mismatch, MAC tampering,
+expiry, sequence mismatch, strict shape, redaction and no process/network I/O.
+See [trust boundaries](SELECTED_EXECUTION_PERMIT.md). Reuse was first-party
+CloudForge plus Python stdlib, with no imported third-party source.
+
+**No selected application executed.** This is a stateless key-possession
+check, not authenticated human approval, a one-time replay ledger, trusted
+image, sandbox attestation, signed health, real deployment or rollback.
+Two namespace integration tests still skip in GitHub CI. Demo readiness
+remains **PARTIAL** and full product completion **UNVERIFIED**.
+Next: independent artifact-scoped approval, durable one-shot replay gate,
+actual isolated selected-app execution, measured signed health and controlled
+rollback. No real infrastructure mutation without explicit approval.
