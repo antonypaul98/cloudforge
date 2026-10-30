@@ -2039,3 +2039,24 @@ external state. The canonical acceptance PR needs its own exact-head and
 final merged-main CI. Next: independent artifact-scoped operator authorization,
 a hardened user-selected app sandbox, signed real health evidence and controlled
 rollback. No external endpoint or infrastructure without explicit approval.
+
+## Demo-first selected-source sandbox review acceptance — 2026-10-29
+
+The current main now includes feature [PR #115](https://github.com/antonypaul98/cloudforge/pull/115),
+merged at `a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b`. Exact-head
+push and PR CI and merged-main CI succeeded on Python 3.11.17:
+1,412 pytest passed/2 skipped, infrastructure 18 passed/1 skipped.
+See `CHECKPOINT_STATE.json` and `docs/SELECTED_SANDBOX_REVIEW.md`
+for precise evidence and trust boundaries.
+
+This feature reuses the verified selected application source package to
+propose a deterministic, digest-pinned rootless OCI sandbox review. It does
+**not** run the selected app, authenticate a reviewer, prove isolation,
+deploy infrastructure, observe real selected-app health or roll back.
+Historical 'current checkpoint' paragraphs above are retained as chronology;
+this paragraph supersedes them for the accepted demo milestone.
+
+**Demo readiness:** Partial. **Full product completion:** Unverified.
+Next work: independently authorized, actual isolated selected-app execution,
+signed measured health and controlled rollback; no consequential external
+actions without explicit approval. No Work/Astra or physical Mac testing.
