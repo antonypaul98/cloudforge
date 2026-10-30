@@ -75,25 +75,40 @@ health -> cleanup. No caller-selected code, independent human authorization,
 signed external observation, infrastructure deployment or rollback accepted.
 
 
-## Bounded Python crash-recovery extension (pending exact-head CI)
+## Verified bounded Python crash-recovery extension — 2026-10-30
 
-The disposable first-party Python OCI workflow now attempts an explicit
-`podman --remote=false kill --signal KILL` after its verified stop/restart
-cycle, checks `State.Running=false` and `State.ExitCode=137`, starts the
-same container again, measures HTTP health through the separate restricted
-observer container, and verifies cleanup. Static regression guards require
-the kill, exit-code check, recovery order and third health measurement.
-The existing non-root, no-network, read-only, no-new-privileges, capability
-and resource restrictions remain in place. No new runtime dependency,
-third-party code, external selected source, infrastructure or secrets are
-introduced; this reuses the checked-in fixture and Podman workflow.
+Feature [PR #136](https://github.com/antonypaul98/cloudforge/pull/136)
+merged at `57f94d338585d54a757b669e494a562fc94844ad` after exact
+feature head `a060a4df8a5db8ab292bf2122320211596608d17` passed
+[push product CI #41086809156](https://github.com/antonypaul98/cloudforge/actions/runs/41086809156),
+[PR product CI #41086855011](https://github.com/antonypaul98/cloudforge/actions/runs/41086855011),
+and [real rootless OCI PR #41086855313](https://github.com/antonypaul98/cloudforge/actions/runs/41086855313).
+[Merged-main product CI #41087040423](https://github.com/antonypaul98/cloudforge/actions/runs/41087040423)
+also passed. Python 3.11: **1,482 pytest passed, 2 existing skips**;
+infrastructure guard suite: **33 tests, 1 existing skip**. The
+real-runtime log records `sigkill_exit_137=pass`,
+`crash_recovery_health=pass` and `cleanup=pass`.
 
-**Acceptance is pending:** passing static guards alone cannot prove the
-real runtime crash/restart sequence. Require exact feature-head push and PR
-product CI **and** real rootless OCI CI, guarded merge, merged-main CI, and
-canonical acceptance before claiming completion. A normal `podman stop`
-may escalate to SIGKILL and is not evidence of graceful shutdown. Even
-after success, this remains first-party fixture recovery, not an externally
-selected application, independent human authorization, trusted health
-attestation, production deployment or infrastructure rollback. Revert
-the feature merge to roll back the workflow; no persistent migration.
+The workflow reused the fixed first-party exact-source Python package,
+rootless Podman and separate restricted observer. After its normal
+stop/restart/health cycle, it deliberately issued `podman kill --signal KILL`,
+required `State.Running=false` and `State.ExitCode=137`, restarted the
+same container, observed HTTP health and verified cleanup. The existing
+non-root, no-network, read-only, no-new-privileges, capability and resource
+restrictions remained in place. Static regressions require the kill,
+exit-code check, recovery order and third health measurement.
+
+**Limits:** The earlier normal stop escalated to SIGKILL, so graceful
+shutdown is **not** established. This remains a fixed CloudForge-owned
+fixture, not an external selected Python/Node application. The observer
+is not independently authenticated or signed. No independent human
+authorization, hardened multi-tenant isolation, real provider deployment
+or infrastructure rollback has been demonstrated. No third-party source
+was copied or new dependency added; no Mac, Work/Astra or production
+infrastructure used. Revert PR #136 for software rollback; no migration.
+
+**Demo readiness: Partial, improved. Full product completion: Unverified.**
+Next: independently authenticated, artifact-specific approval and safe
+execution of a genuinely selected application with trusted health and
+controlled rollback. Canonical documentation acceptance is separately
+subject to its own exact-head PR CI and merged-main CI.
