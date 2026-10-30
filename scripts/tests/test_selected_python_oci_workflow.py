@@ -1,9 +1,12 @@
 """Static safety gates for the disposable selected-source Python OCI fixture."""
 from pathlib import Path
+import hashlib
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/selected-python-oci-fixture.yml"
+FIXTURE = ROOT / "scripts/fixtures/owned_python_health_app.py"
+PINNED_SOURCE_SHA256 = "af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6"
 
 
 class SelectedPythonOCIWorkflowTests(unittest.TestCase):
@@ -17,6 +20,8 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             'podman --remote=false pull --platform linux/amd64 "$base_ref"',
             "package_selected_source(", "prepare_selected_artifact(",
             "stage_verified_selected_source(", "expected_package_sha256=",
+            "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
+            "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
             "expected_review_binding_digest=", "expected_target_id=target",
             "COPY --chmod=0444 app.py /srv/app.py", 'ENTRYPOINT ["python3","-B","/srv/app.py"]',
             '"--pull=never", "--network=none"',
@@ -87,6 +92,25 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         source = WORKFLOW.read_text(encoding="utf-8")
         for marker in ('podman --remote=false kill --signal KILL',
                        "{{.State.ExitCode}}", '"137"'):
+            with self.subTest(marker=marker):
+                self.assertFalse(self.guarded(source.replace(marker, "")))
+
+    def test_pinned_owned_fixture_digest_matches_exact_checked_in_bytes(self):
+        self.assertEqual(hashlib.sha256(FIXTURE.read_bytes()).hexdigest(),
+                         PINNED_SOURCE_SHA256)
+        self.assertNotEqual(hashlib.sha256(FIXTURE.read_bytes() + b"# drift").hexdigest(),
+                            PINNED_SOURCE_SHA256)
+
+    def test_owned_source_digest_check_precedes_package_and_build(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertLess(source.index("hashlib.sha256(source).hexdigest() != expected_owned_source_sha256"),
+                        source.index("package_selected_source("))
+        self.assertLess(source.index("package_selected_source("),
+                        source.index('"podman", "--remote=false", "build"'))
+        for marker in (
+            "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
+            "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
+        ):
             with self.subTest(marker=marker):
                 self.assertFalse(self.guarded(source.replace(marker, "")))
 
