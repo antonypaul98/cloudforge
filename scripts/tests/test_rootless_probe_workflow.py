@@ -23,6 +23,10 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
             "podman --remote=false kill --signal KILL",
             "'{{.State.ExitCode}}'", '== "137"',
             "crashed=confirmed crash_exit=137 crash_restarted_health=pass",
+            "podman --remote=false run --rm --pull=never",
+            '--network="container:$container"', "--entrypoint=/bin/busybox",
+            "--pids-limit=16 --memory=32m --user=65534:65534",
+            "observer=separate_container",
             "podman --remote=false rm -f", "trap cleanup EXIT",
             "OWNED_FIXTURE_RESULT:", "no_selected_app",
         )
@@ -71,6 +75,19 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
         source = WORKFLOW.read_text(encoding="utf-8")
         self.assertFalse(self.guarded(source.replace("'{{.State.ExitCode}}'", "")))
         self.assertFalse(self.guarded(source.replace('== "137"', '== "0"')))
+
+    def test_separate_observer_has_no_external_network(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('podman --remote=false run --rm --pull=never --network="container:$container"', source)
+        self.assertIn("--entrypoint=/bin/busybox", source)
+        self.assertNotIn('podman --remote=false exec "$container"', source)
+        self.assertNotIn("--network=host", source)
+        self.assertEqual(source.count('          check_health\n'), 3)
+        for marker in ('--network="container:$container"', '--entrypoint=/bin/busybox',
+                       '--pids-limit=16 --memory=32m --user=65534:65534',
+                       'observer=separate_container'):
+            with self.subTest(marker=marker):
+                self.assertFalse(self.guarded(source.replace(marker, "")))
 
     def test_never_executes_selected_application(self):
         source = WORKFLOW.read_text(encoding="utf-8")
