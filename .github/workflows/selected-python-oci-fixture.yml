@@ -73,7 +73,12 @@ jobs:
           from cloudforge.demo_source_package import package_selected_source
 
           image_tag, base_ref = sys.argv[1:]
+          # Pin the only allowed first-party fixture before package creation or build.
+          # Changing the fixture requires an independently reviewed pin update.
+          expected_owned_source_sha256 = "af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6"
           source = Path("scripts/fixtures/owned_python_health_app.py").read_bytes()
+          if hashlib.sha256(source).hexdigest() != expected_owned_source_sha256:
+              raise SystemExit("first-party fixture digest changed; reviewed pin update required")
           manifests = {"requirements.txt": "# first-party Python stdlib only\n"}
           target = "disposable-ci-owned-python"
           package = package_selected_source("owned-python-health", manifests, target, "app.py", source)
