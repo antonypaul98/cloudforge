@@ -14,8 +14,14 @@ namespace-local observer measures actual HTTP `HEAD /health`:
 3. Application restarted: HTTP 204 -> `pass`.
 
 It checks the exact package SHA-256, source-review digest and target before
-staging bytes. All runtime inputs are fixed first-party files; the caller can
-supply **manifest text for review only**, not executable source, commands,
+staging bytes. The namespace launcher also checks the parent-pinned SHA-256 of
+both staged first-party files before mounting, and checks the copied files
+before chroot/process launch; altered bytes fail closed. These self-derived
+hashes detect accidental or local staging changes, but do not authenticate a
+human, attest the runtime, or make a hostile host trustworthy.
+
+All runtime inputs are fixed first-party files; the caller can supply
+**manifest text for review only**, not executable source, commands,
 hosts, ports, shell fragments, mounts, Docker images or credentials. The
 namespace is temporary and no external endpoint or infrastructure is used.
 
@@ -52,8 +58,8 @@ dependency), and Linux namespaces (available in some Linux environments);
 chose a **first-party-only** bounded namespace fixture without arbitrary code.
 
 Tests cover opt-in, exact fixed invocation, package verification failure,
-malformed manifest rejection, redaction, bad observer output, real namespace
-HEAD stop/restart and source-byte binding changes. Real namespace tests skip
+malformed manifest rejection, redaction, bad observer output, staged
+source/observer tampering before mounts, real namespace HEAD stop/restart and source-byte binding changes. Real namespace tests skip
 **explicitly** if Linux user namespaces are unavailable; a skip does not
 establish real namespace acceptance on that runner. Full Python 3.11 exact-head
 CI and infrastructure guards, guarded merge, merged-main CI and canonical

@@ -4,6 +4,7 @@ The namespace integration tests run only on Linux environments supporting
 unprivileged user namespaces; unsupported CI runners report an explicit skip.
 No caller-selected source or external endpoint is ever executed.
 """
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -110,6 +111,11 @@ def test_fixed_unshare_command_and_restricted_environment(monkeypatch):
         "--mount", "--pid", "--fork", "--kill-child",
     ]
     assert observed["argv"][8] == "/bin/sh"
+    assert len(observed["argv"]) == 14
+    assert observed["argv"][12] == result["first_party_source_sha256"]
+    assert observed["argv"][13] == hashlib.sha256(demo._owned_file(
+        Path(demo.__file__).with_name("demo_namespace_observer.py")
+    )).hexdigest()
     assert observed["kwargs"]["env"] == {"PATH": "/usr/sbin:/usr/bin:/sbin:/bin"}
     assert observed["kwargs"]["timeout"] == 40
     assert observed["kwargs"]["stdin"] == subprocess.DEVNULL
@@ -136,3 +142,26 @@ def test_no_arbitrary_source_execution_api():
     assert "source" not in signature.parameters
     assert "command" not in signature.parameters
     assert "endpoint" not in signature.parameters
+
+
+@pytest.mark.parametrize("changed", ["app.py", "observer.py"])
+def test_stage_hash_mismatch_rejected_before_mount(tmp_path, changed):
+    """Real shell preflight refuses swapped bytes without invoking mount."""
+    if sys.platform != "linux":
+        pytest.skip("fixed Linux namespace fixture requires Linux")
+    stage = tmp_path / "stage"
+    stage.mkdir()
+    (stage / "app.py").write_bytes(b"original app\\n")
+    (stage / "observer.py").write_bytes(b"original observer\\n")
+    hashes = [hashlib.sha256((stage / name).read_bytes()).hexdigest()
+              for name in ("app.py", "observer.py")]
+    (stage / changed).write_bytes(b"tampered source\\n")
+    script = Path(demo.__file__).resolve().parents[2] / "scripts" / "owned_namespace_fixture.sh"
+    result = subprocess.run(
+        ["/bin/sh", str(script), str(tmp_path / "root"), str(stage), *hashes],
+        capture_output=True, text=True, timeout=5,
+        env={"PATH": "/usr/sbin:/usr/bin:/sbin:/bin"},
+    )
+    assert result.returncode != 0
+    assert result.stdout == ""
+    assert not (tmp_path / "root").exists()
