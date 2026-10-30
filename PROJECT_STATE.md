@@ -2240,3 +2240,22 @@ production infrastructure. Revert feature PR for software rollback.
 **DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
 Next milestone: independently authenticated artifact-specific approval
 for selected-source execution, trusted health and controlled rollback.
+
+## Separate-key selected sandbox preflight — 2026-10-30
+
+Feature [PR #139](https://github.com/antonypaul98/cloudforge/pull/139)
+merged at `fbe1079c9342933a6794f8ed6b4dcc586a0c1e04` after exact head
+`abfb9721114fc1f5c9acd1957dae2eeb8f40e3c2` passed
+[push CI #41103582725](https://github.com/antonypaul98/cloudforge/actions/runs/41103582725)
+and [PR CI #41103617032](https://github.com/antonypaul98/cloudforge/actions/runs/41103617032).
+[Merged-main CI #41104455652](https://github.com/antonypaul98/cloudforge/actions/runs/41104455652)
+also passed. Python 3.11.17: **1,504 passed, 2 existing skips**;
+infrastructure: **33 tests, 1 existing skip**.
+
+The new opt-in synthetic preflight binds a separate pinned reviewer key to the
+exact operator permit MAC and time window, verifies it before existing SQLite
+one-time admission, and rejects same-key, forged, stale and changed-artifact
+attempts. It does **not** authenticate a human, enforce this path in an executor,
+run selected external Python/Node code, sign external health, deploy or roll
+back provider infrastructure. No Mac, Work/Astra or production changes.
+**Demo readiness partial; full product completion unverified.**
