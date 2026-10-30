@@ -24,7 +24,8 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "--security-opt=no-new-privileges", "--pids-limit=64 --memory=128m",
             "--user=65534:65534", '--network="container:$container"',
             "--entrypoint=/bin/busybox", "check_health", "podman --remote=false stop",
-            "podman --remote=false start", "podman --remote=false rm -f",
+            "podman --remote=false start", "podman --remote=false kill --signal KILL",
+            "'{{.State.ExitCode}}'", '"137"', "podman --remote=false rm -f",
             "trap cleanup EXIT", "OWNED_SELECTED_PYTHON_RESULT:",
             "no_external_selected_app", "no_human_approval",
         )
@@ -46,7 +47,9 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "COPY --chmod=0444 app.py /srv/app.py",
             "--pull=never --network=none --read-only", "--cap-drop=all",
             "--security-opt=no-new-privileges", "--pids-limit=64 --memory=128m",
-            "--user=65534:65534", "trap cleanup EXIT", "podman --remote=false rm -f",
+            "--user=65534:65534", "trap cleanup EXIT",
+            "podman --remote=false kill --signal KILL", "'{{.State.ExitCode}}'",
+            "podman --remote=false rm -f",
         ):
             with self.subTest(marker=marker):
                 self.assertFalse(self.guarded(source.replace(marker, "")))
@@ -65,7 +68,27 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
                         source.index('"podman", "--remote=false", "build"'))
         self.assertLess(source.index('podman --remote=false run -d'),
                         source.index('          check_health\n'))
-        self.assertEqual(source.count('          check_health\n'), 2)
+        self.assertEqual(source.count('          check_health\n'), 3)
+
+    def test_actual_crash_recovery_is_checked_before_cleanup(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        kill = source.index('podman --remote=false kill --signal KILL "$container"')
+        exit_code = source.index("{{.State.ExitCode}}")
+        recovery_start = source.index('podman --remote=false start "$container"', kill)
+        recovered_health = source.index('          check_health\n', recovery_start)
+        cleanup = source.index('          podman --remote=false rm -f "$container" >/dev/null', recovered_health)
+        self.assertLess(kill, exit_code)
+        self.assertLess(exit_code, recovery_start)
+        self.assertLess(recovery_start, recovered_health)
+        self.assertLess(recovered_health, cleanup)
+        self.assertIn("sigkill_exit_137=pass crash_recovery_health=pass", source)
+
+    def test_crash_recovery_guards_reject_missing_kill_or_exit_code(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        for marker in ('podman --remote=false kill --signal KILL',
+                       "{{.State.ExitCode}}", '"137"'):
+            with self.subTest(marker=marker):
+                self.assertFalse(self.guarded(source.replace(marker, "")))
 
     def test_only_fixed_owned_fixture_is_selected(self):
         source = WORKFLOW.read_text(encoding="utf-8")
