@@ -2186,3 +2186,35 @@ or new dependency. Rollback: revert feature PR #130, no migration.
 Next: independently authenticated artifact-specific approval, hardened
 selected-source runtime, signed external observation and controlled rollback.
 Canonical documentation acceptance requires its own exact-head and merged-main CI.
+
+## Demo-first fixed Python OCI selected-source execution — 2026-10-30
+
+Feature [PR #134](https://github.com/antonypaul98/cloudforge/pull/134)
+merged at `cf8771cedba53fdcb0283163214b8ca8e33a21f2`, exact final head
+`b6d082f23ca32340f56274e3f7e661c9150dbce0`. Product push/PR CI
+[#41077911336](https://github.com/antonypaul98/cloudforge/actions/runs/41077911336) /
+[#41077923048](https://github.com/antonypaul98/cloudforge/actions/runs/41077923048)
+passed 1,482 Python tests (2 existing skips), 30 infrastructure checks (1
+existing skip). Real rootless OCI push
+[#41077911331](https://github.com/antonypaul98/cloudforge/actions/runs/41077911331)
+passed on attempt 2 after a transient prerequisite-probe failure; PR
+[#41077923250](https://github.com/antonypaul98/cloudforge/actions/runs/41077923250)
+passed. Merged-main CI
+[#41078273066](https://github.com/antonypaul98/cloudforge/actions/runs/41078273066)
+passed.
+
+The disposable CI runner verified a **fixed first-party Python source package**
+against exact source/manifest/target digests, staged its bytes, built a
+digest-pinned rootless OCI image, observed real HTTP health from a separate
+restricted container, stopped/restarted the application and verified health
+and cleanup. The initial non-root image failure was corrected by copying
+staged `0600` source into the image with mode `0444`; no sandbox guard
+was relaxed. The observer shares the app network namespace and runner.
+See `docs/DEMO_OWNED_SELECTED_PYTHON_OCI.md`.
+
+**DEMO READINESS: Partial.** No externally selected Python/Node code,
+independent human authentication, signed external health, real provider
+deployment or infrastructure rollback. **FULL PRODUCT COMPLETION: Unverified.**
+Next: independently authenticated artifact-specific selected-app sandbox
+execution and trusted observation/recovery gates. No Work/Astra, physical
+Mac or production infrastructure changes.
