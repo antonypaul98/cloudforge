@@ -2149,3 +2149,40 @@ Revert feature merge for software rollback; there is no persistent migration.
 Next: independently approved selected-source execution, externally measured
 health and controlled rollback. Canonical documentation acceptance needs its
 own exact-head CI and merged-main CI.
+
+## Separate restricted OCI observer container — 2026-10-30
+
+[Feature PR #130](https://github.com/antonypaul98/cloudforge/pull/130)
+merged at `60a21b501851eb60f94497b6c01755ff4a82cec3`. Exact feature head
+`0aeebc0dcaa00fcd5be14ee073fb48f3d8a39717` passed
+[push product CI #41038283183](https://github.com/antonypaul98/cloudforge/actions/runs/41038283183),
+[PR product CI #41038289648](https://github.com/antonypaul98/cloudforge/actions/runs/41038289648),
+[real rootless fixture push #41038283193](https://github.com/antonypaul98/cloudforge/actions/runs/41038283193), and
+[real rootless fixture PR #41038289687](https://github.com/antonypaul98/cloudforge/actions/runs/41038289687).
+[Merged-main CI #41038417174](https://github.com/antonypaul98/cloudforge/actions/runs/41038417174)
+succeeded at `60a21b501851eb60f94497b6c01755ff4a82cec3`. Product CI: **1,474 pytest passed,
+2 existing namespace skips; 25 infrastructure checks passed, 1 skipped**.
+An initial feature-head product run failed on a stale test expectation;
+that assertion was corrected and all four exact final-head checks passed.
+
+A real disposable rootless Podman runner now performs three HTTP health
+checks from a **separate restricted short-lived observer container** sharing
+the owned fixture's `--network=none` namespace. The observer uses the same
+locally built image with an overridden BusyBox entrypoint, non-root user,
+read-only filesystem, dropped capabilities and resource limits. It observed
+health before stop, after restart and after deliberate SIGKILL/restart (exit
+137), then cleanup. The earlier stop again escalated to SIGKILL, so it was
+not a graceful-shutdown demonstration. No external port was published.
+
+This is separate-container observation, **not independent authenticated or
+signed evidence**: observer and fixture share a network namespace, image and
+runner. No selected Python/Node app, real provider deployment, hardened
+multi-tenant isolation, human authorization or infrastructure rollback.
+No Work/Astra or physical Mac was used. Reuse-first and exact scope are in
+[DEMO_SEPARATE_OBSERVER.md](docs/DEMO_SEPARATE_OBSERVER.md); no external code copied
+or new dependency. Rollback: revert feature PR #130, no migration.
+
+**DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
+Next: independently authenticated artifact-specific approval, hardened
+selected-source runtime, signed external observation and controlled rollback.
+Canonical documentation acceptance requires its own exact-head and merged-main CI.
