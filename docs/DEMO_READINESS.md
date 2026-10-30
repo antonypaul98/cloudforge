@@ -280,3 +280,28 @@ remains **PARTIAL** and full product completion **UNVERIFIED**.
 Next: independent artifact-scoped approval, durable one-shot replay gate,
 actual isolated selected-app execution, measured signed health and controlled
 rollback. No real infrastructure mutation without explicit approval.
+
+## Selected-source permit replay admission — 2026-10-30
+
+[Feature PR #120](https://github.com/antonypaul98/cloudforge/pull/120)
+merged at `9863cb51792f8c75db821a510ad923f5ad8ec1b0`.
+Exact feature head `d20ed6c9e37fba54e2a97f9c1c8de110ec503b2e`
+passed [push CI #41006238311](https://github.com/antonypaul98/cloudforge/actions/runs/41006238311)
+and [PR CI #41006253028](https://github.com/antonypaul98/cloudforge/actions/runs/41006253028).
+The merged main passed [CI #41006364781](https://github.com/antonypaul98/cloudforge/actions/runs/41006364781):
+**1,460 pytest passed, 2 Linux namespace tests skipped; infrastructure
+18 passed, 1 skipped**, Python 3.11.17.
+
+The new opt-in local SQLite gate admits an exact source/target/image-bound
+keyed permit at most once per intact trusted ledger and proposal scope. It
+rejects replay, stale sequences, invalid source/MAC before I/O, unsafe paths,
+schema changes and unexpected triggers; concurrency is tested. This does
+**not** authenticate a human, execute a selected app, attest isolation, prove
+runtime health, deploy or recover infrastructure. The caller still controls
+keys, time and the ledger. See [implementation and limitations](SELECTED_PERMIT_REPLAY.md).
+
+**DEMO READINESS: PARTIAL. FULL PRODUCT COMPLETION: UNVERIFIED.**
+The next acceptance target is independently authenticated, artifact-specific
+authorization plus real selected-app execution in a hardened sandbox, measured
+health and controlled rollback. No consequential infrastructure action without
+explicit approval. No physical Mac or Work/Astra was used.
