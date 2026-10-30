@@ -225,3 +225,30 @@ merge to roll back; no migration.
 application execution in a hardened exact-source-pinned isolated runtime,
 followed by signed real health evidence and controlled rollback. No real
 infrastructure or external endpoint without artifact-scoped human approval.
+
+## Selected-source rootless OCI sandbox review (2026-10-29, non-executing)
+
+Feature [PR #115](https://github.com/antonypaul98/cloudforge/pull/115)
+merged at `a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b`.
+Its exact feature head `d5253730b6fa8e69912276f8fb1ddf942a283945`
+passed push [CI #40994596795](https://github.com/antonypaul98/cloudforge/actions/runs/40994596795)
+and PR [CI #40994613916](https://github.com/antonypaul98/cloudforge/actions/runs/40994613916).
+Merged-main [CI #40994711112](https://github.com/antonypaul98/cloudforge/actions/runs/40994711112)
+passed: **1,412 Python tests passed, 2 existing namespace tests skipped**;
+infrastructure **18 passed, 1 skipped** (Python 3.11.17).
+
+The new `prepare_selected_sandbox_review` composes exact-byte verified
+selected Python/Node packages with a digest-pinned OCI image reference and
+fixed rootless isolation requirements. It returns a deterministic
+source/target/image-bound proposal digest, with raw source and manifest bytes
+omitted. See [scope and limitations](SELECTED_SANDBOX_REVIEW.md).
+
+**No selected application was executed.** The proposal is not an independent
+authorization, trusted image, hardened sandbox, signed observation or rollback.
+The existing Linux namespace runtime tests remain skipped on GitHub CI;
+the earlier local fixed first-party fixture receipt does not prove this new
+selected-application runtime. Demo readiness remains **PARTIAL** and full
+product completion remains **UNVERIFIED**. Next: independently authenticated
+artifact-specific approval, actual rootless sandbox execution of a controlled
+selected app, signed measured health and controlled rollback. No real
+infrastructure change without explicit approval.
