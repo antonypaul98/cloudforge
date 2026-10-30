@@ -33,3 +33,7 @@ acceptance. Revert the feature commit to roll back the code; do not reset any
 trusted ledger because doing so can permit replay.
 
 **Demo readiness: partial. Full product completion: unverified.**
+
+## Verified feature-head and merged-main CI, 2026-10-30
+
+Feature [PR #141](https://github.com/antonypaul98/cloudforge/pull/141) merged as `61f8f55dd3db0e7e2b80891873b3e83900333891`. Exact head `820a47d5386e877064d780f90ef09b62d55a3ecd` passed [push #41112191275](https://github.com/antonypaul98/cloudforge/actions/runs/41112191275) and [PR #41112223898](https://github.com/antonypaul98/cloudforge/actions/runs/41112223898). [Merged-main #41112595975](https://github.com/antonypaul98/cloudforge/actions/runs/41112595975) succeeded. Python 3.11.17: 1,510 passed, 2 skipped; infrastructure 33 run, 1 skipped. Synthetic non-executing composition only. Canonical acceptance PR remains independently gated.
