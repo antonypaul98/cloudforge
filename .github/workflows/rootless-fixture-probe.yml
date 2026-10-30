@@ -1,0 +1,43 @@
+name: Rootless OCI candidate on disposable runner
+
+on:
+  push:
+    branches: ["build/demo-rootless-oci-runner-proof-20261030"]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rootless-fixture-probe.yml"
+      - "scripts/tests/test_rootless_probe_workflow.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rootless-fixture-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rootless-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install local rootless Podman on disposable runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends podman uidmap slirp4netns fuse-overlayfs
+      - name: Verify real local runtime capability without executing images
+        env:
+          PYTHONPATH: src
+        run: |
+          python - <<'PY'
+          import json
+          from cloudforge.demo_rootless_runtime_preflight import inspect_rootless_oci_candidate
+          result = inspect_rootless_oci_candidate()
+          print(json.dumps(result, sort_keys=True))
+          if result["candidate_for_isolated_fixture_trial"] is not True:
+              raise SystemExit("No verified rootless OCI candidate on this runner")
+          PY
