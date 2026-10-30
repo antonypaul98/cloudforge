@@ -2006,3 +2006,36 @@ artifact/target, hardened selected-app sandbox, signed health evidence and
 controlled rollback. No real infrastructure access without explicit approval.
 Canonical documentation acceptance itself requires exact-head PR CI and
 final merged-main CI.
+
+
+## First-party namespace staged/copy source SHA-256 pin — accepted feature (2026-10-29 ET)
+
+Feature [PR #113](https://github.com/antonypaul98/cloudforge/pull/113) at exact
+head `4a1f3d6f85cf4280092b450d9239db9dac178b64` passed
+[push CI #40989333033](https://github.com/antonypaul98/cloudforge/actions/runs/40989333033)
+and [PR CI #40989339839](https://github.com/antonypaul98/cloudforge/actions/runs/40989339839).
+Guarded squash merge `2fc66ea162e19ede84179776f65c8d3f45ba53a8` passed
+[merged-main CI #40989478264](https://github.com/antonypaul98/cloudforge/actions/runs/40989478264):
+Python 3.11.17, **1,394 pytest passed, 2 skipped** (two new negative shell
+preflight tests); infrastructure **18 passed, 1 skipped**. Both real Linux
+namespace integration tests remained skipped on GitHub CI. Separate local
+shell prototype accepted matching fixed hashes and rejected a mismatched app
+hash and modified observer; this was not a full repository or namespace run.
+
+The fixed first-party Linux namespace fixture now checks SHA-256 of the staged
+app and observer before mounts, and checks the copied bytes before chroot and
+process launch. The expected hashes come from the same untrusted parent
+context, so this is a local integrity safeguard, **not independent authorization,
+signed provenance, hardened sandbox attestation, or protection against a hostile
+host**. It still does **not execute a caller-selected application** or perform
+actual infrastructure deployment, monitoring, rollback or recovery. No
+third-party code, dependencies, cloud credentials, external endpoint, physical
+Mac or Work/Astra were used. No real infrastructure was modified. Connected
+GitHub integration was the writer; external worktree exclusivity is unverified.
+
+**DEMO READINESS: PARTIAL. FULL PRODUCT COMPLETION: UNVERIFIED.** No reliable
+percentage or ETA. Rollback: revert feature PR #113 merge; no migration or
+external state. The canonical acceptance PR needs its own exact-head and
+final merged-main CI. Next: independent artifact-scoped operator authorization,
+a hardened user-selected app sandbox, signed real health evidence and controlled
+rollback. No external endpoint or infrastructure without explicit approval.
