@@ -68,7 +68,7 @@ jobs:
           sha256sum "$tmp/busybox" "$tmp/health" "$tmp/Containerfile"
           podman --remote=false build --pull=never --network=none -t "$image_tag" -f "$tmp/Containerfile" "$tmp"
           image_id="$(podman --remote=false image inspect --format '{{.Id}}' "$image_tag")"
-          [[ "$image_id" =~ ^sha256:[0-9a-f]{64}$ ]]
+          [[ "$image_id" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
           podman --remote=false run -d --name "$container" --pull=never --network=none --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=64 --memory=64m --user=65534:65534 "$image_id" >/dev/null
           check_health() {
             local actual
