@@ -2259,3 +2259,8 @@ attempts. It does **not** authenticate a human, enforce this path in an executor
 run selected external Python/Node code, sign external health, deploy or roll
 back provider infrastructure. No Mac, Work/Astra or production changes.
 **Demo readiness partial; full product completion unverified.**
+
+
+## Synthetic dual-key selected-source admission-to-staging integration — 2026-10-30
+
+[Feature PR #141](https://github.com/antonypaul98/cloudforge/pull/141) merged as `61f8f55dd3db0e7e2b80891873b3e83900333891`. Exact source head `820a47d5386e877064d780f90ef09b62d55a3ecd` passed [push CI #41112191275](https://github.com/antonypaul98/cloudforge/actions/runs/41112191275) and [PR CI #41112223898](https://github.com/antonypaul98/cloudforge/actions/runs/41112223898). [Merged-main CI #41112595975](https://github.com/antonypaul98/cloudforge/actions/runs/41112595975) passed on Python 3.11.17: **1,510 pytest passed, 2 existing skips**; 33 infrastructure tests ran with 1 existing skip. Six new synthetic integration tests verify distinct-key approval and exact permit before staging, ledger consumption before yielding, replay rejection, cleanup and no process/network. No authenticated human, external selected application execution, signed health, infrastructure mutation or rollback. Canonical acceptance PR needs its own exact-head CI and merge. Demo readiness partial; full product completion unverified. No Work/Astra or physical Mac.
