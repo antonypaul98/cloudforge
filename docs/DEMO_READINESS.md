@@ -205,7 +205,7 @@ Guarded feature merge `75f862594ae50520534e8edfbbffddac06a05f4a`
 passed [merged-main CI #40983770702](https://github.com/antonypaul98/cloudforge/actions/runs/40983770702):
 **1,392 pytest passed, 2 skipped**, infrastructure **18 passed, 1 skipped**,
 Python 3.11.17. **Both real namespace integration tests skipped on GitHub's
-runner** because unprivileged namespace support was unavailable; the CI
+runner** because required namespace prerequisites were unavailable; the CI
 pass is not proof of real OS isolation there. Separate local Linux namespace
 smoke did exercise the actual HEAD stop/restart path. No physical Mac test.
 
