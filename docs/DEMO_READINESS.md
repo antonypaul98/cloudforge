@@ -404,3 +404,35 @@ artifact-specific independent authorization, then run it inside a hardened
 source-pinned sandbox, independently observe its actual health and prove
 controlled rollback. No real infrastructure mutation without explicit
 human approval.
+
+## Fixed owned OCI crash/restart recovery — feature evidence (2026-10-30)
+
+[Feature PR #128](https://github.com/antonypaul98/cloudforge/pull/128) merged
+at `43ed915bb22dbdc19c62611095e7b4674ee39e24`. Exact feature head `c85e41e107d6b1d4af680096c304543c7fb37d5c` passed
+[push product CI #41031167398](https://github.com/antonypaul98/cloudforge/actions/runs/41031167398),
+[PR product CI #41031175947](https://github.com/antonypaul98/cloudforge/actions/runs/41031175947),
+[real fixture push #41031167335](https://github.com/antonypaul98/cloudforge/actions/runs/41031167335) and
+[real fixture PR #41031175945](https://github.com/antonypaul98/cloudforge/actions/runs/41031175945).
+[Feature merged-main CI #41031307854](https://github.com/antonypaul98/cloudforge/actions/runs/41031307854) passed:
+**1,474 pytest passed/2 existing namespace skips; 24 infrastructure tests
+passed/1 skipped**, Python 3.11.17. Two new static regressions enforce
+crash/exit-code/ordering checks. No independent local full-suite run.
+
+A disposable rootless Podman runner served fixed first-party static health
+content from a locally built content-addressed OCI image. Actual in-container
+HTTP health passed; stop was confirmed; restart health passed; an explicit
+SIGKILL produced exit code 137; a further restart returned healthy HTTP;
+container cleanup passed. Logs show the earlier stop command escalated from
+SIGTERM to SIGKILL, so that phase is **not** claimed graceful. These are
+real runtime observations, but the observer lives inside the container.
+
+**Demo readiness: Partial, improved. Full product completion: Unverified.**
+No selected Python/Node application, independent human approval, signed
+external health, hardened multi-tenant isolation, production deployment or
+infrastructure rollback was demonstrated. No Work/Astra, physical Mac or
+production infrastructure used. Reuse: existing first-party fixture and CI,
+signed distro Podman/BusyBox; no third-party source copied or new dependency.
+Revert feature merge for software rollback; there is no persistent migration.
+Next: independently approved selected-source execution, externally measured
+health and controlled rollback. Canonical documentation acceptance needs its
+own exact-head CI and merged-main CI.

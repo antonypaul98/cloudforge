@@ -1,103 +1,102 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "fixed first-party HTTP health fixture executed inside disposable rootless OCI runner (not selected application)",
+  "current_checkpoint": "fixed first-party rootless OCI fixture SIGKILL crash -> restart -> measured in-container health -> cleanup (not selected application)",
   "active_branch": "main",
-  "main_sha_at_start": "4c80579d52e1195a92d3e1e7e92dea680ba95ce4",
-  "current_branch_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
+  "main_sha_at_start": "801ff7f5af2c69b42c6c1e7f6724a94cf97ec8a9",
+  "current_branch_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #126 merged after final exact-head CI and real owned-fixture push/PR success; canonical acceptance documentation in separate PR.",
-  "local_test_status": "Isolated static workflow guards 4 passed; YAML parsed. Exact feature-head push and PR full product CI 1474 pytest passed/2 namespace skipped; infrastructure 22 passed/1 skipped. Real rootless OCI owned static HTTP fixture executed on disposable GitHub runner: health pass, stopped, restarted health pass, cleanup pass.",
-  "pr_number": 126,
-  "ci_status": "Final feature head f964a26e9cdaa6db2e8cbe611865d2820a702623: push product #41023793483 SUCCESS, PR product #41023799423 SUCCESS, owned fixture push #41023793564 SUCCESS, owned fixture PR #41023799320 attempt 2 SUCCESS (initial transient Podman preflight timeout); feature merged main ad23ae3968e7290ca9d13e593ae3fb9636e1034c CI #41024050384 SUCCESS.",
-  "merge_status": "MERGED feature PR #126 at ad23ae3968e7290ca9d13e593ae3fb9636e1034c after exact-head CI; merged-main CI succeeded. No user-selected app or real provider infrastructure executed.",
+  "branch_remote_status": "Feature PR #128 merged after exact final-head push/PR product and real rootless OCI CI; canonical acceptance documentation in separate PR.",
+  "local_test_status": "No independent shell full-suite run (container shell GitHub DNS unavailable). Exact feature-head CI: 1474 pytest passed/2 existing namespace skips; 24 infrastructure tests passed/1 skipped. Real disposable rootless OCI: HTTP health -> stop (SIGTERM escalated to SIGKILL) -> restart health -> deliberate SIGKILL exit 137 -> restart health -> cleanup.",
+  "pr_number": 128,
+  "ci_status": "Feature head c85e41e107d6b1d4af680096c304543c7fb37d5c: push product #41031167398, PR product #41031175947, rootless fixture push #41031167335 and PR #41031175945 all SUCCESS. Merged-main 43ed915bb22dbdc19c62611095e7b4674ee39e24 CI #41031307854 SUCCESS.",
+  "merge_status": "MERGED feature PR #128 at 43ed915bb22dbdc19c62611095e7b4674ee39e24 after exact-head CI and real disposable rootless fixture run; merged-main CI succeeded. No selected app or provider infrastructure executed.",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "The rootless OCI trial executes only fixed first-party static health content served by distro BusyBox, not the user's selected Python/Node application. In-container wget is not an independent signed observer. Hardened multi-tenant isolation, independent human approval, real deployment and controlled infrastructure rollback remain unverified; external worktree exclusivity unverified.",
-  "next_action": "Preserve feature #126 exact-head and merged-main evidence; after canonical acceptance, connect a controlled selected source package to independently authenticated artifact-scoped approval, hardened source-pinned sandbox, measured independent health and controlled rollback. No real infrastructure mutation without explicit approval.",
+  "known_blocker": "The trial executes only fixed first-party static BusyBox health content, not a user-selected Python/Node application. Health observation is inside the same container, not independently signed. Earlier stop escalated SIGTERM to SIGKILL. Independent human approval, hardened isolation, selected-app runtime, signed external health, real deployment and infrastructure rollback remain unverified; external worktree exclusivity unverified.",
+  "next_action": "After canonical acceptance, advance a controlled selected Python/Node application through independent artifact-specific human authorization and a hardened source-pinned sandbox; measure independent health and prove controlled rollback. No production infrastructure mutation without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-30T08:06:45.646Z",
-  "observed_branch_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
-  "observed_feature_sha": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
-  "current_repository_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
+  "observed_at_utc": "2026-10-30T09:09:26Z",
+  "observed_branch_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+  "observed_feature_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
+  "current_repository_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature PR #126 merged with final exact-head CI, real rootless OCI fixture push/PR success and feature merged-main CI; acceptance documentation pending separate PR.",
+  "pr_state": "Feature PR #128 merged; canonical documentation acceptance pending separate PR.",
   "ci_state": {
     "push_run": {
-      "id": 41023793483,
-      "source_head_sha": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
+      "id": 41031167398,
+      "source_head_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41023793483"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41031167398"
     },
     "pr_run": {
-      "id": 41023799423,
-      "source_head_sha": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
+      "id": 41031175947,
+      "source_head_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41023799423"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41031175947"
     },
     "owned_fixture_push_run": {
-      "id": 41023793564,
-      "source_head_sha": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
+      "id": 41031167335,
+      "source_head_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41023793564"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41031167335"
     },
     "owned_fixture_pr_run": {
-      "id": 41023799320,
-      "attempt": 2,
-      "source_head_sha": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
+      "id": 41031175945,
+      "source_head_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41023799320"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41031175945"
     },
     "merged_main_run": {
-      "id": 41024050384,
-      "source_head_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
+      "id": 41031307854,
+      "source_head_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41024050384"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41031307854"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent selected-app approval and hardened execution/observation not yet implemented",
-    "BLOCKER": "Fixed first-party rootless OCI health trial succeeded, but it is not selected-app execution, independent approval, signed observation or real infrastructure rollback.",
-    "SAFE_WORK_COMPLETED": "Feature PR #126 merged after exact-head product/fixture CI and merged-main CI; fixed first-party static HTTP health pass-stop-restart-pass-cleanup on disposable rootless OCI runner. No Work/Astra, Mac or real provider infrastructure.",
-    "REMOTE_SHA": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
-    "NEXT_ACTION": "After canonical acceptance, connect controlled selected-app package to independent artifact-specific authorization and hardened source-pinned runtime; no real infrastructure without explicit approval."
+    "BLOCKED_LAYER": "Independent selected-application approval and hardened execution/observation not yet implemented",
+    "BLOCKER": "Only fixed first-party static content has been run; selected app, authenticated human approval, independent signed health and infrastructure rollback remain unverified.",
+    "SAFE_WORK_COMPLETED": "Feature PR #128 merged after exact-head product/real rootless CI and merged-main CI. Actual in-container HTTP pass, stop (SIGTERM escalated), restart pass, deliberate SIGKILL exit 137, restart pass, cleanup on disposable runner. No Work/Astra, physical Mac or real provider infrastructure.",
+    "REMOTE_SHA": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+    "NEXT_ACTION": "After canonical acceptance, connect selected app package to independent artifact-specific approval and hardened runtime; no consequential infrastructure mutation without explicit human approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
-    "passed": 22,
+    "passed": 24,
     "skipped": 1,
     "skip_reason": "Existing memory-only source-layout infrastructure regression not applicable",
-    "product_tests": "1474 pytest passed, 2 Linux namespace runtime tests skipped",
+    "product_tests": "1474 pytest passed, 2 existing Linux namespace runtime tests skipped",
     "physical_mac": "not_run",
     "new_head_CI": "successful",
-    "owned_fixture_runtime": "real rootless Podman 4.9.3 built FROM scratch BusyBox static health fixture; HTTP pass -> stopped -> restarted pass -> cleanup pass; in-container observer only"
+    "owned_fixture_runtime": "Real rootless Podman on disposable runner: in-container HTTP pass -> stop (SIGTERM escalated to SIGKILL) -> restart pass -> deliberate SIGKILL exit 137 -> restart pass -> cleanup pass; no selected app"
   },
-  "checkpoint_status": "COMPLETE_FIXED_OWNED_ROOTLESS_OCI_FIXTURE_NOT_SELECTED_APP",
+  "checkpoint_status": "COMPLETE_OWNED_ROOTLESS_OCI_CRASH_RECOVERY_NOT_SELECTED_APP",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-owned-oci-fixture-20261030",
-  "previous_completed_checkpoint": "real rootless Podman candidate probe (non-executing)",
-  "verified_main_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
-  "merge_commit_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
-  "final_pr_head": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
+  "checkpoint_branch": "build/demo-owned-oci-crash-recovery-20261030",
+  "previous_completed_checkpoint": "fixed first-party rootless OCI HTTP health fixture stop/restart/cleanup",
+  "verified_main_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+  "merge_commit_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+  "final_pr_head": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -129,7 +128,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Remote disposable first-party fixture execution completed; next software preparation does not need user-only intervention. Real infrastructure and selected app execution remain gated on independent explicit approval.",
+    "reason": "Immediate software checkpoint completed remotely; selected app execution and any real infrastructure action remain gated on independent explicit approval.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -979,7 +978,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration wrote feature and acceptance documentation; exclusive external worktree ownership unverified.",
+  "writer_status": "Connected GitHub integration wrote feature and canonical acceptance branch; exclusive external worktree ownership unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1383,7 +1382,7 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL: exact selected-source review, permit/replay and non-executing local rootless OCI capability preflight; no selected app execution, independent human approval, signed health or real rollback.",
+  "demo_readiness": "PARTIAL: real fixed first-party rootless OCI crash/restart/health/cleanup; no user-selected app, independent human approval, signed independent health, hardened multi-tenant isolation or real infrastructure rollback.",
   "full_product_completion": "UNVERIFIED: no defensible percentage or delivery date.",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
@@ -1611,18 +1610,21 @@
     "next_gate": "Independently authenticated exact artifact/target approval, hardened selected-app sandbox, signed observation, controlled rollback"
   },
   "last_accepted_demo_checkpoint": {
-    "name": "Non-executing local rootless OCI candidate preflight",
-    "feature_pr": 122,
-    "feature_head_sha": "71a17a1beeac100c3fbd27cdc2596f1a7a0271bf",
-    "feature_push_ci": 41011314148,
-    "feature_pr_ci": 41011325166,
-    "merge_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
-    "merged_main_ci": 41011397378,
+    "name": "Fixed first-party rootless OCI crash/restart recovery trial",
+    "feature_pr": 128,
+    "feature_head_sha": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
+    "feature_push_ci": 41031167398,
+    "feature_pr_ci": 41031175947,
+    "real_fixture_push_ci": 41031167335,
+    "real_fixture_pr_ci": 41031175945,
+    "merge_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+    "merged_main_ci": 41031307854,
     "pytest_passed": 1474,
     "pytest_skipped": 2,
-    "infrastructure_passed": 18,
+    "infrastructure_passed": 24,
     "infrastructure_skipped": 1,
-    "actual_execution": false,
+    "actual_execution": true,
+    "selected_application_executed": false,
     "authenticated_review": false,
     "signed_health": false,
     "rollback_performed": false,
@@ -1718,11 +1720,11 @@
     "rollback": "Revert PR #124 merge; no external provider resource or migration"
   },
   "owned_fixture_execution": {
-    "feature_pr": 126,
-    "feature_head": "f964a26e9cdaa6db2e8cbe611865d2820a702623",
-    "merged_main_sha": "ad23ae3968e7290ca9d13e593ae3fb9636e1034c",
-    "package": "Ubuntu signed distro busybox-static 1:1.36.1-6ubuntu3.1; first-party static health file; FROM scratch; no registry image pull",
-    "observed": "real in-container HTTP health pass -> container stopped -> restarted health pass -> cleanup pass",
+    "feature_pr": 128,
+    "feature_head": "c85e41e107d6b1d4af680096c304543c7fb37d5c",
+    "merged_main_sha": "43ed915bb22dbdc19c62611095e7b4674ee39e24",
+    "package": "Signed Ubuntu distro busybox-static, first-party static health file, FROM scratch; no registry image pull",
+    "observed": "Actual in-container HTTP pass -> stop (SIGTERM escalated to SIGKILL) -> restart health pass -> deliberate SIGKILL exit 137 -> restart health pass -> cleanup pass",
     "runner": "disposable GitHub-hosted Linux rootless Podman",
     "limitations": "Not selected app, independent signed collector, human authorization, hardened isolation, production deployment or infrastructure rollback",
     "full_product_completion": "unverified",
