@@ -323,3 +323,34 @@ See [preflight limitations](DEMO_ROOTLESS_RUNTIME_PREFLIGHT.md).
 **Demo readiness: Partial. Full-product completion: Unverified.** Next:
 verified first-party rootless OCI fixture execution with observed health and
 cleanup, followed by separately approved exact-source selected-app execution.
+
+## Real rootless Podman candidate on a disposable CI runner (2026-10-30)
+
+[Feature PR #124](https://github.com/antonypaul98/cloudforge/pull/124)
+added a bounded GitHub Actions job using the existing non-executing local
+Podman candidate preflight. A disposable GitHub-hosted Ubuntu runner reported
+Podman 4.9.3 with a **real local rootless/seccomp/cgroups-v2 candidate**.
+The [exact feature-head probe](https://github.com/antonypaul98/cloudforge/actions/runs/41017971367)
+and [exact-head product CI](https://github.com/antonypaul98/cloudforge/actions/runs/41017971464)
+passed at `f477422eef8556a0a339208bc4e7a9e2a5624a14`.
+The [feature merged-main CI](https://github.com/antonypaul98/cloudforge/actions/runs/41018128713)
+passed at `f8efd4360f1371a4924d10c603deb33329d83355`:
+**1,474 pytest passed, 2 Linux namespace integration skips;
+infrastructure 20 passed, 1 skipped**, Python 3.11.17.
+The two new infrastructure workflow guard tests passed locally before publish.
+
+This is a **real capability probe, not a container execution**. The job did
+not pull or run an OCI image, execute a selected application, attest hardened
+isolation, authenticate a human reviewer, sign runtime health, deploy a
+service, or demonstrate rollback. It installed distro Podman packages only
+inside the disposable CI runner. No cloud provider or production infrastructure
+was changed. A positive capability result does not authorize execution.
+
+Reuse-first: first-party `inspect_rootless_oci_candidate`, existing Python
+3.11 GitHub Actions setup, Python standard library and distribution Podman
+packages; no external source algorithm copied. The next bounded demo-first
+step is a **trusted, digest-pinned first-party fixture image** in this
+verified rootless environment, with actual HTTP health and cleanup. User-selected
+source execution still needs separate artifact-specific human authorization
+and a hardened execution boundary. Roll back this CI-only probe by reverting
+PR #124. **Demo readiness: Partial. Full-product completion: Unverified.**
