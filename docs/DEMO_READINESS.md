@@ -184,3 +184,44 @@ merge to roll back; no schema or external resource change.
 authorize its use in a genuinely OS-isolated sandbox. Verify the selected
 application's own health and controlled rollback with signed evidence. The
 demo remains **partial**; full-product completion and dates remain unverified.
+
+
+## Owned exact-byte first-party source in Linux namespaces — 2026-10-29 ET
+
+[Feature PR #111](https://github.com/antonypaul98/cloudforge/pull/111)
+reuses the accepted exact-byte package, source review binding and first-party
+reference service. It runs only the **fixed CloudForge-owned** `app.py` in
+private Linux user/mount/network/PID namespaces with a temporary tmpfs root,
+read-only system mounts, chroot and private loopback. Actual HTTP HEAD
+observation in a supported local Linux container produced
+**running pass -> stopped unknown -> restarted pass**. The local test
+reproduced the feature's namespace shell, observer and fixed service; it
+was **not** a local full-repository suite.
+
+Exact feature head `6fda3cc74746c58a2eb7fe61fe3eba4f29982a56`
+passed [push CI #40983582804](https://github.com/antonypaul98/cloudforge/actions/runs/40983582804)
+and [PR CI #40983605895](https://github.com/antonypaul98/cloudforge/actions/runs/40983605895).
+Guarded feature merge `75f862594ae50520534e8edfbbffddac06a05f4a`
+passed [merged-main CI #40983770702](https://github.com/antonypaul98/cloudforge/actions/runs/40983770702):
+**1,392 pytest passed, 2 skipped**, infrastructure **18 passed, 1 skipped**,
+Python 3.11.17. **Both real namespace integration tests skipped on GitHub's
+runner** because unprivileged namespace support was unavailable; the CI
+pass is not proof of real OS isolation there. Separate local Linux namespace
+smoke did exercise the actual HEAD stop/restart path. No physical Mac test.
+
+**DEMO READINESS: PARTIAL.** This is not user-selected application execution,
+a hardened sandbox for untrusted code, independently authenticated approval,
+signed monitoring, a real infrastructure deployment or infrastructure rollback.
+The package hashes are self-consistency checks, not signatures. **FULL PRODUCT
+COMPLETION: UNVERIFIED**; no percentage or delivery date. No external endpoint,
+cloud provider, credentials, persistent infrastructure mutation, Work or Astra.
+The connected GitHub integration was the writer; external worktree exclusivity
+remains unverified. Reuse was first-party CloudForge code, Python stdlib and
+existing Linux namespace tools; no third-party source copied or new dependency.
+See [scope, limitations and rollback](DEMO_OWNED_NAMESPACE.md). Revert feature
+merge to roll back; no migration.
+
+**Next:** independently authenticated and explicitly approved user-selected
+application execution in a hardened exact-source-pinned isolated runtime,
+followed by signed real health evidence and controlled rollback. No real
+infrastructure or external endpoint without artifact-scoped human approval.
