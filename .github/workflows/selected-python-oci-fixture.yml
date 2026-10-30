@@ -1,0 +1,133 @@
+name: Selected-source owned Python OCI fixture on disposable runner
+
+on:
+  push:
+    branches: ["build/demo-selected-python-oci-20261030"]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/selected-python-oci-fixture.yml"
+      - "scripts/fixtures/owned_python_health_app.py"
+      - "scripts/tests/test_selected_python_oci_workflow.py"
+      - "tests/test_demo_owned_python_fixture_source.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: selected-python-oci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  owned-selected-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install signed distro rootless Podman and static BusyBox
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends podman uidmap slirp4netns fuse-overlayfs busybox-static
+      - name: Verify local rootless OCI prerequisites
+        env:
+          PYTHONPATH: src
+        run: |
+          python - <<'PY'
+          from cloudforge.demo_rootless_runtime_preflight import inspect_rootless_oci_candidate
+          result = inspect_rootless_oci_candidate()
+          print(result)
+          if result["candidate_for_isolated_fixture_trial"] is not True:
+              raise SystemExit("No verified rootless OCI candidate")
+          PY
+      - name: Execute exact-source fixed first-party Python fixture in rootless OCI
+        shell: bash
+        env:
+          PYTHONPATH: src
+        run: |
+          set -Eeuo pipefail
+          test "$(id -u)" -ne 0
+          base_ref="docker.io/library/python@sha256:09d17d5e4c16d0a7a1eea690bcb7c6ab8616b211f8421e429e97c1bef5bd0ed2"
+          image_tag="localhost/cloudforge-owned-selected-python:${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          observer_tag="localhost/cloudforge-owned-python-observer:${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          container="cf-owned-python-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          tmp="$(mktemp -d)"
+          cleanup() {
+            podman --remote=false rm -f "$container" >/dev/null 2>&1 || true
+            podman --remote=false rmi -f "$image_tag" "$observer_tag" >/dev/null 2>&1 || true
+            rm -rf -- "$tmp"
+          }
+          trap cleanup EXIT
+          # Registry access is limited to this digest-pinned official Python base preparation.
+          # The OCI build and both runtime containers use --pull=never and no network.
+          podman --remote=false pull --platform linux/amd64 "$base_ref" >/dev/null
+          python - "$image_tag" "$base_ref" <<'PY'
+          import hashlib
+          from pathlib import Path
+          import subprocess
+          import sys
+          from cloudforge.demo_selected_artifact import prepare_selected_artifact
+          from cloudforge.demo_selected_oci_stage import stage_verified_selected_source
+          from cloudforge.demo_source_package import package_selected_source
+
+          image_tag, base_ref = sys.argv[1:]
+          source = Path("scripts/fixtures/owned_python_health_app.py").read_bytes()
+          manifests = {"requirements.txt": "# first-party Python stdlib only\n"}
+          target = "disposable-ci-owned-python"
+          package = package_selected_source("owned-python-health", manifests, target, "app.py", source)
+          review = prepare_selected_artifact("owned-python-health", manifests, target, "app.py", source)
+          with stage_verified_selected_source(
+              package,
+              expected_package_sha256=hashlib.sha256(package).hexdigest(),
+              expected_review_binding_digest=review["selected_source_binding"]["digest"],
+              expected_target_id=target,
+          ) as staged:
+              containerfile = (
+                  f"FROM {base_ref}\n"
+                  "COPY --chmod=0444 app.py /srv/app.py\n"
+                  "USER 65534:65534\n"
+                  'ENTRYPOINT ["python3","-B","/srv/app.py"]\n'
+              )
+              (staged.directory / "Containerfile").write_text(containerfile, encoding="utf-8")
+              subprocess.run(
+                  ["podman", "--remote=false", "build", "--pull=never", "--network=none",
+                   "--no-cache", "-t", image_tag, "-f", str(staged.directory / "Containerfile"),
+                   str(staged.directory)],
+                  check=True, timeout=150,
+              )
+              print("SELECTED_SOURCE_DIGEST:", staged.source_sha256)
+              print("SELECTED_PACKAGE_DIGEST:", staged.package_sha256)
+          PY
+          image_id="$(podman --remote=false image inspect --format '{{.Id}}' "$image_tag")"
+          [[ "$image_id" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          install -m 0755 /usr/bin/busybox "$tmp/busybox"
+          cat > "$tmp/Containerfile" <<'CONTAINERFILE'
+          FROM scratch
+          COPY busybox /bin/busybox
+          USER 65534:65534
+          CONTAINERFILE
+          podman --remote=false build --pull=never --network=none -t "$observer_tag" -f "$tmp/Containerfile" "$tmp"
+          observer_id="$(podman --remote=false image inspect --format '{{.Id}}' "$observer_tag")"
+          [[ "$observer_id" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
+          podman --remote=false run -d --name "$container" --pull=never --network=none --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=64 --memory=128m --user=65534:65534 "$image_id" >/dev/null
+          check_health() {
+            local actual
+            for attempt in $(seq 1 25); do
+              if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$observer_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-python-ok" ]]; then
+                return 0
+              fi
+              sleep 0.2
+            done
+            return 1
+          }
+          check_health
+          podman --remote=false stop -t 3 "$container" >/dev/null
+          [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
+          podman --remote=false start "$container" >/dev/null
+          check_health
+          podman --remote=false rm -f "$container" >/dev/null
+          ! podman --remote=false container exists "$container"
+          echo "OWNED_SELECTED_PYTHON_RESULT: exact_source=pass rootless=pass observer=separate_container health=pass restart_health=pass cleanup=pass"
+          echo "OWNED_SELECTED_PYTHON_LIMITS: first_party_fixture_only no_external_selected_app no_human_approval no_production_infrastructure no_signed_observation no_infrastructure_rollback"
