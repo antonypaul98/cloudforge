@@ -1,79 +1,86 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Canonical accepted synthetic distinct-key permit admission-to-private-staging integration; no authenticated human approval or execution",
-  "active_branch": "main",
-  "main_sha_at_start": "b248b9fc3a3069f78429a6ede375c3630f522770",
-  "current_branch_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
+  "current_checkpoint": "First-party Python OCI fixed-fixture SHA-256 source pin merged; canonical acceptance pending",
+  "active_branch": "docs/accept-demo-owned-python-fixture-pin-20261030",
+  "main_sha_at_start": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
+  "current_branch_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #141 and canonical acceptance PR #142 merged. Exact-head push/PR and merged-main CI passed for both; final state recording is metadata-only.",
-  "local_test_status": "GitHub Actions Python 3.11.17: 1510 pytest passed, 2 existing skips; infrastructure 33 run, 1 skipped. Local full suite not run because shell GitHub DNS unavailable. No external selected app executed.",
-  "pr_number": 142,
-  "ci_status": "Feature #141 head 820a47d5386e877064d780f90ef09b62d55a3ecd push #41112191275/PR #41112223898, merged-main #41112595975; acceptance #142 head 63afc1ec5ff0b1118fdb0a61f61612e1c3041413 push #41112874154/PR #41112893963, merged-main #41113051592 all SUCCESS.",
-  "merge_status": "MERGED feature PR #141 at 61f8f55dd3db0e7e2b80891873b3e83900333891 and acceptance PR #142 at b248b9fc3a3069f78429a6ede375c3630f522770. Synthetic non-executing only.",
+  "branch_remote_status": "Feature PR #144 merged at 12e0d378a90cd43916fb2b91b13fa7ec76e4ce17 after exact-head push/PR product and real OCI checks; canonical acceptance PR pending.",
+  "local_test_status": "GitHub Actions Python 3.11.17: 1510 pytest passed, 2 existing namespace skips; infrastructure 35 run, 1 skipped. Real rootless OCI first-party fixture health/restart/crash/cleanup passed. Local full suite not run; no external selected app.",
+  "pr_number": 144,
+  "ci_status": "Feature head 7b37bf02b8d3a52ca5480eacca017c122af322f1: push #41120020922, PR product #41120049902, PR real OCI #41120049929 all SUCCESS; merged-main #41120188415 SUCCESS.",
+  "merge_status": "MERGED feature PR #144 at 12e0d378a90cd43916fb2b91b13fa7ec76e4ce17; exact fixed first-party Python source SHA-256 guard only.",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "No independently authenticated human decision, trusted key custody/clock, mandatory selected-app executor, signed health or real infrastructure rollback.",
-  "next_action": "Next demo milestone: independently authenticated artifact-specific human approval and controlled selected-app execution in verified rootless OCI, then signed external health and controlled rollback. No production changes without approval.",
+  "known_blocker": "No independently authenticated human approval or trusted key custody, mandatory external selected-app executor, signed health or real infrastructure rollback. OCI fixture stop still escalates SIGTERM to SIGKILL.",
+  "next_action": "After canonical acceptance, prioritize independently authenticated artifact-specific selected-app sandbox execution with measured signed health and controlled rollback; no production mutation without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-30T19:11:02Z",
-  "observed_branch_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
-  "observed_feature_sha": "820a47d5386e877064d780f90ef09b62d55a3ecd",
-  "current_repository_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
+  "observed_at_utc": "2026-10-30T20:04:30Z",
+  "observed_branch_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
+  "observed_feature_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
+  "current_repository_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature PR #141 and canonical acceptance PR #142 merged; this final-state documentation requires separate exact-head CI.",
+  "pr_state": "Feature PR #144 merged; canonical acceptance documentation PR pending exact-head CI.",
   "ci_state": {
     "push_run": {
-      "id": 41112874154,
-      "source_head_sha": "63afc1ec5ff0b1118fdb0a61f61612e1c3041413",
+      "id": 41120020922,
+      "source_head_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
       "event": "push",
       "conclusion": "success"
     },
     "pr_run": {
-      "id": 41112893963,
-      "source_head_sha": "63afc1ec5ff0b1118fdb0a61f61612e1c3041413",
+      "id": 41120049902,
+      "source_head_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    "real_oci_pr_run": {
+      "id": 41120049929,
+      "source_head_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
       "event": "pull_request",
       "conclusion": "success"
     },
     "merged_main_run": {
-      "id": 41113051592,
-      "source_head_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
+      "id": 41120188415,
+      "source_head_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
       "event": "push",
       "conclusion": "success"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent authenticated human approval and external selected-app execution",
-    "BLOCKER": "Caller-controlled keys, trusted pins, clock and ledger are not independent human identity. No selected external app executor, signed health or real rollback.",
-    "SAFE_WORK_COMPLETED": "Feature PR #141 and canonical acceptance PR #142 merged; both exact-head push/PR and merged-main CI successful. 1510 pytest passed/2 skipped; infrastructure 33 run/1 skipped. No Work/Astra, physical Mac or production changes.",
-    "REMOTE_SHA": "b248b9fc3a3069f78429a6ede375c3630f522770",
-    "NEXT_ACTION": "Controlled independently approved selected-app sandbox demo, followed by trusted health and rollback."
+    "BLOCKED_LAYER": "Independent authenticated human approval and selected-app runtime integration",
+    "BLOCKER": "SHA-256 pin is only fixed first-party fixture drift protection; no independent human identity, trusted signature, signed external health or infrastructure rollback.",
+    "SAFE_WORK_COMPLETED": "Feature PR #144 merged after exact-head push/PR product and real rootless OCI success; merged-main CI successful. 1510 pytest passed/2 skipped, 35 infrastructure run/1 skipped. No Work/Astra, physical Mac or production changes.",
+    "REMOTE_SHA": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
+    "NEXT_ACTION": "Canonical acceptance CI and guarded merge; then selected-app independent approval/runtime demo."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
-    "passed": 32,
+    "passed": 34,
     "skipped": 1,
     "product_tests": "1510 pytest passed, 2 existing namespace skips",
     "physical_mac": "not_run",
     "new_head_CI": "successful",
-    "selected_app_execution": "not_run"
+    "selected_app_execution": "fixed_first_party_fixture_only",
+    "real_oci_pr_ci": "success #41120049929"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_SYNTHETIC_ONLY",
+  "checkpoint_status": "FEATURE_MERGED_CANONICAL_ACCEPTANCE_PENDING",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-selected-admission-stage-20261030",
-  "previous_completed_checkpoint": "synthetic separate-key approval preflight",
-  "verified_main_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
-  "merge_commit_sha": "b248b9fc3a3069f78429a6ede375c3630f522770",
-  "final_pr_head": "820a47d5386e877064d780f90ef09b62d55a3ecd",
+  "checkpoint_branch": "build/demo-owned-python-fixture-pin-20261030",
+  "previous_completed_checkpoint": "synthetic separate-key admission-to-staging integration",
+  "verified_main_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
+  "merge_commit_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
+  "final_pr_head": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
