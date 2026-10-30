@@ -1,13 +1,13 @@
 # Durable local admission for selected-source sandbox permits (non-executing)
 
-This checkpoint adds \`consume_selected_sandbox_permit\`, a local SQLite
+This checkpoint adds `consume_selected_sandbox_permit`, a local SQLite
 at-most-once gate for the existing exact-source, target, image and
 operator-key-bound policy permit. It **first** re-verifies the exact selected
 application package, source review binding, target, image, MAC, operator key
 fingerprint, sequence and trusted caller-supplied time. Only then does it open
 the explicitly supplied local ledger.
 
-One \`BEGIN IMMEDIATE\` SQLite transaction validates the exact expected table
+One `BEGIN IMMEDIATE` SQLite transaction validates the exact expected table
 schema and absence of table triggers, then advances the sequence only if it is
 strictly greater than the last consumed sequence for the same operator-key
 fingerprint and proposal digest. A second use of the same permit fails closed,
@@ -16,13 +16,13 @@ separate counter. A downstream failure does not refund a consumed sequence.
 
 ## Reuse-first and compatibility
 
-Reuses the accepted \`verify_selected_sandbox_permit\` contract, the existing
+Reuses the accepted `verify_selected_sandbox_permit` contract, the existing
 CloudForge replay-ledger path preflight, and the SQLite transaction/schema
-pattern in \`observation_permit_replay.py\`. No third-party source was copied,
-translated or added. Python 3.11 standard-library \`sqlite3\` is used:
+pattern in `observation_permit_replay.py`. No third-party source was copied,
+translated or added. Python 3.11 standard-library `sqlite3` is used:
 https://docs.python.org/3.11/library/sqlite3.html
 
-The pure \`verify_selected_sandbox_permit\` API remains stateless and unchanged.
+The pure `verify_selected_sandbox_permit` API remains stateless and unchanged.
 The new opt-in admission API adds a **separate** SQLite table and file, never
 changes the observation permit ledger or consumes its counters. Tests cover
 replay, increasing sequences, changed source scope, malformed MAC/source before
