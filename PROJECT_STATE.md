@@ -1962,3 +1962,47 @@ Rollback: revert feature merge; no schema or infrastructure migration.
 only in a properly OS-isolated selected-app sandbox, collect actual signed
 health evidence and demonstrate controlled rollback. No real infrastructure
 or external endpoint without explicit human approval.
+
+
+## First-party source package Linux namespace process demo — accepted feature (2026-10-29 ET)
+
+Feature [PR #111](https://github.com/antonypaul98/cloudforge/pull/111)
+exact source head `6fda3cc74746c58a2eb7fe61fe3eba4f29982a56`
+passed [push CI #40983582804](https://github.com/antonypaul98/cloudforge/actions/runs/40983582804)
+and [PR CI #40983605895](https://github.com/antonypaul98/cloudforge/actions/runs/40983605895).
+Guarded squash merge `75f862594ae50520534e8edfbbffddac06a05f4a`
+passed [merged-main CI #40983770702](https://github.com/antonypaul98/cloudforge/actions/runs/40983770702):
+Python 3.11.17, **1,392 pytest passed, 2 skipped**, infrastructure
+**18 passed/1 skipped**. Both real namespace integration tests skipped on
+the GitHub-hosted runner because its namespace prerequisites were unavailable.
+No independent local full-repository run. Separate local Linux container
+execution of the feature's namespace shell, observer and first-party service
+measured real HTTP HEAD **pass -> stopped unknown -> restarted pass**.
+
+The opt-in `demo_owned_namespace_source` reuses the previously accepted
+canonical exact-byte package and selected-source review binding, then stages
+only the fixed CloudForge-owned reference source and fixed observer in a
+temporary Linux user/mount/network/PID namespace, tmpfs/chroot and private
+loopback. No arbitrary caller source, external endpoint, cloud provider,
+credentials or persistent infrastructure is executed or modified. A source
+digest is not independent approval or runtime attestation. Linux namespaces
+and chroot alone are not a hardened security sandbox. The actual caller's
+application is **not executed**, and process restart is not infrastructure
+rollback or recovery. CI skipped namespace runtime tests; do not misstate
+CI as runtime proof. No physical Mac or Work/Astra.
+
+**DEMO READINESS: PARTIAL.** Real first-party packaged source has been
+observed in a local OS namespace, but independently authorized user-selected
+app deployment/health/recovery is not demonstrated. **FULL PRODUCT COMPLETION:
+UNVERIFIED**; no percentage or ETA. Reused first-party code, Python stdlib
+and existing Linux util-linux; no third-party source, new dependency, provider
+API or service cost. Connected GitHub integration wrote the feature;
+external worktree exclusivity remains unverified. Rollback is reverting
+feature merge, no schema or infrastructure migration. See
+[scope, provenance and limitations](docs/DEMO_OWNED_NAMESPACE.md).
+
+**Next:** independent human/collector identity and approval for exact
+artifact/target, hardened selected-app sandbox, signed health evidence and
+controlled rollback. No real infrastructure access without explicit approval.
+Canonical documentation acceptance itself requires exact-head PR CI and
+final merged-main CI.
