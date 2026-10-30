@@ -92,7 +92,7 @@ class RootlessProbeWorkflowTests(unittest.TestCase):
     def test_never_executes_selected_application(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("printf 'cloudforge-owned-fixture-ok", source)
-        self.assertIn("/bin/busybox wget -q -O - http://127.0.0.1:8080/health", source)
+        self.assertIn('"$image_id" wget -q -O - http://127.0.0.1:8080/health', source)
         self.assertNotIn("demo_selected_artifact", source)
         self.assertNotIn("demo_selected_execution_permit", source)
 
