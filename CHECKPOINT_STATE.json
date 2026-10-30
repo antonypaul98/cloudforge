@@ -1,83 +1,83 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "fixed first-party namespace staged/copy source SHA-256 pin (demo-first)",
+  "current_checkpoint": "selected-source rootless OCI sandbox review proposal (demo-first; non-executing)",
   "active_branch": "main",
-  "main_sha_at_start": "a41bd0d13512657319316af9f22fe23401fdff37",
-  "current_branch_sha": "2fc66ea162e19ede84179776f65c8d3f45ba53a8",
+  "main_sha_at_start": "55915dce430e7e5ac1753c797c6605874e668be0",
+  "current_branch_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #113 merged with exact head 4a1f3d6f85cf4280092b450d9239db9dac178b64; merged main 2fc66ea162e19ede84179776f65c8d3f45ba53a8; canonical docs acceptance pending.",
-  "local_test_status": "Local Linux container ran the feature's exact namespace shell, observer and fixed first-party service: actual HEAD pass -> stopped unknown -> restarted pass. Not a local full repository suite. GitHub CI skipped both namespace runtime integration tests; 1392 other tests passed.",
-  "pr_number": 111,
-  "ci_status": "Feature exact-head push CI #40983582804 and PR CI #40983605895 SUCCESS at 6fda3cc74746c58a2eb7fe61fe3eba4f29982a56; merged-main CI #40983770702 SUCCESS at 75f862594ae50520534e8edfbbffddac06a05f4a: 1392 pytest passed/2 skipped; infrastructure 18 passed/1 skipped; Python 3.11.17. Namespace runtime tests skipped on GitHub runner.",
-  "merge_status": "MERGED: PR #111 guarded squash merge 75f862594ae50520534e8edfbbffddac06a05f4a; merged-main CI passed.",
+  "branch_remote_status": "Feature PR #115 merged at a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b after exact-head push/PR CI; merged-main CI successful. This acceptance documentation PR is separate.",
+  "local_test_status": "No local full suite run: shell GitHub DNS unavailable. Remote GitHub Python 3.11.17 exact-head push/PR and merged-main suites passed 1412 tests with 2 Linux namespace skips; infrastructure guards 18 passed/1 skipped.",
+  "pr_number": 115,
+  "ci_status": "Exact feature head d5253730b6fa8e69912276f8fb1ddf942a283945: push #40994596795 SUCCESS; PR #40994613916 SUCCESS. Merged main a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b: push #40994711112 SUCCESS. Each: 1412 pytest passed/2 skipped; infrastructure 18 passed/1 skipped.",
+  "merge_status": "MERGED: PR #115 guarded squash merge a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b; merged-main CI passed.",
   "external_acceptance_required": [],
-  "known_blocker": "Only fixed first-party source ran in local Linux namespaces; not caller-selected app, hardened untrusted-code sandbox, independent operator approval, signed evidence or real deployment/recovery. GitHub CI skipped 2 namespace runtime tests due unsupported prerequisites. External worktree exclusivity unverified.",
-  "next_action": "Independent artifact-scoped operator authorization and hardened user-selected app sandbox with signed real health and controlled rollback; no external endpoint/infrastructure without explicit approval.",
+  "known_blocker": "Proposal only: no independently authenticated operator or collector, no trusted OCI image provenance, actual rootless runtime execution, hardened isolation attestation, signed service health, deployment or rollback. Existing two Linux namespace integration tests remain skipped in GitHub CI. External worktree exclusivity unverified.",
+  "next_action": "Bind independently authenticated artifact-specific execution authorization to a verified rootless OCI runtime; execute a selected first-party test application in an isolated environment, observe signed health and demonstrate controlled rollback. No real infrastructure mutation without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-30T01:06:30Z",
-  "observed_branch_sha": "75f862594ae50520534e8edfbbffddac06a05f4a",
-  "observed_feature_sha": "6fda3cc74746c58a2eb7fe61fe3eba4f29982a56",
-  "current_repository_sha": "75f862594ae50520534e8edfbbffddac06a05f4a",
+  "observed_branch_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
+  "observed_feature_sha": "d5253730b6fa8e69912276f8fb1ddf942a283945",
+  "current_repository_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "MERGED: feature PR #109; canonical acceptance documentation PR pending.",
+  "pr_state": "MERGED: feature PR #115; canonical acceptance documentation PR in progress",
   "ci_state": {
     "push_run": {
-      "id": 40970278328,
-      "source_head_sha": "8e81a00ccf482ad14b5d7ecb514ba2904ca059d2",
+      "id": 40994596795,
+      "source_head_sha": "d5253730b6fa8e69912276f8fb1ddf942a283945",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40970278328"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40994596795"
     },
     "pr_run": {
-      "id": 40970316656,
-      "source_head_sha": "8e81a00ccf482ad14b5d7ecb514ba2904ca059d2",
+      "id": 40994613916,
+      "source_head_sha": "d5253730b6fa8e69912276f8fb1ddf942a283945",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40970316656"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40994613916"
     },
     "merged_main_run": {
-      "id": 40970410417,
-      "source_head_sha": "81f2f3a5203c03f40557168be7764173bb77654b",
+      "id": 40994711112,
+      "source_head_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40970410417"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/40994711112"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independently authorized hardened user-selected application runtime not established",
-    "BLOCKER": "Only owned reference source ran in Linux namespaces; GitHub CI skipped namespace runtime integration; no independent identity, signed observations or real deployment/rollback.",
-    "SAFE_WORK_COMPLETED": "PR #111 exact-head push/PR and merged-main CI passed: 1392 pytest passed/2 skipped; infrastructure 18 passed/1 skipped. Separate local Linux namespace shell/observer/reference service produced actual HEAD pass/unknown/pass. No external infrastructure or physical hardware.",
-    "REMOTE_SHA": "75f862594ae50520534e8edfbbffddac06a05f4a",
-    "NEXT_ACTION": "Establish independent artifact-scoped human/collector approval and a hardened exact-source user-selected app sandbox; observe signed real health and controlled rollback. No external endpoint or infrastructure without explicit approval."
+    "BLOCKED_LAYER": "Independent authorization and actual hardened rootless selected-application runtime not yet established",
+    "BLOCKER": "This checkpoint is a non-executing sandbox review proposal; real execution, signed observation and rollback remain missing.",
+    "SAFE_WORK_COMPLETED": "Feature PR #115 merged after exact-head push/PR CI; merged-main CI successful: 1412 pytest passed/2 skipped; infrastructure 18 passed/1 skipped. No external infrastructure or Mac hardware accessed.",
+    "REMOTE_SHA": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
+    "NEXT_ACTION": "Independently authorize exact artifact and test actual rootless sandbox runtime on controlled selected app; observe and recover without real infrastructure mutation."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
     "passed": 18,
     "skipped": 1,
-    "skip_reason": "Memory-only source-layout regression not applicable",
-    "product_tests": "1364 pytest passed at exact feature head and merged main",
+    "skip_reason": "Existing memory-only source-layout infrastructure regression not applicable",
+    "product_tests": "1412 pytest passed, 2 namespace runtime tests skipped on exact feature head and merged main",
     "physical_mac": "not_run",
     "new_head_CI": "successful"
   },
-  "checkpoint_status": "COMPLETE_OWNED_SOURCE_PIN_ONLY; canonical acceptance PR CI pending",
+  "checkpoint_status": "COMPLETE_NONEXECUTING_SELECTED_SANDBOX_REVIEW; canonical documentation acceptance pending",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-owned-namespace-source-20261029",
-  "previous_completed_checkpoint": "real-manifest review to owned-loopback HEAD fault/restore observation (demo-first)",
-  "verified_main_sha": "2fc66ea162e19ede84179776f65c8d3f45ba53a8",
-  "merge_commit_sha": "2fc66ea162e19ede84179776f65c8d3f45ba53a8",
-  "final_pr_head": "6fda3cc74746c58a2eb7fe61fe3eba4f29982a56",
+  "checkpoint_branch": "build/demo-selected-sandbox-plan-20261029",
+  "previous_completed_checkpoint": "fixed first-party Linux namespace staged/copy source SHA-256 pin",
+  "verified_main_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
+  "merge_commit_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
+  "final_pr_head": "d5253730b6fa8e69912276f8fb1ddf942a283945",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -109,7 +109,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Immediate software work and remote CI require no user-only action; real infrastructure/external endpoints require explicit artifact-scoped approval.",
+    "reason": "Immediate remote software work requires no user-only action; real infrastructure or consequential external execution requires exact-artifact approval.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -1363,8 +1363,8 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL: selected Python/Node source package and exact review are proven; fixed first-party app observed in owned Linux namespace with staged/copied source hash pin. Actual caller-selected app, independent approval, signed observation and infrastructure recovery remain unverified.",
-  "full_product_completion": "UNVERIFIED: no evidence-backed completion percentage or delivery date.",
+  "demo_readiness": "PARTIAL: selected Python/Node exact source -> deterministic OCI runtime review proposal; no selected application execution, authenticated approval, signed health or real rollback.",
+  "full_product_completion": "UNVERIFIED: no defensible percentage or delivery date.",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
     "status": "COMPLETE_REVIEW_ONLY; acceptance PR #100 merged and final-main CI #40927486835 passed",
@@ -1589,5 +1589,24 @@
     "writer": "Connected GitHub integration; external worktree exclusivity unverified",
     "rollback": "Revert feature merge PR #113; no schema or infrastructure migration",
     "next_gate": "Independently authenticated exact artifact/target approval, hardened selected-app sandbox, signed observation, controlled rollback"
+  },
+  "last_accepted_demo_checkpoint": {
+    "name": "Selected-source OCI sandbox review-only proposal",
+    "feature_pr": 115,
+    "feature_head_sha": "d5253730b6fa8e69912276f8fb1ddf942a283945",
+    "feature_push_ci": 40994596795,
+    "feature_pr_ci": 40994613916,
+    "merge_sha": "a3c3a36e14fc4f8e61e3dd5eeaad6bae8ed1859b",
+    "merged_main_ci": 40994711112,
+    "pytest_passed": 1412,
+    "pytest_skipped": 2,
+    "infrastructure_passed": 18,
+    "infrastructure_skipped": 1,
+    "actual_execution": false,
+    "authenticated_review": false,
+    "signed_health": false,
+    "rollback_performed": false,
+    "real_infrastructure_mutated": false,
+    "external_worktree_exclusivity": "unverified"
   }
 }
