@@ -473,3 +473,38 @@ or new dependency. Rollback: revert feature PR #130, no migration.
 Next: independently authenticated artifact-specific approval, hardened
 selected-source runtime, signed external observation and controlled rollback.
 Canonical documentation acceptance requires its own exact-head and merged-main CI.
+
+## Verified selected-source private OCI staging — 2026-10-30
+
+[Feature PR #132](https://github.com/antonypaul98/cloudforge/pull/132)
+merged at `13bafbf2b7458cc1a41527c7aafe6f5729f886e8`. Exact feature
+head `9476640d68fee43ea32be9e63f3645777e1fae80` passed
+[push CI #41044968978](https://github.com/antonypaul98/cloudforge/actions/runs/41044968978)
+and [PR CI #41044990473](https://github.com/antonypaul98/cloudforge/actions/runs/41044990473):
+**1,480 pytest passed, 2 existing Linux namespace skips; 26 infrastructure
+tests passed, 1 skipped** on Python 3.11.17.
+[Merged-main CI #41045131323](https://github.com/antonypaul98/cloudforge/actions/runs/41045131323)
+also passed at the exact merge SHA.
+
+The new first-party context manager verifies the selected Python/Node package,
+review binding and target before staging exact source and manifest bytes into
+a private temporary directory. It rechecks written hashes and cleans up after
+normal completion and Python exceptions. Six new integration regressions
+cover Python/Node, tampering, wrong target, privacy, no process/network
+execution and cleanup on failure. Local isolated staging smoke used a stubbed
+package verifier; full integration was verified in remote CI, not locally.
+Reuse: existing package verifier and Python 3.11 standard library only;
+no third-party source copied, new dependencies, Mac or Work/Astra.
+
+**This is staging, not execution.** It does not build an OCI image, authenticate
+a reviewer, harden isolation, execute selected code, sign real health or
+perform infrastructure rollback. Staged source can contain secrets and
+abrupt process termination can interrupt cleanup. Revert PR #132 for software
+rollback; no external migration. See
+[staging scope and limits](DEMO_SELECTED_OCI_STAGING.md).
+
+**Demo readiness: Partial. Full product completion: Unverified.**
+Next: run a controlled, source-pinned first-party selected Python application
+in a verified offline rootless OCI runtime, observe actual health and cleanup;
+independent artifact-specific authorization remains mandatory before any
+external user-selected or production execution.
