@@ -86,7 +86,7 @@ jobs:
           ) as staged:
               containerfile = (
                   f"FROM {base_ref}\n"
-                  "COPY app.py /srv/app.py\n"
+                  "COPY --chmod=0444 app.py /srv/app.py\n"
                   "USER 65534:65534\n"
                   'ENTRYPOINT ["python3","-B","/srv/app.py"]\n'
               )
