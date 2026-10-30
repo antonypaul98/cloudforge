@@ -18,7 +18,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "package_selected_source(", "prepare_selected_artifact(",
             "stage_verified_selected_source(", "expected_package_sha256=",
             "expected_review_binding_digest=", "expected_target_id=target",
-            "COPY app.py /srv/app.py", 'ENTRYPOINT ["python3","-B","/srv/app.py"]',
+            "COPY --chmod=0444 app.py /srv/app.py", 'ENTRYPOINT ["python3","-B","/srv/app.py"]',
             '"--pull=never", "--network=none"',
             "--pull=never --network=none --read-only", "--cap-drop=all",
             "--security-opt=no-new-privileges", "--pids-limit=64 --memory=128m",
