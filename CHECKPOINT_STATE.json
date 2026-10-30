@@ -1,83 +1,100 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "local rootless OCI candidate preflight (demo-first; non-executing)",
+  "current_checkpoint": "real rootless OCI candidate probe on disposable GitHub-hosted Linux runner (non-executing)",
   "active_branch": "main",
-  "main_sha_at_start": "f827551505783f9e27036bf670a4e7bd71bd8380",
-  "current_branch_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
+  "main_sha_at_start": "f8efd4360f1371a4924d10c603deb33329d83355",
+  "current_branch_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #122 merged with exact-head push/PR and successful merged-main CI. Canonical acceptance documentation is a separately validated change.",
-  "local_test_status": "Shell full suite not run: GitHub DNS unavailable. Exact feature head and merged main GitHub Python 3.11.17: 1474 pytest passed/2 Linux namespace tests skipped; infrastructure 18 passed/1 skipped.",
-  "pr_number": 122,
-  "ci_status": "Feature head 71a17a1beeac100c3fbd27cdc2596f1a7a0271bf: push #41011314148 SUCCESS, PR #41011325166 SUCCESS; merged main 0ce704c2c3611cb9d06dcbb5e0e852396155dad2: push #41011397378 SUCCESS. Each: 1474 pytest passed/2 namespace skipped; infrastructure 18 passed/1 skipped.",
-  "merge_status": "MERGED: feature PR #122 at 0ce704c2c3611cb9d06dcbb5e0e852396155dad2; merged-main CI successful.",
+  "branch_remote_status": "Feature PR #124 merged after exact-head CI and real rootless candidate probe on a disposable GitHub runner; acceptance documentation is a separate change.",
+  "local_test_status": "Local isolated infrastructure workflow guards: 2 passed; YAML parsed. Exact feature-head push/PR and merged-main GitHub Python 3.11.17: 1474 pytest passed/2 namespace skips; infrastructure 20 passed/1 skipped. Rootless Podman candidate probe returned true on the disposable GitHub runner; no image/container executed.",
+  "pr_number": 124,
+  "ci_status": "Feature head f477422eef8556a0a339208bc4e7a9e2a5624a14: push CI #41017938397 SUCCESS, PR CI #41017971464 SUCCESS, rootless probe push #41017938330 SUCCESS, PR #41017971367 SUCCESS; merged main f8efd4360f1371a4924d10c603deb33329d83355: CI #41018128713 SUCCESS.",
+  "merge_status": "MERGED: PR #124 at f8efd4360f1371a4924d10c603deb33329d83355; merged-main CI successful. No OCI container executed.",
   "external_acceptance_required": [],
-  "known_blocker": "Local Podman candidate preflight is only a non-executing diagnostic. This environment has no Podman executable; no real rootless OCI trial was run. No independently authenticated artifact-specific human approval, trusted OCI image, hardened selected-app runtime, signed real health or rollback. Linux namespace tests skipped in CI; external worktree exclusivity unverified.",
-  "next_action": "Select a trusted digest-pinned first-party fixture image and independently verify an available rootless OCI runtime; perform an isolated first-party fixture health/cleanup trial. Then design separately authenticated exact-artifact approval and selected-app execution/rollback. No real infrastructure mutation without explicit human approval.",
+  "known_blocker": "Real non-root Linux Podman rootless/seccomp/cgroups-v2 candidate was observed on a disposable GitHub-hosted runner; no OCI image trust, actual container execution, selected-app execution, independent human authentication, signed real health or controlled rollback. Two Linux namespace tests still skip in CI; external worktree exclusivity unverified.",
+  "next_action": "On the verified disposable rootless OCI runner, perform a bounded fixed first-party fixture image execution trial with verified immutable image provenance, actual HTTP health and cleanup; never run arbitrary selected source without independent artifact-specific authorization and hardened isolation. No real infrastructure mutation without explicit human approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-30T05:59:10Z",
-  "observed_branch_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
-  "observed_feature_sha": "71a17a1beeac100c3fbd27cdc2596f1a7a0271bf",
-  "current_repository_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
+  "observed_at_utc": "2026-10-30T07:07:58Z",
+  "observed_branch_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
+  "observed_feature_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
+  "current_repository_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature PR #122 merged after exact-head push and PR CI; merged-main CI passed. Acceptance documentation is separate.",
+  "pr_state": "Feature PR #124 merged after exact-head CI and actual rootless runtime candidate probe; acceptance documentation pending separate PR.",
   "ci_state": {
     "push_run": {
-      "id": 41011314148,
-      "source_head_sha": "71a17a1beeac100c3fbd27cdc2596f1a7a0271bf",
+      "id": 41017938397,
+      "source_head_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41011314148"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41017938397"
     },
     "pr_run": {
-      "id": 41011325166,
-      "source_head_sha": "71a17a1beeac100c3fbd27cdc2596f1a7a0271bf",
+      "id": 41017971464,
+      "source_head_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
       "event": "pull_request",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41011325166"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41017971464"
     },
-    "merged_main_run": {
-      "id": 41011397378,
-      "source_head_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
+    "rootless_probe_push_run": {
+      "id": 41017938330,
+      "source_head_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41011397378"
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41017938330"
+    },
+    "rootless_probe_pr_run": {
+      "id": 41017971367,
+      "source_head_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41017971367"
+    },
+    "merged_main_run": {
+      "id": 41018128713,
+      "source_head_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/antonypaul98/cloudforge/actions/runs/41018128713"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Real rootless OCI runtime and independently authenticated selected-app authorization not established",
-    "BLOCKER": "No Podman executable in current isolated workspace; CI synthetic tests do not run a container. Real selected application execution and rollback remain unverified.",
-    "SAFE_WORK_COMPLETED": "PR #122 merged; exact-head push/PR and merged-main CI succeeded: 1474 pytest passed/2 namespace skips; infrastructure 18 passed/1 skipped. No Work/Astra, Mac or real infrastructure accessed.",
-    "REMOTE_SHA": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
-    "NEXT_ACTION": "Use a verified rootless OCI environment and trusted pinned first-party image for an isolated fixture trial, then separate independently authenticated artifact-specific selected-app execution approval."
+    "BLOCKED_LAYER": "Trusted OCI fixture image and runtime execution not yet implemented",
+    "BLOCKER": "Rootless Podman candidate is available on disposable GitHub runner, but no container image was executed, no independent human approval or signed health/rollback established.",
+    "SAFE_WORK_COMPLETED": "PR #124 merged; exact-head CI, actual rootless Podman candidate probe, and merged-main CI succeeded. 1474 pytest passed/2 namespace skips; infrastructure 20 passed/1 skipped. No Work/Astra, Mac, or real provider infrastructure accessed.",
+    "REMOTE_SHA": "f8efd4360f1371a4924d10c603deb33329d83355",
+    "NEXT_ACTION": "Verify immutable first-party fixture image provenance, execute only that fixture in the confirmed rootless runner, observe real HTTP health and cleanup; keep selected app gated on independent approval."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
-    "passed": 18,
+    "passed": 20,
     "skipped": 1,
     "skip_reason": "Existing memory-only source-layout infrastructure regression not applicable",
     "product_tests": "1474 pytest passed, 2 Linux namespace runtime tests skipped on exact feature head and merged main",
     "physical_mac": "not_run",
-    "new_head_CI": "successful"
+    "new_head_CI": "successful",
+    "rootless_candidate_probe": "real Podman 4.9.3 reported rootless/seccomp/cgroups-v2 candidate on disposable runner; no image executed"
   },
-  "checkpoint_status": "COMPLETE_NONEXECUTING_ROOTLESS_RUNTIME_PREFLIGHT",
+  "checkpoint_status": "COMPLETE_REAL_ROOTLESS_RUNNER_CANDIDATE_PROBE_NONEXECUTING",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-rootless-oci-runtime-preflight-20261030",
-  "previous_completed_checkpoint": "selected-source durable local permit replay admission (non-executing)",
-  "verified_main_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
-  "merge_commit_sha": "0ce704c2c3611cb9d06dcbb5e0e852396155dad2",
-  "final_pr_head": "71a17a1beeac100c3fbd27cdc2596f1a7a0271bf",
+  "checkpoint_branch": "build/demo-rootless-oci-runner-proof-20261030",
+  "previous_completed_checkpoint": "local rootless OCI candidate preflight (synthetic only)",
+  "verified_main_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
+  "merge_commit_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
+  "final_pr_head": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -109,7 +126,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Immediate remote software development requires no user-only action; consequential real execution needs independently authenticated exact-artifact approval.",
+    "reason": "No user-only action for remote first-party fixture preparation; consequential infrastructure execution requires explicit independent artifact-scoped approval.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -1668,5 +1685,33 @@
     "real_infrastructure_mutated": false,
     "external_worktree_exclusivity": "unverified",
     "rollback": "Revert feature PR #122 merge; no external state migration"
+  },
+  "accepted_rootless_runner_probe": {
+    "checkpoint": "real nonroot Podman candidate on disposable GitHub Actions runner",
+    "status": "COMPLETE_NONEXECUTING_CANDIDATE_PROBE",
+    "feature_pr": 124,
+    "feature_head_sha": "f477422eef8556a0a339208bc4e7a9e2a5624a14",
+    "merge_sha": "f8efd4360f1371a4924d10c603deb33329d83355",
+    "push_ci_run": 41017938397,
+    "pr_ci_run": 41017971464,
+    "probe_push_run": 41017938330,
+    "probe_pr_run": 41017971367,
+    "merged_main_ci_run": 41018128713,
+    "python": "3.11.17",
+    "podman_version": "4.9.3+ds1-1ubuntu0.2",
+    "pytest_passed": 1474,
+    "pytest_skipped": 2,
+    "infrastructure_passed": 20,
+    "infrastructure_skipped": 1,
+    "real_rootless_runtime_candidate": true,
+    "actual_container_executed": false,
+    "image_trust_attested": false,
+    "selected_app_executed": false,
+    "authenticated_human_review": false,
+    "signed_runtime_health": false,
+    "controlled_rollback": false,
+    "real_infrastructure_mutated": false,
+    "external_worktree_exclusivity": "unverified",
+    "rollback": "Revert PR #124 merge; no external provider resource or migration"
   }
 }
