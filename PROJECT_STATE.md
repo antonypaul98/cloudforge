@@ -2218,3 +2218,25 @@ deployment or infrastructure rollback. **FULL PRODUCT COMPLETION: Unverified.**
 Next: independently authenticated artifact-specific selected-app sandbox
 execution and trusted observation/recovery gates. No Work/Astra, physical
 Mac or production infrastructure changes.
+
+
+## Fixed first-party Python OCI SIGKILL recovery — 2026-10-30
+
+[Feature PR #136](https://github.com/antonypaul98/cloudforge/pull/136)
+merged at `57f94d338585d54a757b669e494a562fc94844ad`.
+Exact head `a060a4df8a5db8ab292bf2122320211596608d17` passed
+[product push #41086809156](https://github.com/antonypaul98/cloudforge/actions/runs/41086809156),
+[product PR #41086855011](https://github.com/antonypaul98/cloudforge/actions/runs/41086855011),
+[real rootless OCI PR #41086855313](https://github.com/antonypaul98/cloudforge/actions/runs/41086855313);
+[merged-main CI #41087040423](https://github.com/antonypaul98/cloudforge/actions/runs/41087040423)
+succeeded. 1,482 pytest passed/2 existing skips; infrastructure 33 tests,
+1 skipped. Actual rootless fixed first-party Python container SIGKILL
+exit 137, subsequent restart/HTTP health and cleanup verified. The earlier
+normal stop escalated to SIGKILL and is not claimed graceful. No external
+selected application, independent authenticated approval, signed health,
+production deployment or infrastructure rollback. No Mac, Work/Astra or
+production infrastructure. Revert feature PR for software rollback.
+
+**DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
+Next milestone: independently authenticated artifact-specific approval
+for selected-source execution, trusted health and controlled rollback.
