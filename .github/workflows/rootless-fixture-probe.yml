@@ -1,8 +1,8 @@
-name: Rootless OCI candidate on disposable runner
+name: Rootless OCI owned fixture on disposable runner
 
 on:
   push:
-    branches: ["build/demo-rootless-oci-runner-proof-20261030"]
+    branches: ["build/demo-rootless-oci-runner-proof-20261030", "build/demo-owned-oci-fixture-20261030"]
   pull_request:
     branches: [main]
     paths:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  rootless-candidate:
+  rootless-owned-fixture:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -25,19 +25,67 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install local rootless Podman on disposable runner
+      - name: Install signed distro rootless Podman and static BusyBox on disposable runner
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends podman uidmap slirp4netns fuse-overlayfs
-      - name: Verify real local runtime capability without executing images
+          sudo apt-get install -y --no-install-recommends podman uidmap slirp4netns fuse-overlayfs busybox-static
+      - name: Verify local rootless runtime prerequisites
         env:
           PYTHONPATH: src
         run: |
           python - <<'PY'
-          import json
           from cloudforge.demo_rootless_runtime_preflight import inspect_rootless_oci_candidate
           result = inspect_rootless_oci_candidate()
-          print(json.dumps(result, sort_keys=True))
+          print(result)
           if result["candidate_for_isolated_fixture_trial"] is not True:
               raise SystemExit("No verified rootless OCI candidate on this runner")
           PY
+      - name: Run only fixed first-party health fixture inside rootless OCI container
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(id -u)" -ne 0
+          tmp="$(mktemp -d)"
+          container="cf-owned-fixture-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          image_tag="localhost/cloudforge-owned-fixture:${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cleanup() {
+            podman --remote=false rm -f "$container" >/dev/null 2>&1 || true
+            podman --remote=false rmi -f "$image_tag" >/dev/null 2>&1 || true
+            rm -rf -- "$tmp"
+          }
+          trap cleanup EXIT
+          install -m 0755 /usr/bin/busybox "$tmp/busybox"
+          printf 'cloudforge-owned-fixture-ok\n' > "$tmp/health"
+          chmod 0444 "$tmp/health"
+          cat > "$tmp/Containerfile" <<'CONTAINERFILE'
+          FROM scratch
+          COPY busybox /bin/busybox
+          COPY health /srv/health
+          USER 65534:65534
+          ENTRYPOINT ["/bin/busybox","httpd","-f","-p","127.0.0.1:8080","-h","/srv"]
+          CONTAINERFILE
+          echo "Distro BusyBox version: $(dpkg-query -W -f='${Version}' busybox-static)"
+          sha256sum "$tmp/busybox" "$tmp/health" "$tmp/Containerfile"
+          podman --remote=false build --pull=never --network=none -t "$image_tag" -f "$tmp/Containerfile" "$tmp"
+          image_id="$(podman --remote=false image inspect --format '{{.Id}}' "$image_tag")"
+          [[ "$image_id" =~ ^sha256:[0-9a-f]{64}$ ]]
+          podman --remote=false run -d --name "$container" --pull=never --network=none --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=64 --memory=64m --user=65534:65534 "$image_id" >/dev/null
+          check_health() {
+            local actual
+            for attempt in $(seq 1 20); do
+              if actual="$(podman --remote=false exec "$container" /bin/busybox wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-fixture-ok" ]]; then
+                return 0
+              fi
+              sleep 0.2
+            done
+            return 1
+          }
+          check_health
+          podman --remote=false stop -t 2 "$container" >/dev/null
+          [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
+          podman --remote=false start "$container" >/dev/null
+          check_health
+          podman --remote=false rm -f "$container" >/dev/null
+          ! podman --remote=false container exists "$container"
+          echo "OWNED_FIXTURE_RESULT: running_health=pass stopped=confirmed restarted_health=pass cleanup=pass"
+          echo "OWNED_FIXTURE_LIMITS: first_party_static_content_only no_selected_app no_human_approval no_real_infrastructure no_signed_observation no_rollback"
