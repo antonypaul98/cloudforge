@@ -43,6 +43,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         source = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
             "stage_verified_selected_source(", "expected_review_binding_digest=",
+            "COPY --chmod=0444 app.py /srv/app.py",
             "--pull=never --network=none --read-only", "--cap-drop=all",
             "--security-opt=no-new-privileges", "--pids-limit=64 --memory=128m",
             "--user=65534:65534", "trap cleanup EXIT", "podman --remote=false rm -f",
