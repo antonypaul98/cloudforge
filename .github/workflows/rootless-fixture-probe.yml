@@ -2,7 +2,7 @@ name: Rootless OCI owned fixture on disposable runner
 
 on:
   push:
-    branches: ["build/demo-rootless-oci-runner-proof-20261030", "build/demo-owned-oci-fixture-20261030", "build/demo-owned-oci-crash-recovery-20261030"]
+    branches: ["build/demo-rootless-oci-runner-proof-20261030", "build/demo-owned-oci-fixture-20261030", "build/demo-owned-oci-crash-recovery-20261030", "build/demo-owned-oci-observer-20261030"]
   pull_request:
     branches: [main]
     paths:
@@ -73,13 +73,14 @@ jobs:
           check_health() {
             local actual
             for attempt in $(seq 1 20); do
-              if actual="$(podman --remote=false exec "$container" /bin/busybox wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-fixture-ok" ]]; then
+              if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$image_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-fixture-ok" ]]; then
                 return 0
               fi
               sleep 0.2
             done
             return 1
           }
+          # A separate short-lived observer container shares only the fixture network namespace.
           check_health
           podman --remote=false stop -t 2 "$container" >/dev/null
           [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
@@ -93,5 +94,5 @@ jobs:
           check_health
           podman --remote=false rm -f "$container" >/dev/null
           ! podman --remote=false container exists "$container"
-          echo "OWNED_FIXTURE_RESULT: running_health=pass stopped=confirmed restarted_health=pass crashed=confirmed crash_exit=137 crash_restarted_health=pass cleanup=pass"
-          echo "OWNED_FIXTURE_LIMITS: first_party_static_content_only no_selected_app no_human_approval no_real_infrastructure no_signed_observation no_rollback stop_may_force_kill"
+          echo "OWNED_FIXTURE_RESULT: observer=separate_container running_health=pass stopped=confirmed restarted_health=pass crashed=confirmed crash_exit=137 crash_restarted_health=pass cleanup=pass"
+          echo "OWNED_FIXTURE_LIMITS: first_party_static_content_only no_selected_app no_human_approval no_real_infrastructure no_signed_observation no_rollback observer_shares_network_namespace stop_may_force_kill"
