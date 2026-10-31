@@ -107,9 +107,10 @@ def verify_staged_selected_source(staged: StagedSelectedSource) -> None:
                 )
             except OSError as exc:
                 raise ValueError("staged file is unavailable or unsafe") from exc
+            if not stat.S_ISREG(os.fstat(fd).st_mode):
+                os.close(fd)
+                raise ValueError("staged file is not regular")
             with os.fdopen(fd, "rb") as stream:
-                if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
-                    raise ValueError("staged file is not regular")
                 hasher = hashlib.sha256()
                 for chunk in iter(lambda: stream.read(65536), b""):
                     hasher.update(chunk)
