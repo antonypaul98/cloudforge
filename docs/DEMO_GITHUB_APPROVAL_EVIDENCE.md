@@ -121,3 +121,20 @@ successful real protected review. Offline CLI tests and exact-head CI are
 separate from genuine independent approval. No external code was copied; this
 reuses the first-party verifier and Python 3.11 argparse/json. Rollback is a
 revert of the feature merge, with no stateful migration.
+
+## CLI feature-head verification (2026-10-31)
+
+[Feature PR #172](https://github.com/antonypaul98/cloudforge/pull/172)
+merged as `e2f3492f21ddb3a38e66e8390bf4088a327856b5`.
+Exact head `eb19e8bf6fbc837fec79591b980edfb2516ce2ff` passed
+[push CI #41199106550](https://github.com/antonypaul98/cloudforge/actions/runs/41199106550)
+and [PR CI #41199110264](https://github.com/antonypaul98/cloudforge/actions/runs/41199110264).
+[Merged-main CI #41199200984](https://github.com/antonypaul98/cloudforge/actions/runs/41199200984)
+also succeeded: **1,564 pytest passed, 2 skipped; 43 infrastructure tests
+run, 1 skipped** on Python 3.11.17. The ten new CLI tests are offline and
+subprocess-based, not evidence of a real reviewer action. This documentation
+acceptance itself requires fresh exact-head and merged-main CI.
+
+No selected-user-app workflow, independent protected reviewer decision,
+external selected application execution, signed health or provider rollback
+is claimed. No Work/Astra, physical Mac or production infrastructure used.

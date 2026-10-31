@@ -2333,3 +2333,27 @@ explicitly denies execution. Next: independently configured protected approval
 and a real selected-app OCI demo, with exact artifact binding and controlled
 recovery. Demo readiness **partial**; full completion **unverified**. This
 acceptance note needs its own exact-head/merged-main CI before canonical closure.
+
+## Read-only GitHub approval evidence CLI — verified feature, 2026-10-31
+
+[Feature PR #172](https://github.com/antonypaul98/cloudforge/pull/172)
+merged as `e2f3492f21ddb3a38e66e8390bf4088a327856b5` after exact
+head `eb19e8bf6fbc837fec79591b980edfb2516ce2ff` passed
+[push CI #41199106550](https://github.com/antonypaul98/cloudforge/actions/runs/41199106550)
+and [PR CI #41199110264](https://github.com/antonypaul98/cloudforge/actions/runs/41199110264).
+[Merged-main CI #41199200984](https://github.com/antonypaul98/cloudforge/actions/runs/41199200984)
+succeeded. Python 3.11.17: **1,564 pytest passed, 2 skipped; 43 infrastructure
+tests run, 1 skipped**. Ten new CLI regressions exercise read-only success,
+redacted failure, invalid pins, help and missing arguments. Existing first-party
+verifier and Python 3.11 standard library are reused; no third-party code or
+new dependency.
+
+The CLI accepts independently pinned run, commit, artifact digest and reviewer
+account, but its receipt **never authorizes execution or authenticates a human**.
+No protected environment or independent approval was configured or tested;
+no user-selected external app ran, no independent signed health was observed,
+and no real infrastructure or rollback was performed. No Mac, Work or Astra.
+**Demo readiness: partial; full product completion: unverified.**
+Canonical documentation acceptance requires this follow-up PR's exact-head
+and merged-main CI. Next demo priority remains genuinely protected independent
+artifact approval and selected-application isolated execution.
