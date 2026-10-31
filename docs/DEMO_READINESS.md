@@ -539,8 +539,12 @@ was deployed or rolled back; no physical Mac, Work or Astra was used.
 Reuse: existing first-party admission, staging, replay and OCI workflow
 plus Python 3.11 standard library; no third-party code copied, new dependency,
 credentials or production changes. Software rollback: revert PR #150; all
-runtime/ledger state is disposable. This documentation/state follow-up still
-requires its own exact-head CI, guarded merge and merged-main CI.
+runtime/ledger state is disposable. Documentation/state [PR #151](https://github.com/antonypaul98/cloudforge/pull/151)
+passed [exact-head PR CI #41171134279](https://github.com/antonypaul98/cloudforge/actions/runs/41171134279),
+merged as `a932d50e13393f73e0bb6f1d222b27f184865db8`, and passed
+[merged-main CI #41171207876](https://github.com/antonypaul98/cloudforge/actions/runs/41171207876).
+Final checkpoint-state publication still requires its own exact-head CI,
+guarded merge and merged-main CI.
 
 **DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
 Next: integrate genuinely authenticated, artifact-specific human authorization
