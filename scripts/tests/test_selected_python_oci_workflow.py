@@ -178,8 +178,6 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         self.assertFalse(self.guarded(source.replace("graceful_stop=pass", "")))
 
 
-if __name__ == "__main__":
-    unittest.main()
 
     def test_private_staging_changes_trigger_real_oci_ci(self):
         source = WORKFLOW.read_text(encoding="utf-8")
@@ -188,3 +186,7 @@ if __name__ == "__main__":
             with self.subTest(marker=marker):
                 self.assertIn(marker, source)
                 self.assertFalse(self.guarded(source.replace(marker, "")))
+
+
+if __name__ == "__main__":
+    unittest.main()
