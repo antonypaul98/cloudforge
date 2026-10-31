@@ -45,6 +45,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             '[[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
             '[[ "$(podman --remote=false container inspect --format \'{{.State.Running}}\' "$container")" == "true" ]] || return 1',
             'post_state="$(podman --remote=false container inspect --format \'{{.Id}} {{.Image}} {{.State.Running}}\' "$container")" || return 1',
+            'read -r post_id post_image post_running <<< "$post_state"',
             '[[ "$post_id" == "$container_id" ]] || return 1',
             '[[ "${post_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
             '[[ "$post_running" == "true" ]] || return 1',
