@@ -153,3 +153,33 @@ def test_prebuild_recheck_rejects_symlinked_staging_directory(tmp_path):
         alias.symlink_to(staged.directory, target_is_directory=True)
         with pytest.raises(ValueError, match="unsafe"):
             verify_staged_selected_source(replace(staged, directory=alias))
+
+
+def test_prebuild_recheck_rejects_exposed_staging_directory():
+    raw, kwargs = _inputs()
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        os.chmod(staged.directory, 0o755)
+        with pytest.raises(ValueError, match="directory is not private"):
+            verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_exposed_source_or_manifest():
+    raw, kwargs = _inputs()
+    for filename in ("app.py", "requirements.txt"):
+        with stage_verified_selected_source(raw, **kwargs) as staged:
+            os.chmod(staged.directory / filename, 0o644)
+            with pytest.raises(ValueError, match="file is not private"):
+                verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_hardlinked_source_or_manifest(tmp_path):
+    raw, kwargs = _inputs()
+    for filename in ("app.py", "requirements.txt"):
+        with stage_verified_selected_source(raw, **kwargs) as staged:
+            outside = tmp_path / ("hardlink-" + filename)
+            os.link(staged.directory / filename, outside)
+            try:
+                with pytest.raises(ValueError, match="multiple hard links"):
+                    verify_staged_selected_source(staged)
+            finally:
+                outside.unlink()

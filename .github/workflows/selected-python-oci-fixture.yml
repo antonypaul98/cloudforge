@@ -12,6 +12,8 @@ on:
       - "tests/test_demo_owned_python_fixture_source.py"
       - "tests/test_demo_selected_admission_stage.py"
       - "src/cloudforge/demo_selected_admission_stage.py"
+      - "src/cloudforge/demo_selected_oci_stage.py"
+      - "tests/test_demo_selected_oci_stage.py"
       - "src/cloudforge/demo_selected_approval_gate.py"
       - "src/cloudforge/demo_selected_execution_permit.py"
 

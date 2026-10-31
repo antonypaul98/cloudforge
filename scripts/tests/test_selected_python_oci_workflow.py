@@ -20,6 +20,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             'podman --remote=false pull --platform linux/amd64 "$base_ref"',
             "package_selected_source(", "prepare_selected_artifact(",
             "stage_synthetically_admitted_selected_source(", "verify_staged_selected_source(staged)",
+            '"src/cloudforge/demo_selected_oci_stage.py"', '"tests/test_demo_selected_oci_stage.py"',
             "issue_selected_sandbox_permit(", "issue_selected_sandbox_approval(",
             "ledger_path=str(Path(ledger_dir) / \"permit.sqlite\")",
             "now_unix=1100", "expected_package_sha256=",
@@ -175,6 +176,16 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         self.assertLess(clean_exit, restart)
         self.assertIn("graceful_stop=pass", source)
         self.assertFalse(self.guarded(source.replace("graceful_stop=pass", "")))
+
+
+
+    def test_private_staging_changes_trigger_real_oci_ci(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        for marker in ('"src/cloudforge/demo_selected_oci_stage.py"',
+                       '"tests/test_demo_selected_oci_stage.py"'):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, source)
+                self.assertFalse(self.guarded(source.replace(marker, "")))
 
 
 if __name__ == "__main__":
