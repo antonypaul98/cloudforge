@@ -15,6 +15,7 @@ _REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 _ENVIRONMENT = "cloudforge-selected-application"
 _WORKFLOW = ".github/workflows/selected-user-app.yml"
 _HEX = re.compile(r"[0-9a-f]{64}\Z")
+_COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 _MAX_RESPONSE = 131_072
 
 
@@ -67,7 +68,7 @@ def verify_selected_github_approval_evidence(
             or type(run_id) is not int or run_id <= 0
             or type(trusted_reviewer_id) is not int or trusted_reviewer_id <= 0
             or type(expected_head_sha) is not str
-            or not _HEX.fullmatch(expected_head_sha)
+            or not _COMMIT.fullmatch(expected_head_sha)
             or type(expected_artifact_sha256) is not str
             or not _HEX.fullmatch(expected_artifact_sha256)):
         raise ValueError("invalid pinned GitHub approval inputs")
