@@ -141,7 +141,7 @@ def test_later_review_overrides_earlier_approval(monkeypatch):
     later["comment"] = "not artifact scoped"
     data[2].append(later)
     install(monkeypatch, data)
-    with pytest.raises(ValueError, match="exact independent"):
+    with pytest.raises(ValueError, match="not approved"):
         gate.verify_selected_github_approval_evidence(**KW)
 
 
