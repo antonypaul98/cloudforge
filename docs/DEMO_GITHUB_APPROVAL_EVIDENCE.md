@@ -67,3 +67,17 @@ the only verified application executions. This preflight is only a read-only
 identity/evidence prerequisite, not the differentiated end-to-end demo.
 
 **Full product completion:** Unverified. No evidence-based percentage or date.
+
+## Verified feature-head and merged-main evidence (2026-10-31)
+
+[Feature PR #169](https://github.com/antonypaul98/cloudforge/pull/169) merged as
+`a54d8dfa60a18ee2dedd77d56338b334b37642ec` after exact head
+`f4c381809dd0ad8efc25ae09686d663491c129bb` passed
+[push CI #41195313134](https://github.com/antonypaul98/cloudforge/actions/runs/41195313134),
+[PR CI #41195328388](https://github.com/antonypaul98/cloudforge/actions/runs/41195328388),
+and [merged-main CI #41195404277](https://github.com/antonypaul98/cloudforge/actions/runs/41195404277).
+Python 3.11.17: **1,554 passed, 2 skipped**; infrastructure: **43 tests run, 1 skipped**.
+The 36 new pytest cases used offline GitHub-shaped snapshots; no live protected
+environment approval was exercised. The feature is a non-executing evidence
+preflight only. This acceptance-documentation PR requires its own exact-head
+and merged-main CI before publication is complete.

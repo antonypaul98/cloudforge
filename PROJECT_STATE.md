@@ -2313,3 +2313,23 @@ multi-tenant isolation, real provider deployment or infrastructure rollback.
 No Mac, Astra/Work or production infrastructure used. Canonical documentation
 and state acceptance still require this PR's own exact-head CI, guarded merge
 and merged-main CI. Demo readiness remains partial; full completion unverified.
+
+
+## GitHub account approval evidence preflight — 2026-10-31
+
+[Feature PR #169](https://github.com/antonypaul98/cloudforge/pull/169)
+merged at `a54d8dfa60a18ee2dedd77d56338b334b37642ec` after exact-head
+[push CI #41195313134](https://github.com/antonypaul98/cloudforge/actions/runs/41195313134),
+[PR CI #41195328388](https://github.com/antonypaul98/cloudforge/actions/runs/41195328388),
+and [merged-main CI #41195404277](https://github.com/antonypaul98/cloudforge/actions/runs/41195404277)
+succeeded. Python 3.11.17: **1,554 pytest passed, 2 skipped; 43 infrastructure
+run, 1 skipped**. Reuses GitHub REST environment reviewer and deployment
+review-history contracts, with read-only TLS fetch and fail-closed exact-run,
+reviewer and artifact-digest checks. Synthetic offline API fixtures only:
+no real GitHub reviewer, no authenticated human, no configured protected
+environment, no selected external app execution, no signed health, no provider
+mutation or infrastructure rollback. No Mac, Astra or Work. The return value
+explicitly denies execution. Next: independently configured protected approval
+and a real selected-app OCI demo, with exact artifact binding and controlled
+recovery. Demo readiness **partial**; full completion **unverified**. This
+acceptance note needs its own exact-head/merged-main CI before canonical closure.
