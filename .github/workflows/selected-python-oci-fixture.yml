@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/selected-python-oci-fixture.yml"
       - "scripts/fixtures/owned_python_health_app.py"
+      - "scripts/fixtures/owned_python_health_alt_app.py"
       - "scripts/tests/test_selected_python_oci_workflow.py"
       - "tests/test_demo_owned_python_fixture_source.py"
       - "tests/test_demo_selected_admission_stage.py"
@@ -26,6 +27,15 @@ concurrency:
 
 jobs:
   owned-selected-python:
+    name: First-party source selection (${{ matrix.fixture.variant }})
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture:
+          - variant: primary
+            health: cloudforge-owned-python-ok
+          - variant: alternate
+            health: cloudforge-owned-python-alt-ok
     runs-on: ubuntu-latest
     timeout-minutes: 18
     steps:
@@ -48,10 +58,12 @@ jobs:
           if result["candidate_for_isolated_fixture_trial"] is not True:
               raise SystemExit("No verified rootless OCI candidate")
           PY
-      - name: Execute exact-source fixed first-party Python fixture in rootless OCI
+      - name: Execute pinned first-party selected Python fixture in rootless OCI
         shell: bash
         env:
           PYTHONPATH: src
+          CF_OWNED_VARIANT: ${{ matrix.fixture.variant }}
+          EXPECTED_HEALTH_BODY: ${{ matrix.fixture.health }}
         run: |
           set -Eeuo pipefail
           test "$(id -u)" -ne 0
@@ -69,7 +81,7 @@ jobs:
           # Registry access is limited to this digest-pinned official Python base preparation.
           # The OCI build and both runtime containers use --pull=never and no network.
           podman --remote=false pull --platform linux/amd64 "$base_ref" >/dev/null
-          python - "$image_tag" "$base_ref" <<'PY'
+          python - "$image_tag" "$base_ref" "$CF_OWNED_VARIANT" <<'PY'
           import hashlib
           from pathlib import Path
           import subprocess
@@ -82,17 +94,23 @@ jobs:
           from cloudforge.demo_selected_execution_permit import issue_selected_sandbox_permit
           from cloudforge.demo_source_package import package_selected_source
 
-          image_tag, base_ref = sys.argv[1:]
+          image_tag, base_ref, variant = sys.argv[1:]
           # Pin the only allowed first-party fixture before package creation or build.
           # Changing the fixture requires an independently reviewed pin update.
-          expected_owned_source_sha256 = "071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39"
-          source = Path("scripts/fixtures/owned_python_health_app.py").read_bytes()
+          if variant == "primary":
+              expected_owned_source_sha256 = "071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39"
+              source = Path("scripts/fixtures/owned_python_health_app.py").read_bytes()
+          elif variant == "alternate":
+              expected_owned_source_sha256 = "2c5424193e2d9b76aa9cc241462a37bb8df024525539983e12b49f0bc5bc8f1d"
+              source = Path("scripts/fixtures/owned_python_health_alt_app.py").read_bytes()
+          else:
+              raise SystemExit("unapproved first-party fixture variant")
           if hashlib.sha256(source).hexdigest() != expected_owned_source_sha256:
               raise SystemExit("first-party fixture digest changed; reviewed pin update required")
           manifests = {"requirements.txt": "# first-party Python stdlib only\n"}
           target = "disposable-ci-owned-python"
-          package = package_selected_source("owned-python-health", manifests, target, "app.py", source)
-          review = prepare_selected_artifact("owned-python-health", manifests, target, "app.py", source)
+          package = package_selected_source(f"owned-python-health-{variant}", manifests, target, "app.py", source)
+          review = prepare_selected_artifact(f"owned-python-health-{variant}", manifests, target, "app.py", source)
           # Synthetic, fixed CI-only keys and clock. Not authenticated human approval.
           # This deliberately exercises admission before the existing owned fixture build.
           operator_key = b"cloudforge-ci-only-operator-not-real-approval-0001"
@@ -166,7 +184,7 @@ jobs:
               inspected_image="$(podman --remote=false container inspect --format '{{.Image}}' "$container")" || return 1
               [[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1
               [[ "$(podman --remote=false container inspect --format '{{.State.Running}}' "$container")" == "true" ]] || return 1
-              if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$observer_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-python-ok" ]]; then
+              if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$observer_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "$EXPECTED_HEALTH_BODY" ]]; then
                 # A successful response is not accepted if the named container
                 # changed image, identity, or running state during the probe.
                 local post_state post_id post_image post_running
@@ -196,6 +214,7 @@ jobs:
           check_health
           podman --remote=false rm -f "$container" >/dev/null
           ! podman --remote=false container exists "$container"
+          echo "OWNED_SELECTED_PYTHON_VARIANT: $CF_OWNED_VARIANT"
           echo "OWNED_SELECTED_PYTHON_RESULT: exact_source=pass rootless=pass observer=separate_container health=pass graceful_stop=pass restart_health=pass sigkill_exit_137=pass crash_recovery_health=pass cleanup=pass"
           echo "OWNED_SELECTED_PYTHON_SYNTHETIC_ADMISSION: distinct_keys=pass one_time_permit=pass human_authenticated=false"
           echo "OWNED_SELECTED_PYTHON_LIMITS: first_party_fixture_only no_external_selected_app no_human_approval no_production_infrastructure no_signed_observation no_infrastructure_rollback"

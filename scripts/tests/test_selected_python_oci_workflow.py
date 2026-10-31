@@ -6,6 +6,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/selected-python-oci-fixture.yml"
 FIXTURE = ROOT / "scripts/fixtures/owned_python_health_app.py"
+ALT_FIXTURE = ROOT / "scripts/fixtures/owned_python_health_alt_app.py"
+PINNED_ALT_SOURCE_SHA256 = "2c5424193e2d9b76aa9cc241462a37bb8df024525539983e12b49f0bc5bc8f1d"
 PINNED_SOURCE_SHA256 = "071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39"
 
 
@@ -14,6 +16,12 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
     def guarded(source: str) -> bool:
         required = (
             "permissions:\n  contents: read", "runs-on: ubuntu-latest",
+            "fail-fast: false", "variant: primary", "variant: alternate",
+            "CF_OWNED_VARIANT: ${{ matrix.fixture.variant }}",
+            "EXPECTED_HEALTH_BODY: ${{ matrix.fixture.health }}",
+            "unapproved first-party fixture variant",
+            "owned_python_health_alt_app.py",
+            "2c5424193e2d9b76aa9cc241462a37bb8df024525539983e12b49f0bc5bc8f1d",
             "timeout-minutes: 18", 'python-version: "3.11"',
             "inspect_rootless_oci_candidate()", "busybox-static",
             "docker.io/library/python@sha256:09d17d5e4c16d0a7a1eea690bcb7c6ab8616b211f8421e429e97c1bef5bd0ed2",
@@ -239,6 +247,33 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
                 self.assertFalse(self.guarded(source.replace(marker, "", 1)))
 
 
+
+    def test_second_first_party_fixture_is_pinned_and_distinguishable(self):
+        self.assertEqual(hashlib.sha256(ALT_FIXTURE.read_bytes()).hexdigest(),
+                         PINNED_ALT_SOURCE_SHA256)
+        self.assertNotEqual(PINNED_ALT_SOURCE_SHA256, PINNED_SOURCE_SHA256)
+        self.assertIn(b"cloudforge-owned-python-alt-ok", ALT_FIXTURE.read_bytes())
+        self.assertNotIn(b"cloudforge-owned-python-alt-ok", FIXTURE.read_bytes())
+
+    def test_bounded_source_selection_precedes_package_and_health(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        self.assertEqual(source.count("          - variant:"), 2)
+        self.assertLess(source.index('if variant == "primary":'),
+                        source.index('package_selected_source('))
+        self.assertLess(source.index('elif variant == "alternate":'),
+                        source.index('package_selected_source('))
+        self.assertLess(source.index('raise SystemExit("unapproved first-party fixture variant")'),
+                        source.index('package_selected_source('))
+        self.assertIn('[[ "$actual" == "$EXPECTED_HEALTH_BODY" ]]', source)
+        self.assertNotIn('github.event.inputs', source)
+        for marker in (
+            'elif variant == "alternate":',
+            'raise SystemExit("unapproved first-party fixture variant")',
+            '[[ "$actual" == "$EXPECTED_HEALTH_BODY" ]]',
+            "CF_OWNED_VARIANT: ${{ matrix.fixture.variant }}",
+        ):
+            with self.subTest(marker=marker):
+                self.assertFalse(self.guarded(source.replace(marker, "")))
 
 
 if __name__ == "__main__":
