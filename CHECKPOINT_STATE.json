@@ -1,35 +1,35 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Pinned two-variant first-party OCI source selection: feature and documentation accepted; final checkpoint publication pending",
+  "current_checkpoint": "Completed canonical first-party two-variant OCI source-selection acceptance; next is independently authorized selected-application demo",
   "active_branch": "main",
-  "main_sha_at_start": "cf5b751360e64af7577786668fee4e1b31aba088",
-  "current_branch_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
+  "main_sha_at_start": "1868f50519792e4780db1dab94812205bac1d5a3",
+  "current_branch_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature #165 and documentation #166 merged with exact-head PR CI and merged-main CI; final state publication pending",
+  "branch_remote_status": "Feature PR #165, documentation PR #166, final checkpoint PR #167 all merged with exact-head PR and merged-main CI success; no open PRs at observation",
   "local_test_status": "GitHub Python 3.11.17: 1518 pytest passed, 2 skipped; 43 infrastructure tests run, 1 skipped; both OCI matrix jobs succeeded on PR run #41191138091 attempt 2. No local Mac tests.",
-  "pr_number": 166,
-  "ci_status": "Feature push #41191134282, PR #41191138189, real OCI #41191138091 attempt 2, merged-main #41191293408 success; acceptance PR #41191408775 and merged-main #41191460316 success. Final state PR CI pending.",
-  "merge_status": "Feature #165 and acceptance #166 merged; final state publication pending",
+  "pr_number": 167,
+  "ci_status": "Feature push #41191134282, PR #41191138189, real OCI #41191138091 attempt 2, merged-main #41191293408; acceptance PR #41191408775 and merged-main #41191460316; final state PR #41191549008 and merged-main #41191622762: all succeeded at recorded SHAs.",
+  "merge_status": "PRs #165, #166 and #167 merged; canonical first-party source-selection acceptance complete",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "No independently authenticated human approval or genuinely user-selected external application; this slice remains fixed first-party only.",
-  "next_action": "Complete final checkpoint publication PR exact-head CI, guarded merge and merged-main CI; then independently authenticated artifact-specific approval and genuine selected-application execution demo.",
+  "next_action": "Define independently authenticated artifact-specific human authorization for genuinely user-selected application execution; reuse existing source verification and isolated runtime. No execution until independent approval and exact artifacts. Test synthetic boundary first.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-31T10:07:00Z",
-  "observed_branch_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
+  "observed_at_utc": "2026-10-31T10:10:00Z",
+  "observed_branch_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
   "observed_feature_sha": "637244b86841e1badf1666e0eaaf4694a9ceb83a",
-  "current_repository_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
+  "current_repository_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature #165 and documentation #166 merged; final state PR pending",
+  "pr_state": "Feature #165, acceptance #166, final state #167 merged; no open PRs at observation",
   "ci_state": {
     "feature_push_run": {
       "id": 41179010064,
@@ -156,16 +156,28 @@
         "source_head_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
         "event": "push",
         "conclusion": "success"
+      },
+      "final_state_pr_run": {
+        "id": 41191549008,
+        "source_head_sha": "6ef2136af2f1557e99aa8a4cd98ed65c611eb00a",
+        "event": "pull_request",
+        "conclusion": "success"
+      },
+      "final_state_merged_main_run": {
+        "id": 41191622762,
+        "source_head_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
+        "event": "push",
+        "conclusion": "success"
       }
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "independent authenticated selected-application execution",
-    "BLOCKER": "No independently authenticated human decision, genuine user-selected application execution, independently signed health or real infrastructure rollback",
-    "SAFE_WORK_COMPLETED": "Feature #165 and acceptance #166 merged with exact-head CI, both OCI variants, merged-main CI. Final checkpoint state publication CI pending. No Mac, Astra/Work or production infrastructure.",
-    "REMOTE_SHA": "cf5b751360e64af7577786668fee4e1b31aba088",
-    "NEXT_ACTION": "Complete final checkpoint publication PR exact-head CI, guarded merge and merged-main CI; then independently authenticated artifact-specific approval and genuine selected-application execution demo."
+    "BLOCKED_LAYER": "independently authenticated human authorization for genuine user-selected execution",
+    "BLOCKER": "No authenticated human reviewer decision, external user-selected application execution, independently signed health or real infrastructure rollback",
+    "SAFE_WORK_COMPLETED": "Feature #165, acceptance #166 and final #167 merged with exact-head CI and final merged-main #41191622762 success. Both first-party OCI variants verified; no physical Mac, Work/Astra or production infrastructure.",
+    "REMOTE_SHA": "1868f50519792e4780db1dab94812205bac1d5a3",
+    "NEXT_ACTION": "Define independently authenticated artifact-specific human authorization for genuinely user-selected application execution; reuse existing source verification and isolated runtime. No execution until independent approval and exact artifacts. Test synthetic boundary first."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -181,9 +193,9 @@
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/demo-owned-python-selection-20261031",
   "previous_completed_checkpoint": "Fixed first-party OCI post-response identity check, PR #164 merged, CI #41187887467 success",
-  "verified_main_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
-  "merge_commit_sha": "cf5b751360e64af7577786668fee4e1b31aba088",
-  "final_pr_head": "c3b924ebe94237ee548267a2f0fc981e78cacba5",
+  "verified_main_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
+  "merge_commit_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
+  "final_pr_head": "6ef2136af2f1557e99aa8a4cd98ed65c611eb00a",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
