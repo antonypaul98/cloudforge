@@ -67,3 +67,15 @@ documentation/state PR's exact-head CI, guarded merge and merged-main CI.**
 This remains synthetic fixed first-party code, not authenticated human
 approval, external selected application execution, signed independent
 observation or real infrastructure rollback.
+
+## Canonical acceptance evidence (2026-10-31)
+
+[Documentation/state PR #154](https://github.com/antonypaul98/cloudforge/pull/154)
+passed exact head `4be3e79316d4a51cb3b1cb4195d0906183d2d0d1`
+[PR CI #41175387411](https://github.com/antonypaul98/cloudforge/actions/runs/41175387411),
+merged as `4f1d591ddcef4af9d7b0a3cccae63b8b8eeee4ad`, and passed
+[merged-main CI #41175444841](https://github.com/antonypaul98/cloudforge/actions/runs/41175444841).
+The **fixed first-party OCI clean-stop checkpoint** is canonically accepted
+subject to this final state publication's own exact-head and merged-main CI.
+No external selected-app, independent human authorization, signed external
+health or production rollback acceptance follows from this result.
