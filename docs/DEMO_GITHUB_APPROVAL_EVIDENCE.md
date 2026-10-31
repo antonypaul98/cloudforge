@@ -103,8 +103,8 @@ ID. Do not derive these pins solely from the workflow run or its review comment.
 python -m cloudforge.demo_github_approval_evidence_cli \
   --repository owner/repository \
   --run-id 123456 \
-  --head-sha <40-lowercase-hex-commit> \
-  --artifact-sha256 <64-lowercase-hex-source-digest> \
+  --head-sha aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \
+  --artifact-sha256 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb \
   --reviewer-account-id 123456
 ```
 
