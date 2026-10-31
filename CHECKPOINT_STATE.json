@@ -1,35 +1,35 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Complete canonical acceptance of read-only GitHub account review evidence preflight; next is genuinely approved selected-application execution",
-  "active_branch": "main",
-  "main_sha_at_start": "6ecf65230424c990435543e6015c3e16cfa7365d",
-  "current_branch_sha": "6ecf65230424c990435543e6015c3e16cfa7365d",
+  "current_checkpoint": "Read-only pinned GitHub review evidence CLI; feature-head CI and guarded acceptance pending",
+  "active_branch": "build/demo-github-approval-cli-20261031",
+  "main_sha_at_start": "619653ac7003d719382a8445dd849d839b73bdc5",
+  "current_branch_sha": "03023a04716a66071a12a13a54f9ea29e8c37e6a",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #169 and documentation PR #170 merged with exact-head and merged-main CI success; final state publication PR pending",
-  "local_test_status": "Feature exact-head GitHub Python 3.11.17: 1554 pytest passed, 2 skipped; infrastructure 43 run, 1 skipped. All 36 new GitHub API-shaped cases offline; no real approval tested.",
-  "pr_number": 170,
-  "ci_status": "Feature #169 push #41195313134, PR #41195328388, merged-main #41195404277; docs #170 PR #41195510018, merged-main #41195576274: all succeeded. Final state PR CI pending.",
-  "merge_status": "Feature PR #169 and docs acceptance PR #170 merged; final state publication PR pending",
+  "branch_remote_status": "New bounded CLI feature branch published; PR pending",
+  "local_test_status": "Not run locally: container network cannot resolve github.com; remote CI pending. Existing prior test receipts remain historical.",
+  "pr_number": null,
+  "ci_status": "CLI feature exact-head CI not yet verified",
+  "merge_status": "Not merged",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "Real protected environment approval, independent human identity, selected external application execution, signed external health and real infrastructure rollback remain unverified; no current user-only action needed for read-only work.",
-  "next_action": "Verify final state PR exact-head and merged-main CI. Next demo: configure and independently verify protected human review and execute a genuinely selected exact-source application only after explicit artifact-scoped approval; then independently trusted health and controlled rollback.",
-  "feature_checkpoint_advanced": true,
+  "known_blocker": "Real independent protected GitHub approval and selected external application execution remain unverified; GitHub connector disallows environment read endpoint. No user-only action required for CLI development.",
+  "next_action": "Open bounded CLI PR; validate exact-head Python and infrastructure CI, inspect patch and ruleset; merge only if all pass, verify merged-main CI and publish canonical acceptance.",
+  "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-31T10:10:00Z",
   "observed_branch_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
   "observed_feature_sha": "637244b86841e1badf1666e0eaaf4694a9ceb83a",
-  "current_repository_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
+  "current_repository_sha": "03023a04716a66071a12a13a54f9ea29e8c37e6a",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature #165, acceptance #166, final state #167 merged; no open PRs at observation",
+  "pr_state": "New feature PR not yet created",
   "ci_state": {
     "feature_push_run": {
       "id": 41179010064,
@@ -2172,5 +2172,13 @@
     "documentation_pr_ci": 41195510018,
     "documentation_merged_main_ci": 41195576274,
     "final_state_publication_ci": "pending"
+  },
+  "github_approval_cli_checkpoint": {
+    "scope": "read-only CLI wrapping existing first-party verifier; no execution or authorization",
+    "observed_source_head": "03023a04716a66071a12a13a54f9ea29e8c37e6a",
+    "tests": "pending",
+    "pr": "pending",
+    "merged_main_ci": "pending",
+    "canonical_acceptance": false
   }
 }
