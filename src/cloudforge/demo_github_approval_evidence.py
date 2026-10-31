@@ -78,7 +78,8 @@ def verify_selected_github_approval_evidence(
     environment = _get_json(root + "/environments/" + _ENVIRONMENT)
     approvals = _get_json(root + "/actions/runs/" + str(run_id) + "/approvals")
 
-    if (type(run) is not dict or run.get("id") != run_id
+    if (type(run) is not dict or type(run.get("id")) is not int
+            or run.get("id") != run_id
             or run.get("head_sha") != expected_head_sha
             or run.get("event") != "workflow_dispatch"
             or run.get("head_branch") != "main"
@@ -129,9 +130,9 @@ def verify_selected_github_approval_evidence(
                and item.get("name") == _ENVIRONMENT
                for item in event["environments"]):
             relevant.append(event)
-    if not relevant or any(event.get("state") == "rejected" for event in relevant):
+    if len(relevant) != 1 or any(event.get("state") == "rejected" for event in relevant):
         raise ValueError("selected-app deployment not approved")
-    latest = relevant[-1]
+    latest = relevant[0]
     if (latest.get("state") != "approved"
             or _account_id(latest.get("user")) != trusted_reviewer_id
             or latest.get("comment")
