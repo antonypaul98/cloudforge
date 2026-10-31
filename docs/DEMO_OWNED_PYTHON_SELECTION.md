@@ -61,3 +61,12 @@ multi-tenant isolation, real provider deployment or infrastructure rollback.
 No Mac, Astra/Work or production infrastructure used. Canonical documentation
 and state acceptance still require this PR's own exact-head CI, guarded merge
 and merged-main CI. Demo readiness remains partial; full completion unverified.
+
+## Canonical documentation acceptance (2026-10-31)
+
+[PR #166](https://github.com/antonypaul98/cloudforge/pull/166) passed
+[exact-head PR CI #41191408775](https://github.com/antonypaul98/cloudforge/actions/runs/41191408775),
+merged as `cf5b751360e64af7577786668fee4e1b31aba088` and passed
+[merged-main CI #41191460316](https://github.com/antonypaul98/cloudforge/actions/runs/41191460316).
+The final checkpoint state publication has its own independent exact-head and
+merged-main CI gate. This does not change the first-party-only demo boundary.
