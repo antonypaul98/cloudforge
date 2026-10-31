@@ -20,6 +20,8 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "CF_OWNED_VARIANT: ${{ matrix.fixture.variant }}",
             "EXPECTED_HEALTH_BODY: ${{ matrix.fixture.health }}",
             "unapproved first-party fixture variant",
+            'elif variant == "alternate":',
+            '[[ "$actual" == "$EXPECTED_HEALTH_BODY" ]]',
             "owned_python_health_alt_app.py",
             "2c5424193e2d9b76aa9cc241462a37bb8df024525539983e12b49f0bc5bc8f1d",
             "timeout-minutes: 18", 'python-version: "3.11"',
