@@ -166,8 +166,9 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker.replace("\\n", "\n"), fixture)
         stop = source.index('podman --remote=false stop -t 3 "$container"')
-        clean_exit = source.index('"{{.State.ExitCode}}"', stop) if False else source.index(
-            '[[ "$(podman --remote=false inspect --format \'{{.State.ExitCode}}\' "$container")" == "0" ]]', stop
+        clean_exit = source.index(
+            '[[ "$(podman --remote=false inspect --format \'{{.State.ExitCode}}\' "$container")" == "0" ]]',
+            stop,
         )
         restart = source.index('podman --remote=false start "$container"', stop)
         self.assertLess(stop, clean_exit)
