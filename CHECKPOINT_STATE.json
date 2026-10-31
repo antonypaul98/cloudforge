@@ -1,6 +1,6 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Fixed first-party Python OCI synthetic dual-key admission integration: feature and merged-main CI verified; canonical acceptance PR pending",
+  "current_checkpoint": "Fixed first-party Python OCI synthetic dual-key admission integration: canonical acceptance complete; independent authenticated selected-app demo next",
   "active_branch": "main",
   "main_sha_at_start": "4c07c927506c994dcfa72b360a85849cda0101ca",
   "current_branch_sha": "531b23eee628512a47581b17859434fc1c0b60ff",
@@ -14,7 +14,7 @@
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "No independently authenticated human approval or trusted key custody, mandatory external selected-app executor, signed health or real infrastructure rollback. OCI fixture stop still escalates SIGTERM to SIGKILL.",
-  "next_action": "Complete canonical acceptance exact-head PR and merged-main CI for owned Python synthetic admission; then prioritize independently authenticated artifact-specific selected-app execution, trusted signed health and controlled rollback. Do not execute external selected code without genuine human authorization.",
+  "next_action": "Demo-first: audit and implement genuinely independently authenticated artifact-specific human approval and hardened selected-app executor, then trusted signed external health and controlled rollback; no external selected-code execution or production mutation without explicit approval.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -86,7 +86,7 @@
     "selected_app_execution": "fixed_first_party_fixture_only",
     "real_oci_pr_ci": "success #41167128218"
   },
-  "checkpoint_status": "FEATURE_MERGED_MAIN_CI_PASSED_CANONICAL_ACCEPTANCE_PENDING_FIRST_PARTY_SYNTHETIC_ONLY",
+  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_FIRST_PARTY_SYNTHETIC_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/demo-staged-source-prebuild-check-20261031",
   "previous_completed_checkpoint": "synthetic separate-key admission-to-staging integration",
@@ -1606,33 +1606,35 @@
     "next_gate": "Independently authenticated exact artifact/target approval, hardened selected-app sandbox, signed observation, controlled rollback"
   },
   "last_accepted_demo_checkpoint": {
-    "name": "First-party Python OCI fixed-fixture SHA-256 source pin",
-    "feature_pr": 144,
-    "feature_head_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
-    "feature_push_ci": 41120020922,
-    "feature_pr_ci": 41120049902,
-    "feature_real_oci_pr_ci": 41120049929,
-    "feature_merge_sha": "12e0d378a90cd43916fb2b91b13fa7ec76e4ce17",
-    "feature_merged_main_ci": 41120188415,
-    "acceptance_pr": 145,
-    "acceptance_head_sha": "a09a3936aeb806283b682f311410552fa5e1d3c8",
-    "acceptance_merged_main_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
-    "acceptance_merged_main_ci": 41120751698,
-    "pytest_passed": 1510,
+    "name": "Fixed first-party Python OCI with synthetic dual-key permit admission",
+    "feature_pr": 150,
+    "feature_head_sha": "c03f416d33c5dea6ae13c9cc8146d01cb444f336",
+    "feature_merge_sha": "4a6c0e5245e44ba5131073742d9772d59d430c5b",
+    "feature_product_push_ci": 41170929493,
+    "feature_product_pr_ci": 41170943742,
+    "feature_real_oci_pr_ci": 41170943752,
+    "feature_merged_main_ci": 41171034697,
+    "acceptance_pr": 151,
+    "acceptance_head_sha": "af3fd13f37b5f4844b4b18f085c2598c21e15c85",
+    "acceptance_merge_sha": "a932d50e13393f73e0bb6f1d222b27f184865db8",
+    "acceptance_pr_ci": 41171134279,
+    "acceptance_merged_main_ci": 41171207876,
+    "pytest_passed": 1515,
     "pytest_skipped": 2,
-    "infrastructure_tests_run": 35,
+    "infrastructure_tests_run": 37,
     "infrastructure_skipped": 1,
     "external_selected_app_executed": false,
-    "authenticated_review": false,
-    "signed_health": false,
-    "real_infrastructure_mutated": false
+    "authenticated_human_approval": false,
+    "signed_external_health": false,
+    "real_infrastructure_mutated": false,
+    "real_infrastructure_rollback": false
   },
   "acceptance_ci_state": {
-    "pr": 145,
-    "head_sha": "a09a3936aeb806283b682f311410552fa5e1d3c8",
-    "pr_run": 41120465957,
-    "merged_main_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
-    "merged_main_run": 41120751698,
+    "pr": 151,
+    "head_sha": "af3fd13f37b5f4844b4b18f085c2598c21e15c85",
+    "pr_run": 41171134279,
+    "merged_main_sha": "a932d50e13393f73e0bb6f1d222b27f184865db8",
+    "merged_main_run": 41171207876,
     "conclusion": "success"
   },
   "accepted_selected_permit_replay": {
@@ -1908,7 +1910,7 @@
   },
   "accepted_owned_python_synthetic_admission": {
     "checkpoint": "fixed first-party Python OCI execution after synthetic distinct-key one-time permit admission and staged source recheck",
-    "status": "FEATURE_MERGED_MAIN_CI_PASSED_CANONICAL_ACCEPTANCE_PENDING",
+    "status": "COMPLETE_CANONICAL_ACCEPTANCE_FIRST_PARTY_SYNTHETIC_ONLY",
     "feature_pr": 150,
     "feature_head_sha": "c03f416d33c5dea6ae13c9cc8146d01cb444f336",
     "feature_merge_sha": "4a6c0e5245e44ba5131073742d9772d59d430c5b",
@@ -1931,6 +1933,11 @@
     "physical_mac": false,
     "work_astra_invoked": false,
     "external_worktree_exclusivity": "unverified",
-    "rollback": "Revert feature PR #150; CI-only temporary ledger and rootless OCI artifacts; no migration or production infrastructure"
+    "rollback": "Revert feature PR #150; CI-only temporary ledger and rootless OCI artifacts; no migration or production infrastructure",
+    "acceptance_pr": 151,
+    "acceptance_head_sha": "af3fd13f37b5f4844b4b18f085c2598c21e15c85",
+    "acceptance_pr_ci": 41171134279,
+    "acceptance_merge_sha": "a932d50e13393f73e0bb6f1d222b27f184865db8",
+    "acceptance_merged_main_ci": 41171207876
   }
 }
