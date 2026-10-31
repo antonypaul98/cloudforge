@@ -123,7 +123,7 @@ The existing health probe now verifies that the named container has the exact or
 **Limits:** Checks are local and point-in-time on one disposable runner; they are not cryptographic signatures, independent collectors or hardened multi-tenant isolation. This still executes only CloudForge's fixed first-party Python fixture with synthetic approval keys, not an externally selected application under independently authenticated human authorization. No signed external health, real provider deployment or infrastructure rollback, physical Mac, Work or Astra. **Demo readiness: partial, improved. Full product completion: unverified.** Next: independent artifact-specific human authorization and selected-app sandbox execution, followed by independently trusted health and rollback. Canonical acceptance of this documentation/state checkpoint requires its own exact-head CI, guarded merge and merged-main CI.
 
 
-## Post-response container identity guard (proposed 2026-10-31)
+## Post-response container identity guard (feature verified 2026-10-31)
 
 The disposable first-party OCI workflow now checks the named container's exact
 ID, image ID and running state **again after** the separate observer returns a
@@ -138,8 +138,7 @@ Reuse: existing Podman `container inspect` fields, rootless OCI workflow and
 static mutation tests; no new third-party source, dependency, credentials or
 provider costs. Official interface: https://docs.podman.io/en/latest/markdown/podman-container-inspect.1.html.
 Rollback: revert this feature commit; no schema, migration or persistent
-infrastructure. Acceptance remains pending exact-head product and real OCI CI,
-guarded merge and merged-main CI. Demo readiness remains partial; full product
+infrastructure. Feature acceptance: [PR #162](https://github.com/antonypaul98/cloudforge/pull/162) exact head `357da12306ebe3be5ca81afdfa5a06e6f5d05456` passed [push CI #41187196523](https://github.com/antonypaul98/cloudforge/actions/runs/41187196523), [PR CI #41187206453](https://github.com/antonypaul98/cloudforge/actions/runs/41187206453) and [real rootless OCI CI #41187206495](https://github.com/antonypaul98/cloudforge/actions/runs/41187206495). Squash merge `fbf85b51bafddf6052938c9acc97c1a5818bba00` passed [merged-main CI #41187286068](https://github.com/antonypaul98/cloudforge/actions/runs/41187286068). Python 3.11.17: 1,518 pytest passed, 2 skipped; 41 infrastructure tests run, 1 skipped. The real OCI runner passed health, clean shutdown, deliberate SIGKILL recovery and cleanup. Canonical documentation/state acceptance requires this documentation PR's own exact-head and merged-main CI. Demo readiness remains partial; full product
 completion remains unverified. The priority after acceptance is independently
 authenticated artifact-specific approval for genuinely selected application
 execution, then trusted health evidence and controlled rollback.
