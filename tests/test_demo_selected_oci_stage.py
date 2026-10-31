@@ -1,4 +1,5 @@
 """Source staging is exact-byte, ephemeral and non-executing."""
+from dataclasses import replace
 import hashlib
 import os
 import socket
@@ -9,7 +10,7 @@ import pytest
 
 from cloudforge.demo_selected_artifact import prepare_selected_artifact
 from cloudforge.demo_source_package import package_selected_source
-from cloudforge.demo_selected_oci_stage import stage_verified_selected_source
+from cloudforge.demo_selected_oci_stage import stage_verified_selected_source, verify_staged_selected_source
 
 
 def _inputs(source=b"print('owned fixture')\n", manifests=None, target="fixture-review", entrypoint="app.py"):
@@ -96,3 +97,59 @@ def test_staging_write_failure_removes_private_directory(monkeypatch):
         with stage_verified_selected_source(raw, **kwargs):
             pass
     assert captured and not captured[0].exists()
+
+
+def test_prebuild_recheck_accepts_exact_python_and_node_packages():
+    for source, manifests, entrypoint in (
+        (b"print('ok')\n", {"requirements.txt": "# stdlib\n"}, "app.py"),
+        (b"console.log('ok')\n", {"package.json": '{"name":"demo"}'}, "server.js"),
+    ):
+        raw, kwargs = _inputs(source=source, manifests=manifests, entrypoint=entrypoint)
+        with stage_verified_selected_source(raw, **kwargs) as staged:
+            verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_modified_source_and_manifest():
+    raw, kwargs = _inputs()
+    for filename in ("app.py", "requirements.txt"):
+        with stage_verified_selected_source(raw, **kwargs) as staged:
+            (staged.directory / filename).write_bytes(b"changed after staging")
+            with pytest.raises(ValueError, match="digest changed"):
+                verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_missing_or_extra_files():
+    raw, kwargs = _inputs()
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        (staged.directory / "requirements.txt").unlink()
+        with pytest.raises(ValueError, match="file set changed"):
+            verify_staged_selected_source(staged)
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        (staged.directory / "unexpected").write_bytes(b"surprise")
+        with pytest.raises(ValueError, match="file set changed"):
+            verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_symlink_or_directory_substitution():
+    raw, kwargs = _inputs()
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        path = staged.directory / "app.py"
+        path.unlink()
+        path.symlink_to(staged.directory / "requirements.txt")
+        with pytest.raises(ValueError, match="unsafe"):
+            verify_staged_selected_source(staged)
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        path = staged.directory / "app.py"
+        path.unlink()
+        path.mkdir()
+        with pytest.raises(ValueError, match="not regular"):
+            verify_staged_selected_source(staged)
+
+
+def test_prebuild_recheck_rejects_symlinked_staging_directory(tmp_path):
+    raw, kwargs = _inputs()
+    with stage_verified_selected_source(raw, **kwargs) as staged:
+        alias = tmp_path / "staged-alias"
+        alias.symlink_to(staged.directory, target_is_directory=True)
+        with pytest.raises(ValueError, match="unsafe"):
+            verify_staged_selected_source(replace(staged, directory=alias))
