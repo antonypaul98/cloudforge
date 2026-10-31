@@ -508,3 +508,41 @@ Next: run a controlled, source-pinned first-party selected Python application
 in a verified offline rootless OCI runtime, observe actual health and cleanup;
 independent artifact-specific authorization remains mandatory before any
 external user-selected or production execution.
+
+## Fixed first-party Python OCI with synthetic dual-key admission — 2026-10-31
+
+[Feature PR #150](https://github.com/antonypaul98/cloudforge/pull/150)
+merged as `4a6c0e5245e44ba5131073742d9772d59d430c5b` after exact
+head `c03f416d33c5dea6ae13c9cc8146d01cb444f336` passed
+[product push CI #41170929493](https://github.com/antonypaul98/cloudforge/actions/runs/41170929493),
+[product PR CI #41170943742](https://github.com/antonypaul98/cloudforge/actions/runs/41170943742),
+and [real rootless OCI PR #41170943752](https://github.com/antonypaul98/cloudforge/actions/runs/41170943752).
+[Merged-main CI #41171034697](https://github.com/antonypaul98/cloudforge/actions/runs/41171034697)
+succeeded: **1,515 pytest passed, 2 existing skips; 37 infrastructure
+tests ran, 1 skipped**, Python 3.11.17.
+
+The disposable GitHub runner now connects the existing first-party synthetic
+operator permit, distinct reviewer-key approval, SQLite one-time sequence
+consumption and private selected-source staging to the already accepted
+fixed-owned Python OCI fixture build. It rechecks staged exact bytes after
+permit consumption and before the offline image build. Rootless non-root,
+read-only, no-network application execution, separate-container HTTP checks,
+restart, deliberate SIGKILL exit 137, crash recovery and cleanup passed.
+The normal stop again escalated to SIGKILL, **not** graceful shutdown.
+
+**Trust boundary:** Both keys and the clock are fixed synthetic CI inputs.
+They do not authenticate a person or demonstrate independent human consent.
+The only executed source remains the exact pinned CloudForge-owned Python
+fixture, **not** an arbitrary selected user application. The observer is
+not independently authenticated or signed. No real provider infrastructure
+was deployed or rolled back; no physical Mac, Work or Astra was used.
+Reuse: existing first-party admission, staging, replay and OCI workflow
+plus Python 3.11 standard library; no third-party code copied, new dependency,
+credentials or production changes. Software rollback: revert PR #150; all
+runtime/ledger state is disposable. This documentation/state follow-up still
+requires its own exact-head CI, guarded merge and merged-main CI.
+
+**DEMO READINESS: PARTIAL, IMPROVED. FULL PRODUCT COMPLETION: UNVERIFIED.**
+Next: integrate genuinely authenticated, artifact-specific human authorization
+with a selected application under a hardened isolated executor; measure trusted
+signed external health and prove controlled rollback. No optional expansion.
