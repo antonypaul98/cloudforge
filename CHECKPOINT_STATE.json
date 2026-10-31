@@ -1,21 +1,21 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "GitHub account approval evidence preflight: feature verified, documentation acceptance pending",
-  "active_branch": "docs/accept-github-approval-evidence-20261031",
-  "main_sha_at_start": "a54d8dfa60a18ee2dedd77d56338b334b37642ec",
-  "current_branch_sha": "2c8f9b918bd3d74d70eeb1213ed6d65460344d50",
+  "current_checkpoint": "Complete canonical acceptance of read-only GitHub account review evidence preflight; next is genuinely approved selected-application execution",
+  "active_branch": "main",
+  "main_sha_at_start": "6ecf65230424c990435543e6015c3e16cfa7365d",
+  "current_branch_sha": "6ecf65230424c990435543e6015c3e16cfa7365d",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #169 merged after exact-head push/PR CI and merged-main CI success; documentation acceptance branch in progress",
-  "local_test_status": "GitHub Python 3.11.17: 1554 pytest passed, 2 skipped; 43 infrastructure tests run, 1 skipped. No local Mac tests; 36 new offline synthetic API cases.",
-  "pr_number": 169,
-  "ci_status": "Feature exact-head push #41195313134, PR #41195328388 and merged-main #41195404277 succeeded; documentation acceptance PR CI pending",
-  "merge_status": "Feature PR #169 merged as a54d8dfa60a18ee2dedd77d56338b334b37642ec; documentation acceptance pending",
+  "branch_remote_status": "Feature PR #169 and documentation PR #170 merged with exact-head and merged-main CI success; final state publication PR pending",
+  "local_test_status": "Feature exact-head GitHub Python 3.11.17: 1554 pytest passed, 2 skipped; infrastructure 43 run, 1 skipped. All 36 new GitHub API-shaped cases offline; no real approval tested.",
+  "pr_number": 170,
+  "ci_status": "Feature #169 push #41195313134, PR #41195328388, merged-main #41195404277; docs #170 PR #41195510018, merged-main #41195576274: all succeeded. Final state PR CI pending.",
+  "merge_status": "Feature PR #169 and docs acceptance PR #170 merged; final state publication PR pending",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "No real GitHub protected environment or independent human reviewer configured; no user-selected application execution. Evidence preflight is read-only and not an execution authorization.",
-  "next_action": "Finish documentation acceptance PR exact-head CI, guarded merge and merged-main CI, then close canonical state. Continue demo-first: independently protected reviewer environment and real selected application execution only with explicit approval.",
-  "feature_checkpoint_advanced": false,
+  "known_blocker": "Real protected environment approval, independent human identity, selected external application execution, signed external health and real infrastructure rollback remain unverified; no current user-only action needed for read-only work.",
+  "next_action": "Verify final state PR exact-head and merged-main CI. Next demo: configure and independently verify protected human review and execute a genuinely selected exact-source application only after explicit artifact-scoped approval; then independently trusted health and controlled rollback.",
+  "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
@@ -173,11 +173,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "none for docs acceptance",
-    "BLOCKER": "Real independent human approval, selected external app execution, signed health and real rollback unverified",
-    "SAFE_WORK_COMPLETED": "Feature #169 merged; exact-head push #41195313134, PR #41195328388 and merged-main #41195404277 successful; docs acceptance in progress",
-    "REMOTE_SHA": "2c8f9b918bd3d74d70eeb1213ed6d65460344d50",
-    "NEXT_ACTION": "Finish documentation acceptance PR exact-head CI, guarded merge and merged-main CI, then close canonical state. Continue demo-first: independently protected reviewer environment and real selected application execution only with explicit approval."
+    "BLOCKED_LAYER": "none for final-state publication",
+    "BLOCKER": "Real independently approved selected application execution and signed health/rollback not yet verified",
+    "SAFE_WORK_COMPLETED": "Feature #169 and documentation #170 merged; exact-head and merged-main CI succeeded for both; 1554 pytest passed, 2 skipped; 43 infrastructure run, 1 skipped. Final-state CI pending.",
+    "REMOTE_SHA": "6ecf65230424c990435543e6015c3e16cfa7365d",
+    "NEXT_ACTION": "Verify final state PR exact-head and merged-main CI. Next demo: configure and independently verify protected human review and execute a genuinely selected exact-source application only after explicit artifact-scoped approval; then independently trusted health and controlled rollback."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -189,7 +189,7 @@
     "selected_app_execution": "two_fixed_first_party_fixtures_only",
     "real_oci_pr_ci": "success #41191138091 attempt 2"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_OWNED_PYTHON_SOURCE_SELECTION",
+  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_GITHUB_ACCOUNT_REVIEW_EVIDENCE_READ_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/demo-owned-python-selection-20261031",
   "previous_completed_checkpoint": "Fixed first-party OCI post-response identity check, PR #164 merged, CI #41187887467 success",
@@ -227,7 +227,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "No user-only action needed for this read-only CI checkpoint; protected environment and reviewer setup will require separate approval before future execution.",
+    "reason": "No immediate user-only action; no physical Mac or credential prompts. A later real independently protected environment requires explicit owner/reviewer authorization.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -1077,7 +1077,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration on docs/accept-github-approval-evidence-20261031; external worktree exclusivity unverified",
+  "writer_status": "Connected GitHub integration preparing final-state publication; external worktree exclusivity unverified",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1481,7 +1481,7 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL: two fixed first-party OCI fixture executions previously verified; read-only GitHub-account review evidence preflight passed offline tests but no real independently authenticated human or selected external application execution",
+  "demo_readiness": "PARTIAL: fixed first-party OCI source-selection and recovery verified; GitHub account approval evidence preflight passed 36 offline synthetic tests but no real authenticated human or external selected-app execution",
   "full_product_completion": "UNVERIFIED",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
@@ -2123,7 +2123,7 @@
     "work_astra_invoked": false,
     "production_infrastructure_mutated": false,
     "rollback": "Revert feature merge; disposable CI only",
-    "status": "COMPLETE_CANONICAL_ACCEPTANCE_FINAL_STATE_CI_PENDING",
+    "status": "COMPLETE_CANONICAL_ACCEPTANCE_FINAL_STATE_CI_SUCCESS",
     "feature_pr": 162,
     "feature_head_sha": "357da12306ebe3be5ca81afdfa5a06e6f5d05456",
     "feature_merge_sha": "fbf85b51bafddf6052938c9acc97c1a5818bba00",
@@ -2139,10 +2139,10 @@
     "documentation_acceptance_pr": 163,
     "documentation_acceptance_head_sha": "c3b924ebe94237ee548267a2f0fc981e78cacba5",
     "documentation_acceptance_merge_sha": "5d54961315d1f1e9153ce0173e1a8f727e700cd2",
-    "final_state_publication_ci": "pending"
+    "final_state_publication_ci": 41187887467
   },
   "active_github_approval_evidence": {
-    "status": "FEATURE_MERGED_MAIN_CI_SUCCESS_DOCS_PENDING",
+    "status": "COMPLETE_CANONICAL_ACCEPTANCE_FEATURE_AND_DOCS_CI_VERIFIED",
     "branch": "build/demo-github-approval-evidence-20261031",
     "base_main_sha": "7c970f1afd183164636f29730d65c5ce28f4ec17",
     "source_head_before_state": "10b48fd08e005f762b473493f44f987c592afda2",
@@ -2165,6 +2165,12 @@
     "infrastructure_skipped": 1,
     "new_synthetic_pytest_cases": 36,
     "real_github_environment_approval": false,
-    "authenticated_human": false
+    "authenticated_human": false,
+    "documentation_acceptance_pr": 170,
+    "documentation_acceptance_head_sha": "88fe3b7a4bbfc222b52ec04c9f9e1b504cf3498c",
+    "documentation_acceptance_merge_sha": "6ecf65230424c990435543e6015c3e16cfa7365d",
+    "documentation_pr_ci": 41195510018,
+    "documentation_merged_main_ci": 41195576274,
+    "final_state_publication_ci": "pending"
   }
 }
