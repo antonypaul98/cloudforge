@@ -6,7 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github/workflows/selected-python-oci-fixture.yml"
 FIXTURE = ROOT / "scripts/fixtures/owned_python_health_app.py"
-PINNED_SOURCE_SHA256 = "af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6"
+PINNED_SOURCE_SHA256 = "071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39"
 
 
 class SelectedPythonOCIWorkflowTests(unittest.TestCase):
@@ -23,7 +23,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "issue_selected_sandbox_permit(", "issue_selected_sandbox_approval(",
             "ledger_path=str(Path(ledger_dir) / \"permit.sqlite\")",
             "now_unix=1100", "expected_package_sha256=",
-            "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
+            "expected_owned_source_sha256 = \"071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39\"",
             "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
             "expected_review_binding_digest=", "expected_target_id=target",
             "COPY --chmod=0444 app.py /srv/app.py", 'ENTRYPOINT ["python3","-B","/srv/app.py"]',
@@ -35,7 +35,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "podman --remote=false start", "podman --remote=false kill --signal KILL",
             "'{{.State.ExitCode}}'", '"137"', "podman --remote=false rm -f",
             "trap cleanup EXIT", "OWNED_SELECTED_PYTHON_RESULT:",
-            "no_external_selected_app", "no_human_approval",
+            "graceful_stop=pass", "no_external_selected_app", "no_human_approval",
         )
         forbidden = (
             "--privileged", "--network=host", "sudo podman", "sysctl -w",
@@ -81,7 +81,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
     def test_actual_crash_recovery_is_checked_before_cleanup(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         kill = source.index('podman --remote=false kill --signal KILL "$container"')
-        exit_code = source.index("{{.State.ExitCode}}")
+        exit_code = source.index("{{.State.ExitCode}}", kill)
         recovery_start = source.index('podman --remote=false start "$container"', kill)
         recovered_health = source.index('          check_health\n', recovery_start)
         cleanup = source.index('          podman --remote=false rm -f "$container" >/dev/null', recovered_health)
@@ -111,7 +111,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         self.assertLess(source.index("package_selected_source("),
                         source.index('"podman", "--remote=false", "build"'))
         for marker in (
-            "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
+            "expected_owned_source_sha256 = \"071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39\"",
             "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
         ):
             with self.subTest(marker=marker):
@@ -153,6 +153,28 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         self.assertIn('"requirements.txt": "# first-party Python stdlib only\\n"', source)
         self.assertNotIn('github.event.inputs', source)
         self.assertNotIn('pull_request.head.repo', source)
+
+
+    def test_owned_fixture_sigterm_handler_and_clean_exit_are_required(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        fixture = FIXTURE.read_text(encoding="utf-8")
+        for marker in (
+            "signal.signal(signal.SIGTERM, _stop_on_sigterm)",
+            "raise SystemExit(0)",
+            "finally:\\n        server.server_close()",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker.replace("\\n", "\n"), fixture)
+        stop = source.index('podman --remote=false stop -t 3 "$container"')
+        clean_exit = source.index(
+            '[[ "$(podman --remote=false inspect --format \'{{.State.ExitCode}}\' "$container")" == "0" ]]',
+            stop,
+        )
+        restart = source.index('podman --remote=false start "$container"', stop)
+        self.assertLess(stop, clean_exit)
+        self.assertLess(clean_exit, restart)
+        self.assertIn("graceful_stop=pass", source)
+        self.assertFalse(self.guarded(source.replace("graceful_stop=pass", "")))
 
 
 if __name__ == "__main__":

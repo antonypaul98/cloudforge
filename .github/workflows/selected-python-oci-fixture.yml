@@ -83,7 +83,7 @@ jobs:
           image_tag, base_ref = sys.argv[1:]
           # Pin the only allowed first-party fixture before package creation or build.
           # Changing the fixture requires an independently reviewed pin update.
-          expected_owned_source_sha256 = "af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6"
+          expected_owned_source_sha256 = "071b232d0bbf04c2a46bf7538120efc5214f76d7f8dfb921c0d5627c295eed39"
           source = Path("scripts/fixtures/owned_python_health_app.py").read_bytes()
           if hashlib.sha256(source).hexdigest() != expected_owned_source_sha256:
               raise SystemExit("first-party fixture digest changed; reviewed pin update required")
@@ -167,6 +167,8 @@ jobs:
           check_health
           podman --remote=false stop -t 3 "$container" >/dev/null
           [[ "$(podman --remote=false inspect --format '{{.State.Running}}' "$container")" == "false" ]]
+          # A forced SIGKILL reports 137; require a genuine clean SIGTERM exit.
+          [[ "$(podman --remote=false inspect --format '{{.State.ExitCode}}' "$container")" == "0" ]]
           podman --remote=false start "$container" >/dev/null
           check_health
           # Prove actual process-crash recovery, not merely a normal restart.
@@ -177,6 +179,6 @@ jobs:
           check_health
           podman --remote=false rm -f "$container" >/dev/null
           ! podman --remote=false container exists "$container"
-          echo "OWNED_SELECTED_PYTHON_RESULT: exact_source=pass rootless=pass observer=separate_container health=pass restart_health=pass sigkill_exit_137=pass crash_recovery_health=pass cleanup=pass"
+          echo "OWNED_SELECTED_PYTHON_RESULT: exact_source=pass rootless=pass observer=separate_container health=pass graceful_stop=pass restart_health=pass sigkill_exit_137=pass crash_recovery_health=pass cleanup=pass"
           echo "OWNED_SELECTED_PYTHON_SYNTHETIC_ADMISSION: distinct_keys=pass one_time_permit=pass human_authenticated=false"
           echo "OWNED_SELECTED_PYTHON_LIMITS: first_party_fixture_only no_external_selected_app no_human_approval no_production_infrastructure no_signed_observation no_infrastructure_rollback"

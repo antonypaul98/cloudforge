@@ -1,4 +1,5 @@
 """Fixed first-party Python HTTP health fixture for disposable OCI CI only."""
+import signal
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -18,5 +19,16 @@ class HealthHandler(BaseHTTPRequestHandler):
         pass
 
 
+def _stop_on_sigterm(_signum, _frame):
+    # PID 1 must install a handler: Linux ignores default-terminated signals there.
+    # Raising here avoids HTTPServer.shutdown(), which would deadlock in this thread.
+    raise SystemExit(0)
+
+
 if __name__ == "__main__":
-    HTTPServer(("127.0.0.1", 8080), HealthHandler).serve_forever()
+    signal.signal(signal.SIGTERM, _stop_on_sigterm)
+    server = HTTPServer(("127.0.0.1", 8080), HealthHandler)
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
