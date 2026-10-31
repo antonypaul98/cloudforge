@@ -40,3 +40,30 @@ are ephemeral. No persistent migration is introduced.
 completion: unverified.** Continue toward independently authenticated,
 artifact-specific selected-application execution and trusted health/rollback
 after this bounded checkpoint is accepted.
+
+## Verified feature evidence (2026-10-31)
+
+[Feature PR #153](https://github.com/antonypaul98/cloudforge/pull/153)
+merged at `6acfce08887dcbec61f64c57e5496adf28f69e65`. Exact feature
+head `113b64ac0841c08d4d9d338997b0ebbff619db56` passed
+[push CI #41175176877](https://github.com/antonypaul98/cloudforge/actions/runs/41175176877),
+[PR product CI #41175180693](https://github.com/antonypaul98/cloudforge/actions/runs/41175180693),
+and [real OCI PR CI #41175180735](https://github.com/antonypaul98/cloudforge/actions/runs/41175180735).
+[Merged-main CI #41175273874](https://github.com/antonypaul98/cloudforge/actions/runs/41175273874)
+passed at the feature merge SHA. Python 3.11.17: 1,515 pytest passed,
+2 existing skips; 38 infrastructure tests run, 1 skipped.
+
+The real disposable rootless OCI job emitted
+`graceful_stop=pass` after checking `podman stop -t 3` stopped the
+fixed first-party Python process with exit code **0**, before restart.
+It independently retained deliberate SIGKILL exit code **137**,
+post-crash HTTP health and cleanup. The first feature push CI failed
+because an older static test found the new normal-stop exit-code marker
+before the deliberate crash marker; the assertion was corrected to
+search after the SIGKILL step, and all final-head checks passed.
+
+**Feature evidence is verified; canonical acceptance is pending this
+documentation/state PR's exact-head CI, guarded merge and merged-main CI.**
+This remains synthetic fixed first-party code, not authenticated human
+approval, external selected application execution, signed independent
+observation or real infrastructure rollback.
