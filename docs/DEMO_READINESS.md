@@ -583,3 +583,35 @@ The existing health probe now verifies that the named container has the exact or
 **Limits:** Checks are local and point-in-time on one disposable runner; they are not cryptographic signatures, independent collectors or hardened multi-tenant isolation. This still executes only CloudForge's fixed first-party Python fixture with synthetic approval keys, not an externally selected application under independently authenticated human authorization. No signed external health, real provider deployment or infrastructure rollback, physical Mac, Work or Astra. **Demo readiness: partial, improved. Full product completion: unverified.** Next: independent artifact-specific human authorization and selected-app sandbox execution, followed by independently trusted health and rollback. Canonical acceptance of this documentation/state checkpoint requires its own exact-head CI, guarded merge and merged-main CI.
 
 Canonical documentation acceptance [PR #160](https://github.com/antonypaul98/cloudforge/pull/160) passed exact head `7294cfecdb3e09181b71013dc1c9dc09f8d76ca9` [PR CI #41183173417](https://github.com/antonypaul98/cloudforge/actions/runs/41183173417), merged as `b10ea1ee62de1d00ed6c9aa865b338710f35ef48` and passed [merged-main CI #41183242841](https://github.com/antonypaul98/cloudforge/actions/runs/41183242841). Final state publication requires its own exact-head and merged-main CI; until then its CI is pending. This acceptance remains limited to a fixed first-party fixture.
+
+
+## Two pinned first-party OCI source variants — feature verified, 2026-10-31
+
+[Feature PR #165](https://github.com/antonypaul98/cloudforge/pull/165)
+merged as `6109a4e37fa8993cf896c2cfaaf64194d7b05a8c` after exact
+head `637244b86841e1badf1666e0eaaf4694a9ceb83a` passed
+[push product CI #41191134282](https://github.com/antonypaul98/cloudforge/actions/runs/41191134282),
+[PR product CI #41191138189](https://github.com/antonypaul98/cloudforge/actions/runs/41191138189),
+and [real rootless OCI PR #41191138091](https://github.com/antonypaul98/cloudforge/actions/runs/41191138091)
+(attempt 2). [Merged-main CI #41191293408](https://github.com/antonypaul98/cloudforge/actions/runs/41191293408)
+succeeded. Python 3.11.17: **1,518 pytest passed, 2 skipped;
+43 infrastructure tests run, 1 skipped**. Both OCI matrix variants
+reported their distinct source digests and successful actual HTTP health,
+graceful stop, deliberate SIGKILL recovery and cleanup.
+
+The first feature commit failed two static mutation assertions; the test
+guard was corrected before final-head validation. The alternate OCI runner
+initially failed rootless prerequisite probing
+(`local-podman-probe-unavailable`), while the primary succeeded. Retrying
+the failed job on the same exact head succeeded; no isolation bypass or
+code change was made to suppress the failure. These failed attempts remain
+visible in GitHub Actions history.
+
+**Accepted only:** static choice between two CloudForge-owned, SHA-pinned
+Python source fixtures, each built and observed in a disposable rootless
+OCI job. This does not establish external user-selected application execution,
+independent human authorization, signed independent health, hardened
+multi-tenant isolation, real provider deployment or infrastructure rollback.
+No Mac, Astra/Work or production infrastructure used. Canonical documentation
+and state acceptance still require this PR's own exact-head CI, guarded merge
+and merged-main CI. Demo readiness remains partial; full completion unverified.
