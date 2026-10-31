@@ -155,10 +155,17 @@ jobs:
           podman --remote=false build --pull=never --network=none -t "$observer_tag" -f "$tmp/Containerfile" "$tmp"
           observer_id="$(podman --remote=false image inspect --format '{{.Id}}' "$observer_tag")"
           [[ "$observer_id" =~ ^(sha256:)?[0-9a-f]{64}$ ]]
-          podman --remote=false run -d --name "$container" --pull=never --network=none --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=64 --memory=128m --user=65534:65534 "$image_id" >/dev/null
+          container_id="$(podman --remote=false run -d --name "$container" --pull=never --network=none --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=64 --memory=128m --user=65534:65534 "$image_id")"
+          [[ "$container_id" =~ ^[0-9a-f]{64}$ ]]
           check_health() {
-            local actual
+            local actual inspected_id inspected_image
             for attempt in $(seq 1 25); do
+              # Fail closed if the observer would attach to a replaced or wrong-image container.
+              inspected_id="$(podman --remote=false container inspect --format '{{.Id}}' "$container")" || return 1
+              [[ "$inspected_id" == "$container_id" ]] || return 1
+              inspected_image="$(podman --remote=false container inspect --format '{{.Image}}' "$container")" || return 1
+              [[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1
+              [[ "$(podman --remote=false container inspect --format '{{.State.Running}}' "$container")" == "true" ]] || return 1
               if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$observer_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-python-ok" ]]; then
                 return 0
               fi

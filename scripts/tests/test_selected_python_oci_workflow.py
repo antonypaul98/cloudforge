@@ -37,6 +37,13 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "'{{.State.ExitCode}}'", '"137"', "podman --remote=false rm -f",
             "trap cleanup EXIT", "OWNED_SELECTED_PYTHON_RESULT:",
             "graceful_stop=pass", "no_external_selected_app", "no_human_approval",
+            'container_id="$(podman --remote=false run -d',
+            '[[ "$container_id" =~ ^[0-9a-f]{64}$ ]]',
+            'inspected_id="$(podman --remote=false container inspect --format \'{{.Id}}\' "$container")" || return 1',
+            '[[ "$inspected_id" == "$container_id" ]] || return 1',
+            'inspected_image="$(podman --remote=false container inspect --format \'{{.Image}}\' "$container")" || return 1',
+            '[[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
+            '[[ "$(podman --remote=false container inspect --format \'{{.State.Running}}\' "$container")" == "true" ]] || return 1',
         )
         forbidden = (
             "--privileged", "--network=host", "sudo podman", "sysctl -w",
@@ -186,6 +193,27 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertIn(marker, source)
                 self.assertFalse(self.guarded(source.replace(marker, "")))
+
+
+    def test_health_observation_is_bound_to_running_container_identity_and_image(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        health = source.split("          check_health() {", 1)[1].split("          }", 1)[0]
+        for marker in (
+            'inspected_id="$(podman --remote=false container inspect --format \'{{.Id}}\' "$container")" || return 1',
+            '[[ "$inspected_id" == "$container_id" ]] || return 1',
+            'inspected_image="$(podman --remote=false container inspect --format \'{{.Image}}\' "$container")" || return 1',
+            '[[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
+            '[[ "$(podman --remote=false container inspect --format \'{{.State.Running}}\' "$container")" == "true" ]] || return 1',
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, health)
+                self.assertFalse(self.guarded(source.replace(marker, "", 1)))
+        self.assertLess(health.index("inspected_id="), health.index("if actual="))
+        self.assertLess(health.index("inspected_image="), health.index("if actual="))
+        self.assertLess(health.index("State.Running"), health.index("if actual="))
+        self.assertIn('container_id="$(podman --remote=false run -d', source)
+        self.assertIn('[[ "$container_id" =~ ^[0-9a-f]{64}$ ]]', source)
+
 
 
 if __name__ == "__main__":
