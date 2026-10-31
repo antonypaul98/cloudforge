@@ -1,35 +1,35 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Selected-source pre-build staging privacy and single-link checks: canonical acceptance complete; authenticated selected-app demo next",
+  "current_checkpoint": "Fixed first-party OCI observer exact-container/image identity: canonical feature and documentation accepted; final state publication CI pending",
   "active_branch": "main",
-  "main_sha_at_start": "d069bc69db8fca3e68100a79f698d749a224ed91",
-  "current_branch_sha": "d069bc69db8fca3e68100a79f698d749a224ed91",
+  "main_sha_at_start": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "current_branch_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #156 merged b0690e920c548acead21f177730d178c1da1f461 with exact-head product/real OCI CI and merged-main #41179111837 success. Canonical acceptance PR #157 merged d069bc69db8fca3e68100a79f698d749a224ed91, PR CI #41179243533 and merged-main #41179314698 success. Final state publication PR pending.",
-  "local_test_status": "Python 3.11.17 exact-head PR CI #41179024785: 1518 pytest passed, 2 skipped; 39 infrastructure tests run, 1 skipped. Rootless OCI PR #41179024112 passed. No physical Mac tests. No local full-suite execution claimed.",
-  "pr_number": 157,
-  "ci_status": "Feature #156 exact-head push #41179010064, PR #41179024785, real OCI #41179024112, merged-main #41179111837 SUCCESS. Canonical acceptance #157 exact-head PR #41179243533 and merged-main #41179314698 SUCCESS. Final state publication CI pending.",
-  "merge_status": "Feature PR #156 merged b0690e920c548acead21f177730d178c1da1f461; acceptance PR #157 merged d069bc69db8fca3e68100a79f698d749a224ed91; final state publication pending.",
+  "branch_remote_status": "Feature PR #159 merged d0bf1528784bc1e899ca8733834fecf603f825c4 after exact-head product/real OCI checks. Acceptance PR #160 merged b10ea1ee62de1d00ed6c9aa865b338710f35ef48 with PR CI #41183173417 and merged-main #41183242841 success. Final state publication PR pending.",
+  "local_test_status": "Python 3.11.17 exact feature head #41182990638: 1518 pytest passed, 2 skipped; 40 infrastructure tests run, 1 skipped. Rootless OCI PR #41182990688 passed. No physical Mac testing; no local full-suite execution claimed.",
+  "pr_number": 160,
+  "ci_status": "Feature #159 exact-head push #41182976657, PR #41182990638, real OCI #41182990688, feature merged-main #41183067965 success. Acceptance #160 exact-head PR #41183173417 and merged-main #41183242841 success. Final state publication CI pending.",
+  "merge_status": "Feature PR #159 merged d0bf1528784bc1e899ca8733834fecf603f825c4; acceptance PR #160 merged b10ea1ee62de1d00ed6c9aa865b338710f35ef48; final state publication pending.",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "No independently authenticated human approval or external selected-app execution; independent signed external health and real infrastructure rollback remain unverified. No blocker to the completed first-party staging privacy feature.",
-  "next_action": "After final state publication exact-head and merged-main CI, prioritize independent authenticated artifact-specific approval and controlled selected-app sandbox execution; then trusted health evidence and rollback.",
+  "known_blocker": "No independent authenticated human approval, external selected-application execution, signed independent health or real infrastructure rollback. No blocker to accepted first-party observer identity gate.",
+  "next_action": "After final state publication exact-head and merged-main CI, prioritize independent artifact-specific human authorization for externally selected application execution; then independently trusted health and rollback.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
-  "observed_at_utc": "2026-10-31T07:07:43Z",
-  "observed_branch_sha": "d069bc69db8fca3e68100a79f698d749a224ed91",
-  "observed_feature_sha": "ed032feb383dc87356dda0a8900e2bba019b2a2d",
-  "current_repository_sha": "d069bc69db8fca3e68100a79f698d749a224ed91",
+  "observed_at_utc": "2026-10-31T08:07:04Z",
+  "observed_branch_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "observed_feature_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+  "current_repository_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature PR #156 and acceptance PR #157 merged; final checkpoint state publication pending.",
+  "pr_state": "Feature #159 and acceptance #160 merged; final checkpoint state publication PR pending.",
   "ci_state": {
     "feature_push_run": {
       "id": 41179010064,
@@ -66,33 +66,69 @@
       "source_head_sha": "d069bc69db8fca3e68100a79f698d749a224ed91",
       "event": "push",
       "conclusion": "success"
+    },
+    "observer_identity_feature_push": {
+      "id": 41182976657,
+      "source_head_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "observer_identity_feature_pr": {
+      "id": 41182990638,
+      "source_head_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    "observer_identity_real_oci_pr": {
+      "id": 41182990688,
+      "source_head_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    "observer_identity_feature_merged_main": {
+      "id": 41183067965,
+      "source_head_sha": "d0bf1528784bc1e899ca8733834fecf603f825c4",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "observer_identity_acceptance_pr": {
+      "id": 41183173417,
+      "source_head_sha": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    "observer_identity_acceptance_merged_main": {
+      "id": 41183242841,
+      "source_head_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+      "event": "push",
+      "conclusion": "success"
     }
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
     "BLOCKED_LAYER": "Independent authenticated human approval and external selected application execution",
-    "BLOCKER": "No independent authenticated human approval, external selected application execution, independently signed external health or infrastructure rollback.",
-    "SAFE_WORK_COMPLETED": "Feature PR #156 and canonical acceptance PR #157 merged with exact-head checks and merged-main CI #41179314698 success. 1518 pytest passed, 2 skipped; 39 infrastructure tests run, 1 skipped; rootless fixed first-party OCI successful. Final state publication PR pending. No Work/Astra, physical Mac or production infrastructure.",
-    "REMOTE_SHA": "d069bc69db8fca3e68100a79f698d749a224ed91",
+    "BLOCKER": "No independently authenticated human approval, external selected app execution, independently signed health or real infrastructure rollback.",
+    "SAFE_WORK_COMPLETED": "Feature #159 and canonical documentation acceptance #160 merged with exact-head checks and merged-main CI #41183242841 success. 1518 pytest passed, 2 skipped; 40 infrastructure tests run, 1 skipped; real fixed first-party rootless OCI observer identity checks passed. Final state publication PR pending. No Work/Astra, physical Mac or production infrastructure.",
+    "REMOTE_SHA": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
     "NEXT_ACTION": "Finish final state publication CI, then continue demo-first authenticated selected-app execution."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
-    "passed": 38,
+    "passed": 39,
     "skipped": 1,
-    "product_tests": "1518 pytest passed, 2 existing skips",
+    "product_tests": "1518 pytest passed, 2 skipped",
     "physical_mac": "not_run",
-    "new_head_CI": "merged main success #41179111837",
+    "new_head_CI": "merged main success #41183242841",
     "selected_app_execution": "fixed_first_party_fixture_only",
-    "real_oci_pr_ci": "success #41179024112"
+    "real_oci_pr_ci": "success #41182990688"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_SELECTED_STAGING_PRIVACY",
+  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_OWNED_OBSERVER_IDENTITY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-staged-source-private-context-20261031",
-  "previous_completed_checkpoint": "fixed first-party Python OCI graceful SIGTERM and crash recovery",
-  "verified_main_sha": "d069bc69db8fca3e68100a79f698d749a224ed91",
-  "merge_commit_sha": "531b23eee628512a47581b17859434fc1c0b60ff",
-  "final_pr_head": "e6d4db521f67e39ffd994ae8143d065450cb3ec5",
+  "checkpoint_branch": "build/demo-owned-oci-observer-identity-20261031",
+  "previous_completed_checkpoint": "selected-source pre-build staging privacy/single-link checks",
+  "verified_main_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "merge_commit_sha": "d0bf1528784bc1e899ca8733834fecf603f825c4",
+  "final_pr_head": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -124,7 +160,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "No user-only action needed for this remote CI and canonical acceptance checkpoint.",
+    "reason": "No user-only action required for the fixed first-party remote CI checkpoint.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
@@ -974,7 +1010,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration published and merged #153/#154 after exact-head checks; external worktree exclusivity unverified.",
+  "writer_status": "Connected GitHub integration published and merged feature #159 and acceptance #160 after exact-head checks; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1378,7 +1414,7 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL_IMPROVED: fixed first-party Python OCI source-pinned synthetic admission, clean SIGTERM exit 0, deliberate SIGKILL 137, separate-container HTTP health, restart/crash recovery and cleanup canonically accepted. No independently authenticated human or external selected app, signed external health or infrastructure rollback.",
+  "demo_readiness": "PARTIAL_IMPROVED: fixed first-party Python OCI with synthetic admission, exact container/image identity checks before separate-container HTTP probes, clean SIGTERM exit 0, deliberate SIGKILL 137 and crash recovery verified. No authenticated human, externally selected app, independently signed health or infrastructure rollback.",
   "full_product_completion": "UNVERIFIED",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
@@ -1606,37 +1642,37 @@
     "next_gate": "Independently authenticated exact artifact/target approval, hardened selected-app sandbox, signed observation, controlled rollback"
   },
   "last_accepted_demo_checkpoint": {
-    "name": "Fixed first-party Python OCI graceful SIGTERM shutdown and deliberate crash recovery",
-    "feature_pr": 153,
-    "feature_head_sha": "113b64ac0841c08d4d9d338997b0ebbff619db56",
-    "feature_merge_sha": "6acfce08887dcbec61f64c57e5496adf28f69e65",
-    "feature_product_push_ci": 41175176877,
-    "feature_product_pr_ci": 41175180693,
-    "feature_real_oci_pr_ci": 41175180735,
-    "feature_merged_main_ci": 41175273874,
-    "acceptance_pr": 154,
-    "acceptance_head_sha": "4be3e79316d4a51cb3b1cb4195d0906183d2d0d1",
-    "acceptance_merge_sha": "4f1d591ddcef4af9d7b0a3cccae63b8b8eeee4ad",
-    "acceptance_pr_ci": 41175387411,
-    "acceptance_merged_main_ci": 41175444841,
-    "pytest_passed": 1515,
+    "name": "Fixed first-party Python OCI exact running container/image identity guard",
+    "feature_pr": 159,
+    "feature_head_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+    "feature_merge_sha": "d0bf1528784bc1e899ca8733834fecf603f825c4",
+    "feature_product_push_ci": 41182976657,
+    "feature_product_pr_ci": 41182990638,
+    "feature_real_oci_pr_ci": 41182990688,
+    "feature_merged_main_ci": 41183067965,
+    "acceptance_pr": 160,
+    "acceptance_head_sha": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
+    "acceptance_merge_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+    "acceptance_pr_ci": 41183173417,
+    "acceptance_merged_main_ci": 41183242841,
+    "pytest_passed": 1518,
     "pytest_skipped": 2,
-    "infrastructure_tests_run": 38,
+    "infrastructure_tests_run": 40,
     "infrastructure_skipped": 1,
-    "graceful_stop_exit_code": 0,
-    "deliberate_crash_exit_code": 137,
     "external_selected_app_executed": false,
     "authenticated_human_approval": false,
     "signed_external_health": false,
     "real_infrastructure_mutated": false,
-    "real_infrastructure_rollback": false
+    "real_infrastructure_rollback": false,
+    "physical_mac": false,
+    "work_astra_invoked": false
   },
   "acceptance_ci_state": {
-    "pr": 154,
-    "head_sha": "4be3e79316d4a51cb3b1cb4195d0906183d2d0d1",
-    "pr_run": 41175387411,
-    "merged_main_sha": "4f1d591ddcef4af9d7b0a3cccae63b8b8eeee4ad",
-    "merged_main_run": 41175444841,
+    "pr": 160,
+    "head_sha": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
+    "pr_run": 41183173417,
+    "merged_main_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+    "merged_main_run": 41183242841,
     "conclusion": "success"
   },
   "accepted_selected_permit_replay": {
@@ -1973,6 +2009,37 @@
     "acceptance_pr_ci": 41175387411,
     "acceptance_merge_sha": "4f1d591ddcef4af9d7b0a3cccae63b8b8eeee4ad",
     "acceptance_merged_main_ci": 41175444841,
+    "final_state_publication_ci": "pending"
+  },
+  "owned_python_observer_identity": {
+    "checkpoint": "exact running container ID/image ID and running-state preflight before each fixed first-party rootless OCI health probe",
+    "status": "COMPLETE_CANONICAL_ACCEPTANCE_FIRST_PARTY_ONLY",
+    "feature_pr": 159,
+    "feature_head_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
+    "feature_merge_sha": "d0bf1528784bc1e899ca8733834fecf603f825c4",
+    "product_push_ci": 41182976657,
+    "product_pr_ci": 41182990638,
+    "real_oci_pr_ci": 41182990688,
+    "feature_merged_main_ci": 41183067965,
+    "acceptance_pr": 160,
+    "acceptance_head_sha": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
+    "acceptance_merge_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+    "acceptance_pr_ci": 41183173417,
+    "acceptance_merged_main_ci": 41183242841,
+    "python": "3.11.17",
+    "pytest_passed": 1518,
+    "pytest_skipped": 2,
+    "infrastructure_tests_run": 40,
+    "infrastructure_skipped": 1,
+    "authenticated_human_approval": false,
+    "external_selected_app_executed": false,
+    "signed_external_health": false,
+    "real_infrastructure_mutated": false,
+    "real_infrastructure_rollback": false,
+    "physical_mac": false,
+    "work_astra_invoked": false,
+    "external_worktree_exclusivity": "unverified",
+    "rollback": "Revert feature PR #159; no migration or real infrastructure mutation",
     "final_state_publication_ci": "pending"
   }
 }
