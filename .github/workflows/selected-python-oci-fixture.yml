@@ -167,6 +167,14 @@ jobs:
               [[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1
               [[ "$(podman --remote=false container inspect --format '{{.State.Running}}' "$container")" == "true" ]] || return 1
               if actual="$(podman --remote=false run --rm --pull=never --network="container:$container" --read-only --cap-drop=all --security-opt=no-new-privileges --pids-limit=16 --memory=32m --user=65534:65534 --entrypoint=/bin/busybox "$observer_id" wget -q -O - http://127.0.0.1:8080/health 2>/dev/null)" && [[ "$actual" == "cloudforge-owned-python-ok" ]]; then
+                # A successful response is not accepted if the named container
+                # changed image, identity, or running state during the probe.
+                local post_state post_id post_image post_running
+                post_state="$(podman --remote=false container inspect --format '{{.Id}} {{.Image}} {{.State.Running}}' "$container")" || return 1
+                read -r post_id post_image post_running <<< "$post_state"
+                [[ "$post_id" == "$container_id" ]] || return 1
+                [[ "${post_image#sha256:}" == "${image_id#sha256:}" ]] || return 1
+                [[ "$post_running" == "true" ]] || return 1
                 return 0
               fi
               sleep 0.2

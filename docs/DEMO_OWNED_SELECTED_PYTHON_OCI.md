@@ -121,3 +121,25 @@ subject to its own exact-head PR CI and merged-main CI.
 The existing health probe now verifies that the named container has the exact original 64-character container ID, is running, and uses the exact locally built OCI image ID before each separate-container HTTP probe. This rejects accidental name reuse, wrong-image attachment and stopped-container observations. It reuses Podman's documented container-inspect `.Id`, `.Image` and `.State.Running` fields and existing static mutation regressions; no third-party code copied, new dependencies, credentials or provider cost. [Podman inspect documentation](https://docs.podman.io/en/latest/markdown/podman-container-inspect.1.html). Revert feature PR #159 for software rollback; no migration or real infrastructure change.
 
 **Limits:** Checks are local and point-in-time on one disposable runner; they are not cryptographic signatures, independent collectors or hardened multi-tenant isolation. This still executes only CloudForge's fixed first-party Python fixture with synthetic approval keys, not an externally selected application under independently authenticated human authorization. No signed external health, real provider deployment or infrastructure rollback, physical Mac, Work or Astra. **Demo readiness: partial, improved. Full product completion: unverified.** Next: independent artifact-specific human authorization and selected-app sandbox execution, followed by independently trusted health and rollback. Canonical acceptance of this documentation/state checkpoint requires its own exact-head CI, guarded merge and merged-main CI.
+
+
+## Post-response container identity guard (proposed 2026-10-31)
+
+The disposable first-party OCI workflow now checks the named container's exact
+ID, image ID and running state **again after** the separate observer returns a
+successful HTTP health response, before reporting health success. This narrows
+a check-then-observe race where a container could change between the existing
+pre-probe inspection and the response. The second inspection is a point-in-time
+local Podman check, not atomic attestation, signed evidence or an independent
+collector. It still runs only the fixed CloudForge-owned Python fixture under
+synthetic keys, not a user-selected application or human-approved deployment.
+
+Reuse: existing Podman `container inspect` fields, rootless OCI workflow and
+static mutation tests; no new third-party source, dependency, credentials or
+provider costs. Official interface: https://docs.podman.io/en/latest/markdown/podman-container-inspect.1.html.
+Rollback: revert this feature commit; no schema, migration or persistent
+infrastructure. Acceptance remains pending exact-head product and real OCI CI,
+guarded merge and merged-main CI. Demo readiness remains partial; full product
+completion remains unverified. The priority after acceptance is independently
+authenticated artifact-specific approval for genuinely selected application
+execution, then trusted health evidence and controlled rollback.

@@ -1,35 +1,35 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Fixed first-party OCI observer exact-container/image identity: canonical feature and documentation accepted; final state publication CI pending",
-  "active_branch": "main",
-  "main_sha_at_start": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
-  "current_branch_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "current_checkpoint": "Fixed first-party OCI post-health-response container/image identity recheck: feature PR and exact-head CI pending",
+  "active_branch": "build/demo-oci-health-postprobe-20261031",
+  "main_sha_at_start": "a3363f27fde61d2ec6450a681ff9d8453c297056",
+  "current_branch_sha": "a3363f27fde61d2ec6450a681ff9d8453c297056",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #159 merged d0bf1528784bc1e899ca8733834fecf603f825c4 after exact-head product/real OCI checks. Acceptance PR #160 merged b10ea1ee62de1d00ed6c9aa865b338710f35ef48 with PR CI #41183173417 and merged-main #41183242841 success. Final state publication PR pending.",
+  "branch_remote_status": "Isolated feature branch for post-response OCI identity recheck; no PR/CI acceptance yet. Previous observer identity checkpoint #159/#160/#161 merged.",
   "local_test_status": "Python 3.11.17 exact feature head #41182990638: 1518 pytest passed, 2 skipped; 40 infrastructure tests run, 1 skipped. Rootless OCI PR #41182990688 passed. No physical Mac testing; no local full-suite execution claimed.",
-  "pr_number": 160,
-  "ci_status": "Feature #159 exact-head push #41182976657, PR #41182990638, real OCI #41182990688, feature merged-main #41183067965 success. Acceptance #160 exact-head PR #41183173417 and merged-main #41183242841 success. Final state publication CI pending.",
-  "merge_status": "Feature PR #159 merged d0bf1528784bc1e899ca8733834fecf603f825c4; acceptance PR #160 merged b10ea1ee62de1d00ed6c9aa865b338710f35ef48; final state publication pending.",
+  "pr_number": null,
+  "ci_status": "Not yet verified for new feature head; prior #161 merged-main CI #41183437877 passed.",
+  "merge_status": "Not merged; feature branch only.",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
-  "known_blocker": "No independent authenticated human approval, external selected-application execution, signed independent health or real infrastructure rollback. No blocker to accepted first-party observer identity gate.",
-  "next_action": "After final state publication exact-head and merged-main CI, prioritize independent artifact-specific human authorization for externally selected application execution; then independently trusted health and rollback.",
-  "feature_checkpoint_advanced": true,
+  "known_blocker": "Independent authenticated human approval and genuinely selected app execution remain unimplemented; no current CI acceptance for post-probe feature.",
+  "next_action": "Publish feature PR, verify exact-head Python/infrastructure/real rootless OCI checks, guarded merge, merged-main CI; then prioritize independently authenticated selected-app demo.",
+  "feature_checkpoint_advanced": false,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
   "schema_version": 2,
   "observed_at_utc": "2026-10-31T08:07:04Z",
-  "observed_branch_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "observed_branch_sha": "a3363f27fde61d2ec6450a681ff9d8453c297056",
   "observed_feature_sha": "0dd8a625f8962045923c3e087d0989759a9f6a84",
-  "current_repository_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "current_repository_sha": "a3363f27fde61d2ec6450a681ff9d8453c297056",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature #159 and acceptance #160 merged; final checkpoint state publication PR pending.",
+  "pr_state": "New feature PR pending",
   "ci_state": {
     "feature_push_run": {
       "id": 41179010064,
@@ -106,11 +106,11 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent authenticated human approval and external selected application execution",
-    "BLOCKER": "No independently authenticated human approval, external selected app execution, independently signed health or real infrastructure rollback.",
-    "SAFE_WORK_COMPLETED": "Feature #159 and canonical documentation acceptance #160 merged with exact-head checks and merged-main CI #41183242841 success. 1518 pytest passed, 2 skipped; 40 infrastructure tests run, 1 skipped; real fixed first-party rootless OCI observer identity checks passed. Final state publication PR pending. No Work/Astra, physical Mac or production infrastructure.",
-    "REMOTE_SHA": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
-    "NEXT_ACTION": "Finish final state publication CI, then continue demo-first authenticated selected-app execution."
+    "BLOCKED_LAYER": "No CI acceptance yet for new feature",
+    "BLOCKER": "Await exact-head CI and guarded merge",
+    "SAFE_WORK_COMPLETED": "Post-response identity recheck and mutation regression published to isolated branch; no test pass or merge claimed.",
+    "REMOTE_SHA": "a3363f27fde61d2ec6450a681ff9d8453c297056",
+    "NEXT_ACTION": "Publish feature PR, verify exact-head Python/infrastructure/real rootless OCI checks, guarded merge, merged-main CI; then prioritize independently authenticated selected-app demo."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
@@ -122,11 +122,11 @@
     "selected_app_execution": "fixed_first_party_fixture_only",
     "real_oci_pr_ci": "success #41182990688"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_OWNED_OBSERVER_IDENTITY",
+  "checkpoint_status": "IN_PROGRESS_UNVERIFIED_POST_RESPONSE_IDENTITY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/demo-owned-oci-observer-identity-20261031",
   "previous_completed_checkpoint": "selected-source pre-build staging privacy/single-link checks",
-  "verified_main_sha": "b10ea1ee62de1d00ed6c9aa865b338710f35ef48",
+  "verified_main_sha": "a3363f27fde61d2ec6450a681ff9d8453c297056",
   "merge_commit_sha": "d0bf1528784bc1e899ca8733834fecf603f825c4",
   "final_pr_head": "7294cfecdb3e09181b71013dc1c9dc09f8d76ca9",
   "later_checkpoint_requirements": [
@@ -1010,7 +1010,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration published and merged feature #159 and acceptance #160 after exact-head checks; external worktree exclusivity unverified.",
+  "writer_status": "Connected GitHub integration writing isolated branch; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -2041,5 +2041,20 @@
     "external_worktree_exclusivity": "unverified",
     "rollback": "Revert feature PR #159; no migration or real infrastructure mutation",
     "final_state_publication_ci": "pending"
+  },
+  "active_oci_postprobe_checkpoint": {
+    "scope": "Recheck exact running container and OCI image identity after successful separate-container health response",
+    "base_main_sha": "a3363f27fde61d2ec6450a681ff9d8453c297056",
+    "branch": "build/demo-oci-health-postprobe-20261031",
+    "source_validation": "not_run",
+    "pr_ci": "pending",
+    "real_oci_ci": "pending",
+    "merged_main_ci": "pending",
+    "authenticated_human_approval": false,
+    "external_selected_app_executed": false,
+    "physical_mac": false,
+    "work_astra_invoked": false,
+    "production_infrastructure_mutated": false,
+    "rollback": "Revert feature merge; disposable CI only"
   }
 }

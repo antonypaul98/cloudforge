@@ -44,6 +44,11 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             'inspected_image="$(podman --remote=false container inspect --format \'{{.Image}}\' "$container")" || return 1',
             '[[ "${inspected_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
             '[[ "$(podman --remote=false container inspect --format \'{{.State.Running}}\' "$container")" == "true" ]] || return 1',
+            'post_state="$(podman --remote=false container inspect --format \'{{.Id}} {{.Image}} {{.State.Running}}\' "$container")" || return 1',
+            'read -r post_id post_image post_running <<< "$post_state"',
+            '[[ "$post_id" == "$container_id" ]] || return 1',
+            '[[ "${post_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
+            '[[ "$post_running" == "true" ]] || return 1',
         )
         forbidden = (
             "--privileged", "--network=host", "sudo podman", "sysctl -w",
@@ -213,6 +218,26 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         self.assertLess(health.index("State.Running"), health.index("if actual="))
         self.assertIn('container_id="$(podman --remote=false run -d', source)
         self.assertIn('[[ "$container_id" =~ ^[0-9a-f]{64}$ ]]', source)
+
+
+
+    def test_health_response_rechecks_identity_after_probe(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        health = source.split("          check_health() {", 1)[1].split("          }", 1)[0]
+        post = 'post_state="$(podman --remote=false container inspect --format \'{{.Id}} {{.Image}} {{.State.Running}}\' "$container")" || return 1'
+        self.assertLess(health.index("if actual="), health.index(post))
+        self.assertLess(health.index(post), health.index("return 0"))
+        for marker in (
+            post,
+            'read -r post_id post_image post_running <<< "$post_state"',
+            '[[ "$post_id" == "$container_id" ]] || return 1',
+            '[[ "${post_image#sha256:}" == "${image_id#sha256:}" ]] || return 1',
+            '[[ "$post_running" == "true" ]] || return 1',
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, health)
+                self.assertFalse(self.guarded(source.replace(marker, "", 1)))
+
 
 
 
