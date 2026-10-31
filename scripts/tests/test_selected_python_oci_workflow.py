@@ -81,7 +81,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
     def test_actual_crash_recovery_is_checked_before_cleanup(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         kill = source.index('podman --remote=false kill --signal KILL "$container"')
-        exit_code = source.index("{{.State.ExitCode}}")
+        exit_code = source.index("{{.State.ExitCode}}", kill)
         recovery_start = source.index('podman --remote=false start "$container"', kill)
         recovered_health = source.index('          check_health\n', recovery_start)
         cleanup = source.index('          podman --remote=false rm -f "$container" >/dev/null', recovered_health)
