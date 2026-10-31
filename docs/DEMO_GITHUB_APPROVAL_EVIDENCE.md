@@ -81,3 +81,13 @@ The 36 new pytest cases used offline GitHub-shaped snapshots; no live protected
 environment approval was exercised. The feature is a non-executing evidence
 preflight only. This acceptance-documentation PR requires its own exact-head
 and merged-main CI before publication is complete.
+
+## Canonical documentation acceptance (2026-10-31)
+
+[PR #170](https://github.com/antonypaul98/cloudforge/pull/170) passed
+[exact-head PR CI #41195510018](https://github.com/antonypaul98/cloudforge/actions/runs/41195510018),
+merged as `6ecf65230424c990435543e6015c3e16cfa7365d`, and passed
+[merged-main CI #41195576274](https://github.com/antonypaul98/cloudforge/actions/runs/41195576274).
+This final state publication is documentation-only and requires its own
+exact-head CI and merged-main CI before its publication is considered complete.
+No live GitHub reviewer decision or selected application execution was tested.
