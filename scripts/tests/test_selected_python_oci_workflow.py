@@ -19,7 +19,10 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "docker.io/library/python@sha256:09d17d5e4c16d0a7a1eea690bcb7c6ab8616b211f8421e429e97c1bef5bd0ed2",
             'podman --remote=false pull --platform linux/amd64 "$base_ref"',
             "package_selected_source(", "prepare_selected_artifact(",
-            "stage_verified_selected_source(", "verify_staged_selected_source(staged)", "expected_package_sha256=",
+            "stage_synthetically_admitted_selected_source(", "verify_staged_selected_source(staged)",
+            "issue_selected_sandbox_permit(", "issue_selected_sandbox_approval(",
+            "ledger_path=str(Path(ledger_dir) / \"permit.sqlite\")",
+            "now_unix=1100", "expected_package_sha256=",
             "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
             "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
             "expected_review_binding_digest=", "expected_target_id=target",
@@ -48,7 +51,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
     def test_reject_removal_of_authorization_boundary_and_sandbox_guards(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         for marker in (
-            "stage_verified_selected_source(", "expected_review_binding_digest=",
+            "stage_synthetically_admitted_selected_source(", "expected_review_binding_digest=",
             "COPY --chmod=0444 app.py /srv/app.py",
             "--pull=never --network=none --read-only", "--cap-drop=all",
             "--security-opt=no-new-privileges", "--pids-limit=64 --memory=128m",
@@ -69,7 +72,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
 
     def test_source_staged_before_build_and_observed_after_run(self):
         source = WORKFLOW.read_text(encoding="utf-8")
-        self.assertLess(source.index("stage_verified_selected_source("),
+        self.assertLess(source.index("stage_synthetically_admitted_selected_source("),
                         source.index('"podman", "--remote=false", "build"'))
         self.assertLess(source.index('podman --remote=false run -d'),
                         source.index('          check_health\n'))
@@ -117,10 +120,32 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
     def test_prebuild_recheck_is_before_containerfile_and_build(self):
         source = WORKFLOW.read_text(encoding="utf-8")
         check = source.index("verify_staged_selected_source(staged)")
-        self.assertLess(source.index("stage_verified_selected_source("), check)
+        self.assertLess(source.index("stage_synthetically_admitted_selected_source("), check)
         self.assertLess(check, source.index('              containerfile = ('))
         self.assertLess(check, source.index('"podman", "--remote=false", "build"'))
         self.assertFalse(self.guarded(source.replace("verify_staged_selected_source(staged)", "")))
+
+    def test_synthetic_admission_precedes_first_party_build_and_cannot_be_bypassed(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        permit = source.index("issue_selected_sandbox_permit(")
+        approval = source.index("issue_selected_sandbox_approval(")
+        stage = source.index("stage_synthetically_admitted_selected_source(")
+        verify = source.index("verify_staged_selected_source(staged)")
+        build = source.index('"podman", "--remote=false", "build"')
+        self.assertLess(permit, approval)
+        self.assertLess(approval, stage)
+        self.assertLess(stage, verify)
+        self.assertLess(verify, build)
+        self.assertIn("human_authenticated=false", source)
+        for marker in (
+            "issue_selected_sandbox_permit(",
+            "issue_selected_sandbox_approval(",
+            "stage_synthetically_admitted_selected_source(",
+            'ledger_path=str(Path(ledger_dir) / "permit.sqlite")',
+            "now_unix=1100",
+        ):
+            with self.subTest(marker=marker):
+                self.assertFalse(self.guarded(source.replace(marker, "")))
 
     def test_only_fixed_owned_fixture_is_selected(self):
         source = WORKFLOW.read_text(encoding="utf-8")
