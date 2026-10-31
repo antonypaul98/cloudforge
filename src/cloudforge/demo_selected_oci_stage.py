@@ -97,6 +97,11 @@ def verify_staged_selected_source(staged: StagedSelectedSource) -> None:
     except OSError as exc:
         raise ValueError("staged directory is unavailable or unsafe") from exc
     try:
+        directory_stat = os.fstat(directory_fd)
+        if (not stat.S_ISDIR(directory_stat.st_mode)
+                or directory_stat.st_uid != os.geteuid()
+                or stat.S_IMODE(directory_stat.st_mode) != 0o700):
+            raise ValueError("staged directory is not private")
         if set(os.listdir(directory_fd)) != set(expected):
             raise ValueError("staged file set changed")
         for filename, digest in expected.items():
@@ -107,9 +112,17 @@ def verify_staged_selected_source(staged: StagedSelectedSource) -> None:
                 )
             except OSError as exc:
                 raise ValueError("staged file is unavailable or unsafe") from exc
-            if not stat.S_ISREG(os.fstat(fd).st_mode):
+            file_stat = os.fstat(fd)
+            if not stat.S_ISREG(file_stat.st_mode):
                 os.close(fd)
                 raise ValueError("staged file is not regular")
+            if file_stat.st_nlink != 1:
+                os.close(fd)
+                raise ValueError("staged file has multiple hard links")
+            if (file_stat.st_uid != os.geteuid()
+                    or stat.S_IMODE(file_stat.st_mode) & 0o077):
+                os.close(fd)
+                raise ValueError("staged file is not private")
             with os.fdopen(fd, "rb") as stream:
                 hasher = hashlib.sha256()
                 for chunk in iter(lambda: stream.read(65536), b""):
