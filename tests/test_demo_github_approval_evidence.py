@@ -8,7 +8,7 @@ import pytest
 from cloudforge import demo_github_approval_evidence as gate
 
 
-HEAD = "a" * 64
+HEAD = "a" * 40
 ARTIFACT = "b" * 64
 REPO = "antonypaul98/cloudforge"
 RUN = 17
@@ -83,7 +83,7 @@ def test_invalid_pins_fail_before_any_fetch(monkeypatch, change):
 
 
 @pytest.mark.parametrize("path,value", [
-    (("id",), 18), (("head_sha",), "c" * 64),
+    (("id",), 18), (("head_sha",), "c" * 40),
     (("event",), "pull_request"), (("head_branch",), "feature"),
     (("path",), ".github/workflows/other.yml"),
     (("run_attempt",), 2), (("run_attempt",), True),
