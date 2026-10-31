@@ -550,3 +550,25 @@ guarded merge and merged-main CI.
 Next: integrate genuinely authenticated, artifact-specific human authorization
 with a selected application under a hardened isolated executor; measure trusted
 signed external health and prove controlled rollback. No optional expansion.
+
+## Owned Python OCI clean SIGTERM — feature verification (2026-10-31)
+
+[PR #153](https://github.com/antonypaul98/cloudforge/pull/153)
+merged as `6acfce08887dcbec61f64c57e5496adf28f69e65`.
+Final head `113b64ac0841c08d4d9d338997b0ebbff619db56`
+passed [product push #41175176877](https://github.com/antonypaul98/cloudforge/actions/runs/41175176877),
+[product PR #41175180693](https://github.com/antonypaul98/cloudforge/actions/runs/41175180693),
+and [real rootless OCI PR #41175180735](https://github.com/antonypaul98/cloudforge/actions/runs/41175180735).
+[Feature merged-main CI #41175273874](https://github.com/antonypaul98/cloudforge/actions/runs/41175273874)
+passed: 1,515 pytest passed/2 skipped; 38 infrastructure tests/1 skipped.
+
+The fixed first-party Python PID 1 now handles SIGTERM and exits with
+code 0 on normal `podman stop`, verified by real OCI CI. Deliberate
+SIGKILL exit 137, restart health and cleanup remain verified. This does
+**not** establish independently authenticated human approval, external
+selected application execution, independently signed health or real
+infrastructure rollback. No Mac, Work/Astra or production changes.
+Canonical documentation/state acceptance is still gated on exact-head
+and merged-main CI. **Demo readiness: partial, improved. Full product:
+unverified.** Next: independently authenticated artifact-specific
+selected-application execution, then trusted health and rollback.
