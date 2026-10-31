@@ -20,12 +20,12 @@ account ID. The run must be a first-attempt manual workflow_dispatch on
 protected main, for .github/workflows/selected-user-app.yml, at the exact
 commit. The configured cloudforge-selected-application environment must require
 a different named GitHub User reviewer, prevent self-review and allow only
-protected branches. The latest relevant GitHub deployment review must be
+protected branches. Exactly one relevant GitHub deployment review must be
 approved by that reviewer with the **entire comment** exactly:
 
     cloudforge-artifact-sha256:<64 lowercase hexadecimal characters>
 
-A rejection in the same run's environment review history blocks the receipt.
+Any rejection or ambiguous multiple reviews in the run's environment history blocks the receipt.
 Missing approvals, a different artifact, changed run SHA, wrong reviewer, a
 re-run, a different workflow, disabled protection or self-review fail closed.
 The result explicitly sets execution_permitted=false and
