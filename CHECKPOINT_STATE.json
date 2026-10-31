@@ -1,20 +1,20 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "First-party Python OCI fixed-fixture SHA-256 source pin: canonical acceptance complete; selected-app demo next",
-  "active_branch": "main",
+  "current_checkpoint": "Point-in-time staged-source pre-build verification: feature merged, canonical acceptance PR pending",
+  "active_branch": "docs/accept-demo-staged-prebuild-recheck-20261031",
   "main_sha_at_start": "4c07c927506c994dcfa72b360a85849cda0101ca",
   "current_branch_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #144 and acceptance PR #145 merged; canonical merged-main push CI #41120751698 succeeded at exact SHA 4c07c927506c994dcfa72b360a85849cda0101ca. No open PRs at evidence collection.",
-  "local_test_status": "Previously verified GitHub Actions Python 3.11.17: 1510 pytest passed, 2 existing skips; infrastructure 35 run, 1 skipped. This evidence-only sync does not rerun tests locally; new head needs its own CI.",
-  "pr_number": 145,
-  "ci_status": "Feature head 7b37bf02b8d3a52ca5480eacca017c122af322f1: push #41120020922, PR product #41120049902, PR real OCI #41120049929 SUCCESS; feature merged-main #41120188415 SUCCESS. Acceptance head a09a3936aeb806283b682f311410552fa5e1d3c8 PR CI #41120465957 SUCCESS; final accepted main 4c07c927506c994dcfa72b360a85849cda0101ca push CI #41120751698 SUCCESS.",
-  "merge_status": "MERGED feature PR #144 at 12e0d378a90cd43916fb2b91b13fa7ec76e4ce17 and canonical acceptance PR #145 at 4c07c927506c994dcfa72b360a85849cda0101ca; fixed first-party fixture SHA-256 pin only.",
+  "branch_remote_status": "PR #147 merged at 72eef31234682bc6324ceb2c5e88249bec18239f; exact-head product and real OCI CI and merged-main CI succeeded. Documentation acceptance PR pending.",
+  "local_test_status": "GitHub Actions Python 3.11.17 at feature head 46d61077fec92bee5b238ad0246422d34596aec5: 1515 passed, 2 skipped; infrastructure 36 run, 1 skipped. No local full-suite or physical Mac test.",
+  "pr_number": 147,
+  "ci_status": "Feature head 46d61077fec92bee5b238ad0246422d34596aec5: push #41167124219, PR #41167128222, real OCI PR #41167128218 SUCCESS; merged-main 72eef31234682bc6324ceb2c5e88249bec18239f CI #41167219742 SUCCESS. Canonical acceptance PR pending.",
+  "merge_status": "MERGED feature PR #147 at 72eef31234682bc6324ceb2c5e88249bec18239f; canonical acceptance pending.",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "No independently authenticated human approval or trusted key custody, mandatory external selected-app executor, signed health or real infrastructure rollback. OCI fixture stop still escalates SIGTERM to SIGKILL.",
-  "next_action": "After canonical acceptance, prioritize independently authenticated artifact-specific selected-app sandbox execution with measured signed health and controlled rollback; no production mutation without explicit approval.",
+  "next_action": "Verify exact-head acceptance PR CI, guarded merge, merged-main CI, then mark only the pre-build source recheck accepted. Continue selected-app independently authenticated execution demo next.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -22,7 +22,7 @@
   "observed_at_utc": "2026-10-30T20:13:07Z",
   "observed_branch_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
   "observed_feature_sha": "7b37bf02b8d3a52ca5480eacca017c122af322f1",
-  "current_repository_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
+  "current_repository_sha": "72eef31234682bc6324ceb2c5e88249bec18239f",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
@@ -70,29 +70,29 @@
   },
   "stabilization_scope": "Deployment handoff software foundation only; no infrastructure mutation",
   "last_session_exit": {
-    "BLOCKED_LAYER": "Independent authenticated human approval and selected-application execution integration",
-    "BLOCKER": "Fixed first-party Python source pin is not authenticated human approval, selected app execution, signed external health or infrastructure rollback.",
-    "SAFE_WORK_COMPLETED": "Feature PR #144 and acceptance PR #145 merged; exact-head PR OCI/product and final merged-main CI #41120751698 success. No Work/Astra, physical Mac or production changes.",
-    "REMOTE_SHA": "4c07c927506c994dcfa72b360a85849cda0101ca",
-    "NEXT_ACTION": "Inspect selected-source admission and approved OCI executor contracts; build a narrow fail-closed independently authorized selected-app demo slice, synthetic tests first, no production mutation."
+    "BLOCKED_LAYER": "Independently authenticated selected-app execution remains unimplemented",
+    "BLOCKER": "Point-in-time pre-build recheck does not make source immutable or authenticate human approval; no external selected application, signed health or infrastructure rollback.",
+    "SAFE_WORK_COMPLETED": "Feature PR #147 merged; exact-head product/OCI and merged-main CI success; canonical documentation acceptance pending. No Work/Astra, Mac or production changes.",
+    "REMOTE_SHA": "72eef31234682bc6324ceb2c5e88249bec18239f",
+    "NEXT_ACTION": "Finish canonical acceptance PR and final merged-main CI; then prioritize authenticated selected-app execution path."
   },
   "infrastructure_validation": {
     "interpreter": "Python 3.11.17 (GitHub Actions)",
-    "passed": 34,
+    "passed": 35,
     "skipped": 1,
-    "product_tests": "1510 pytest passed, 2 existing namespace skips",
+    "product_tests": "1515 pytest passed, 2 existing skips",
     "physical_mac": "not_run",
-    "new_head_CI": "successful",
+    "new_head_CI": "feature exact-head success; acceptance pending",
     "selected_app_execution": "fixed_first_party_fixture_only",
-    "real_oci_pr_ci": "success #41120049929"
+    "real_oci_pr_ci": "success #41167128218"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_FIRST_PARTY_ONLY",
+  "checkpoint_status": "FEATURE_MERGED_CANONICAL_ACCEPTANCE_PENDING",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
-  "checkpoint_branch": "build/demo-owned-python-fixture-pin-20261030",
+  "checkpoint_branch": "build/demo-staged-source-prebuild-check-20261031",
   "previous_completed_checkpoint": "synthetic separate-key admission-to-staging integration",
-  "verified_main_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
-  "merge_commit_sha": "4c07c927506c994dcfa72b360a85849cda0101ca",
-  "final_pr_head": "a09a3936aeb806283b682f311410552fa5e1d3c8",
+  "verified_main_sha": "72eef31234682bc6324ceb2c5e88249bec18239f",
+  "merge_commit_sha": "72eef31234682bc6324ceb2c5e88249bec18239f",
+  "final_pr_head": "46d61077fec92bee5b238ad0246422d34596aec5",
   "later_checkpoint_requirements": [
     "Trusted authenticated observation source, measured freshness/target identity and real runtime before claiming service health.",
     "Separate explicit authorization, rollback plan and independent acceptance before any consequential infrastructure mutation."
@@ -124,7 +124,7 @@
   },
   "help_status": {
     "antony_help_needed": false,
-    "reason": "Immediate remote code and CI validation requires no user-only action.",
+    "reason": "Remote development and CI validation require no user-only action.",
     "user_only_gate_on_immediate_path": false
   },
   "last_published_safeguard": {
