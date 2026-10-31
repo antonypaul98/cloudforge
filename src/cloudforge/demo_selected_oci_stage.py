@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 import hashlib
 import os
+import stat
 from pathlib import Path
 import tempfile
 from typing import Iterator
@@ -73,3 +74,46 @@ def stage_verified_selected_source(
             package_sha256=verified.package_sha256,
             source_sha256=source_digest, manifest_sha256=manifest_digests,
         )
+
+
+def verify_staged_selected_source(staged: StagedSelectedSource) -> None:
+    """Recheck exact staged source bytes immediately before a proposed OCI build.
+
+    This is point-in-time consistency, not immutable storage, human approval or
+    a defense against modifications after this check. Only Linux-style
+    directory-fd and no-follow file access is supported; fail closed otherwise.
+    """
+    allowed = {"app.py", "server.js", "requirements.txt", "pyproject.toml", "package.json"}
+    expected = {staged.entrypoint: staged.source_sha256}
+    for filename, digest in staged.manifest_sha256:
+        if filename in expected:
+            raise ValueError("duplicate staged filename")
+        expected[filename] = digest
+    if not expected.keys() <= allowed or not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
+        raise ValueError("unsupported staged verification platform or filename")
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+    try:
+        directory_fd = os.open(staged.directory, flags)
+    except OSError as exc:
+        raise ValueError("staged directory is unavailable or unsafe") from exc
+    try:
+        if set(os.listdir(directory_fd)) != set(expected):
+            raise ValueError("staged file set changed")
+        for filename, digest in expected.items():
+            try:
+                fd = os.open(
+                    filename, os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0),
+                    dir_fd=directory_fd,
+                )
+            except OSError as exc:
+                raise ValueError("staged file is unavailable or unsafe") from exc
+            with os.fdopen(fd, "rb") as stream:
+                if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                    raise ValueError("staged file is not regular")
+                hasher = hashlib.sha256()
+                for chunk in iter(lambda: stream.read(65536), b""):
+                    hasher.update(chunk)
+                if hasher.hexdigest() != digest:
+                    raise ValueError("staged file digest changed")
+    finally:
+        os.close(directory_fd)

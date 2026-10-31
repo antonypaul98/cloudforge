@@ -69,7 +69,7 @@ jobs:
           import subprocess
           import sys
           from cloudforge.demo_selected_artifact import prepare_selected_artifact
-          from cloudforge.demo_selected_oci_stage import stage_verified_selected_source
+          from cloudforge.demo_selected_oci_stage import stage_verified_selected_source, verify_staged_selected_source
           from cloudforge.demo_source_package import package_selected_source
 
           image_tag, base_ref = sys.argv[1:]
@@ -89,6 +89,7 @@ jobs:
               expected_review_binding_digest=review["selected_source_binding"]["digest"],
               expected_target_id=target,
           ) as staged:
+              verify_staged_selected_source(staged)
               containerfile = (
                   f"FROM {base_ref}\n"
                   "COPY --chmod=0444 app.py /srv/app.py\n"

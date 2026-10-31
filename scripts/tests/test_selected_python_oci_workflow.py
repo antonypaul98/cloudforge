@@ -19,7 +19,7 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
             "docker.io/library/python@sha256:09d17d5e4c16d0a7a1eea690bcb7c6ab8616b211f8421e429e97c1bef5bd0ed2",
             'podman --remote=false pull --platform linux/amd64 "$base_ref"',
             "package_selected_source(", "prepare_selected_artifact(",
-            "stage_verified_selected_source(", "expected_package_sha256=",
+            "stage_verified_selected_source(", "verify_staged_selected_source(staged)", "expected_package_sha256=",
             "expected_owned_source_sha256 = \"af7b20dd3705b4cfe4c40cc0a84de490f553a246e392e808136a0c829c6d1af6\"",
             "hashlib.sha256(source).hexdigest() != expected_owned_source_sha256",
             "expected_review_binding_digest=", "expected_target_id=target",
@@ -113,6 +113,14 @@ class SelectedPythonOCIWorkflowTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertFalse(self.guarded(source.replace(marker, "")))
+
+    def test_prebuild_recheck_is_before_containerfile_and_build(self):
+        source = WORKFLOW.read_text(encoding="utf-8")
+        check = source.index("verify_staged_selected_source(staged)")
+        self.assertLess(source.index("stage_verified_selected_source("), check)
+        self.assertLess(check, source.index('              containerfile = ('))
+        self.assertLess(check, source.index('"podman", "--remote=false", "build"'))
+        self.assertFalse(self.guarded(source.replace("verify_staged_selected_source(staged)", "")))
 
     def test_only_fixed_owned_fixture_is_selected(self):
         source = WORKFLOW.read_text(encoding="utf-8")
