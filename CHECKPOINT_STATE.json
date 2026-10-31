@@ -1,6 +1,6 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Point-in-time staged-source pre-build verification: canonical acceptance complete; independently approved selected-app demo next",
+  "current_checkpoint": "Fixed first-party Python OCI synthetic dual-key admission integration: feature and merged-main CI verified; canonical acceptance PR pending",
   "active_branch": "main",
   "main_sha_at_start": "4c07c927506c994dcfa72b360a85849cda0101ca",
   "current_branch_sha": "531b23eee628512a47581b17859434fc1c0b60ff",
@@ -14,7 +14,7 @@
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "No independently authenticated human approval or trusted key custody, mandatory external selected-app executor, signed health or real infrastructure rollback. OCI fixture stop still escalates SIGTERM to SIGKILL.",
-  "next_action": "Prioritize independent authenticated artifact-specific selected-app execution demo; audit trusted approval source, approved OCI executor contracts, signed health and rollback; do not execute external code or mutate production without explicit approval.",
+  "next_action": "Complete canonical acceptance exact-head PR and merged-main CI for owned Python synthetic admission; then prioritize independently authenticated artifact-specific selected-app execution, trusted signed health and controlled rollback. Do not execute external selected code without genuine human authorization.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -86,7 +86,7 @@
     "selected_app_execution": "fixed_first_party_fixture_only",
     "real_oci_pr_ci": "success #41167128218"
   },
-  "checkpoint_status": "COMPLETE_CANONICAL_ACCEPTANCE_PREBUILD_RECHECK_FIRST_PARTY_ONLY",
+  "checkpoint_status": "FEATURE_MERGED_MAIN_CI_PASSED_CANONICAL_ACCEPTANCE_PENDING_FIRST_PARTY_SYNTHETIC_ONLY",
   "shell_transport_limitation": "Container shell GitHub DNS unavailable; connected GitHub integration published and merged safely.",
   "checkpoint_branch": "build/demo-staged-source-prebuild-check-20261031",
   "previous_completed_checkpoint": "synthetic separate-key admission-to-staging integration",
@@ -974,7 +974,7 @@
     "rollback": "Revert feature merge; no schema or infrastructure change",
     "next_gate": "Independent authenticated operator/collector, exact endpoint/IP approval, enforceable lower-level HEAD boundary, full transaction deadline and runtime evidence"
   },
-  "writer_status": "Connected GitHub integration published and merged feature and canonical acceptance; external worktree exclusivity unverified.",
+  "writer_status": "Connected GitHub integration published PR #150 and merged after exact-head product/real OCI checks; external worktree exclusivity unverified.",
   "latest_synthetic_https_fixture": {
     "feature_sha": "b330bab5781da5a7b41fd713681d7fdc5f958ddd",
     "merge_sha": "1052baa4298f2151c14f421fa98b5c65fd1d3fd6",
@@ -1378,7 +1378,7 @@
     "work_astra_invoked": false,
     "external_worktree_ownership": "unverified"
   },
-  "demo_readiness": "PARTIAL: fixed first-party Python OCI source-pinned execution, health and crash recovery accepted; synthetic distinct-key admission and private selected-source staging exist, but no independently authenticated selected-app execution, signed external health or real infrastructure rollback.",
+  "demo_readiness": "PARTIAL_IMPROVED: fixed first-party Python OCI source-pinned build, separate-container HTTP health, crash recovery and synthetic distinct-key permit admission in one disposable CI flow verified; no independently authenticated human or external selected app, signed external health or infrastructure rollback.",
   "full_product_completion": "UNVERIFIED",
   "accepted_real_manifest_demo": {
     "checkpoint": "real manifest read-only inspection/planning/handoff request demo",
@@ -1905,5 +1905,32 @@
     "authenticated_human_approval": false,
     "signed_external_health": false,
     "real_infrastructure_rollback": false
+  },
+  "accepted_owned_python_synthetic_admission": {
+    "checkpoint": "fixed first-party Python OCI execution after synthetic distinct-key one-time permit admission and staged source recheck",
+    "status": "FEATURE_MERGED_MAIN_CI_PASSED_CANONICAL_ACCEPTANCE_PENDING",
+    "feature_pr": 150,
+    "feature_head_sha": "c03f416d33c5dea6ae13c9cc8146d01cb444f336",
+    "feature_merge_sha": "4a6c0e5245e44ba5131073742d9772d59d430c5b",
+    "product_push_ci": 41170929493,
+    "product_pr_ci": 41170943742,
+    "real_rootless_oci_pr_ci": 41170943752,
+    "feature_merged_main_ci": 41171034697,
+    "python": "3.11.17",
+    "pytest_passed": 1515,
+    "pytest_skipped": 2,
+    "infrastructure_tests_run": 37,
+    "infrastructure_skipped": 1,
+    "synthetic_distinct_key_admission": true,
+    "permit_consumed_before_build": true,
+    "external_selected_app_executed": false,
+    "authenticated_human_approval": false,
+    "signed_external_health": false,
+    "real_infrastructure_mutated": false,
+    "real_infrastructure_rollback": false,
+    "physical_mac": false,
+    "work_astra_invoked": false,
+    "external_worktree_exclusivity": "unverified",
+    "rollback": "Revert feature PR #150; CI-only temporary ledger and rootless OCI artifacts; no migration or production infrastructure"
   }
 }
