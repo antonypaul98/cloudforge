@@ -59,3 +59,23 @@ provider API, production infrastructure or secrets. Revert the feature PR to
 roll back. Exact-head product and real OCI CI plus guarded merge and merged-main
 CI are required before acceptance. Demo readiness remains partial; full
 product completion remains unverified.
+
+
+## Verified feature acceptance, 2026-10-31
+
+Feature [PR #147](https://github.com/antonypaul98/cloudforge/pull/147)
+merged as `72eef31234682bc6324ceb2c5e88249bec18239f` after final exact
+head `46d61077fec92bee5b238ad0246422d34596aec5` passed
+[push product CI #41167124219](https://github.com/antonypaul98/cloudforge/actions/runs/41167124219),
+[PR product CI #41167128222](https://github.com/antonypaul98/cloudforge/actions/runs/41167128222)
+and [real rootless OCI PR #41167128218](https://github.com/antonypaul98/cloudforge/actions/runs/41167128218).
+[Merged-main CI #41167219742](https://github.com/antonypaul98/cloudforge/actions/runs/41167219742)
+succeeded. Python 3.11.17: **1,515 pytest passed, 2 existing skips**;
+infrastructure: **36 run, 1 skipped**. The first feature head
+`785a3e2e28e514b6f9f38a8fc368126084bf78ae` failed one regression
+because Python rejected opening a substituted directory before its type
+could be checked; the fix checks `fstat` before creating the stream and
+closes the descriptor on rejection. Both failed and successful runs are
+retained as evidence. No selected external application or authenticated
+human approval is claimed. This documentation/state acceptance PR requires
+its own exact-head CI and merged-main CI before canonical acceptance.
