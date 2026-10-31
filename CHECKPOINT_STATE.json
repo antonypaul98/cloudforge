@@ -1,20 +1,20 @@
 {
   "repository": "antonypaul98/cloudforge",
-  "current_checkpoint": "Complete canonical acceptance of read-only GitHub approval evidence CLI; next genuinely approved selected-application demo",
+  "current_checkpoint": "COMPLETE_CANONICAL_ACCEPTANCE_GITHUB_APPROVAL_EVIDENCE_CLI; next selected-application approval and execution demo",
   "active_branch": "main",
-  "main_sha_at_start": "7ded8573daa30ce17f2c7b7e2d83c17c4f4c9109",
-  "current_branch_sha": "7ded8573daa30ce17f2c7b7e2d83c17c4f4c9109",
+  "main_sha_at_start": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
+  "current_branch_sha": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature PR #172 and canonical docs PR #173 merged, exact-head and merged-main CI succeeded; final state publication requires its own CI",
+  "branch_remote_status": "Feature #172, documentation #173 and final state #174 all merged with exact-head and merged-main CI success",
   "local_test_status": "Feature exact-head CI Python 3.11.17: 1564 pytest passed, 2 skipped; 43 infrastructure tests run, 1 skipped. 10 new CLI tests offline/subprocess; no live approval.",
-  "pr_number": 173,
-  "ci_status": "Feature #172 push #41199106550, PR #41199110264, merged-main #41199200984 success; docs #173 PR #41199295681 and merged-main #41199361156 success. Final state publication CI pending.",
-  "merge_status": "Feature and documentation accepted; final state publication pending its own exact-head and merged-main CI",
+  "pr_number": 174,
+  "ci_status": "Feature #172 push #41199106550, PR #41199110264, main #41199200984; docs #173 PR #41199295681, main #41199361156; final #174 PR #41199434955, main #41199501371: all succeeded.",
+  "merge_status": "COMPLETE_CANONICAL_ACCEPTANCE_GITHUB_APPROVAL_EVIDENCE_CLI; all three PRs merged and merged-main CI passed",
   "external_acceptance_required": [
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "Real independently protected GitHub human approval and genuinely selected external application execution remain unverified; selected-user-app workflow and protected environment not configured or verified. No immediate user-only action for read-only work.",
-  "next_action": "Verify final state PR exact-head and merged-main CI; next demo requires independently configured protected reviewer, artifact-specific approval, genuinely selected app isolated execution, independently trusted health and controlled rollback. Do not claim these before proof.",
+  "next_action": "Prioritize actual protected independent reviewer and artifact-scoped approval for a genuinely user-selected application, isolated execution, trusted health and controlled rollback. Preserve no-Astra/Work and no-production-mutation rules.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -22,14 +22,14 @@
   "observed_at_utc": "2026-10-31T10:10:00Z",
   "observed_branch_sha": "1868f50519792e4780db1dab94812205bac1d5a3",
   "observed_feature_sha": "637244b86841e1badf1666e0eaaf4694a9ceb83a",
-  "current_repository_sha": "7ded8573daa30ce17f2c7b7e2d83c17c4f4c9109",
+  "current_repository_sha": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
   "current_repository_sha_command": "git rev-parse HEAD",
   "prior_local_test_receipt": {
     "reported_result": "Not run in stabilization; no feature acceptance inferred.",
     "reported_sha": "f85b27a57591e17dd939a68303d1e9cf9f480535",
     "reexecuted_this_run": false
   },
-  "pr_state": "Feature #172 and docs #173 merged; final state PR pending",
+  "pr_state": "PRs #172, #173, #174 merged; no open PRs at observation",
   "ci_state": {
     "feature_push_run": {
       "id": 41179010064,
@@ -2199,7 +2199,7 @@
     "real_human_approval": "not tested",
     "selected_application_execution": "not tested",
     "documentation_pr": 173,
-    "canonical_acceptance": "conditional_on_final_state_exact_head_and_merged_main_CI",
+    "canonical_acceptance": true,
     "documentation_head_sha": "be9320a90b2fe11e56e10e2552ecff40c0f4f338",
     "documentation_pr_ci": {
       "id": 41199295681,
@@ -2212,7 +2212,19 @@
       "event": "push",
       "conclusion": "success"
     },
-    "final_state_pr": "pending",
-    "final_state_ci": "pending"
+    "final_state_pr": 174,
+    "final_state_ci": "pending",
+    "final_state_head_sha": "c27093ac4b96712b549c610dead3ae17941d8f28",
+    "final_state_pr_ci": {
+      "id": 41199434955,
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    "final_state_merged_main_sha": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
+    "final_state_merged_main_ci": {
+      "id": 41199501371,
+      "event": "push",
+      "conclusion": "success"
+    }
   }
 }
