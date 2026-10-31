@@ -30,3 +30,34 @@ application in an isolated runtime, then trusted health and controlled rollback.
 
 **Demo readiness:** Partial until the actual selected-application gate.
 **Full product completion:** Unverified.
+
+## Verified first-party selection feature, 2026-10-31
+
+[Feature PR #165](https://github.com/antonypaul98/cloudforge/pull/165)
+merged as `6109a4e37fa8993cf896c2cfaaf64194d7b05a8c` after exact
+head `637244b86841e1badf1666e0eaaf4694a9ceb83a` passed
+[push product CI #41191134282](https://github.com/antonypaul98/cloudforge/actions/runs/41191134282),
+[PR product CI #41191138189](https://github.com/antonypaul98/cloudforge/actions/runs/41191138189),
+and [real rootless OCI PR #41191138091](https://github.com/antonypaul98/cloudforge/actions/runs/41191138091)
+(attempt 2). [Merged-main CI #41191293408](https://github.com/antonypaul98/cloudforge/actions/runs/41191293408)
+succeeded. Python 3.11.17: **1,518 pytest passed, 2 skipped;
+43 infrastructure tests run, 1 skipped**. Both OCI matrix variants
+reported their distinct source digests and successful actual HTTP health,
+graceful stop, deliberate SIGKILL recovery and cleanup.
+
+The first feature commit failed two static mutation assertions; the test
+guard was corrected before final-head validation. The alternate OCI runner
+initially failed rootless prerequisite probing
+(`local-podman-probe-unavailable`), while the primary succeeded. Retrying
+the failed job on the same exact head succeeded; no isolation bypass or
+code change was made to suppress the failure. These failed attempts remain
+visible in GitHub Actions history.
+
+**Accepted only:** static choice between two CloudForge-owned, SHA-pinned
+Python source fixtures, each built and observed in a disposable rootless
+OCI job. This does not establish external user-selected application execution,
+independent human authorization, signed independent health, hardened
+multi-tenant isolation, real provider deployment or infrastructure rollback.
+No Mac, Astra/Work or production infrastructure used. Canonical documentation
+and state acceptance still require this PR's own exact-head CI, guarded merge
+and merged-main CI. Demo readiness remains partial; full completion unverified.
