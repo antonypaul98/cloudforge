@@ -91,3 +91,33 @@ merged as `6ecf65230424c990435543e6015c3e16cfa7365d`, and passed
 This final state publication is documentation-only and requires its own
 exact-head CI and merged-main CI before its publication is considered complete.
 No live GitHub reviewer decision or selected application execution was tested.
+
+## Read-only CLI handoff (2026-10-31)
+
+The existing verifier is now callable without writing a custom Python harness.
+An **independent trusted operator** must supply the exact repository, workflow
+run, main commit, selected source-package digest, and required reviewer account
+ID. Do not derive these pins solely from the workflow run or its review comment.
+
+```sh
+python -m cloudforge.demo_github_approval_evidence_cli \
+  --repository owner/repository \
+  --run-id 123456 \
+  --head-sha aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \
+  --artifact-sha256 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb \
+  --reviewer-account-id 123456
+```
+
+Exit 0 means only that the existing GitHub-account evidence verifier returned a
+read-only receipt. Its JSON always sets `execution_permitted=false` and
+`human_identity_verified=false`. Exit 1 returns a minimal fail-closed JSON
+receipt without API bodies or user input; argument parsing errors exit 2.
+The CLI does not dispatch workflows, create environments, authenticate people,
+read application files, run applications or mutate infrastructure.
+
+The current repository has no `.github/workflows/selected-user-app.yml`
+implementation in this checkpoint; the CLI therefore does **not** establish a
+successful real protected review. Offline CLI tests and exact-head CI are
+separate from genuine independent approval. No external code was copied; this
+reuses the first-party verifier and Python 3.11 argparse/json. Rollback is a
+revert of the feature merge, with no stateful migration.
