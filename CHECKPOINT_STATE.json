@@ -5,7 +5,7 @@
   "main_sha_at_start": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
   "current_branch_sha": "46aaf373c0cf1084e57c4a6886d7ec9a027fbd2a",
   "sha_semantics": "observed_* and current_branch_sha are immutable pre-edit observations, not the SHA of the containing commit. Resolve current_repository_sha at runtime with the command; preflight prints it. CI receipts apply only to their recorded SHA.",
-  "branch_remote_status": "Feature #172, documentation #173 and final state #174 all merged with exact-head and merged-main CI success",
+  "branch_remote_status": "Feature #172, documentation #173 and final state #174 all merged with exact-head and merged-main CI success; bounded demo packaging PR #177 merged at 85f3bcee with exact-head and merged-main CI success; retained Actions artifact #13054496947 (expires 2027-01-29), permanent release pending.",
   "local_test_status": "Feature exact-head CI Python 3.11.17: 1564 pytest passed, 2 skipped; 43 infrastructure tests run, 1 skipped. 10 new CLI tests offline/subprocess; no live approval.",
   "pr_number": 174,
   "ci_status": "Feature #172 push #41199106550, PR #41199110264, main #41199200984; docs #173 PR #41199295681, main #41199361156; final #174 PR #41199434955, main #41199501371: all succeeded.",
@@ -14,7 +14,7 @@
     "Independent authenticated, artifact-specific human authorization before selected application execution or consequential infrastructure changes."
   ],
   "known_blocker": "Real independently protected GitHub human approval and genuinely selected external application execution remain unverified; selected-user-app workflow and protected environment not configured or verified. No immediate user-only action for read-only work.",
-  "next_action": "Prioritize actual protected independent reviewer and artifact-scoped approval for a genuinely user-selected application, isolated execution, trusted health and controlled rollback. Preserve no-Astra/Work and no-production-mutation rules.",
+  "next_action": "Preserve accepted CloudForge review/synthetic demo bundle and verify durable release download; separately require protected independent approval, genuinely selected app execution, trusted health and controlled rollback. No paid API, Astra/Work or production mutation.",
   "feature_checkpoint_advanced": true,
   "diagnostic_import": "cloudforge",
   "diagnostic_postgres_variables": [],
@@ -2226,5 +2226,33 @@
       "event": "push",
       "conclusion": "success"
     }
+  },
+  "demo_release_receipt": {
+    "status": "BOUNDED_REVIEW_AND_SYNTHETIC_DEMO_ARTIFACT_MERGED_AND_VERIFIED; ACTIONS_RETENTION_90_DAYS; PERMANENT_RELEASE_PENDING",
+    "accepted_scope": "Existing read-only application-manifest review and credential-free synthetic authorization only",
+    "original_selected_application_demo_ready": false,
+    "source_pr": 177,
+    "exact_source_head_sha": "464403a69bec2724d3c16fd4b8aed7e40a2c59a8",
+    "exact_head_pr_ci": 41233564021,
+    "exact_head_pr_bundle_ci": 41233563717,
+    "exact_head_push_ci": 41233558751,
+    "exact_head_push_bundle_ci": 41233558590,
+    "source_merge_sha": "85f3bceeac07d0a9f8fc57a33234f494b4aeda06",
+    "merged_main_ci": 41233647854,
+    "merged_main_bundle_ci": 41233647856,
+    "main_actions_artifact_id": 13054496947,
+    "main_actions_artifact_name": "cloudforge-review-demo-85f3bceeac07d0a9f8fc57a33234f494b4aeda06",
+    "actions_artifact_expires_at": "2027-01-29T19:19:12Z",
+    "archive_name": "cloudforge-review-demo-85f3bceeac07.tar.gz",
+    "archive_sha256": "ab7298d0432fa07636f015b8de7340cba7a5338f14984f64508c7def479dcc35",
+    "manifest_files_verified": 57,
+    "clean_room_ci_python": "3.11.17",
+    "independent_extracted_bundle_python": "3.13.5",
+    "smoke": "Two byte-identical CLI runs for each accepted demo; 14 synthetic rejection checks; missing manifest rejected; no authenticated review, infrastructure mutation, observation or recovery claims",
+    "external_selected_app_executed": false,
+    "independent_human_approval": false,
+    "production_mutation": false,
+    "permanent_github_release_published": false,
+    "next_action": "Publish permanent versioned release if authorized tooling supports release writes; verify release-asset HTTP download and checksum; preserve Actions artifact while preparing independently approved selected-app execution."
   }
 }
